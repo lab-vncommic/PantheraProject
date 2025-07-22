@@ -24,10 +24,6 @@ void PTR_system_initialization(void)
 void PTR_main_interrupt_service(void)
 {
 	begin = stm_lld_getcounter(&STMD3);
-	if (cnt_500ms++ >= 5000) {
-		cnt_500ms = 0;
-		GPIO_TogglePin(&PIN_SEL0_2);
-	}
 
 	MEAS_GetValue();
 	FAULT_UpdateStatus();
