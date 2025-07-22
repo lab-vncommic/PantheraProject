@@ -15,6 +15,9 @@
    automatically.*/
 #include "components.h"
 
+// User's library
+#include "Panthera.h"
+
 /*
  * Application entry point.
  */
@@ -24,6 +27,7 @@ int main(void) {
   /* Initialization of all the imported components in the order specified in
      the application wizard. The function is generated automatically.*/
   componentsInit();
+
 
   /* PIT clock enabled.*/
   SPCSetPeripheralClockMode(30, SPC5_ME_PCTL_RUN(2) | SPC5_ME_PCTL_LP(2));
@@ -43,9 +47,11 @@ int main(void) {
   /* Interrupts are enabled and the system is ready.*/
   irqIsrEnable();
 
+  PTR_system_initialization();
+
   /* Application main loop.*/
   for ( ; ; ) {
-	  pal_togglepad(PORT_D, LED_5);
+	  PTR_inf_loop_system();
 	  osalThreadDelayMilliseconds(1000UL);
   }
 }

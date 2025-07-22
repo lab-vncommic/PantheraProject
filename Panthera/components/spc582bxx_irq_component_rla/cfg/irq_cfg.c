@@ -21,6 +21,8 @@
 
 #include "board.h"
 
+#include "../../../Panthera.h"
+
 /*===========================================================================*/
 /* Module local definitions.                                                 */
 /*===========================================================================*/
@@ -53,9 +55,7 @@ IRQ_HANDLER(PIT0_CH1_TimerExpired) {
   IRQ_PROLOGUE();
 
   /* ISR code here.*/
-//  pal_togglepad(PORT_A, LED_3);
-//  pal_togglepad(PORT_E, LED_4);
-//  pal_togglepad(PORT_D, LED_5);
+  PTR_main_interrupt_service();
   PIT_0.CH[1].TFLG.R  = 1;    
 
   IRQ_EPILOGUE();

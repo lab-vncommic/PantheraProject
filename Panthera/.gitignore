@@ -1,4 +1,5 @@
 # SPC5- Ignore build outputs and IDE files
 /Debug/
 /build/
-
+/UDE/
+/.dep/

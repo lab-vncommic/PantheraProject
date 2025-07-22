@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SPC5-Patch version="1.0.0">
   <!--It is your patch repository, do not break your XML File.-->
-  <files />
+  <files>
+    <file componentId="com.st.spc5.components.irq.spc582bxx_rla" version="1.20.0.202402291610" path="component/lib/include/irq.h" user="false">
+      <diff />
+    </file>
+  </files>
 </SPC5-Patch>
