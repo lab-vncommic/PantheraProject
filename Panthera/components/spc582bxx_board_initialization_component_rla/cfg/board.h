@@ -42,16 +42,19 @@
 #define MulSens_1                   8U
 #define INA_2                       9U
 #define MulEN_3                     1U
+#define PWM_2                       13U
 #define SEL1_1                      14U
 #define SEL1_2                      15U
 #define SEL0_3                      2U
 #define INA_3                       3U
 #define INB_3                       4U
 #define Mulsens_3                   11U
+#define PWM_1                       12U
 #define SLIDER_1                    13U
 #define RECLIER_1                   14U
 #define RECLIER_2                   15U
 #define INB_1                       5U
+#define PWM_3                       10U
 #define SEL1_3                      11U
 #define SLIDER_2                    3U
 #define MulEN_1                     3U
@@ -77,16 +80,19 @@
 #define PORT_MulSens_1              PORT_B
 #define PORT_INA_2                  PORT_B
 #define PORT_MulEN_3                PORT_C
+#define PORT_PWM_2                  PORT_C
 #define PORT_SEL1_1                 PORT_C
 #define PORT_SEL1_2                 PORT_C
 #define PORT_SEL0_3                 PORT_C
 #define PORT_INA_3                  PORT_C
 #define PORT_INB_3                  PORT_C
 #define PORT_Mulsens_3              PORT_D
+#define PORT_PWM_1                  PORT_D
 #define PORT_SLIDER_1               PORT_D
 #define PORT_RECLIER_1              PORT_D
 #define PORT_RECLIER_2              PORT_D
 #define PORT_INB_1                  PORT_D
+#define PORT_PWM_3                  PORT_E
 #define PORT_SEL1_3                 PORT_E
 #define PORT_SLIDER_2               PORT_E
 #define PORT_MulEN_1                PORT_F
@@ -112,16 +118,19 @@
 #define MSCR_IO_MulSens_1           MSCR_IO_INDEX(PORT_MulSens_1, MulSens_1)
 #define MSCR_IO_INA_2               MSCR_IO_INDEX(PORT_INA_2, INA_2)
 #define MSCR_IO_MulEN_3             MSCR_IO_INDEX(PORT_MulEN_3, MulEN_3)
+#define MSCR_IO_PWM_2               MSCR_IO_INDEX(PORT_PWM_2, PWM_2)
 #define MSCR_IO_SEL1_1              MSCR_IO_INDEX(PORT_SEL1_1, SEL1_1)
 #define MSCR_IO_SEL1_2              MSCR_IO_INDEX(PORT_SEL1_2, SEL1_2)
 #define MSCR_IO_SEL0_3              MSCR_IO_INDEX(PORT_SEL0_3, SEL0_3)
 #define MSCR_IO_INA_3               MSCR_IO_INDEX(PORT_INA_3, INA_3)
 #define MSCR_IO_INB_3               MSCR_IO_INDEX(PORT_INB_3, INB_3)
 #define MSCR_IO_Mulsens_3           MSCR_IO_INDEX(PORT_Mulsens_3, Mulsens_3)
+#define MSCR_IO_PWM_1               MSCR_IO_INDEX(PORT_PWM_1, PWM_1)
 #define MSCR_IO_SLIDER_1            MSCR_IO_INDEX(PORT_SLIDER_1, SLIDER_1)
 #define MSCR_IO_RECLIER_1           MSCR_IO_INDEX(PORT_RECLIER_1, RECLIER_1)
 #define MSCR_IO_RECLIER_2           MSCR_IO_INDEX(PORT_RECLIER_2, RECLIER_2)
 #define MSCR_IO_INB_1               MSCR_IO_INDEX(PORT_INB_1, INB_1)
+#define MSCR_IO_PWM_3               MSCR_IO_INDEX(PORT_PWM_3, PWM_3)
 #define MSCR_IO_SEL1_3              MSCR_IO_INDEX(PORT_SEL1_3, SEL1_3)
 #define MSCR_IO_SLIDER_2            MSCR_IO_INDEX(PORT_SLIDER_2, SLIDER_2)
 #define MSCR_IO_MulEN_1             MSCR_IO_INDEX(PORT_MulEN_1, MulEN_1)
