@@ -4,6 +4,7 @@ LIB_C_SRC       += ./components/spc582bxx_low_level_drivers_component_rla/lib/sr
                    ./components/spc582bxx_low_level_drivers_component_rla/lib/src/serial_lld.c \
                    ./components/spc582bxx_low_level_drivers_component_rla/lib/src/pit_lld.c \
                    ./components/spc582bxx_low_level_drivers_component_rla/lib/src/stm_lld.c \
+                   ./components/spc582bxx_low_level_drivers_component_rla/lib/src/saradc_lld.c \
                    ./components/spc582bxx_low_level_drivers_component_rla/lib/src/spc5_linflex.c \
 
 LIB_CPP_SRC     +=
@@ -16,6 +17,7 @@ APP_C_SRC       += \
                    ./components/spc582bxx_low_level_drivers_component_rla/cfg/serial_lld_cfg.c \
                    ./components/spc582bxx_low_level_drivers_component_rla/cfg/pit_lld_cfg.c \
                    ./components/spc582bxx_low_level_drivers_component_rla/cfg/stm_lld_cfg.c \
+                   ./components/spc582bxx_low_level_drivers_component_rla/cfg/saradc_lld_cfg.c \
 
 APP_CPP_SRC     +=
 

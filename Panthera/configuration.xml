@@ -2,14 +2,14 @@
 <SPC5-Config core_version="6.0" version="1.0.0">
   <application name="Panthera" version="1.0.0" standalone="true" locked="false">
     <description>Panthera Firmware</description>
-    <component id="com.st.tools.spc5.components.platform.spc582bxx_rla" version="1.20.0">
-      <component id="com.st.spc5.components.init.spc582bxx_rla" version="1.20.0" />
-      <component id="com.st.spc5.components.lld.spc582bxx_rla" version="1.20.0" />
+    <component id="com.st.tools.spc5.components.platform.spc582bxx_rla" version="1.18.0">
+      <component id="com.st.spc5.components.init.spc582bxx_rla" version="1.18.0" />
+      <component id="com.st.spc5.components.lld.spc582bxx_rla" version="1.18.0" />
     </component>
     <instances>
       <instance locked="false" id="com.st.tools.spc5.components.platform.spc582bxx_rla">
         <platform_settings>
-          <choose_mcu index="0">
+          <choose_mcu index="1">
             <value>SPC582B60E1 e200z2 1M 96KRAM eTQFP64</value>
           </choose_mcu>
           <specific_model index="1">
@@ -339,6 +339,234 @@
                       <value>false</value>
                     </wpue>
                     <inv>
+                      <value>false</value>
+                    </inv>
+                  </control_bits>
+                </mscr_io_settings>
+                <mscr_mux_settings disabled="true">
+                  <mscr_index disabled="true">
+                    <value>512</value>
+                  </mscr_index>
+                  <sss disabled="true">
+                    <value>0</value>
+                  </sss>
+                </mscr_mux_settings>
+              </settings>
+            </pin_settings>
+            <pin_settings>
+              <pin_identification>
+                <identifier>
+                  <value>MulSens_2</value>
+                </identifier>
+                <port index="1">
+                  <value>PORT_B</value>
+                </port>
+                <bit index="10">
+                  <value>10</value>
+                </bit>
+                <metadatas>
+                  <metadata name="active" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                    <value>NONE</value>
+                  </metadata>
+                </metadatas>
+              </pin_identification>
+              <settings>
+                <pin_mode index="4">
+                  <value>MODE_PI</value>
+                  <metadatas>
+                    <metadata name="direction" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>I</value>
+                    </metadata>
+                    <metadata name="functionRef" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>AN82</value>
+                    </metadata>
+                  </metadatas>
+                </pin_mode>
+                <latched_state disabled="true" index="0">
+                  <value>LOW</value>
+                </latched_state>
+                <mscr_io_settings>
+                  <mscr_index>
+                    <value>26</value>
+                  </mscr_index>
+                  <sss disabled="true">
+                    <value>0</value>
+                  </sss>
+                  <control_bits>
+                    <oerc disabled="true" index="0">
+                      <value>Weak Drive</value>
+                    </oerc>
+                    <odc disabled="true" index="0">
+                      <value>Disabled</value>
+                    </odc>
+                    <smc disabled="true">
+                      <value>true</value>
+                    </smc>
+                    <ils disabled="true" index="0">
+                      <value>Automotive</value>
+                    </ils>
+                    <ibe disabled="true">
+                      <value>true</value>
+                    </ibe>
+                    <wpde disabled="true">
+                      <value>false</value>
+                    </wpde>
+                    <wpue disabled="true">
+                      <value>true</value>
+                    </wpue>
+                    <inv disabled="true">
+                      <value>false</value>
+                    </inv>
+                  </control_bits>
+                </mscr_io_settings>
+                <mscr_mux_settings disabled="true">
+                  <mscr_index disabled="true">
+                    <value>512</value>
+                  </mscr_index>
+                  <sss disabled="true">
+                    <value>0</value>
+                  </sss>
+                </mscr_mux_settings>
+              </settings>
+            </pin_settings>
+            <pin_settings>
+              <pin_identification>
+                <identifier>
+                  <value>MulSens_1</value>
+                </identifier>
+                <port index="1">
+                  <value>PORT_B</value>
+                </port>
+                <bit index="8">
+                  <value>8</value>
+                </bit>
+                <metadatas>
+                  <metadata name="active" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                    <value>NONE</value>
+                  </metadata>
+                </metadatas>
+              </pin_identification>
+              <settings>
+                <pin_mode index="4">
+                  <value>MODE_PI</value>
+                  <metadatas>
+                    <metadata name="direction" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>I</value>
+                    </metadata>
+                    <metadata name="functionRef" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>AN90</value>
+                    </metadata>
+                  </metadatas>
+                </pin_mode>
+                <latched_state disabled="true" index="0">
+                  <value>LOW</value>
+                </latched_state>
+                <mscr_io_settings>
+                  <mscr_index>
+                    <value>24</value>
+                  </mscr_index>
+                  <sss disabled="true">
+                    <value>0</value>
+                  </sss>
+                  <control_bits>
+                    <oerc disabled="true" index="0">
+                      <value>Weak Drive</value>
+                    </oerc>
+                    <odc disabled="true" index="0">
+                      <value>Disabled</value>
+                    </odc>
+                    <smc disabled="true">
+                      <value>true</value>
+                    </smc>
+                    <ils disabled="true" index="0">
+                      <value>Automotive</value>
+                    </ils>
+                    <ibe disabled="true">
+                      <value>true</value>
+                    </ibe>
+                    <wpde disabled="true">
+                      <value>false</value>
+                    </wpde>
+                    <wpue disabled="true">
+                      <value>true</value>
+                    </wpue>
+                    <inv disabled="true">
+                      <value>false</value>
+                    </inv>
+                  </control_bits>
+                </mscr_io_settings>
+                <mscr_mux_settings disabled="true">
+                  <mscr_index disabled="true">
+                    <value>512</value>
+                  </mscr_index>
+                  <sss disabled="true">
+                    <value>0</value>
+                  </sss>
+                </mscr_mux_settings>
+              </settings>
+            </pin_settings>
+            <pin_settings>
+              <pin_identification>
+                <identifier>
+                  <value>Mulsens_3</value>
+                </identifier>
+                <port index="3">
+                  <value>PORT_D</value>
+                </port>
+                <bit index="11">
+                  <value>11</value>
+                </bit>
+                <metadatas>
+                  <metadata name="active" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                    <value>NONE</value>
+                  </metadata>
+                </metadatas>
+              </pin_identification>
+              <settings>
+                <pin_mode index="4">
+                  <value>MODE_PI</value>
+                  <metadatas>
+                    <metadata name="direction" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>I</value>
+                    </metadata>
+                    <metadata name="functionRef" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>AN63</value>
+                    </metadata>
+                  </metadatas>
+                </pin_mode>
+                <latched_state disabled="true" index="0">
+                  <value>LOW</value>
+                </latched_state>
+                <mscr_io_settings>
+                  <mscr_index>
+                    <value>59</value>
+                  </mscr_index>
+                  <sss disabled="true">
+                    <value>0</value>
+                  </sss>
+                  <control_bits>
+                    <oerc disabled="true" index="0">
+                      <value>Weak Drive</value>
+                    </oerc>
+                    <odc disabled="true" index="0">
+                      <value>Disabled</value>
+                    </odc>
+                    <smc disabled="true">
+                      <value>true</value>
+                    </smc>
+                    <ils disabled="true" index="0">
+                      <value>Automotive</value>
+                    </ils>
+                    <ibe disabled="true">
+                      <value>true</value>
+                    </ibe>
+                    <wpde disabled="true">
+                      <value>false</value>
+                    </wpde>
+                    <wpue disabled="true">
+                      <value>true</value>
+                    </wpue>
+                    <inv disabled="true">
                       <value>false</value>
                     </inv>
                   </control_bits>
@@ -1296,7 +1524,7 @@
             <value>true</value>
           </pal>
           <saradc>
-            <value>false</value>
+            <value>true</value>
           </saradc>
           <can>
             <value>false</value>
@@ -2169,14 +2397,191 @@
             </stops_in_stop_mode>
           </swt2_settings>
         </swt_settings>
-        <saradc_settings disabled="true">
-          <saradc_12bit_supervisor disabled="true">
-            <saradc_b disabled="true">
-              <value>false</value>
+        <saradc_settings>
+          <saradc_12bit_supervisor>
+            <saradc_b>
+              <value>true</value>
             </saradc_b>
           </saradc_12bit_supervisor>
-          <saradc_configurations disabled="true">
-            <configs disabled="true" />
+          <saradc_configurations>
+            <configs>
+              <conversion_group_settings>
+                <symbolic_name>
+                  <value>saradcconfdma</value>
+                </symbolic_name>
+                <conversion_mode index="1">
+                  <value>Scan</value>
+                </conversion_mode>
+                <conversion_timing_configuration>
+                  <saradc_clock disabled="true">
+                    <value>16</value>
+                    <metadatas>
+                      <metadata name="unit">
+                        <actual_value>16.0</actual_value>
+                        <unit factor="1.0" name="Mhz" />
+                      </metadata>
+                    </metadatas>
+                  </saradc_clock>
+                  <ctr0_register>
+                    <cres index="1">
+                      <value>HIGH</value>
+                    </cres>
+                    <prechg index="0">
+                      <value>0</value>
+                    </prechg>
+                    <inpsamp>
+                      <value>100</value>
+                    </inpsamp>
+                    <tsample disabled="true">
+                      <value>6.249999999999999</value>
+                      <metadatas>
+                        <metadata name="unit">
+                          <actual_value>6.25</actual_value>
+                          <unit factor="1.0" name="us" />
+                        </metadata>
+                      </metadatas>
+                    </tsample>
+                    <adc12_tconv disabled="true">
+                      <value>6.999999999999999</value>
+                      <metadatas>
+                        <metadata name="unit">
+                          <actual_value>7.0</actual_value>
+                          <unit factor="1.0" name="us" />
+                        </metadata>
+                      </metadatas>
+                    </adc12_tconv>
+                  </ctr0_register>
+                  <ctr1_register>
+                    <cres index="1">
+                      <value>HIGH</value>
+                    </cres>
+                    <prechg index="0">
+                      <value>0</value>
+                    </prechg>
+                    <inpsamp>
+                      <value>100</value>
+                    </inpsamp>
+                    <tsample disabled="true">
+                      <value>6.249999999999999</value>
+                      <metadatas>
+                        <metadata name="unit">
+                          <actual_value>6.25</actual_value>
+                          <unit factor="1.0" name="us" />
+                        </metadata>
+                      </metadatas>
+                    </tsample>
+                    <adc12_tconv disabled="true">
+                      <value>6.999999999999999</value>
+                      <metadatas>
+                        <metadata name="unit">
+                          <actual_value>7.0</actual_value>
+                          <unit factor="1.0" name="us" />
+                        </metadata>
+                      </metadatas>
+                    </adc12_tconv>
+                  </ctr1_register>
+                  <ctr2_register>
+                    <cres index="1">
+                      <value>HIGH</value>
+                    </cres>
+                    <prechg index="0">
+                      <value>0</value>
+                    </prechg>
+                    <inpsamp>
+                      <value>100</value>
+                    </inpsamp>
+                    <tsample disabled="true">
+                      <value>6.249999999999999</value>
+                      <metadatas>
+                        <metadata name="unit">
+                          <actual_value>6.25</actual_value>
+                          <unit factor="1.0" name="us" />
+                        </metadata>
+                      </metadatas>
+                    </tsample>
+                    <adc12_tconv disabled="true">
+                      <value>6.999999999999999</value>
+                      <metadatas>
+                        <metadata name="unit">
+                          <actual_value>7.0</actual_value>
+                          <unit factor="1.0" name="us" />
+                        </metadata>
+                      </metadatas>
+                    </adc12_tconv>
+                  </ctr2_register>
+                  <ctr3_register>
+                    <cres index="1">
+                      <value>HIGH</value>
+                    </cres>
+                    <prechg index="0">
+                      <value>0</value>
+                    </prechg>
+                    <inpsamp>
+                      <value>100</value>
+                    </inpsamp>
+                    <tsample disabled="true">
+                      <value>6.249999999999999</value>
+                      <metadatas>
+                        <metadata name="unit">
+                          <actual_value>6.25</actual_value>
+                          <unit factor="1.0" name="us" />
+                        </metadata>
+                      </metadatas>
+                    </tsample>
+                    <adc12_tconv disabled="true">
+                      <value>6.999999999999999</value>
+                      <metadatas>
+                        <metadata name="unit">
+                          <actual_value>7.0</actual_value>
+                          <unit factor="1.0" name="us" />
+                        </metadata>
+                      </metadatas>
+                    </adc12_tconv>
+                  </ctr3_register>
+                </conversion_timing_configuration>
+                <channels_configuration disabled="true">
+                  <channels disabled="true" />
+                </channels_configuration>
+                <notifications disabled="true">
+                  <conversion_callback disabled="true">
+                    <value />
+                  </conversion_callback>
+                </notifications>
+                <dma_configuration>
+                  <dma_enable>
+                    <value>true</value>
+                  </dma_enable>
+                  <channel>
+                    <channel_type disabled="true" index="0">
+                      <value>Internal</value>
+                    </channel_type>
+                    <first_channel>
+                      <value>63</value>
+                    </first_channel>
+                    <number_of_channels>
+                      <value>3</value>
+                    </number_of_channels>
+                    <number_of_conversions>
+                      <value>16</value>
+                    </number_of_conversions>
+                    <reference_selection disabled="true" index="0">
+                      <value>Default</value>
+                    </reference_selection>
+                    <precharge_enable index="0">
+                      <value>Disabled</value>
+                    </precharge_enable>
+                    <conversion_timing_register index="0">
+                      <value>CTR0</value>
+                    </conversion_timing_register>
+                  </channel>
+                  <dma_notifications>
+                    <dma_conversion_callback>
+                      <value>conv_cb</value>
+                    </dma_conversion_callback>
+                  </dma_notifications>
+                </dma_configuration>
+              </conversion_group_settings>
+            </configs>
           </saradc_configurations>
         </saradc_settings>
         <crc_settings disabled="true">

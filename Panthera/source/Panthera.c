@@ -11,6 +11,7 @@ void PTR_system_initialization(void)
 {
 	SYS_Config();
 	UART_Init();
+	ADC_Init(&thatADC);
 }
 
 /*====== Execute Time ======*/

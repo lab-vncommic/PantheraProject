@@ -29,6 +29,49 @@
 /* Driver exported variables.                                                */
 /*===========================================================================*/
 
+
+
+
+/**
+ * @brief   Structure defining the configuration "saradcconfdma".
+ */
+SARADCConfig saradc_config_saradcconfdma = {
+   /* conversion mode */
+  SARADC_MODE_SCAN,
+  
+  /* Trigger Mode */
+  SARADC_TRIGGER_DISABLED,
+  
+  /* CTR registers configuration (CRES,PRECHG,INPSAMP) */
+  {
+  /* CTR0 */ {SARADC_CRES_HIGH, 0U, 100U},
+  /* CTR1 */ {SARADC_CRES_HIGH, 0U, 100U},
+  /* CTR2 */ {SARADC_CRES_HIGH, 0U, 100U},
+  /* CTR3 */ {SARADC_CRES_HIGH, 0U, 100U},
+  },
+  /* DMA enabled */
+  TRUE,
+  /* DMA configuration */
+  {SARADC_CHANNEL_INTERNAL,63U,SARADC_REFERENCE_DEFAULT,SARADC_PRECHARGE_DISABLED,SARADC_CTR0,3U,16U},  
+   /* DMA conversion callback */
+  saradcconfdma_conv_cb,
+  /* Channels configurations */
+  NULL,
+
+  /* Number of channels */
+  0U,
+
+  /* Conversion callback */
+  NULL,
+
+  /* No analog watchdog configured */
+  {
+  {(float)0,(float)0},
+  },
+  (float)0,
+  0U,
+};
+
 /*===========================================================================*/
 /* Driver local types.                                                       */
 /*===========================================================================*/

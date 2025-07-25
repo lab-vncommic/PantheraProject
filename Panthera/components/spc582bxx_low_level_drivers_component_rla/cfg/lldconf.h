@@ -41,7 +41,7 @@
 #define LLD_USE_I2C                 FALSE
 #define LLD_USE_RTC                 FALSE
 #define LLD_USE_SWT                 FALSE
-#define LLD_USE_SARADC              FALSE
+#define LLD_USE_SARADC              TRUE
 #define LLD_USE_FCCU                FALSE
 #define LLD_USE_CRC                 FALSE
 #define LLD_USE_WKPU                FALSE
@@ -432,12 +432,12 @@
 /*
  * SARADC driver system settings.
  */ 
-#define SPC5_SARADC_USE_SARADC12_SV			FALSE
+#define SPC5_SARADC_USE_SARADC12_SV			TRUE
 #define SPC5_SARADC12_SV_PRIORITY			INTC_PSR_ENABLE(INTC_PSR_MAINCORE, 10)
 #define SPC5_SARADC12_SV_DMA_CH_ID          0
 #define SPC5_SARADC12_SV_DMA_IRQ_PRIO       INTC_PSR_ENABLE(INTC_PSR_MAINCORE, 10)
-#define SPC5_SARADC_USE_DMA                 FALSE
-#define SPC5_SARADC_DMA_BUFFER_LENGHT       0U
+#define SPC5_SARADC_USE_DMA                 TRUE
+#define SPC5_SARADC_DMA_BUFFER_LENGHT       48U
 #define SPC5_SARADC_MAX_NUMOFCHANNELS	    0U
 #define SPC5_SARADC_MAX_NUMOFTHRESHOLDS     1U
 #define SPC5_SARADC_DMA_ERROR_HOOK(saradcp) irqSysHalt()
