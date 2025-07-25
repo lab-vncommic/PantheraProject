@@ -56,7 +56,7 @@ extern PIT_CH_Config pit0_config[SPC5_PIT0_CHANNELS];
 extern "C" {
 #endif
 /*Callback Prototypes*/
-  void PTR_main_interrupt_service(void);
+  void PIT0_ISR(void);
 #ifdef __cplusplus
 }
 #endif

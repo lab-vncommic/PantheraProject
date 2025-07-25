@@ -7,7 +7,7 @@
 
 #ifndef DRIVERLAYER_GPIO_GPIO_H_
 #define DRIVERLAYER_GPIO_GPIO_H_
-#include "../../components/components.h"
+#include "components.h"
 
 #define LED3	((GPIO_PinDef){PORT_LED_3, LED_3})
 #define LED4	((GPIO_PinDef){PORT_LED_4, LED_4})
