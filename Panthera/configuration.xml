@@ -1874,17 +1874,17 @@
                 </api_behaviour>
                 <notifications>
                   <tx_callback>
-                    <value />
+                    <value>UART_TX_Callback</value>
                   </tx_callback>
                   <rx_callback>
-                    <value />
+                    <value>UART_RX_Callback</value>
                   </rx_callback>
                 </notifications>
                 <dma>
                   <dma_enable>
-                    <value>false</value>
+                    <value>true</value>
                   </dma_enable>
-                  <dma_error_callback disabled="true">
+                  <dma_error_callback>
                     <value />
                   </dma_error_callback>
                 </dma>
@@ -2007,7 +2007,7 @@
                 <value>10000</value>
               </frequency>
               <callback>
-                <value>PTR_main_interrupt_service</value>
+                <value>PIT0_ISR</value>
               </callback>
             </channel_1>
             <channel_2>

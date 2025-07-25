@@ -18,6 +18,11 @@
 // User's library
 #include "Panthera.h"
 
+void PIT0_ISR(void)
+{
+	PTR_main_interrupt_service();
+}
+
 /*
  * Application entry point.
  */
@@ -32,6 +37,6 @@ int main(void) {
 
   /* Application main loop.*/
   for ( ; ; ) {
-//	  PTR_inf_loop_system();
+	  PTR_inf_loop_system();
   }
 }
