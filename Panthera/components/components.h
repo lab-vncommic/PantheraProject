@@ -38,6 +38,8 @@
 #include "eirq_cfg.h"
 #include "clock.h"
 #include "osal.h"
+#include "spc5_lld.h"
+#include "spc5_lld_cfg.h"
 #include "eirq.h"
 
 #ifdef __cplusplus

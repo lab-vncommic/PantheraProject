@@ -7,6 +7,7 @@
 
 #ifndef PANTHERA_H_
 #define PANTHERA_H_
+#include "_MiddleLayer/GlobalDefine/GlobalDefine.h"
 #include "_DriverLayer/gpio/gpio.h"
 
 void PTR_system_initialization(void);

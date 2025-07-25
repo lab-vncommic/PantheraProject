@@ -114,10 +114,7 @@ CSRC =      $(LIB_C_SRC) \
             $(APP_C_SRC) \
             $(U_C_SRC) \
             $(AUTO_C_SRC) \
-            ./components/components.c \
-            Panthera.c \
-            $(call rwildcard,./_DriverLayer/,*.c) \
-            $(call rwildcard,./_MiddleLayer/,*.c)
+            ./components/components.c
 
 # C++ sources here.
 CPPSRC =    $(LIB_CPP_SRC) \

@@ -39,4 +39,5 @@ void componentsInit(void) {
   eirqInit();
   clockInit();
   osalInit();
+  spc5LLDInit();
 }

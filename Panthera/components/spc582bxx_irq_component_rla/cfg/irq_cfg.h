@@ -40,14 +40,12 @@
  * @name    ISR vectors identifiers
  * @{
  */
-#define ISR_VECTOR_PIT0_CH1_IRQ             227
 /** @} */
 
 /**
  * @name    ISR vectors names overrides
  * @{
  */
-#define vector227                           PIT0_CH1_TimerExpired
 /** @} */
 
 /*===========================================================================*/
@@ -74,7 +72,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-  void PIT0_CH1_TimerExpired(void);
   void irq_cfg_init(void);
 #ifdef __cplusplus
 }

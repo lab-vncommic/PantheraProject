@@ -33,27 +33,34 @@
 /*
  * I/O definitions.
  */
+#define CAN_RX                      1U
 #define LED_3                       11U
+#define CAN_TX                      2U
 #define LED_5                       5U
 #define LED_4                       11U
 
 /*
  * PORT definitions.
  */
+#define PORT_CAN_RX                 PORT_A
 #define PORT_LED_3                  PORT_A
+#define PORT_CAN_TX                 PORT_A
 #define PORT_LED_5                  PORT_D
 #define PORT_LED_4                  PORT_E
 
 /*
  * MSCR_IO definitions.
  */
+#define MSCR_IO_CAN_RX              MSCR_IO_INDEX(PORT_CAN_RX, CAN_RX)
 #define MSCR_IO_LED_3               MSCR_IO_INDEX(PORT_LED_3, LED_3)
+#define MSCR_IO_CAN_TX              MSCR_IO_INDEX(PORT_CAN_TX, CAN_TX)
 #define MSCR_IO_LED_5               MSCR_IO_INDEX(PORT_LED_5, LED_5)
 #define MSCR_IO_LED_4               MSCR_IO_INDEX(PORT_LED_4, LED_4)
 
 /*
  * MSCR_MUX definitions.
  */
+#define MSCR_MUX_CAN_RX             337U
 
 #if !defined(_FROM_ASM_)
 #ifdef __cplusplus
