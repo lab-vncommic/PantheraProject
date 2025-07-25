@@ -4,7 +4,8 @@
 |-----|---------------|---------------------|----------------------------------------------------------------------------|-------------------|----------|
 | 1   | 21/07/2025    | v1.0.0              | Khởi tạo folder code cho dự án Panthera                                    | Nguyễn Quốc Uy    | Obsoleted|
 | 2   | 22/07/2025    | v1.0.1              | Bổ sung thêm thư viện driver gpio                                          | Nguyễn Quốc Uy    | Obsoleted|
-| 3   | 25/07/2025    | v1.0.2              | Bổ sung thêm thư viện global define                                        | Nguyễn Quốc Uy    | Active   |
+| 3   | 25/07/2025    | v1.0.2              | Bổ sung thêm thư viện global define                                        | Nguyễn Quốc Uy    | Obsoleted|
+| 4   | 25/07/2025    | v1.0.3              | Bổ sung thêm thư viện uart                                                 | Nguyễn Quốc Uy    | Active   |
 
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
