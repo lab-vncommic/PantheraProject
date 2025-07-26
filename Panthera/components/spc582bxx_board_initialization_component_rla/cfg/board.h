@@ -36,8 +36,12 @@
 #define CAN_RX                      1U
 #define LED_3                       11U
 #define CAN_TX                      2U
+#define MulSens_2                   10U
+#define MulSens_1                   8U
+#define Mulsens_3                   11U
 #define LED_5                       5U
 #define LED_4                       11U
+#define FB_5V                       12U
 
 /*
  * PORT definitions.
@@ -45,8 +49,12 @@
 #define PORT_CAN_RX                 PORT_A
 #define PORT_LED_3                  PORT_A
 #define PORT_CAN_TX                 PORT_A
+#define PORT_MulSens_2              PORT_B
+#define PORT_MulSens_1              PORT_B
+#define PORT_Mulsens_3              PORT_D
 #define PORT_LED_5                  PORT_D
 #define PORT_LED_4                  PORT_E
+#define PORT_FB_5V                  PORT_G
 
 /*
  * MSCR_IO definitions.
@@ -54,8 +62,12 @@
 #define MSCR_IO_CAN_RX              MSCR_IO_INDEX(PORT_CAN_RX, CAN_RX)
 #define MSCR_IO_LED_3               MSCR_IO_INDEX(PORT_LED_3, LED_3)
 #define MSCR_IO_CAN_TX              MSCR_IO_INDEX(PORT_CAN_TX, CAN_TX)
+#define MSCR_IO_MulSens_2           MSCR_IO_INDEX(PORT_MulSens_2, MulSens_2)
+#define MSCR_IO_MulSens_1           MSCR_IO_INDEX(PORT_MulSens_1, MulSens_1)
+#define MSCR_IO_Mulsens_3           MSCR_IO_INDEX(PORT_Mulsens_3, Mulsens_3)
 #define MSCR_IO_LED_5               MSCR_IO_INDEX(PORT_LED_5, LED_5)
 #define MSCR_IO_LED_4               MSCR_IO_INDEX(PORT_LED_4, LED_4)
+#define MSCR_IO_FB_5V               MSCR_IO_INDEX(PORT_FB_5V, FB_5V)
 
 /*
  * MSCR_MUX definitions.

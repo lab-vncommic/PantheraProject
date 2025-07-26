@@ -50,12 +50,14 @@
 /*===========================================================================*/
 
 /* List of the SARADCConfig structures defined in saradc_lld_cfg.c.*/
+extern SARADCConfig saradc_config_saradcconf;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
  /* List of the callback functions referenced from the SARADCConfig
      structures in saradc_lld_cfg.c.*/
+  void saradcconf_conv_cb(SARADCDriver *saradcp);
 #ifdef __cplusplus
 }
 #endif

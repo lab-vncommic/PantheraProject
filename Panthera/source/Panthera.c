@@ -11,6 +11,7 @@ void PTR_system_initialization(void)
 {
 	SYS_Config();
 	UART_Init();
+	ADC_Init(&thatADC);
 }
 
 /*====== Execute Time ======*/
@@ -29,6 +30,7 @@ void PTR_main_interrupt_service(void)
 
     end = stm_lld_getcounter(&STMD3);
     elapsed = end - begin;
+    ADC_startOfConversion();
 }
 
 void PTR_inf_loop_system(void)

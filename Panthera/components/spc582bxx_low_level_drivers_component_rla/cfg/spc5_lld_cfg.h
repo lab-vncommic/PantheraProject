@@ -25,6 +25,7 @@
 #include "pit_lld.h"
 #include "stm_lld.h"
 #include "serial_lld.h"
+#include "saradc_lld.h"
 
 #endif /* _SPC5_LLD_CFG_H_ */
 
