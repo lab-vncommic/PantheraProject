@@ -12,6 +12,15 @@ SARADCDriver* driverUser;
 
 uint8_t anp[NUMOFCHANNELS] = {CHANNEL_MULSENS_1, CHANNEL_MULSENS_2, CHANNEL_MULSENS_3, CHANNEL_FB_5V};
 
+/**
+ * @brief  Callback function for SARADC conversion complete (polling or interrupt mode).
+ *         Called automatically by the ADC driver when conversion finishes.
+ *         It reads conversion results from each configured channel and updates
+ *         the corresponding fields in the global `thatADC` structure.
+ *
+ * @param  saradcp: Pointer to the SARADC driver instance that completed conversion.
+ * @retval None
+ */
 void saradcconf_conv_cb(SARADCDriver *saradcp) {
     thatADC.ADC_MulSens_1 = saradc_lld_readchannel(saradcp, anp[0]);
     thatADC.ADC_MulSens_2 = saradc_lld_readchannel(saradcp, anp[1]);
@@ -19,6 +28,16 @@ void saradcconf_conv_cb(SARADCDriver *saradcp) {
     thatADC.ADC_FB_5V 	  = saradc_lld_readchannel(saradcp, anp[3]);
 }
 
+/**
+ * @brief  Callback function for DMA-based SARADC conversion.
+ *         Currently this is a placeholder and does nothing, but can be expanded
+ *         to handle DMA buffers in the future if needed.
+ *
+ * @param  saradcp: Pointer to the SARADC driver instance.
+ * @param  buffer: Pointer to the buffer where conversion results are stored.
+ * @param  len:    Length of the data buffer.
+ * @retval None
+ */
 void saradcconfdma_conv_cb(SARADCDriver *saradcp, uint16_t* buffer, uint16_t len) {
   (void)saradcp;
   (void)buffer;
@@ -51,6 +70,11 @@ int ADC_Init(ADCTypeDef *pADC) {
     return 0;
 }
 
+/**
+ * @brief  Triggers the start of ADC conversion for the selected SARADC driver.
+ * @note   This function assumes the SARADC driver has been initialized and started.
+ * @retval None
+ */
 void ADC_startOfConversion(void){
 	  /* start SARADC conversion */
 	  saradc_lld_start_conversion(driverUser);
