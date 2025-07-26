@@ -2407,7 +2407,7 @@
             <configs>
               <conversion_group_settings>
                 <symbolic_name>
-                  <value>saradcconfdma</value>
+                  <value>saradcconf</value>
                 </symbolic_name>
                 <conversion_mode index="1">
                   <value>Scan</value>
@@ -2539,43 +2539,95 @@
                     </adc12_tconv>
                   </ctr3_register>
                 </conversion_timing_configuration>
-                <channels_configuration disabled="true">
-                  <channels disabled="true" />
+                <channels_configuration>
+                  <channels>
+                    <channel>
+                      <channel_type index="0">
+                        <value>Internal</value>
+                      </channel_type>
+                      <channel_number>
+                        <value>63</value>
+                      </channel_number>
+                      <reference_selection disabled="true" index="0">
+                        <value>Default</value>
+                      </reference_selection>
+                      <precharge_enable index="0">
+                        <value>Disabled</value>
+                      </precharge_enable>
+                      <conversion_timing_register index="0">
+                        <value>CTR0</value>
+                      </conversion_timing_register>
+                    </channel>
+                    <channel>
+                      <channel_type index="0">
+                        <value>Internal</value>
+                      </channel_type>
+                      <channel_number>
+                        <value>82</value>
+                      </channel_number>
+                      <reference_selection disabled="true" index="0">
+                        <value>Default</value>
+                      </reference_selection>
+                      <precharge_enable index="0">
+                        <value>Disabled</value>
+                      </precharge_enable>
+                      <conversion_timing_register index="0">
+                        <value>CTR0</value>
+                      </conversion_timing_register>
+                    </channel>
+                    <channel>
+                      <channel_type index="0">
+                        <value>Internal</value>
+                      </channel_type>
+                      <channel_number>
+                        <value>90</value>
+                      </channel_number>
+                      <reference_selection disabled="true" index="0">
+                        <value>Default</value>
+                      </reference_selection>
+                      <precharge_enable index="0">
+                        <value>Disabled</value>
+                      </precharge_enable>
+                      <conversion_timing_register index="0">
+                        <value>CTR0</value>
+                      </conversion_timing_register>
+                    </channel>
+                  </channels>
                 </channels_configuration>
-                <notifications disabled="true">
-                  <conversion_callback disabled="true">
-                    <value />
+                <notifications>
+                  <conversion_callback>
+                    <value>conv_cb</value>
                   </conversion_callback>
                 </notifications>
                 <dma_configuration>
                   <dma_enable>
-                    <value>true</value>
+                    <value>false</value>
                   </dma_enable>
-                  <channel>
+                  <channel disabled="true">
                     <channel_type disabled="true" index="0">
                       <value>Internal</value>
                     </channel_type>
-                    <first_channel>
+                    <first_channel disabled="true">
                       <value>63</value>
                     </first_channel>
-                    <number_of_channels>
+                    <number_of_channels disabled="true">
                       <value>3</value>
                     </number_of_channels>
-                    <number_of_conversions>
-                      <value>16</value>
+                    <number_of_conversions disabled="true">
+                      <value>8</value>
                     </number_of_conversions>
                     <reference_selection disabled="true" index="0">
                       <value>Default</value>
                     </reference_selection>
-                    <precharge_enable index="0">
+                    <precharge_enable disabled="true" index="0">
                       <value>Disabled</value>
                     </precharge_enable>
-                    <conversion_timing_register index="0">
+                    <conversion_timing_register disabled="true" index="0">
                       <value>CTR0</value>
                     </conversion_timing_register>
                   </channel>
-                  <dma_notifications>
-                    <dma_conversion_callback>
+                  <dma_notifications disabled="true">
+                    <dma_conversion_callback disabled="true">
                       <value>conv_cb</value>
                     </dma_conversion_callback>
                   </dma_notifications>

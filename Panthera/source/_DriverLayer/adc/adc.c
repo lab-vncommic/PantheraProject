@@ -1,14 +1,29 @@
 /*
  * adc.c
  *
- *  Created on: Jul 25, 2025
+ *  Created on: Jul 26, 2025
  *      Author: Admin
  */
 
-# include "adc.h"
+#include "adc.h"
 
-SARADCDriver* driverUser;
 ADCTypeDef thatADC;
+SARADCDriver* driverUser;
+
+uint8_t anp[NUMOFCHANNELS] = {MULSENS_1, MULSENS_2,MULSENS_3};
+uint16_t value[NUMOFCHANNELS] = {0U, 0U , 0U};
+
+void saradcconf_conv_cb(SARADCDriver *saradcp) {
+    thatADC.ADC_MulSens_1 = saradc_lld_readchannel(saradcp, anp[0]);
+    thatADC.ADC_MulSens_2 = saradc_lld_readchannel(saradcp, anp[1]);
+    thatADC.ADC_MulSens_3 = saradc_lld_readchannel(saradcp, anp[2]);
+}
+
+void saradcconfdma_conv_cb(SARADCDriver *saradcp, uint16_t* buffer, uint16_t len) {
+  (void)saradcp;
+  (void)buffer;
+  (void)len;
+}
 
 /**
  * @brief  Initializes the ADCTypeDef structure by resetting all ADC-related values.
@@ -17,15 +32,11 @@ ADCTypeDef thatADC;
  * @note   This function checks for null pointer and initializes all buffer elements.
  */
 int ADC_Init(ADCTypeDef *pADC) {
-    int i;
     if (pADC == NULL) {
         /* Invalid parameter: NULL pointer */
         return -1;
     }
 
-    for (i = 0; i < ADC_BUFF_DEPTH; i++) {
-        pADC->BufADC[i] = 0;
-    }
     pADC->ADC_MulSens_1   = 0;
     pADC->ADC_MulSens_2   = 0;
     pADC->ADC_MulSens_3   = 0;
@@ -34,25 +45,10 @@ int ADC_Init(ADCTypeDef *pADC) {
     driverUser = &SARADC12DSV;
 
     /* Start SARADC Driver */
-    saradc_lld_start(driverUser, &saradc_config_saradcconfdma);
+     saradc_lld_start(driverUser, &saradc_config_saradcconf);
 
-    /* start SARADC conversion */
-    saradc_lld_start_conversion(driverUser);
+     /* start SARADC conversion */
+     saradc_lld_start_conversion(driverUser);
 
     return 0;
-}
-
-/* conversion callback when using DMA */
-void saradcconfdma_conv_cb(SARADCDriver *saradcp, uint16_t* buffer, uint16_t len) {
-  thatADC.ADC_MulSens_1 = buffer[0];
-  thatADC.ADC_MulSens_2 = buffer[1];
-  thatADC.ADC_MulSens_3 = buffer[2];
-
-  thatADC.lenBuffer = len;
-  thatADC.channel = saradcp->config->dmacfg.number;
-}
-
-/* Dummy callback for configuration not used in DMA test */
-void saradcconf_conv_cb(SARADCDriver *saradcp) {
-  (void)saradcp;
 }
