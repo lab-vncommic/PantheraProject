@@ -10,13 +10,13 @@
 ADCTypeDef thatADC;
 SARADCDriver* driverUser;
 
-uint8_t anp[NUMOFCHANNELS] = {MULSENS_1, MULSENS_2,MULSENS_3};
-uint16_t value[NUMOFCHANNELS] = {0U, 0U , 0U};
+uint8_t anp[NUMOFCHANNELS] = {CHANNEL_MULSENS_1, CHANNEL_MULSENS_2, CHANNEL_MULSENS_3, CHANNEL_FB_5V};
 
 void saradcconf_conv_cb(SARADCDriver *saradcp) {
     thatADC.ADC_MulSens_1 = saradc_lld_readchannel(saradcp, anp[0]);
     thatADC.ADC_MulSens_2 = saradc_lld_readchannel(saradcp, anp[1]);
     thatADC.ADC_MulSens_3 = saradc_lld_readchannel(saradcp, anp[2]);
+    thatADC.ADC_FB_5V 	  = saradc_lld_readchannel(saradcp, anp[3]);
 }
 
 void saradcconfdma_conv_cb(SARADCDriver *saradcp, uint16_t* buffer, uint16_t len) {
@@ -40,6 +40,7 @@ int ADC_Init(ADCTypeDef *pADC) {
     pADC->ADC_MulSens_1   = 0;
     pADC->ADC_MulSens_2   = 0;
     pADC->ADC_MulSens_3   = 0;
+    pADC->ADC_FB_5V		  = 0;
 
     /* change driverUnderTest value to test others SARADC modules. */
     driverUser = &SARADC12DSV;

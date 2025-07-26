@@ -733,6 +733,82 @@
                 </mscr_mux_settings>
               </settings>
             </pin_settings>
+            <pin_settings>
+              <pin_identification>
+                <identifier>
+                  <value>FB_5V</value>
+                </identifier>
+                <port index="6">
+                  <value>PORT_G</value>
+                </port>
+                <bit index="12">
+                  <value>12</value>
+                </bit>
+                <metadatas>
+                  <metadata name="active" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                    <value>NONE</value>
+                  </metadata>
+                </metadatas>
+              </pin_identification>
+              <settings>
+                <pin_mode index="4">
+                  <value>MODE_PI</value>
+                  <metadatas>
+                    <metadata name="direction" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>I</value>
+                    </metadata>
+                    <metadata name="functionRef" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>AN58</value>
+                    </metadata>
+                  </metadatas>
+                </pin_mode>
+                <latched_state disabled="true" index="0">
+                  <value>LOW</value>
+                </latched_state>
+                <mscr_io_settings>
+                  <mscr_index>
+                    <value>108</value>
+                  </mscr_index>
+                  <sss disabled="true">
+                    <value>0</value>
+                  </sss>
+                  <control_bits>
+                    <oerc disabled="true" index="0">
+                      <value>Weak Drive</value>
+                    </oerc>
+                    <odc disabled="true" index="0">
+                      <value>Disabled</value>
+                    </odc>
+                    <smc disabled="true">
+                      <value>true</value>
+                    </smc>
+                    <ils disabled="true" index="0">
+                      <value>Automotive</value>
+                    </ils>
+                    <ibe disabled="true">
+                      <value>true</value>
+                    </ibe>
+                    <wpde disabled="true">
+                      <value>false</value>
+                    </wpde>
+                    <wpue disabled="true">
+                      <value>true</value>
+                    </wpue>
+                    <inv disabled="true">
+                      <value>false</value>
+                    </inv>
+                  </control_bits>
+                </mscr_io_settings>
+                <mscr_mux_settings disabled="true">
+                  <mscr_index disabled="true">
+                    <value>512</value>
+                  </mscr_index>
+                  <sss disabled="true">
+                    <value>0</value>
+                  </sss>
+                </mscr_mux_settings>
+              </settings>
+            </pin_settings>
           </pins_list>
           <metadatas>
             <metadata name="refID" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
@@ -2581,6 +2657,23 @@
                       </channel_type>
                       <channel_number>
                         <value>90</value>
+                      </channel_number>
+                      <reference_selection disabled="true" index="0">
+                        <value>Default</value>
+                      </reference_selection>
+                      <precharge_enable index="0">
+                        <value>Disabled</value>
+                      </precharge_enable>
+                      <conversion_timing_register index="0">
+                        <value>CTR0</value>
+                      </conversion_timing_register>
+                    </channel>
+                    <channel>
+                      <channel_type index="0">
+                        <value>Internal</value>
+                      </channel_type>
+                      <channel_number>
+                        <value>58</value>
                       </channel_number>
                       <reference_selection disabled="true" index="0">
                         <value>Default</value>

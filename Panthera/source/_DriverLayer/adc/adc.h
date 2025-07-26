@@ -10,15 +10,17 @@
 
 #include "saradc_lld_cfg.h"
 
-#define NUMOFCHANNELS 3U
-#define MULSENS_1 		90U
-#define MULSENS_2 		82U
-#define MULSENS_3 		63U
+#define NUMOFCHANNELS 4U
+#define CHANNEL_MULSENS_1 		90U
+#define CHANNEL_MULSENS_2 		82U
+#define CHANNEL_MULSENS_3 		63U
+#define CHANNEL_FB_5V			58U
 
 typedef struct{
 	uint16_t ADC_MulSens_1;
 	uint16_t ADC_MulSens_2;
 	uint16_t ADC_MulSens_3;
+	uint16_t ADC_FB_5V;
 }ADCTypeDef;
 
 int ADC_Init(ADCTypeDef *pADC);

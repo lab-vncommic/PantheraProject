@@ -41,6 +41,7 @@
 #define Mulsens_3                   11U
 #define LED_5                       5U
 #define LED_4                       11U
+#define FB_5V                       12U
 
 /*
  * PORT definitions.
@@ -53,6 +54,7 @@
 #define PORT_Mulsens_3              PORT_D
 #define PORT_LED_5                  PORT_D
 #define PORT_LED_4                  PORT_E
+#define PORT_FB_5V                  PORT_G
 
 /*
  * MSCR_IO definitions.
@@ -65,6 +67,7 @@
 #define MSCR_IO_Mulsens_3           MSCR_IO_INDEX(PORT_Mulsens_3, Mulsens_3)
 #define MSCR_IO_LED_5               MSCR_IO_INDEX(PORT_LED_5, LED_5)
 #define MSCR_IO_LED_4               MSCR_IO_INDEX(PORT_LED_4, LED_4)
+#define MSCR_IO_FB_5V               MSCR_IO_INDEX(PORT_FB_5V, FB_5V)
 
 /*
  * MSCR_MUX definitions.
