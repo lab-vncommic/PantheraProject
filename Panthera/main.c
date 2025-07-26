@@ -27,16 +27,16 @@ void PIT0_ISR(void)
  * Application entry point.
  */
 int main(void) {
-  /* Initialization of all the imported components in the order specified in
-     the application wizard. The function is generated automatically.*/
-  componentsInit();
-  PTR_system_initialization();
+	/* Initialization of all the imported components in the order specified in
+	 the application wizard. The function is generated automatically.*/
+	componentsInit();
+	PTR_system_initialization();
 
-  /* Interrupts are enabled and the system is ready.*/
-  irqIsrEnable();
+	/* Interrupts are enabled and the system is ready.*/
+	irqIsrEnable();
 
-  /* Application main loop.*/
-  for ( ; ; ) {
+	/* Application main loop.*/
+	for ( ; ; ) {
 	  PTR_inf_loop_system();
-  }
+	}
 }

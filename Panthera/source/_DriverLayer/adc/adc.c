@@ -6,7 +6,6 @@
  */
 
 #include "adc.h"
-
 ADCTypeDef thatADC;
 SARADCDriver* driverUser;
 
@@ -78,6 +77,6 @@ int ADC_Init(ADCTypeDef *pADC) {
  * @retval None
  */
 void ADC_startOfConversion(void){
-	  /* start SARADC conversion */
-	  saradc_lld_start_conversion(driverUser);
+	/* start SARADC conversion */
+	saradc_lld_start_conversion(driverUser);
 }

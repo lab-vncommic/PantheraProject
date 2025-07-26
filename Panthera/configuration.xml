@@ -2,14 +2,14 @@
 <SPC5-Config core_version="6.0" version="1.0.0">
   <application name="Panthera" version="1.0.0" standalone="true" locked="false">
     <description>Panthera Firmware</description>
-    <component id="com.st.tools.spc5.components.platform.spc582bxx_rla" version="1.18.0">
-      <component id="com.st.spc5.components.init.spc582bxx_rla" version="1.18.0" />
-      <component id="com.st.spc5.components.lld.spc582bxx_rla" version="1.18.0" />
+    <component id="com.st.tools.spc5.components.platform.spc582bxx_rla" version="1.20.0">
+      <component id="com.st.spc5.components.init.spc582bxx_rla" version="1.20.0" />
+      <component id="com.st.spc5.components.lld.spc582bxx_rla" version="1.20.0" />
     </component>
     <instances>
       <instance locked="false" id="com.st.tools.spc5.components.platform.spc582bxx_rla">
         <platform_settings>
-          <choose_mcu index="1">
+          <choose_mcu index="0">
             <value>SPC582B60E1 e200z2 1M 96KRAM eTQFP64</value>
           </choose_mcu>
           <specific_model index="1">
@@ -1471,7 +1471,7 @@
             </peripherals_control__low_power_>
           </module_entry>
         </initialization_settings>
-        <clock_tree>
+        <clock_tree disabled="true">
           <run_mode disabled="true">
             <value>DRUN</value>
           </run_mode>
@@ -1670,8 +1670,8 @@
           <linflex7 index="7">
             <value>8</value>
           </linflex7>
-          <linflex10 index="13">
-            <value>14</value>
+          <linflex10 index="7">
+            <value>8</value>
           </linflex10>
           <linflex15 index="7">
             <value>8</value>
@@ -1703,14 +1703,14 @@
           <stm2_ch0 index="10">
             <value>11</value>
           </stm2_ch0>
-          <stm2_ch1 index="11">
-            <value>12</value>
+          <stm2_ch1 index="10">
+            <value>11</value>
           </stm2_ch1>
           <stm2_ch2 index="10">
             <value>11</value>
           </stm2_ch2>
-          <stm2_ch3 index="15">
-            <value>16</value>
+          <stm2_ch3 index="11">
+            <value>12</value>
           </stm2_ch3>
           <dspi_0 index="9">
             <value>10</value>
@@ -2391,7 +2391,7 @@
               <value>true</value>
             </stm2>
             <system_clock_prescaler>
-              <value>80</value>
+              <value>2</value>
             </system_clock_prescaler>
             <channel_0>
               <enabled>

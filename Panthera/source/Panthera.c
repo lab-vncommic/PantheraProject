@@ -9,9 +9,9 @@ uint16_t cnt_500ms;
 
 void PTR_system_initialization(void)
 {
-	SYS_Config();
+	GDE_Config();
 	UART_Init();
-	ADC_Init(&thatADC);
+	MEAS_Init();
 }
 
 /*====== Execute Time ======*/
@@ -28,9 +28,10 @@ void PTR_main_interrupt_service(void)
 		GPIO_TogglePin(&LED3);
 	}
 
+	MEAS_GetValue();
+
     end = stm_lld_getcounter(&STMD3);
     elapsed = end - begin;
-    ADC_startOfConversion();
 }
 
 void PTR_inf_loop_system(void)

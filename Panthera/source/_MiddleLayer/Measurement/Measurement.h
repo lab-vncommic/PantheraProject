@@ -9,6 +9,7 @@
 #define MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_
 #include "components.h"
 #include "IQMath.h"
+#include "adc.h"
 
 /*===========================================================================
  * REUSABLE CODE SECTION
@@ -36,22 +37,23 @@ typedef struct{
  * PTR CODE SECTION
  *===========================================================================*/
 // Motor 1: Current parameters for Q15 concept
-#define MT1_CURRENT_HIGH_LIMIT_HARD  25.0f
-#define MT1_CURRENT_HIGH_LIMIT_SOFT  20.0f
-#define MT1_CURRENT_SCALE_FACTOR     (uq31_t)(MT1_CURRENT_HIGH_LIMIT_HARD/MT1_CURRENT_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
-#define MT1_CURRENT_OFFSET           (0U)
+// Motor 1: Current parameters for Q15 concept
+#define CURRENT_MT1_HIGH_LIMIT_HARD  25.0f
+#define CURRENT_MT1_HIGH_LIMIT_SOFT  20.0f
+#define CURRENT_MT1_SCALE_FACTOR     (uq31_t)(CURRENT_MT1_HIGH_LIMIT_HARD/CURRENT_MT1_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
+#define CURRENT_MT1_OFFSET           (0U)
 
 // Motor 2: Current parameters for Q15 concept
-#define MT2_CURRENT_HIGH_LIMIT_HARD  25.0f
-#define MT2_CURRENT_HIGH_LIMIT_SOFT  20.0f
-#define MT2_CURRENT_SCALE_FACTOR     (uq31_t)(MT2_CURRENT_HIGH_LIMIT_HARD/MT2_CURRENT_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
-#define MT2_CURRENT_OFFSET           (0U)
+#define CURRENT_MT2_HIGH_LIMIT_HARD  25.0f
+#define CURRENT_MT2_HIGH_LIMIT_SOFT  20.0f
+#define CURRENT_MT2_SCALE_FACTOR     (uq31_t)(CURRENT_MT2_HIGH_LIMIT_HARD/CURRENT_MT2_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
+#define CURRENT_MT2_OFFSET           (0U)
 
 // Motor 3: Current parameters for Q15 concept
-#define MT3_CURRENT_HIGH_LIMIT_HARD  25.0f
-#define MT3_CURRENT_HIGH_LIMIT_SOFT  20.0f
-#define MT3_CURRENT_SCALE_FACTOR     (uq31_t)(MT3_CURRENT_HIGH_LIMIT_HARD/MT3_CURRENT_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
-#define MT3_CURRENT_OFFSET           (0U)
+#define CURRENT_MT3_HIGH_LIMIT_HARD  25.0f
+#define CURRENT_MT3_HIGH_LIMIT_SOFT  20.0f
+#define CURRENT_MT3_SCALE_FACTOR     (uq31_t)(CURRENT_MT3_HIGH_LIMIT_HARD/CURRENT_MT3_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
+#define CURRENT_MT3_OFFSET           (0U)
 
 typedef struct{
 	Meas_TypeDef current_mt1;

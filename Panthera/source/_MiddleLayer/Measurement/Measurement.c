@@ -53,15 +53,24 @@ void MEAS_GetValueF32(Meas_TypeDef *pMeas)
 
 void MEAS_Init(void)
 {
-    MEAS_Config(&thisMeas.current_mt1, MT1_CURRENT_OFFSET, MT1_CURRENT_SCALE_FACTOR, 0U, MT1_CURRENT_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
-    MEAS_Config(&thisMeas.current_mt2, MT2_CURRENT_OFFSET, MT2_CURRENT_SCALE_FACTOR, 0U, MT2_CURRENT_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
-    MEAS_Config(&thisMeas.current_mt3, MT3_CURRENT_OFFSET, MT3_CURRENT_SCALE_FACTOR, 0U, MT3_CURRENT_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
+	// Config driver ADC
+	ADC_Init(&thatADC);
+
+	// Config parameters for measurement objects
+    MEAS_Config(&thisMeas.current_mt1, CURRENT_MT1_OFFSET, CURRENT_MT1_SCALE_FACTOR, 0U, CURRENT_MT1_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
+    MEAS_Config(&thisMeas.current_mt2, CURRENT_MT2_OFFSET, CURRENT_MT2_SCALE_FACTOR, 0U, CURRENT_MT2_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
+    MEAS_Config(&thisMeas.current_mt3, CURRENT_MT3_OFFSET, CURRENT_MT3_SCALE_FACTOR, 0U, CURRENT_MT3_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
 }
 
 void MEAS_GetValue(void)
 {
-	// Get raw value from adc driver
+	// Get adc value
+	ADC_startOfConversion();
 
+	// Get raw value from adc driver
+    MEAS_GetRawValue(&thisMeas.current_mt1, thatADC.ADC_MulSens_1);
+    MEAS_GetRawValue(&thisMeas.current_mt2, thatADC.ADC_MulSens_2);
+    MEAS_GetRawValue(&thisMeas.current_mt3, thatADC.ADC_MulSens_3);
 
 	// Get value in Q15 concept
 	MEAS_GetValueQ15(&thisMeas.current_mt1);
