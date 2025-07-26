@@ -44,7 +44,7 @@ static channelConfig _saradcconf_ch_configs[SPC5_SARADC_MAX_NUMOFCHANNELS] =
  */
 SARADCConfig saradc_config_saradcconf = {
    /* conversion mode */
-  SARADC_MODE_SCAN,
+  SARADC_MODE_ONESHOT,
   
   /* Trigger Mode */
   SARADC_TRIGGER_DISABLED,

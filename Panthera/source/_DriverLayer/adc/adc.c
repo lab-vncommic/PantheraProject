@@ -47,8 +47,10 @@ int ADC_Init(ADCTypeDef *pADC) {
     /* Start SARADC Driver */
      saradc_lld_start(driverUser, &saradc_config_saradcconf);
 
-     /* start SARADC conversion */
-     saradc_lld_start_conversion(driverUser);
-
     return 0;
+}
+
+void ADC_startOfConversion(void){
+	  /* start SARADC conversion */
+	  saradc_lld_start_conversion(driverUser);
 }

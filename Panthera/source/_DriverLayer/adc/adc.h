@@ -22,6 +22,7 @@ typedef struct{
 }ADCTypeDef;
 
 int ADC_Init(ADCTypeDef *pADC);
+void ADC_startOfConversion(void);
 
 extern uint8_t anp[NUMOFCHANNELS];
 extern uint16_t value[NUMOFCHANNELS];

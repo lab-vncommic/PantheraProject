@@ -2409,8 +2409,8 @@
                 <symbolic_name>
                   <value>saradcconf</value>
                 </symbolic_name>
-                <conversion_mode index="1">
-                  <value>Scan</value>
+                <conversion_mode index="0">
+                  <value>OneShot</value>
                 </conversion_mode>
                 <conversion_timing_configuration>
                   <saradc_clock disabled="true">
