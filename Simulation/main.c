@@ -5,9 +5,20 @@
 #include <Psim.h>
 
 // PLACE GLOBAL VARIABLES OR USER FUNCTIONS HERE...
+#include "adc.h"
+#include "adc.c"
+#include "gpio.h"
+#include "gpio.c"
 
+#include "GlobalDefine.h"
+#include "GlobalDefine.c"
+#include "IQMath.h"
+#include "IQMath.c"
+#include "Measurement.h"
+#include "Measurement.c"
 
-
+#include "Panthera.h"
+#include "Panthera.c"
 
 /////////////////////////////////////////////////////////////////////
 // FUNCTION: SimulationStep
@@ -25,9 +36,20 @@ void SimulationStep(
 		 void ** reserved_UserData, int reserved_ThreadIndex, void * reserved_AppPtr)
 {
 // ENTER YOUR CODE HERE...
+// Update adc values
+thatADC.ADC_MulSens_1 = in[6];
+PTR_main_interrupt_service();
 
-
-
+out[0] = 0;      // Output for ADC_MulSens_1
+out[1] = 0;          // Example output, replace with your logic
+out[2] = 0;
+out[3] = 0;
+out[4] = 0;
+out[5] = 0;
+// out[6] = in[6];
+// out[7] = in[7];
+// out[8] = in[8];
+// out[9] = in[9];
 }
 
 
@@ -50,7 +72,7 @@ void SimulationBegin(
 		 void ** reserved_UserData, int reserved_ThreadIndex, void * reserved_AppPtr)
 {
 // ENTER INITIALIZATION CODE HERE...
-
+PTR_system_initialization();
 
 
 

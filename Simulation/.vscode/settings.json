@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "adc.h": "c",
+        "measurement.h": "c",
+        "stdint.h": "c",
+        "gpio.h": "c",
+        "globaldefine.h": "c",
+        "iqmath.h": "c",
+        "panthera.h": "c"
+    }
+}
