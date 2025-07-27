@@ -7,11 +7,11 @@
 
 #ifndef PANTHERA_H_
 #define PANTHERA_H_
-#include "_MiddleLayer/GlobalDefine/GlobalDefine.h"
-#include "_DriverLayer/uart/uart.h"
-#include "_DriverLayer/gpio/gpio.h"
-#include "adc.h"
+#include "GlobalDefine.h"
+#include "Measurement.h"
 
+#include "uart.h"
+#include "gpio.h"
 
 void PTR_system_initialization(void);
 void PTR_main_interrupt_service(void);

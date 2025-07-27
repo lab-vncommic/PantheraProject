@@ -19,7 +19,7 @@ uint32_t begin, end, elapsed;
  * @note Must be called during system initialization before using any timer
  *       or interrupt functionality
  */
-void SYS_Config(void)
+void GDE_Config(void)
 {
 	// Config timer to measure execute time
 	stm_lld_start(&STMD3,stm2_config);

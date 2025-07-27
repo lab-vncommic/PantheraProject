@@ -11,7 +11,7 @@
 #include "components.h"
 #include "pit_lld_cfg.h"
 
-void SYS_Config(void);
+void GDE_Config(void);
 
 extern uint32_t begin, end, elapsed;
 #endif /* MIDDLELAYER_GLOBALDEFINE_GLOBALDEFINE_H_ */
