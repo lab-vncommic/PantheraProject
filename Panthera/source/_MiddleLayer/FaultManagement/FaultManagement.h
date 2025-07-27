@@ -45,12 +45,9 @@ typedef struct{
 #define CURRENT_OCP					17.0f		// Unit: A
 #define TEMPERATURE_OTP				90.0f		// Unit: oC
 
-#define CURRENT_HIGH_LIMIT_SOFT		20.0f
-#define TEMPERATURE_HIGH_LIMIT_SOFT 100.0f
-
 /* ====== Fault Protection Thresholds in Q15 format ====== */
-#define FAULT_OCP_THRESH_Q15      	_q15(CURRENT_OCP / CURRENT_HIGH_LIMIT_SOFT)
-#define FAULT_OTP_THRESH_Q15      	_q15(TEMPERATURE_OTP / TEMPERATURE_HIGH_LIMIT_SOFT)
+#define FAULT_OCP_THRESH_Q15      	_q15(CURRENT_OCP / CURRENT_MT1_HIGH_LIMIT_SOFT)
+#define FAULT_OTP_THRESH_Q15      	_q15(TEMPERATURE_OTP / TEMPERATURE_MT1_HIGH_LIMIT_SOFT)
 
 /* ====== Macros for Fault Protection in Q15 format ====== */
 #define FAULT_IS_OCP(pMeas)       	((pMeas)->value_q15 > FAULT_OCP_THRESH_Q15)

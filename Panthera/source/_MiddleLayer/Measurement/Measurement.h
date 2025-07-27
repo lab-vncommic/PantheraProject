@@ -37,7 +37,6 @@ typedef struct{
  * PTR CODE SECTION
  *===========================================================================*/
 // Motor 1: Current parameters for Q15 concept
-// Motor 1: Current parameters for Q15 concept
 #define CURRENT_MT1_HIGH_LIMIT_HARD  25.0f
 #define CURRENT_MT1_HIGH_LIMIT_SOFT  20.0f
 #define CURRENT_MT1_SCALE_FACTOR     (uq31_t)(CURRENT_MT1_HIGH_LIMIT_HARD/CURRENT_MT1_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
@@ -54,6 +53,9 @@ typedef struct{
 #define CURRENT_MT3_HIGH_LIMIT_SOFT  20.0f
 #define CURRENT_MT3_SCALE_FACTOR     (uq31_t)(CURRENT_MT3_HIGH_LIMIT_HARD/CURRENT_MT3_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
 #define CURRENT_MT3_OFFSET           (0U)
+
+// Motor 1: Temperature parameters for Q15 concept
+#define TEMPERATURE_MT1_HIGH_LIMIT_SOFT  100.0f
 
 typedef struct{
 	Meas_TypeDef current_mt1;
