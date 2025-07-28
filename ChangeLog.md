@@ -9,7 +9,8 @@
 | 5   | 26/07/2025    | v1.0.4              | Bổ sung thêm thư viện adc                                                  | Tống Văn Toàn     | Obsoleted|
 | 6   | 27/07/2025    | v1.0.5              | Bổ sung thêm thư viện middleware: Measurement                              | Nguyễn Quốc Uy    | Obsoleted|
 | 7   | 28/07/2025    | v1.0.6              | Cấu hình tất cả GPIO, Bổ sung thêm thư viện middleware: Button Handle      | Nguyễn Quốc Uy    | Obsoleted|
-| 8   | 28/07/2025    | v1.0.7              | Bổ sung thêm thư viện middleware: Fault Management                         | Nguyễn Quốc Uy    | Active   |
+| 8   | 28/07/2025    | v1.0.7              | Bổ sung thêm thư viện middleware: Fault Management                         | Nguyễn Quốc Uy    | Obsoleted|
+| 9   | 28/07/2025    | v1.0.8              | Bổ sung thêm thư viện middleware: Motor Driver                             | Nguyễn Quốc Uy    | Active   |
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
