@@ -39,16 +39,16 @@ void BT_Init(void)
  */
 void BT_UpdateStatus(void)
 {
-	// thisButton.height_1.value 	= GPIO_ReadPin(&thisButton.height_1);
-	// thisButton.height_2.value 	= GPIO_ReadPin(&thisButton.height_2);
-	// thisButton.recall_1.value 	= GPIO_ReadPin(&thisButton.recall_1);
-	// thisButton.recall_2.value 	= GPIO_ReadPin(&thisButton.recall_2);
-	// thisButton.recall_3.value 	= GPIO_ReadPin(&thisButton.recall_3);
+	thisButton.height_1.value 	= GPIO_ReadPin(&thisButton.height_1);
+	thisButton.height_2.value 	= GPIO_ReadPin(&thisButton.height_2);
+	thisButton.recall_1.value 	= GPIO_ReadPin(&thisButton.recall_1);
+	thisButton.recall_2.value 	= GPIO_ReadPin(&thisButton.recall_2);
+	thisButton.recall_3.value 	= GPIO_ReadPin(&thisButton.recall_3);
 	// thisButton.recliner_1.value = GPIO_ReadPin(&thisButton.recliner_1);
 	// thisButton.recliner_2.value = GPIO_ReadPin(&thisButton.recliner_2);
 	// thisButton.slider_1.value 	= GPIO_ReadPin(&thisButton.slider_1);
 	// thisButton.slider_2.value 	= GPIO_ReadPin(&thisButton.slider_2);
-	// thisButton.save.value 		= GPIO_ReadPin(&thisButton.save);
+	thisButton.save.value 		= GPIO_ReadPin(&thisButton.save);
 }
 
 /**

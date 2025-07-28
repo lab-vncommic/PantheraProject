@@ -5,6 +5,7 @@
  *      Author: ADMIN
  */
 #include "gpio.h"
+Pin_Output_TypeDef thisGPIO;
 
 /**
  * @brief Sets a GPIO pin high
@@ -15,6 +16,7 @@
 void GPIO_SetPin(GPIO_TypeDef *ppin)
 {
 	// pal_setpad(ppin->port, ppin->pin);
+	ppin->value = 1; // Update the value to high
 }
 
 /**
@@ -26,6 +28,7 @@ void GPIO_SetPin(GPIO_TypeDef *ppin)
 void GPIO_ClearPin(GPIO_TypeDef *ppin)
 {
 	// pal_clearpad(ppin->port, ppin->pin);
+	ppin->value = 0; // Update the value to low
 }
 
 /**
@@ -37,6 +40,7 @@ void GPIO_ClearPin(GPIO_TypeDef *ppin)
 void GPIO_TogglePin(GPIO_TypeDef *ppin)
 {
 	// pal_togglepad(ppin->port, ppin->pin);
+	ppin->value = !ppin->value; // Toggle the value
 }
 
 /**
@@ -48,4 +52,5 @@ void GPIO_TogglePin(GPIO_TypeDef *ppin)
 uint8_t GPIO_ReadPin(GPIO_TypeDef *ppin)
 {
 	// return pal_readpad(ppin->port, ppin->pin);
+	return ppin->value; // Return the current value of the pin
 }

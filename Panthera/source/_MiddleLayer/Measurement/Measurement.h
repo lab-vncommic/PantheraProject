@@ -54,8 +54,17 @@ typedef struct{
 #define CURRENT_MT3_SCALE_FACTOR     (uq31_t)(CURRENT_MT3_HIGH_LIMIT_HARD/CURRENT_MT3_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
 #define CURRENT_MT3_OFFSET           (0U)
 
-// Motor 1: Temperature parameters for Q15 concept
-#define TEMPERATURE_MT1_HIGH_LIMIT_SOFT  100.0f
+// Motor 1: Temperature parameters for F32 concept
+#define THERMAL_MT1_GAIN_F32				-0.01387162642f		// Use for calculate real value
+#define THERMAL_MT1_OFFSET_F32				402.4545454545f		// Use for calculate real value
+
+// Motor 2: Temperature parameters for F32 concept
+#define THERMAL_MT2_GAIN_F32				-0.01387162642f		// Use for calculate real value
+#define THERMAL_MT2_OFFSET_F32				402.4545454545f		// Use for calculate real value
+
+// Motor 3: Temperature parameters for F32 concept
+#define THERMAL_MT3_GAIN_F32				-0.01387162642f		// Use for calculate real value
+#define THERMAL_MT3_OFFSET_F32				402.4545454545f		// Use for calculate real value
 
 typedef struct{
 	Meas_TypeDef current_mt1;

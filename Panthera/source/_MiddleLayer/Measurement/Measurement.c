@@ -60,6 +60,9 @@ void MEAS_Init(void)
     MEAS_Config(&thisMeas.current_mt1, CURRENT_MT1_OFFSET, CURRENT_MT1_SCALE_FACTOR, 0U, CURRENT_MT1_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
     MEAS_Config(&thisMeas.current_mt2, CURRENT_MT2_OFFSET, CURRENT_MT2_SCALE_FACTOR, 0U, CURRENT_MT2_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
     MEAS_Config(&thisMeas.current_mt3, CURRENT_MT3_OFFSET, CURRENT_MT3_SCALE_FACTOR, 0U, CURRENT_MT3_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
+    MEAS_Config(&thisMeas.thermal_mt1, 0U, 0U, 0U, 0U, THERMAL_MT1_GAIN_F32, THERMAL_MT1_OFFSET_F32, CALC_METHOD_F32);
+    MEAS_Config(&thisMeas.thermal_mt2, 0U, 0U, 0U, 0U, THERMAL_MT2_GAIN_F32, THERMAL_MT2_OFFSET_F32, CALC_METHOD_F32);
+    MEAS_Config(&thisMeas.thermal_mt3, 0U, 0U, 0U, 0U, THERMAL_MT3_GAIN_F32, THERMAL_MT3_OFFSET_F32, CALC_METHOD_F32);
 }
 
 void MEAS_GetValue(void)
@@ -76,6 +79,9 @@ void MEAS_GetValue(void)
 	MEAS_GetValueQ15(&thisMeas.current_mt1);
 	MEAS_GetValueQ15(&thisMeas.current_mt2);
 	MEAS_GetValueQ15(&thisMeas.current_mt3);
+    MEAS_GetValueQ15(&thisMeas.thermal_mt1);
+    MEAS_GetValueQ15(&thisMeas.thermal_mt2);
+    MEAS_GetValueQ15(&thisMeas.thermal_mt3);
 }
 
 void MEAS_GetRealValue(void)
@@ -83,6 +89,9 @@ void MEAS_GetRealValue(void)
 	MEAS_GetValueF32(&thisMeas.current_mt1);
 	MEAS_GetValueF32(&thisMeas.current_mt2);
 	MEAS_GetValueF32(&thisMeas.current_mt3);
+    MEAS_GetValueF32(&thisMeas.thermal_mt1);
+    MEAS_GetValueF32(&thisMeas.thermal_mt2);
+    MEAS_GetValueF32(&thisMeas.thermal_mt3);
 }
 
 

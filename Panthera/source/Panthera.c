@@ -12,6 +12,7 @@ void PTR_system_initialization(void)
 	GDE_Config();
 	UART_Init();
 	MEAS_Init();
+	FAULT_Init();
 }
 
 /*====== Execute Time ======*/
@@ -29,6 +30,7 @@ void PTR_main_interrupt_service(void)
 	}
 
 	MEAS_GetValue();
+	FAULT_UpdateStatus();
 
     end = stm_lld_getcounter(&STMD3);
     elapsed = end - begin;

@@ -6,12 +6,15 @@
  */
 #include "Panthera.h"
 uint16_t cnt_500ms;
+uint16_t cnt_delay_1ms;
+_Bool flag_fault_run = 0;
 
 void PTR_system_initialization(void)
 {
 	GDE_Config();
 	// UART_Init();
 	MEAS_Init();
+	FAULT_Init();
 }
 
 /*====== Execute Time ======*/
@@ -27,9 +30,19 @@ void PTR_main_interrupt_service(void)
 		cnt_500ms = 0;
 		// GPIO_TogglePin(&LED3);
 	}
-
+	
 	MEAS_GetValue();
 
+	if (cnt_delay_1ms++ > 10)
+	{
+		flag_fault_run = 1;
+	}
+	
+	if (flag_fault_run)
+	{
+		FAULT_UpdateStatus();
+	}
+	
     // end = stm_lld_getcounter(&STMD3);
     // elapsed = end - begin;
 }

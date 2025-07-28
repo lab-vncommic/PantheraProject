@@ -18,6 +18,8 @@
 #include "IQMath.c"
 #include "Measurement.h"
 #include "Measurement.c"
+#include "FaultManagement.h"
+#include "FaultManagement.c"
 
 #include "Panthera.h"
 #include "Panthera.c"
@@ -38,20 +40,29 @@ void SimulationStep(
 		 void ** reserved_UserData, int reserved_ThreadIndex, void * reserved_AppPtr)
 {
 // ENTER YOUR CODE HERE...
-// Update adc values
-thatADC.ADC_MulSens_1 = in[6];
+// Update input value
+thisButton.height_1.value = in[0];
+thisButton.height_2.value = in[1];
+thisButton.save.value 	  = in[2];
+thisButton.recall_1.value = in[3];
+thisButton.recall_2.value = in[4];
+thisButton.recall_3.value = in[5];
+thatADC.ADC_MulSens_1 	  = in[6];
+
 PTR_main_interrupt_service();
 
-out[0] = 0;      // Output for ADC_MulSens_1
-out[1] = 0;          // Example output, replace with your logic
-out[2] = 0;
-out[3] = 0;
-out[4] = 0;
-out[5] = 0;
-// out[6] = in[6];
-// out[7] = in[7];
-// out[8] = in[8];
-// out[9] = in[9];
+out[0] = thisGPIO.INA.value;     
+out[1] = thisGPIO.INB.value;          // Example output, replace with your logic
+out[2] = thisGPIO.PWM.value;
+out[3] = thisGPIO.SEL0.value;
+out[4] = thisGPIO.SEL1.value;
+out[5] = thisGPIO.MulEN.value;
+out[6] = thisFault.fault_status;
+out[7] = thisMeas.current_mt1.raw;
+out[8] = thisMeas.current_mt1.value_f32;
+out[9] = thisMeas.current_mt1.value_q15;
+out[10] = thatADC.ADC_MulSens_1;
+out[11] = thisMeas.current_mt1.value_q15;
 }
 
 

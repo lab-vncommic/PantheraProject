@@ -55,10 +55,10 @@ int ADC_Init(ADCTypeDef *pADC) {
 	// 	return -1;
 	// }
 
-	// pADC->ADC_MulSens_1   = 0;
-	// pADC->ADC_MulSens_2   = 0;
-	// pADC->ADC_MulSens_3   = 0;
-	// pADC->ADC_FB_5V		  = 0;
+	pADC->ADC_MulSens_1   = 0;
+	pADC->ADC_MulSens_2   = 0;
+	pADC->ADC_MulSens_3   = 0;
+	pADC->ADC_FB_5V		  = 0;
 
 	// /* change driverUnderTest value to test others SARADC modules. */
 	// driverUser = &SARADC12DSV;

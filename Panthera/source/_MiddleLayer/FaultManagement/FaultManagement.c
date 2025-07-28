@@ -17,29 +17,29 @@ void FAULT_Init(void)
 }
 
 void FAULT_UpdateStatus(void){
-    if (FAULT_IS_OCP(&thisMeas.current_mt1)) {
-    	temp_fault_status |= FAULT_STT_0;
-    }
+   if (FAULT_IS_MT1_OCP(&thisMeas.current_mt1)) {
+   	temp_fault_status |= FAULT_STT_0;
+   }
 
-    if (FAULT_IS_OCP(&thisMeas.current_mt2) ) {
-    	temp_fault_status |= FAULT_STT_1;
-    }
+   if (FAULT_IS_MT2_OCP(&thisMeas.current_mt2) ) {
+   	temp_fault_status |= FAULT_STT_1;
+   }
 
-    if (FAULT_IS_OCP(&thisMeas.current_mt3) ) {
-    	temp_fault_status |= FAULT_STT_2;
-    }
+   if (FAULT_IS_MT3_OCP(&thisMeas.current_mt3) ) {
+   	temp_fault_status |= FAULT_STT_2;
+   }
 
-    if (FAULT_IS_OTP(&thisMeas.thermal_mt1)) {
-    	temp_fault_status |= FAULT_STT_3;
-    }
+   if (FAULT_IS_MT1_OTP(&thisMeas.thermal_mt1)) {
+   	temp_fault_status |= FAULT_STT_3;
+   }
 
-    if (FAULT_IS_OTP(&thisMeas.thermal_mt2) ) {
-    	temp_fault_status |= FAULT_STT_4;
-    }
+   if (FAULT_IS_MT2_OTP(&thisMeas.thermal_mt2) ) {
+   	temp_fault_status |= FAULT_STT_4;
+   }
 
-    if (FAULT_IS_OTP(&thisMeas.thermal_mt3) ) {
-    	temp_fault_status |= FAULT_STT_5;
-    }
+   if (FAULT_IS_MT3_OTP(&thisMeas.thermal_mt3) ) {
+   	temp_fault_status |= FAULT_STT_5;
+   }
     thisFault.fault_status = temp_fault_status;
 }
 

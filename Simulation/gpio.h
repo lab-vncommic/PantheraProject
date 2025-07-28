@@ -39,6 +39,15 @@ typedef struct {
 // #define PIN_SEL1_3		((GPIO_TypeDef){PORT_SEL1_3, SEL1_3, 0})
 // #define PIN_MulEN_3		((GPIO_TypeDef){PORT_MulEN_3, MulEN_3, 0})
 
+typedef struct {
+    GPIO_TypeDef INA;
+    GPIO_TypeDef INB;
+    GPIO_TypeDef PWM;
+    GPIO_TypeDef SEL0;
+    GPIO_TypeDef SEL1;
+    GPIO_TypeDef MulEN;
+} Pin_Output_TypeDef;
+
 /*===========================================================================
  * REUSABLE CODE SECTION
  *===========================================================================*/
@@ -47,4 +56,5 @@ void GPIO_ClearPin(GPIO_TypeDef *ppin);
 void GPIO_TogglePin(GPIO_TypeDef *ppin);
 uint8_t GPIO_ReadPin(GPIO_TypeDef *ppin);
 
+extern Pin_Output_TypeDef thisGPIO;
 #endif /* DRIVERLAYER_GPIO_GPIO_H_ */
