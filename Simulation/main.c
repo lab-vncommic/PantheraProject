@@ -20,6 +20,8 @@
 #include "Measurement.c"
 #include "FaultManagement.h"
 #include "FaultManagement.c"
+#include "MotorDriver.h"
+#include "MotorDriver.c"
 
 #include "Panthera.h"
 #include "Panthera.c"
@@ -51,18 +53,18 @@ thatADC.ADC_MulSens_1 	  = in[6];
 
 PTR_main_interrupt_service();
 
-out[0] = thisGPIO.INA.value;     
-out[1] = thisGPIO.INB.value;          // Example output, replace with your logic
-out[2] = thisGPIO.PWM.value;
-out[3] = thisGPIO.SEL0.value;
-out[4] = thisGPIO.SEL1.value;
-out[5] = thisGPIO.MulEN.value;
-out[6] = thisFault.fault_status;
+out[0] = motor_height.driver.ina.value;     
+out[1] = motor_height.driver.inb.value;          // Example output, replace with your logic
+out[2] = motor_height.driver.pwm.value;
+out[3] = motor_height.driver.sel0.value;
+out[4] = motor_height.driver.sel1.value;
+out[5] = motor_height.driver.mul_en.value;
+out[6] = motor_height.status;
 out[7] = thisMeas.current_mt1.raw;
 out[8] = thisMeas.current_mt1.value_f32;
 out[9] = thisMeas.current_mt1.value_q15;
 out[10] = thatADC.ADC_MulSens_1;
-out[11] = thisMeas.current_mt1.value_q15;
+out[11] = cnt_delay_1ms; // Example output, replace with your logic
 }
 
 

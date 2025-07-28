@@ -16,9 +16,9 @@ typedef enum {
 } MotorTopoCtrl_TypeDef;
 
 typedef enum{
-	FORWARD = 0,
+	STOP = 0,
 	BACKWARD,
-	STOP
+	FORWARD
 } MotorStatus_TypeDef;
 
 typedef enum{
@@ -54,11 +54,11 @@ typedef struct{
 /*===========================================================================
  * REUSABLE CODE SECTION
  *===========================================================================*/
-void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
-void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_type);
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
 					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm);
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
+void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
+void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_type);
 
 /*===========================================================================
  * PTR CODE SECTION

@@ -7,67 +7,6 @@
 #include "MotorDriver.h"
 Motor_TypeDef motor_height, motor_recliner, motor_slider;
 
-void MD_Init(void)
-{
-	MD_ConfigDriver(&motor_height, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1);
-	MD_ConfigDriver(&motor_recliner, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2);
-	MD_ConfigDriver(&motor_slider, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
-}
-
-void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
-{
-	pMotor->status = status;
-	switch (pMotor->status) {
-		case FORWARD:
-            pMotor->driver.ina.value       = 1;
-            pMotor->driver.inb.value       = 0;
-            pMotor->driver.pwm.value       = 1;
-			break;
-
-		case BACKWARD:
-            pMotor->driver.ina.value       = 0;
-            pMotor->driver.inb.value       = 1;
-            pMotor->driver.pwm.value       = 1;
-			break;
-
-		case STOP:
-            pMotor->driver.pwm.value       = 0;
-			break;
-
-		// Stop motor
-		default:
-            pMotor->driver.pwm.value       = 0;
-			break;
-	}
-}
-
-void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_type)
-{
-	pMotor->meas_type = meas_type;
-	switch (pMotor->meas_type) {
-		case CURRENT:
-			pMotor->driver.sel0.value  = pMotor->driver.ina.value ;
-			pMotor->driver.sel1.value  = 0;
-			break;
-
-		case TEMPERATURE:
-			pMotor->driver.sel0.value  = 0;
-			pMotor->driver.sel1.value  = 1;
-			break;
-
-		case VCC:
-			pMotor->driver.sel0.value  = 1;
-			pMotor->driver.sel1.value  = 1;
-			break;
-
-		// motor sensor type = current
-		default:
-			pMotor->driver.sel0.value  = pMotor->driver.ina.value ;
-			pMotor->driver.sel1.value  = 0;
-			break;
-	}
-}
-
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
 					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm)
 {
@@ -106,6 +45,70 @@ void MD_UpdateDriver(Motor_TypeDef *pMotor)
     } else GPIO_ClearPin(&pMotor->driver.pwm);
 }
 
+void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
+{
+	pMotor->status = status;
+	switch (pMotor->status) {
+		case FORWARD:
+            pMotor->driver.ina.value       = 1;
+            pMotor->driver.inb.value       = 0;
+            pMotor->driver.pwm.value       = 1;
+			break;
+
+		case BACKWARD:
+            pMotor->driver.ina.value       = 0;
+            pMotor->driver.inb.value       = 1;
+            pMotor->driver.pwm.value       = 1;
+			break;
+
+		case STOP:
+            pMotor->driver.ina.value       = 0;
+            pMotor->driver.inb.value       = 0;
+            pMotor->driver.pwm.value       = 0;
+			break;
+
+		// Stop motor
+		default:
+            pMotor->driver.ina.value       = 0;
+            pMotor->driver.inb.value       = 0;
+            pMotor->driver.pwm.value       = 0;
+			break;
+	}
+}
+
+void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_type)
+{
+	pMotor->meas_type = meas_type;
+	switch (pMotor->meas_type) {
+		case CURRENT:
+			pMotor->driver.sel0.value  = pMotor->driver.ina.value ;
+			pMotor->driver.sel1.value  = 0;
+			break;
+
+		case TEMPERATURE:
+			pMotor->driver.sel0.value  = 0;
+			pMotor->driver.sel1.value  = 1;
+			break;
+
+		case VCC:
+			pMotor->driver.sel0.value  = 1;
+			pMotor->driver.sel1.value  = 1;
+			break;
+
+		// motor sensor type = current
+		default:
+			pMotor->driver.sel0.value  = pMotor->driver.ina.value ;
+			pMotor->driver.sel1.value  = 0;
+			break;
+	}
+}
+
+void MD_Init(void)
+{
+	MD_ConfigDriver(&motor_height, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1);
+	MD_ConfigDriver(&motor_recliner, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2);
+	MD_ConfigDriver(&motor_slider, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
+}
 
 void MD_CalHallPulse(Motor_TypeDef *pMotor)
 {
