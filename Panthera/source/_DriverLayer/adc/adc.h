@@ -21,13 +21,13 @@ typedef struct{
 	uint16_t ADC_MulSens_2;
 	uint16_t ADC_MulSens_3;
 	uint16_t ADC_FB_5V;
-}ADCTypeDef;
+}ADC_TypeDef;
 
-int ADC_Init(ADCTypeDef *pADC);
+int ADC_Init(ADC_TypeDef *pADC);
 void ADC_startOfConversion(void);
 
 extern uint8_t anp[NUMOFCHANNELS];
 extern uint16_t value[NUMOFCHANNELS];
-extern ADCTypeDef thatADC;
+extern ADC_TypeDef thatADC;
 extern SARADCDriver* driverUser;
 #endif /* SOURCE_ADC_ADC_H_ */
