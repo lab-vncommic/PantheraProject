@@ -9,6 +9,7 @@
 #define PANTHERA_H_
 #include "GlobalDefine.h"
 #include "Measurement.h"
+#include "FaultManagement.h"
 
 #include "uart.h"
 #include "gpio.h"
