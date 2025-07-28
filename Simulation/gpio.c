@@ -12,9 +12,9 @@
  * @param[in] ppin Pointer to GPIO pin definition structure containing port and pin information
  * @return None
  */
-void GPIO_SetPin(GPIO_PinDef *ppin)
+void GPIO_SetPin(GPIO_TypeDef *ppin)
 {
-	// pal_setpad(ppin->Port, ppin->Pin);
+	// pal_setpad(ppin->port, ppin->pin);
 }
 
 /**
@@ -23,9 +23,9 @@ void GPIO_SetPin(GPIO_PinDef *ppin)
  * @param[in] ppin Pointer to GPIO pin definition structure containing port and pin information
  * @return None
  */
-void GPIO_ClearPin(GPIO_PinDef *ppin)
+void GPIO_ClearPin(GPIO_TypeDef *ppin)
 {
-	// pal_clearpad(ppin->Port, ppin->Pin);
+	// pal_clearpad(ppin->port, ppin->pin);
 }
 
 /**
@@ -34,9 +34,9 @@ void GPIO_ClearPin(GPIO_PinDef *ppin)
  * @param[in] ppin Pointer to GPIO pin definition structure containing port and pin information
  * @return None
  */
-void GPIO_TogglePin(GPIO_PinDef *ppin)
+void GPIO_TogglePin(GPIO_TypeDef *ppin)
 {
-	// pal_togglepad(ppin->Port, ppin->Pin);
+	// pal_togglepad(ppin->port, ppin->pin);
 }
 
 /**
@@ -45,7 +45,7 @@ void GPIO_TogglePin(GPIO_PinDef *ppin)
  * @param[in] ppin Pointer to GPIO pin definition structure containing port and pin information
  * @return uint8_t The current state of the pin (0 = low, 1 = high)
  */
-// uint8_t GPIO_ReadPin(GPIO_PinDef *ppin)
-// {
-// 	// return pal_readpad(ppin->Port, ppin->Pin);
-// }
+uint8_t GPIO_ReadPin(GPIO_TypeDef *ppin)
+{
+	// return pal_readpad(ppin->port, ppin->pin);
+}

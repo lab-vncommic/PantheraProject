@@ -12,6 +12,8 @@
 
 #include "GlobalDefine.h"
 #include "GlobalDefine.c"
+#include "Button.h"
+#include "Button.c"
 #include "IQMath.h"
 #include "IQMath.c"
 #include "Measurement.h"
