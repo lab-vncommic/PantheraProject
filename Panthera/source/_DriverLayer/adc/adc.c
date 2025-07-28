@@ -6,7 +6,7 @@
  */
 
 #include "adc.h"
-ADCTypeDef thatADC;
+ADC_TypeDef thatADC;
 SARADCDriver* driverUser;
 
 uint8_t anp[NUMOFCHANNELS] = {CHANNEL_MULSENS_1, CHANNEL_MULSENS_2, CHANNEL_MULSENS_3, CHANNEL_FB_5V};
@@ -49,7 +49,7 @@ void saradcconfdma_conv_cb(SARADCDriver *saradcp, uint16_t* buffer, uint16_t len
  * @retval int: 0 if success, -1 if invalid parameter (NULL pointer)
  * @note   This function checks for null pointer and initializes all buffer elements.
  */
-int ADC_Init(ADCTypeDef *pADC) {
+int ADC_Init(ADC_TypeDef *pADC) {
 	if (pADC == NULL) {
 		/* Invalid parameter: NULL pointer */
 		return -1;
