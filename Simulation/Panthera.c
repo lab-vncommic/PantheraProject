@@ -17,6 +17,7 @@ void PTR_system_initialization(void)
 	MEAS_Init();
 	FAULT_Init();
 	MD_Init();
+	STATE_Init(&thisPTR);
 }
 
 /*====== Execute Time ======*/
@@ -33,31 +34,18 @@ void PTR_main_interrupt_service(void)
 	// 	// GPIO_TogglePin(&LED3);
 	// }
 	
-	// MEAS_GetValue();
+	MEAS_GetValue();
 
-	// if (cnt_delay_1ms++ > 10)
-	// {
-	// 	flag_fault_run = 1;
-	// }
-	
-	// if (flag_fault_run)
-	// {
-	// 	FAULT_UpdateStatus();
-	// }
-
-	MD_UpdateStatusMotor(&motor_height, FORWARD);
-	
-	if (cnt_delay_1ms++ > 20000)
+	/* Delay fault by 10 cycles to allow the system to stabilize */
+	if (cnt_delay_1ms++ > 10)  flag_fault_run = 1;
+	if (flag_fault_run)
 	{
-		flag_mode_run = 1;
+		FAULT_UpdateMode();
 	}
 	
-	if (flag_mode_run)
-	{
-		MD_UpdateStatusMotor(&motor_height, STOP);
-	}
+	if (cnt_delay_1ms++ > 10000)  thisPTR.State = STATE_MANUAL;
 
-	MD_UpdateDriver(&motor_height);
+	STATE_UpdateState(&thisPTR);
 
     // end = stm_lld_getcounter(&STMD3);
     // elapsed = end - begin;

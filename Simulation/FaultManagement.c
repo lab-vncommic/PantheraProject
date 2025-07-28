@@ -17,9 +17,9 @@ void FAULT_Init(void)
 }
 
 void FAULT_UpdateStatus(void){
-   if (FAULT_IS_MT1_OCP(&thisMeas.current_mt1)) {
-   	temp_fault_status |= FAULT_STT_0;
-   }
+//    if (FAULT_IS_MT1_OCP(&thisMeas.current_mt1)) {
+//    	temp_fault_status |= FAULT_STT_0;
+//    }
 
 //    if (FAULT_IS_MT2_OCP(&thisMeas.current_mt2) ) {
 //    	temp_fault_status |= FAULT_STT_1;

@@ -71,11 +71,11 @@ void MEAS_GetValue(void)
 	ADC_startOfConversion();
 
 	// Get raw value from adc driver
-    MEAS_GetRawValue(&thisMeas.current_mt1, thatADC.ADC_MulSens_1);
+    // MEAS_GetRawValue(&thisMeas.current_mt1, thatADC.ADC_MulSens_1);
     // MEAS_GetRawValue(&thisMeas.current_mt2, thatADC.ADC_MulSens_2);
     // MEAS_GetRawValue(&thisMeas.current_mt3, thatADC.ADC_MulSens_3);
 
-    // MEAS_GetRawValue(&thisMeas.thermal_mt1, thatADC.ADC_MulSens_1);
+    MEAS_GetRawValue(&thisMeas.thermal_mt1, thatADC.ADC_MulSens_1);
     MEAS_GetRawValue(&thisMeas.thermal_mt2, thatADC.ADC_MulSens_2);
     MEAS_GetRawValue(&thisMeas.thermal_mt3, thatADC.ADC_MulSens_3);
 

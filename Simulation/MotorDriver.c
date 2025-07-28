@@ -74,6 +74,9 @@ void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
 
 void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_type)
 {
+	// Enable multi sens pin
+	pMotor->driver.mul_en.value = 1;
+	
 	pMotor->meas_type = meas_type;
 	switch (pMotor->meas_type) {
 		case CURRENT:
@@ -81,7 +84,7 @@ void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_typ
 			pMotor->driver.sel1.value  = 0;
 			break;
 
-		case TEMPERATURE:
+		case THERMAL:
 			pMotor->driver.sel0.value  = 0;
 			pMotor->driver.sel1.value  = 1;
 			break;
@@ -104,6 +107,24 @@ void MD_Init(void)
 	// MD_ConfigDriver(&motor_height, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1);
 	// MD_ConfigDriver(&motor_recliner, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2);
 	// MD_ConfigDriver(&motor_slider, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
+
+	MD_UpdateStatusMulsen(&motor_height, THERMAL);
+	MD_UpdateStatusMulsen(&motor_recliner, CURRENT);
+	MD_UpdateStatusMulsen(&motor_slider, CURRENT);
+	MD_StopAll();
+}
+
+void MD_StopAll(void)
+{
+	// Update status to STOP for all motors
+	MD_UpdateStatusMotor(&motor_height, STOP);
+	MD_UpdateStatusMotor(&motor_recliner, STOP);
+	MD_UpdateStatusMotor(&motor_slider, STOP);
+
+	// Update driver for all motors
+	MD_UpdateDriver(&motor_height);
+	MD_UpdateDriver(&motor_recliner);
+	MD_UpdateDriver(&motor_slider);
 }
 
 void MD_CalHallPulse(Motor_TypeDef *pMotor)

@@ -23,7 +23,7 @@ typedef enum{
 
 typedef enum{
 	CURRENT = 0,
-	TEMPERATURE,
+	THERMAL,
 	VCC
 } MotorMeasType_TypeDef;
 

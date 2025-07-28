@@ -14,6 +14,7 @@ void PTR_system_initialization(void)
 	MEAS_Init();
 	FAULT_Init();
 	MD_Init();
+	STATE_Init(&thisPTR);
 }
 
 /*====== Execute Time ======*/

@@ -78,6 +78,9 @@ void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
 
 void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_type)
 {
+	// Enable multi sens pin
+	pMotor->driver.mul_en.value = 1;
+
 	pMotor->meas_type = meas_type;
 	switch (pMotor->meas_type) {
 		case CURRENT:
@@ -85,7 +88,7 @@ void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_typ
 			pMotor->driver.sel1.value  = 0;
 			break;
 
-		case TEMPERATURE:
+		case THERMAL:
 			pMotor->driver.sel0.value  = 0;
 			pMotor->driver.sel1.value  = 1;
 			break;

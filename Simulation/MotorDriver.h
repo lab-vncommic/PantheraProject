@@ -24,7 +24,7 @@ typedef enum{
 
 typedef enum{
 	CURRENT = 0,
-	TEMPERATURE,
+	THERMAL,
 	VCC
 } MotorMeasType_TypeDef;
 
@@ -65,6 +65,7 @@ void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_typ
  * PTR CODE SECTION
  *===========================================================================*/
 void MD_Init(void);
+void MD_StopAll(void);
 
 // API for detecting position with hall sensor
 void MD_CalHallPulse(Motor_TypeDef *pMotor);
