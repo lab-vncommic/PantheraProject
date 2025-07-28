@@ -11,6 +11,7 @@
 #include "Measurement.h"
 #include "FaultManagement.h"
 #include "MotorDriver.h"
+#include "StateManagement.h"
 
 // #include "uart.h"
 #include "gpio.h"

@@ -13,6 +13,8 @@ void PTR_system_initialization(void)
 	UART_Init();
 	MEAS_Init();
 	FAULT_Init();
+	MD_Init();
+	STATE_Init(&thisPTR);
 }
 
 /*====== Execute Time ======*/
@@ -24,13 +26,11 @@ void PTR_system_initialization(void)
 void PTR_main_interrupt_service(void)
 {
 	begin = stm_lld_getcounter(&STMD3);
-	if (cnt_500ms++ >= 5000) {
-		cnt_500ms = 0;
-		GPIO_TogglePin(&PIN_SEL0_2);
-	}
 
 	MEAS_GetValue();
-	FAULT_UpdateStatus();
+	FAULT_UpdateMode();
+
+	STATE_UpdateState(&thisPTR);
 
     end = stm_lld_getcounter(&STMD3);
     elapsed = end - begin;

@@ -22,6 +22,8 @@
 #include "FaultManagement.c"
 #include "MotorDriver.h"
 #include "MotorDriver.c"
+#include "StateManagement.h"
+#include "StateManagement.c"
 
 #include "Panthera.h"
 #include "Panthera.c"
@@ -59,9 +61,8 @@ out[2] = motor_height.driver.pwm.value;
 out[3] = motor_height.driver.sel0.value;
 out[4] = motor_height.driver.sel1.value;
 out[5] = motor_height.driver.mul_en.value;
-out[6] = motor_height.status;
-out[7] = thisMeas.current_mt1.raw;
-out[8] = thisMeas.current_mt1.value_f32;
+out[6] = thisPTR.State;
+out[8] = thisFault.fault_status;
 out[9] = thisMeas.current_mt1.value_q15;
 out[10] = thatADC.ADC_MulSens_1;
 out[11] = cnt_delay_1ms; // Example output, replace with your logic
