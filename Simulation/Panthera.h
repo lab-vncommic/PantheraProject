@@ -10,6 +10,7 @@
 #include "GlobalDefine.h"
 #include "Measurement.h"
 #include "FaultManagement.h"
+#include "MotorDriver.h"
 
 // #include "uart.h"
 #include "gpio.h"

@@ -5,7 +5,6 @@
  *      Author: ADMIN
  */
 #include "gpio.h"
-Pin_Output_TypeDef thisGPIO;
 
 /**
  * @brief Sets a GPIO pin high

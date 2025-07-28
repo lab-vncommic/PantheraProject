@@ -8,6 +8,7 @@
 uint16_t cnt_500ms;
 uint16_t cnt_delay_1ms;
 _Bool flag_fault_run = 0;
+_Bool flag_mode_run = 0;
 
 void PTR_system_initialization(void)
 {
@@ -15,6 +16,7 @@ void PTR_system_initialization(void)
 	// UART_Init();
 	MEAS_Init();
 	FAULT_Init();
+	MD_Init();
 }
 
 /*====== Execute Time ======*/
@@ -26,23 +28,37 @@ void PTR_system_initialization(void)
 void PTR_main_interrupt_service(void)
 {
 	// begin = stm_lld_getcounter(&STMD3);
-	if (cnt_500ms++ >= 5000) {
-		cnt_500ms = 0;
-		// GPIO_TogglePin(&LED3);
-	}
+	// if (cnt_500ms++ >= 5000) {
+	// 	cnt_500ms = 0;
+	// 	// GPIO_TogglePin(&LED3);
+	// }
 	
-	MEAS_GetValue();
+	// MEAS_GetValue();
 
-	if (cnt_delay_1ms++ > 10)
+	// if (cnt_delay_1ms++ > 10)
+	// {
+	// 	flag_fault_run = 1;
+	// }
+	
+	// if (flag_fault_run)
+	// {
+	// 	FAULT_UpdateStatus();
+	// }
+
+	MD_UpdateStatusMotor(&motor_height, FORWARD);
+	
+	if (cnt_delay_1ms++ > 20000)
 	{
-		flag_fault_run = 1;
+		flag_mode_run = 1;
 	}
 	
-	if (flag_fault_run)
+	if (flag_mode_run)
 	{
-		FAULT_UpdateStatus();
+		MD_UpdateStatusMotor(&motor_height, STOP);
 	}
-	
+
+	MD_UpdateDriver(&motor_height);
+
     // end = stm_lld_getcounter(&STMD3);
     // elapsed = end - begin;
 }
