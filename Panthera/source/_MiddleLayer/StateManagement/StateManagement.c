@@ -24,7 +24,6 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 				pState->State = STATE_FAULT;
 			}
 
-
 			break;
 
 		case STATE_MANUAL:
@@ -58,7 +57,9 @@ void STATE_idleHandle(void)
 
 void STATE_manualHandle(void)
 {
-
+	MD_UpdateStatusMotor(&thisPTR.Motor_Active, thisPTR.Motor_Active.status);
+	MD_UpdateDriver(&thisPTR.Motor_Active);
+	MD_CntHallSignal(&thisPTR.Motor_Active);
 }
 
 void STATE_faultHandle(void)

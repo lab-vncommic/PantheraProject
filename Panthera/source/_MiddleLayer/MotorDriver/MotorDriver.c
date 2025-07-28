@@ -131,19 +131,31 @@ void MD_StopAll(void)
 	MD_UpdateDriver(&motor_slider);
 }
 
-//void MD_CalHallPulse(Motor_TypeDef *pMotor)
-//{
-//	pMotor->driver.hall_pre = pMotor->driver_stt.hall;
-//	pMotor->driver_stt.hall = (uint16_t)GPIO_ReadPin(&pMotor->driver.hall);
-//
-//	if ((pMotor->driver_stt.hall == 1) && (pMotor->driver_stt.hall_pre == 0)) {
-//		pMotor->hall_counter ++;
-//	};
-//}
+void MD_CntHallSignal(Motor_TypeDef *pMotor)
+{
+	pMotor->hall_pre		  = pMotor->driver.hall.value;
+	pMotor->driver.hall.value = GPIO_ReadPin(&pMotor->driver.hall);
+
+
+	if ((pMotor->hall_pre == 0) && (pMotor->driver.hall.value == 1)) {
+		switch (pMotor->status) {
+			case FORWARD:
+				pMotor->axis += 1;
+				break;
+
+			case BACKWARD:
+				pMotor->axis -= 1;
+				break;
+
+			default:
+				break;
+		}
+	}
+}
 
 void MD_UpdateAxis(Motor_TypeDef *pMotor)
 {
-	switch (pMotor->status_pre) {
+	switch (pMotor->status) {
 		case FORWARD:
 			pMotor->axis += pMotor->hall_counter;
 			break;

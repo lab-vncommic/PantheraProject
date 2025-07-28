@@ -6,6 +6,7 @@
  */
 #include "MotorDriver.h"
 Motor_TypeDef motor_height, motor_recliner, motor_slider;
+uint16_t counter;
 
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
 					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm)
@@ -127,14 +128,36 @@ void MD_StopAll(void)
 	MD_UpdateDriver(&motor_slider);
 }
 
-void MD_CalHallPulse(Motor_TypeDef *pMotor)
+void MD_CntHallSignal(Motor_TypeDef *pMotor)
 {
-//	pMotor->driver.hall_pre = pMotor->driver_stt.hall;
-//	pMotor->driver_stt.hall = (uint16_t)GPIO_ReadPin(&pMotor->driver.hall);
-//
-//	if ((pMotor->driver_stt.hall == 1) && (pMotor->driver_stt.hall_pre == 0)) {
-//		pMotor->hall_counter ++;
-//	};
+	// pMotor->hall_pre		  = pMotor->driver.hall.value;
+	// pMotor->driver.hall.value = GPIO_ReadPin(&pMotor->driver.hall);
+
+
+	// if ((pMotor->hall_pre == 0) && (pMotor->driver.hall.value == 1)) {
+	// 	switch (pMotor->status) {
+	// 		case FORWARD:
+	// 			pMotor->axis += 1;
+	// 			break;
+
+	// 		case BACKWARD:
+	// 			pMotor->axis -= 1;
+	// 			break;
+
+	// 		default:
+	// 			break;
+	// 	}
+	// }
+
+	if (pMotor->driver.hall.value == 1)
+	{
+		counter++;
+		if ( counter >= 50) {
+			counter = 0;
+			pMotor->axis ++;;
+		}	
+	}
+	
 }
 
 void MD_UpdateAxis(Motor_TypeDef *pMotor)
