@@ -12,7 +12,8 @@
 | 8   | 28/07/2025    | v1.0.7              | Bổ sung thêm thư viện middleware: Fault Management                         | Nguyễn Quốc Uy    | Obsoleted|
 | 9   | 28/07/2025    | v1.0.8              | Bổ sung thêm thư viện middleware: Motor Driver                             | Nguyễn Quốc Uy    | Obsoleted|
 | 10  | 28/07/2025    | v1.0.9              | Bổ sung thêm thư viện middleware: State Management                         | Nguyễn Quốc Uy    | Obsoleted|
-| 11  | 29/07/2025    | v1.0.10             | Cập nhật thuật toán phát hiện vị trí cho thư viện Motor Driver             | Nguyễn Quốc Uy    | Active   |
+| 11  | 29/07/2025    | v1.0.10             | Cập nhật thuật toán phát hiện vị trí cho thư viện Motor Driver             | Nguyễn Quốc Uy    | Obsoleted|
+| 12  | 29/07/2025    | v1.0.11             | Bổ sung thêm thư viện driver: eeprom                                       | Tống Văn Toàn     | Active   |
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
