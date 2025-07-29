@@ -14,6 +14,7 @@
 
 #include "uart.h"
 #include "my_eeprom.h"
+#include "memory.h"
 
 void PTR_system_initialization(void);
 void PTR_main_interrupt_service(void);
