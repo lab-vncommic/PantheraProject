@@ -40,6 +40,8 @@
 #include "osal.h"
 #include "spc5_lld.h"
 #include "spc5_lld_cfg.h"
+#include "flashdriver.h"
+#include "eeprom_cfg.h"
 #include "eirq.h"
 
 #ifdef __cplusplus
