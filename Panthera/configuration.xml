@@ -814,6 +814,82 @@
             <pin_settings>
               <pin_identification>
                 <identifier>
+                  <value>HALL_3</value>
+                </identifier>
+                <port index="2">
+                  <value>PORT_C</value>
+                </port>
+                <bit index="12">
+                  <value>12</value>
+                </bit>
+                <metadatas>
+                  <metadata name="active" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                    <value>NONE</value>
+                  </metadata>
+                </metadatas>
+              </pin_identification>
+              <settings>
+                <pin_mode index="0">
+                  <value>MODE_IO</value>
+                  <metadatas>
+                    <metadata name="direction" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>IO</value>
+                    </metadata>
+                    <metadata name="functionRef" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>GPIO44</value>
+                    </metadata>
+                  </metadatas>
+                </pin_mode>
+                <latched_state index="0">
+                  <value>LOW</value>
+                </latched_state>
+                <mscr_io_settings>
+                  <mscr_index>
+                    <value>44</value>
+                  </mscr_index>
+                  <sss>
+                    <value>0</value>
+                  </sss>
+                  <control_bits>
+                    <oerc index="0">
+                      <value>Weak Drive</value>
+                    </oerc>
+                    <odc index="2">
+                      <value>Push-Pull</value>
+                    </odc>
+                    <smc>
+                      <value>true</value>
+                    </smc>
+                    <ils index="0">
+                      <value>Automotive</value>
+                    </ils>
+                    <ibe>
+                      <value>true</value>
+                    </ibe>
+                    <wpde>
+                      <value>false</value>
+                    </wpde>
+                    <wpue>
+                      <value>false</value>
+                    </wpue>
+                    <inv>
+                      <value>false</value>
+                    </inv>
+                  </control_bits>
+                </mscr_io_settings>
+                <mscr_mux_settings>
+                  <mscr_index>
+                    <value>512</value>
+                  </mscr_index>
+                  <sss>
+                    <value>0</value>
+                  </sss>
+                </mscr_mux_settings>
+              </settings>
+            </pin_settings>
+            <pin_settings>
+              <pin_identification>
+                <identifier>
                   <value>PWM_2</value>
                 </identifier>
                 <port index="2">
@@ -1986,6 +2062,158 @@
                 <mscr_io_settings>
                   <mscr_index>
                     <value>83</value>
+                  </mscr_index>
+                  <sss>
+                    <value>0</value>
+                  </sss>
+                  <control_bits>
+                    <oerc index="0">
+                      <value>Weak Drive</value>
+                    </oerc>
+                    <odc index="2">
+                      <value>Push-Pull</value>
+                    </odc>
+                    <smc>
+                      <value>true</value>
+                    </smc>
+                    <ils index="0">
+                      <value>Automotive</value>
+                    </ils>
+                    <ibe>
+                      <value>true</value>
+                    </ibe>
+                    <wpde>
+                      <value>false</value>
+                    </wpde>
+                    <wpue>
+                      <value>false</value>
+                    </wpue>
+                    <inv>
+                      <value>false</value>
+                    </inv>
+                  </control_bits>
+                </mscr_io_settings>
+                <mscr_mux_settings>
+                  <mscr_index>
+                    <value>512</value>
+                  </mscr_index>
+                  <sss>
+                    <value>0</value>
+                  </sss>
+                </mscr_mux_settings>
+              </settings>
+            </pin_settings>
+            <pin_settings>
+              <pin_identification>
+                <identifier>
+                  <value>HALL_1</value>
+                </identifier>
+                <port index="6">
+                  <value>PORT_G</value>
+                </port>
+                <bit index="10">
+                  <value>10</value>
+                </bit>
+                <metadatas>
+                  <metadata name="active" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                    <value>NONE</value>
+                  </metadata>
+                </metadatas>
+              </pin_identification>
+              <settings>
+                <pin_mode index="1">
+                  <value>MODE_GPI</value>
+                  <metadatas>
+                    <metadata name="direction" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>I</value>
+                    </metadata>
+                    <metadata name="functionRef" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>GPIO106</value>
+                    </metadata>
+                  </metadatas>
+                </pin_mode>
+                <latched_state disabled="true" index="0">
+                  <value>LOW</value>
+                </latched_state>
+                <mscr_io_settings>
+                  <mscr_index>
+                    <value>106</value>
+                  </mscr_index>
+                  <sss disabled="true">
+                    <value>0</value>
+                  </sss>
+                  <control_bits>
+                    <oerc disabled="true" index="0">
+                      <value>Weak Drive</value>
+                    </oerc>
+                    <odc disabled="true" index="0">
+                      <value>Disabled</value>
+                    </odc>
+                    <smc disabled="true">
+                      <value>true</value>
+                    </smc>
+                    <ils index="0">
+                      <value>Automotive</value>
+                    </ils>
+                    <ibe>
+                      <value>true</value>
+                    </ibe>
+                    <wpde>
+                      <value>false</value>
+                    </wpde>
+                    <wpue>
+                      <value>false</value>
+                    </wpue>
+                    <inv disabled="true">
+                      <value>false</value>
+                    </inv>
+                  </control_bits>
+                </mscr_io_settings>
+                <mscr_mux_settings disabled="true">
+                  <mscr_index disabled="true">
+                    <value>512</value>
+                  </mscr_index>
+                  <sss disabled="true">
+                    <value>0</value>
+                  </sss>
+                </mscr_mux_settings>
+              </settings>
+            </pin_settings>
+            <pin_settings>
+              <pin_identification>
+                <identifier>
+                  <value>HALL_2</value>
+                </identifier>
+                <port index="6">
+                  <value>PORT_G</value>
+                </port>
+                <bit index="11">
+                  <value>11</value>
+                </bit>
+                <metadatas>
+                  <metadata name="active" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                    <value>NONE</value>
+                  </metadata>
+                </metadatas>
+              </pin_identification>
+              <settings>
+                <pin_mode index="0">
+                  <value>MODE_IO</value>
+                  <metadatas>
+                    <metadata name="direction" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>IO</value>
+                    </metadata>
+                    <metadata name="functionRef" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
+                      <value>GPIO107</value>
+                    </metadata>
+                  </metadatas>
+                </pin_mode>
+                <latched_state index="0">
+                  <value>LOW</value>
+                </latched_state>
+                <mscr_io_settings>
+                  <mscr_index>
+                    <value>107</value>
                   </mscr_index>
                   <sss>
                     <value>0</value>

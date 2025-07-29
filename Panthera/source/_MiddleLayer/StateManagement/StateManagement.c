@@ -14,6 +14,12 @@ void STATE_Init(PTR_TypeDef *pState)
 
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
+//	if ((thisActiveBT.name == BT_NA) || (thisActiveBT.action ==  ACTION_NA)) {
+//		pState->state = STATE_IDLE;
+//	} else {
+//
+//	}
+
 	switch (pState->state) {
 		case STATE_IDLE:
 			// Processing: handle IDLE state

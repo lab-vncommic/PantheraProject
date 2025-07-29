@@ -11,6 +11,7 @@
 #include "MotorDriver.h"
 #include "Measurement.h"
 #include "FaultManagement.h"
+#include "Button.h"
 
 typedef enum{
 	STATE_IDLE			= 0x00,
