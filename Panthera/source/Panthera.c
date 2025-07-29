@@ -16,6 +16,16 @@ void PTR_system_initialization(void)
 	MD_Init();
 	STATE_Init(&thisPTR);
 	EEPROM_Start();
+
+	//Test write EEPROM
+	//Start address 0x00800000
+	static uint32_t cnt1 = 50;
+	EEPROM_Write(cnt1, ID_EEPROM_1);
+
+	// Test read EEPROM
+//	static uint32_t adc_value_readback1 ;
+//	adc_value_readback1 = EEPROM_Read(ID_EEPROM_1);
+
 }
 
 /*====== Execute Time ======*/
