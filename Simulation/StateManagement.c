@@ -6,28 +6,29 @@
  */
 #include "StateManagement.h"
 PTR_TypeDef thisPTR;
-uint16_t cnt_delay_1s;;
+uint16_t counter = 0;
 
 void STATE_Init(PTR_TypeDef *pState)
 {
-	pState->State = STATE_IDLE;
+	pState->state = STATE_IDLE;
 }
 
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
-	switch (pState->State) {
+	switch (pState->state) {
 		case STATE_IDLE:
 			// Processing: handle IDLE state
 			STATE_idleHandle();
 
 			// Post-processing: check for faults and state transitions
 			if (thisFault.fault_mode != FAULT_NONE) {
-				pState->State = STATE_FAULT;
-			} else if (cnt_delay_1s++ >= 100)
+				pState->state = STATE_FAULT;
+			} else if (counter++ >= 500)
 			{
-				pState->State = STATE_MANUAL;
+				pState->state = STATE_MANUAL;
 			}
 			
+
 			break;
 
 		case STATE_MANUAL:
@@ -36,7 +37,10 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 
 			// Post-processing: check for faults and state transitions
 			if (thisFault.fault_mode != FAULT_NONE) {
-				pState->State = STATE_FAULT;
+				pState->state = STATE_FAULT;
+			} else if (thisButton.save.value == 1)
+			{
+				pState->state = STATE_IDLE;
 			}
 
 			break;
@@ -56,15 +60,43 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 
 void STATE_idleHandle(void)
 {
-	// thisPTR.Motor_Active = motor_height;
-	// thisPTR.Motor_Active.status = BACKWARD;
+	// Stop all motors
+	MD_StopAll();
+
+	// Update seat position
+	thisPTR.seat_axis.height 	= motor_height.axis;
+	thisPTR.seat_axis.recliner 	= motor_recliner.axis;
+	thisPTR.seat_axis.slider 	= motor_slider.axis;
+
+	thisPTR.motor_active.name = MOTOR_ACTIVE_HEIGHT;
+	thisPTR.motor_active.status = FORWARD;
 }
 
 void STATE_manualHandle(void)
 {
-	MD_UpdateStatusMotor(&motor_height, FORWARD);
-	MD_UpdateDriver(&motor_height);
-	MD_UpdateAxis(&motor_height);
+	switch (thisPTR.motor_active.name) {
+		case MOTOR_ACTIVE_HEIGHT:
+			MD_UpdateStatusMotor(&motor_height, thisPTR.motor_active.status);
+			MD_UpdateDriver(&motor_height);
+			MD_UpdateAxis(&motor_height);
+			break;
+
+		case MOTOR_ACTIVE_RECLINER:
+			MD_UpdateStatusMotor(&motor_recliner, thisPTR.motor_active.status);
+			MD_UpdateDriver(&motor_recliner);
+			MD_UpdateAxis(&motor_recliner);
+			break;
+
+		case MOTOR_ACTIVE_SLIDER:
+			MD_UpdateStatusMotor(&motor_slider, thisPTR.motor_active.status);
+			MD_UpdateDriver(&motor_slider);
+			MD_UpdateAxis(&motor_slider);
+			break;
+
+		default:
+			MD_StopAll();
+			break;
+	}
 }
 
 void STATE_faultHandle(void)

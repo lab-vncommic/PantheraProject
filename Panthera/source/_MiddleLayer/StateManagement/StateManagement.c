@@ -52,6 +52,9 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 
 void STATE_idleHandle(void)
 {
+	// Stop all motors
+	MD_StopAll();
+
 	// Update seat position
 	thisPTR.seat_axis.height 	= motor_height.axis;
 	thisPTR.seat_axis.recliner 	= motor_recliner.axis;

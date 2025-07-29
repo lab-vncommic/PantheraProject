@@ -6,7 +6,6 @@
  */
 #include "MotorDriver.h"
 Motor_TypeDef motor_height, motor_recliner, motor_slider;
-uint16_t counter;
 
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
 					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm)

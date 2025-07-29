@@ -76,5 +76,4 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor);
 // API for detecting position without sensor
 
 extern Motor_TypeDef motor_height, motor_recliner, motor_slider;
-extern uint16_t counter;
 #endif /* MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_ */
