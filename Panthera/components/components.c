@@ -40,4 +40,5 @@ void componentsInit(void) {
   clockInit();
   osalInit();
   spc5LLDInit();
+  eeprom_init();
 }

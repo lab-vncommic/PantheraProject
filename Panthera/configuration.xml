@@ -5,6 +5,8 @@
     <component id="com.st.tools.spc5.components.platform.spc582bxx_rla" version="1.20.0">
       <component id="com.st.spc5.components.init.spc582bxx_rla" version="1.20.0" />
       <component id="com.st.spc5.components.lld.spc582bxx_rla" version="1.20.0" />
+      <component id="com.st.spc5.components.flash.spc582bxx" version="1.3.0" />
+      <component id="com.st.spc5.components.ee.spc5xxxxx" version="1.0.0" />
     </component>
     <instances>
       <instance locked="false" id="com.st.tools.spc5.components.platform.spc582bxx_rla">
@@ -4926,6 +4928,17 @@
             </configs>
           </i2c_sw_configurations>
         </i2c_settings>
+      </instance>
+      <instance locked="false" id="com.st.spc5.components.flash.spc582bxx" />
+      <instance locked="false" id="com.st.spc5.components.ee.spc5xxxxx">
+        <eeprom_settings>
+          <first_block index="0">
+            <value>0</value>
+          </first_block>
+          <second_block index="1">
+            <value>1</value>
+          </second_block>
+        </eeprom_settings>
       </instance>
     </instances>
     <exportedFeatures />

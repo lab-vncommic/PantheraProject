@@ -4,6 +4,8 @@
 include ./components/spc582bxx_platform_component_rla/mak/component.mak
 include ./components/spc582bxx_init_package_component_rla/mak/component.mak
 include ./components/spc582bxx_low_level_drivers_component_rla/mak/component.mak
+include ./components/flash_driver/mak/component.mak
+include ./components/eeprom_emulation_driver/mak/component.mak
 include ./components/spc582bxx_board_initialization_component_rla/mak/component.mak
 include ./components/spc582bxx_clock_component_rla/mak/component.mak
 include ./components/spc582bxx_irq_component_rla/mak/component.mak
