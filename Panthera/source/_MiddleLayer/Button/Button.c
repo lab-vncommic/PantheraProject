@@ -71,6 +71,7 @@ void BTN_Init(void)
 
 void BTN_GetStatusButton(void)
 {
+	temp_btn_stt = 0x0000;
 	if (BTN_Debouncing(&thisButtonAll.height_1, thisButtonAll.height_1.value, TIMEOUT_DEBOUNCE_BTN)) {
 		temp_btn_stt |= BTN_STT_0;
 	}
@@ -113,17 +114,16 @@ void BTN_GetStatusButton(void)
 	thisButton.btn_stt = temp_btn_stt;
 }
 
-_Bool BTN_IsMultiButtonPress(void)
+_Bool BTN_OnlyOneBtnPress(void)
 {
     uint16_t buttonRegister = thisButton.btn_stt;
     if (buttonRegister == 0) {
-        return true;
-    }
-
-    if ((buttonRegister & (buttonRegister - 1)) == 0) {
         return false;
     }
-    return true;
+    if ((buttonRegister & (buttonRegister - 1)) == 0) {
+        return true;
+    }
+    return false;
 }
 
 void BTN_AnalyzeInputState(Button_TypeDef *pButton)
@@ -131,38 +131,38 @@ void BTN_AnalyzeInputState(Button_TypeDef *pButton)
 	// Analyze action of button
 	if (pButton->cnt_action++ > TIMEOUT_PRESSED_BTN) {
 		pButton->action = ACTION_HOLD;
-	} else pButton->action = ACTION_HOLD;
+	} else pButton->action = ACTION_PRESSED;
 
 	// Analyze name of button
 	switch (pButton->btn_stt) {
-		case BTN_STT_0:
+		case 1:
 			pButton->name = BTN_HEIGHT_1;
 			break;
-		case BTN_STT_1:
+		case 2:
 			pButton->name = BTN_HEIGHT_2;
 			break;
-		case BTN_STT_2:
+		case 4:
 			pButton->name = BTN_RECLINER_1;
 			break;
-		case BTN_STT_3:
+		case 8:
 			pButton->name = BTN_RECLINER_2;
 			break;
-		case BTN_STT_4:
+		case 16:
 			pButton->name = BTN_SLIDER_1;
 			break;
-		case BTN_STT_5:
+		case 32:
 			pButton->name = BTN_SLIDER_2;
 			break;
-		case BTN_STT_6:
+		case 64:
 			pButton->name = BTN_SAVE;
 			break;
-		case BTN_STT_7:
+		case 128:
 			pButton->name = BTN_RECALL_1;
 			break;
-		case BTN_STT_8:
+		case 256:
 			pButton->name = BTN_RECALL_2;
 			break;
-		case BTN_STT_9:
+		case 512:
 			pButton->name = BTN_RECALL_3;
 			break;
 		default:
@@ -176,12 +176,12 @@ void BTN_Update(void)
 	GPIO_Update();
 	BTN_GetGpioValue(&thisGPIO);
 	BTN_GetStatusButton();
-	if (BTN_IsMultiButtonPress()) {
+	if (BTN_OnlyOneBtnPress()) {
+		BTN_AnalyzeInputState(&thisButton);
+	} else {
 		thisButton.name 	  = BTN_NA;
 		thisButton.action 	  = ACTION_NA;
 		thisButton.cnt_action = 0;
 		thisButton.btn_stt    = 0x0000;
-	} else {
-		BTN_AnalyzeInputState(&thisButton);
 	}
 }

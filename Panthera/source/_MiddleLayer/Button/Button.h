@@ -8,6 +8,7 @@
 #ifndef SOURCE__MIDDLELAYER_BUTTON_BUTTON_H_
 #define SOURCE__MIDDLELAYER_BUTTON_BUTTON_H_
 #include "gpio.h"
+#include "stdbool.h"
 
 #define TIMEOUT_DEBOUNCE_BTN   500    // 50ms
 #define TIMEOUT_PRESSED_BTN	   1000   // 100ms
@@ -93,7 +94,7 @@ _Bool BTN_Debouncing(Btn_Object_TypeDef *pButton, _Bool condition, uint16_t time
  *===========================================================================*/
 void BTN_Init(void);
 void BTN_GetStatusButton(void);
-_Bool BTN_IsMultiButtonPress(void);
+_Bool BTN_OnlyOneBtnPress(void);
 void BTN_AnalyzeInputState(Button_TypeDef *pButton);
 void BTN_Update(void);
 

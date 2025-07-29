@@ -10,11 +10,10 @@
 #include "GlobalDefine.h"
 #include "Measurement.h"
 #include "FaultManagement.h"
-#include "MotorDriver.h"
 #include "StateManagement.h"
 
 // #include "uart.h"
-#include "gpio.h"
+// #include "my_eeprom.h"
 
 void PTR_system_initialization(void);
 void PTR_main_interrupt_service(void);

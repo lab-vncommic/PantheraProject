@@ -15,6 +15,12 @@ void STATE_Init(PTR_TypeDef *pState)
 
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
+//	if ((thisActiveBT.name == BT_NA) || (thisActiveBT.action ==  ACTION_NA)) {
+//		pState->state = STATE_IDLE;
+//	} else {
+//
+//	}
+
 	switch (pState->state) {
 		case STATE_IDLE:
 			// Processing: handle IDLE state
@@ -25,7 +31,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 				pState->state = STATE_FAULT;
 			} else if (counter++ >= 500)
 			{
-				pState->state = STATE_MANUAL;
+				// pState->state = STATE_MANUAL;
 			}
 			
 
@@ -38,9 +44,6 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			// Post-processing: check for faults and state transitions
 			if (thisFault.fault_mode != FAULT_NONE) {
 				pState->state = STATE_FAULT;
-			} else if (thisButton.save.value == 1)
-			{
-				pState->state = STATE_IDLE;
 			}
 
 			break;

@@ -68,7 +68,7 @@ int ADC_Init(ADCTypeDef *pADC) {
 	//  // Align left ADC value
 	// driverUser->saradc->MCR.B.WLSIDE = 1U;
 
-    // return 0;
+    return 0;
 }
 
 /**

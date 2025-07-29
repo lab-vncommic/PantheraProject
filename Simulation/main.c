@@ -45,12 +45,12 @@ void SimulationStep(
 {
 // ENTER YOUR CODE HERE...
 // Update input value
-thisButton.height_1.value 	   = in[0];
-thisButton.height_2.value 	   = in[1];
-thisButton.save.value 	  	   = in[2];
-thisButton.recall_1.value 	   = in[3];
-thisButton.recall_2.value 	   = in[4];
-thisButton.recall_3.value 	   = in[5];
+thisGPIO.height_1.value 	   = in[0];
+thisGPIO.height_2.value 	   = in[1];
+thisGPIO.save.value 	  	   = in[2];
+thisGPIO.recall_1.value 	   = in[3];
+thisGPIO.recall_2.value 	   = in[4];
+thisGPIO.recall_3.value 	   = in[5];
 thatADC.ADC_MulSens_1 	  	   = in[6];
 motor_height.driver.hall.value = in[7];
 
@@ -63,11 +63,12 @@ out[3] 	= motor_height.driver.sel0.value;
 out[4] 	= motor_height.driver.sel1.value;
 out[5] 	= motor_height.driver.mul_en.value;
 out[6] 	= thisPTR.state;
-out[7] 	= thisPTR.seat_axis.height;
-out[8] 	= motor_height.axis;
-out[9] 	= motor_height.driver.hall.value;
-out[10] = motor_height.status;
-out[11] = counter; // Example output, replace with your logic
+out[7] 	= thisButton.btn_stt;
+out[8] 	= thisButton.name;;
+out[9] 	= thisButton.cnt_action;
+out[10] = thisButton.action;
+out[11] = counter;
+out[12] = thisButtonAll.height_1.value;
 }
 
 
