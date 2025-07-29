@@ -23,7 +23,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			// Post-processing: check for faults and state transitions
 			if (thisFault.fault_mode != FAULT_NONE) {
 				pState->State = STATE_FAULT;
-			} else if (cnt_delay_1s++ >= 10000)
+			} else if (cnt_delay_1s++ >= 100)
 			{
 				pState->State = STATE_MANUAL;
 			}
@@ -62,9 +62,9 @@ void STATE_idleHandle(void)
 
 void STATE_manualHandle(void)
 {
-	MD_UpdateStatusMotor(&motor_height, BACKWARD);
+	MD_UpdateStatusMotor(&motor_height, FORWARD);
 	MD_UpdateDriver(&motor_height);
-	MD_CntHallSignal(&motor_height);
+	MD_UpdateAxis(&motor_height);
 }
 
 void STATE_faultHandle(void)

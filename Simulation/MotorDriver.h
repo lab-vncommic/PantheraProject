@@ -70,7 +70,7 @@ void MD_Init(void);
 void MD_StopAll(void);
 
 // API for detecting position with hall sensor
-void MD_CntHallSignal(Motor_TypeDef *pMotor);
+_Bool MD_CheckRisingEdge(uint8_t current_value);
 void MD_UpdateAxis(Motor_TypeDef *pMotor);
 
 // API for detecting position without sensor

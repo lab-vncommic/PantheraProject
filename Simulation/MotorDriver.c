@@ -128,50 +128,38 @@ void MD_StopAll(void)
 	MD_UpdateDriver(&motor_slider);
 }
 
-void MD_CntHallSignal(Motor_TypeDef *pMotor)
+_Bool MD_CheckRisingEdge(uint8_t current_value)
 {
-	// pMotor->hall_pre		  = pMotor->driver.hall.value;
-	// pMotor->driver.hall.value = GPIO_ReadPin(&pMotor->driver.hall);
+	static _Bool is_edge_detection_enabled = true;
+	static uint8_t counter = 0;
 
+	if (is_edge_detection_enabled == true) {
+		if (current_value == 1)
+		{
+			if (counter++ >= 100)
+			{
+				counter = 0;
+				is_edge_detection_enabled = false;
+				return true;
+			}
 
-	// if ((pMotor->hall_pre == 0) && (pMotor->driver.hall.value == 1)) {
-	// 	switch (pMotor->status) {
-	// 		case FORWARD:
-	// 			pMotor->axis += 1;
-	// 			break;
-
-	// 		case BACKWARD:
-	// 			pMotor->axis -= 1;
-	// 			break;
-
-	// 		default:
-	// 			break;
-	// 	}
-	// }
-
-	if (pMotor->driver.hall.value == 1)
-	{
-		counter++;
-		if ( counter >= 50) {
-			counter = 0;
-			pMotor->axis ++;;
-		}	
+		} else counter = 0;
 	}
-	
+
+	if (current_value == 0)
+	{
+		is_edge_detection_enabled = true;
+	}
+	return false;
 }
 
 void MD_UpdateAxis(Motor_TypeDef *pMotor)
 {
-	switch (pMotor->status_pre) {
-		case FORWARD:
-			pMotor->axis += pMotor->hall_counter;
-			break;
-
-		case BACKWARD:
-			pMotor->axis -= pMotor->hall_counter;
-			break;
-
-		default:
-			break;
-	}
+    if (MD_CheckRisingEdge(pMotor->driver.hall.value)) {
+        if (pMotor->status == FORWARD) {
+            pMotor->axis += 1;
+        } else if (pMotor->status == BACKWARD) {
+            pMotor->axis -= 1;
+        }
+    }
 }
