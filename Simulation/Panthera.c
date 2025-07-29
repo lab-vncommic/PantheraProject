@@ -42,8 +42,6 @@ void PTR_main_interrupt_service(void)
 	{
 		FAULT_UpdateMode();
 	}
-	
-	if (cnt_delay_1ms++ > 10000)  thisPTR.State = STATE_MANUAL;
 
 	STATE_UpdateState(&thisPTR);
 

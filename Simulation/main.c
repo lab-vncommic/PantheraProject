@@ -45,27 +45,29 @@ void SimulationStep(
 {
 // ENTER YOUR CODE HERE...
 // Update input value
-thisButton.height_1.value = in[0];
-thisButton.height_2.value = in[1];
-thisButton.save.value 	  = in[2];
-thisButton.recall_1.value = in[3];
-thisButton.recall_2.value = in[4];
-thisButton.recall_3.value = in[5];
-thatADC.ADC_MulSens_1 	  = in[6];
+thisButton.height_1.value 	   = in[0];
+thisButton.height_2.value 	   = in[1];
+thisButton.save.value 	  	   = in[2];
+thisButton.recall_1.value 	   = in[3];
+thisButton.recall_2.value 	   = in[4];
+thisButton.recall_3.value 	   = in[5];
+thatADC.ADC_MulSens_1 	  	   = in[6];
+motor_height.driver.hall.value = in[7];
 
 PTR_main_interrupt_service();
 
-out[0] = motor_height.driver.ina.value;     
-out[1] = motor_height.driver.inb.value;          // Example output, replace with your logic
-out[2] = motor_height.driver.pwm.value;
-out[3] = motor_height.driver.sel0.value;
-out[4] = motor_height.driver.sel1.value;
-out[5] = motor_height.driver.mul_en.value;
-out[6] = thisPTR.State;
-out[8] = thisFault.fault_status;
-out[9] = thisMeas.current_mt1.value_q15;
-out[10] = thatADC.ADC_MulSens_1;
-out[11] = cnt_delay_1ms; // Example output, replace with your logic
+out[0] 	= motor_height.driver.ina.value;     
+out[1] 	= motor_height.driver.inb.value;          // Example output, replace with your logic
+out[2] 	= motor_height.driver.pwm.value;
+out[3] 	= motor_height.driver.sel0.value;
+out[4] 	= motor_height.driver.sel1.value;
+out[5] 	= motor_height.driver.mul_en.value;
+out[6] 	= thisPTR.State;
+out[7] 	= motor_height.hall_pre;
+out[8] 	= motor_height.axis;
+out[9] 	= motor_height.driver.hall.value;
+out[10] = motor_height.status;
+out[11] = counter; // Example output, replace with your logic
 }
 
 

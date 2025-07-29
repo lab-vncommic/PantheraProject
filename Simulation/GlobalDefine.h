@@ -10,6 +10,7 @@
 // #include "stm_lld_cfg.h"
 // #include "components.h"
 // #include "pit_lld_cfg.h"
+#include "stdbool.h"
 
 void GDE_Config(void);
 

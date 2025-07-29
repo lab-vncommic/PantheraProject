@@ -39,14 +39,13 @@ typedef struct{
 
 typedef struct{
 	MotorDriver_TypeDef			driver;
-	MotorStatus_TypeDef 		status;
-	MotorStatus_TypeDef 		status_pre;
 	MotorTopoCtrl_TypeDef		topo_ctrl;
+
+	MotorStatus_TypeDef 		status;
 	MotorMeasType_TypeDef		meas_type;
 	uint16_t					axis;
 
 	// Parameters when using hall sensor option
-	uint16_t 					hall_counter;
 
 	// Parameters when using sensorless option
 } Motor_TypeDef;
@@ -67,7 +66,7 @@ void MD_Init(void);
 void MD_StopAll(void);
 
 // API for detecting position with hall sensor
-//void MD_CalHallPulse(Motor_TypeDef *pMotor);
+_Bool MD_CheckRisingEdge(uint8_t current_value);
 void MD_UpdateAxis(Motor_TypeDef *pMotor);
 
 // API for detecting position without sensor
