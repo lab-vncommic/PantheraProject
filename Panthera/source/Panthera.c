@@ -17,15 +17,6 @@ void PTR_system_initialization(void)
 	STATE_Init(&thisPTR);
 	EEPROM_Start();
 
-	// Test Mid/memory
-	thisPTR.seat_axis.height = 200;
-	thisPTR.seat_axis.recliner = 202;
-	thisPTR.seat_axis.slider = 204;
-
-//	EEPROM_Write(input_EEPROM(thisPTR.seat_axis.height, thisPTR.seat_axis.recliner,
-//			thisPTR.seat_axis.slider), ID_EEPROM_1);
-	position_Memory(EEPROM_Read(ID_EEPROM_1));
-
 }
 
 /*====== Execute Time ======*/
