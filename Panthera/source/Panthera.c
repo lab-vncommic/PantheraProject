@@ -15,6 +15,8 @@ void PTR_system_initialization(void)
 	FAULT_Init();
 	MD_Init();
 	STATE_Init(&thisPTR);
+	EEPROM_Start();
+
 }
 
 /*====== Execute Time ======*/
