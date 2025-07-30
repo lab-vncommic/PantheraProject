@@ -67,8 +67,9 @@ out[7] 	= thisButton.btn_stt;
 out[8] 	= thisButton.name;;
 out[9] 	= thisButton.cnt_action;
 out[10] = thisButton.action;
-out[11] = counter;
-out[12] = thisButtonAll.height_1.value;
+out[11] = temp_btn_stt;
+out[12] = thisPTR.motor_active.status;
+out[13] = thisPTR.motor_active.name;
 }
 
 

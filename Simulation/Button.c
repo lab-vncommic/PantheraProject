@@ -5,7 +5,6 @@
  *      Author: ADMIN
  */
 #include "Button.h"
-
 Btn_All_TypeDef		thisButtonAll;
 Button_TypeDef		thisButton;
 uint16_t			temp_btn_stt = 0x0000;
@@ -72,44 +71,105 @@ void BTN_Init(void)
 
 void BTN_GetStatusButton(void)
 {
-	if (BTN_Debouncing(&thisButtonAll.height_1, thisButtonAll.height_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// if (BTN_Debouncing(&thisButtonAll.height_1, thisButtonAll.height_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// 	temp_btn_stt |= BTN_STT_0;
+	// }
+	// else temp_btn_stt &= ~BTN_STT_0;
+	
+	// if (BTN_Debouncing(&thisButtonAll.height_2, thisButtonAll.height_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// 	temp_btn_stt |= BTN_STT_1;
+	// }
+	
+	// if (BTN_Debouncing(&thisButtonAll.recliner_1, thisButtonAll.recliner_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// 	temp_btn_stt |= BTN_STT_2;
+	// }
+	
+	// if (BTN_Debouncing(&thisButtonAll.recliner_2, thisButtonAll.recliner_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// 	temp_btn_stt |= BTN_STT_3;
+	// }
+	
+	// if (BTN_Debouncing(&thisButtonAll.slider_1, thisButtonAll.slider_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// 	temp_btn_stt |= BTN_STT_4;
+	// }
+	
+	// if (BTN_Debouncing(&thisButtonAll.slider_2, thisButtonAll.slider_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// 	temp_btn_stt |= BTN_STT_5;
+	// }
+	
+	// if (BTN_Debouncing(&thisButtonAll.save, thisButtonAll.save.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// 	temp_btn_stt |= BTN_STT_6;
+	// }
+	
+	// if (BTN_Debouncing(&thisButtonAll.recall_1, thisButtonAll.recall_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// 	temp_btn_stt |= BTN_STT_7;
+	// }
+
+	// if (BTN_Debouncing(&thisButtonAll.recall_2, thisButtonAll.recall_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// 	temp_btn_stt |= BTN_STT_8;
+	// }
+
+	// if (BTN_Debouncing(&thisButtonAll.recall_3, thisButtonAll.recall_3.value, TIMEOUT_DEBOUNCE_BTN)) {
+	// 	temp_btn_stt |= BTN_STT_9;
+	// }
+
+	if (thisButtonAll.height_1.value) {
 		temp_btn_stt |= BTN_STT_0;
+	} else {
+		temp_btn_stt &= ~BTN_STT_0;
 	}
 	
-	if (BTN_Debouncing(&thisButtonAll.height_2, thisButtonAll.height_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+	if (thisButtonAll.height_2.value) {
 		temp_btn_stt |= BTN_STT_1;
+	} else {
+		temp_btn_stt &= ~BTN_STT_1;
 	}
 	
-	if (BTN_Debouncing(&thisButtonAll.recliner_1, thisButtonAll.recliner_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+	if (thisButtonAll.recliner_1.value == 1) {
 		temp_btn_stt |= BTN_STT_2;
+	} else {
+		temp_btn_stt &= ~BTN_STT_2;
 	}
 	
-	if (BTN_Debouncing(&thisButtonAll.recliner_2, thisButtonAll.recliner_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+	if (thisButtonAll.recliner_2.value == 1) {
 		temp_btn_stt |= BTN_STT_3;
+	} else {
+		temp_btn_stt &= ~BTN_STT_3;
 	}
 	
-	if (BTN_Debouncing(&thisButtonAll.slider_1, thisButtonAll.slider_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+	if (thisButtonAll.slider_1.value == 1) {
 		temp_btn_stt |= BTN_STT_4;
+	} else {
+		temp_btn_stt &= ~BTN_STT_4;
 	}
 	
-	if (BTN_Debouncing(&thisButtonAll.slider_2, thisButtonAll.slider_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+	if (thisButtonAll.slider_2.value == 1) {
 		temp_btn_stt |= BTN_STT_5;
+	} else {
+		temp_btn_stt &= ~BTN_STT_5;
 	}
 	
-	if (BTN_Debouncing(&thisButtonAll.save, thisButtonAll.save.value, TIMEOUT_DEBOUNCE_BTN)) {
+	if (thisButtonAll.save.value == 1) {
 		temp_btn_stt |= BTN_STT_6;
+	} else {
+		temp_btn_stt &= ~BTN_STT_6;
 	}
 	
-	if (BTN_Debouncing(&thisButtonAll.recall_1, thisButtonAll.recall_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+	if (thisButtonAll.recall_1.value == 1) {
 		temp_btn_stt |= BTN_STT_7;
+	} else {
+		temp_btn_stt &= ~BTN_STT_7;
 	}
-
-	if (BTN_Debouncing(&thisButtonAll.recall_2, thisButtonAll.recall_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+	
+	if (thisButtonAll.recall_2.value == 1) {
 		temp_btn_stt |= BTN_STT_8;
+	} else {
+		temp_btn_stt &= ~BTN_STT_8;
 	}
-
-	if (BTN_Debouncing(&thisButtonAll.recall_3, thisButtonAll.recall_3.value, TIMEOUT_DEBOUNCE_BTN)) {
+	
+	if (thisButtonAll.recall_3.value == 1) {
 		temp_btn_stt |= BTN_STT_9;
+	} else {
+		temp_btn_stt &= ~BTN_STT_9;
 	}
 }
 
@@ -184,7 +244,7 @@ void BTN_Update(void)
 		thisButton.action 	  = ACTION_NA;
 		thisButton.cnt_action = 0;
 		thisButton.btn_stt    = 0x0000;
-		temp_btn_stt 		  = 0x0000;
+		// temp_btn_stt 		  = 0x0000;
 	}
 }
 
