@@ -9,7 +9,6 @@
 #define MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_
 // #include "components.h"
 #include "Button.h"
-#include "gpio.h"
 
 typedef enum {
 	SENSOR = 0,
@@ -43,13 +42,10 @@ typedef struct{
 	MotorTopoCtrl_TypeDef		topo_ctrl;
 
 	MotorStatus_TypeDef 		status;
-	MotorStatus_TypeDef 		status_pre;
 	MotorMeasType_TypeDef		meas_type;
 	uint16_t					axis;
 
 	// Parameters when using hall sensor option
-	uint8_t      				hall_pre;
-	uint16_t 					hall_counter;
 
 	// Parameters when using sensorless option
 } Motor_TypeDef;
@@ -76,5 +72,4 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor);
 // API for detecting position without sensor
 
 extern Motor_TypeDef motor_height, motor_recliner, motor_slider;
-extern uint16_t counter;
 #endif /* MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_ */

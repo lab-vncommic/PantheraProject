@@ -29,9 +29,9 @@ void FAULT_UpdateStatus(void){
 //    	temp_fault_status |= FAULT_STT_2;
 //    }
 
-   if (FAULT_IS_MT1_OTP(&thisMeas.thermal_mt1)) {
-   	temp_fault_status |= FAULT_STT_3;
-   }
+//    if (FAULT_IS_MT1_OTP(&thisMeas.thermal_mt1)) {
+//    	temp_fault_status |= FAULT_STT_3;
+//    }
 
 //    if (FAULT_IS_MT2_OTP(&thisMeas.thermal_mt2) ) {
 //    	temp_fault_status |= FAULT_STT_4;

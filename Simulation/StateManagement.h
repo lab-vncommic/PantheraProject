@@ -11,6 +11,7 @@
 #include "MotorDriver.h"
 #include "Measurement.h"
 #include "FaultManagement.h"
+#include "Button.h"
 
 typedef enum{
 	STATE_IDLE			= 0x00,
@@ -21,11 +22,30 @@ typedef enum{
 	STATE_SHUTDOWN
 } PTR_State_TypeDef;
 
+typedef enum{
+	MOTOR_ACTIVE_NONE		= 0x00,
+	MOTOR_ACTIVE_HEIGHT		= 0x01,
+	MOTOR_ACTIVE_RECLINER	= 0x02,
+	MOTOR_ACTIVE_SLIDER		= 0x03
+} Motor_Active_Name_TypeDef;
+
 typedef struct{
-	PTR_State_TypeDef 		State;
-	Motor_TypeDef			Motor_Active;
-	uint8_t  		  		faultCounter;
-	uint8_t  		  		faultLimit;
+	Motor_Active_Name_TypeDef		name;
+	MotorStatus_TypeDef				status;
+} Motor_Active_TypeDef;
+
+typedef struct{
+	uint16_t height;
+	uint16_t recliner;
+	uint16_t slider;
+} SeatAxis_TypeDef;
+
+typedef struct{
+	PTR_State_TypeDef 			state;
+	SeatAxis_TypeDef			seat_axis;
+	Motor_Active_TypeDef		motor_active;
+	uint8_t  		  			faultCounter;
+	uint8_t  		  			faultLimit;
 } PTR_TypeDef;
 
 void STATE_Init(PTR_TypeDef *pState);
@@ -38,5 +58,6 @@ void STATE_faultHandle(void);
 void STATE_autorecoveryHandle(void);
 void STATE_shutdownHandle(void);
 
+void STATE_HandleButton(PTR_TypeDef *pState, Button_TypeDef *pButton);
 extern PTR_TypeDef thisPTR;
 #endif /* SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_ */

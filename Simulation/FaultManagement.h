@@ -15,14 +15,14 @@
  *===========================================================================*/
 #define FAULT_SAVE_MEMORY			 	3U
 
-#define FAULT_STT_0   ((uint16_t) 1U<<0)  // Over current motor Hieght
-#define FAULT_STT_1   ((uint16_t) 1U<<1)  // Over current motor Recliner
-#define FAULT_STT_2   ((uint16_t) 1U<<2)  // Over current motor Slider
-#define FAULT_STT_3   ((uint16_t) 1U<<3)  // Over temperature motor Hieght
-#define FAULT_STT_4   ((uint16_t) 1U<<4)  // Over temperature motor Recliner
-#define FAULT_STT_5   ((uint16_t) 1U<<5)  // Over temperature motor Slider
-#define FAULT_STT_6   ((uint16_t) 1U<<6)
-#define FAULT_STT_7   ((uint16_t) 1U<<7)
+#define FAULT_STT_0   ((uint8_t) 1U<<0)  // Over current motor Hieght
+#define FAULT_STT_1   ((uint8_t) 1U<<1)  // Over current motor Recliner
+#define FAULT_STT_2   ((uint8_t) 1U<<2)  // Over current motor Slider
+#define FAULT_STT_3   ((uint8_t) 1U<<3)  // Over temperature motor Hieght
+#define FAULT_STT_4   ((uint8_t) 1U<<4)  // Over temperature motor Recliner
+#define FAULT_STT_5   ((uint8_t) 1U<<5)  // Over temperature motor Slider
+#define FAULT_STT_6   ((uint8_t) 1U<<6)
+#define FAULT_STT_7   ((uint8_t) 1U<<7)
 
 #define FAULT_LATCH_BITS				0
 #define FAULT_AUTO_RECOVERY_BITS		(FAULT_STT_0 | FAULT_STT_1 | FAULT_STT_2 | FAULT_STT_3 | FAULT_STT_4 | FAULT_STT_5)
@@ -42,7 +42,7 @@ typedef struct{
 /*===========================================================================
  * PTR CODE SECTION
  *===========================================================================*/
-#define CURRENT_MT1_OCP					1.5f		// Unit: A
+#define CURRENT_MT1_OCP					17.0f		// Unit: A
 #define THERMAL_MT1_OTP					90.0f		// Unit: oC
 #define CURRENT_MT2_OCP					17.0f		// Unit: A
 #define THERMAL_MT2_OTP					90.0f		// Unit: oC

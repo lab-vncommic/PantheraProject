@@ -6,7 +6,6 @@
  */
 #include "MotorDriver.h"
 Motor_TypeDef motor_height, motor_recliner, motor_slider;
-uint16_t counter;
 
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
 					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm)
@@ -63,11 +62,15 @@ void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
 			break;
 
 		case STOP:
+            pMotor->driver.ina.value       = 0;
+            pMotor->driver.inb.value       = 0;
             pMotor->driver.pwm.value       = 0;
 			break;
 
 		// Stop motor
 		default:
+            pMotor->driver.ina.value       = 0;
+            pMotor->driver.inb.value       = 0;
             pMotor->driver.pwm.value       = 0;
 			break;
 	}
@@ -77,7 +80,7 @@ void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_typ
 {
 	// Enable multi sens pin
 	pMotor->driver.mul_en.value = 1;
-	
+
 	pMotor->meas_type = meas_type;
 	switch (pMotor->meas_type) {
 		case CURRENT:
@@ -109,7 +112,7 @@ void MD_Init(void)
 	// MD_ConfigDriver(&motor_recliner, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2);
 	// MD_ConfigDriver(&motor_slider, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
 
-	MD_UpdateStatusMulsen(&motor_height, THERMAL);
+	MD_UpdateStatusMulsen(&motor_height, CURRENT);
 	MD_UpdateStatusMulsen(&motor_recliner, CURRENT);
 	MD_UpdateStatusMulsen(&motor_slider, CURRENT);
 	MD_StopAll();
@@ -163,3 +166,4 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor)
         }
     }
 }
+

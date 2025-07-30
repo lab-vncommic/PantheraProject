@@ -10,7 +10,11 @@ uint16_t cnt_500ms;
 void PTR_system_initialization(void)
 {
 	GDE_Config();
+
+	// FIXME: Need to transfer to middleware layer
 	UART_Init();
+
+	BTN_Init();
 	MEAS_Init();
 	FAULT_Init();
 	MD_Init();
@@ -29,6 +33,7 @@ void PTR_main_interrupt_service(void)
 
 	MEAS_GetValue();
 	FAULT_UpdateMode();
+	BTN_Update();
 
 	STATE_UpdateState(&thisPTR);
 

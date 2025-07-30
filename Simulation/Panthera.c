@@ -6,18 +6,21 @@
  */
 #include "Panthera.h"
 uint16_t cnt_500ms;
-uint16_t cnt_delay_1ms;
-_Bool flag_fault_run = 0;
-_Bool flag_mode_run = 0;
 
 void PTR_system_initialization(void)
 {
 	GDE_Config();
+
+	// FIXME: Need to transfer to middleware layer
 	// UART_Init();
+
+	BTN_Init();
 	MEAS_Init();
 	FAULT_Init();
 	MD_Init();
 	STATE_Init(&thisPTR);
+	// EEPROM_Start();
+
 }
 
 /*====== Execute Time ======*/
@@ -29,19 +32,10 @@ void PTR_system_initialization(void)
 void PTR_main_interrupt_service(void)
 {
 	// begin = stm_lld_getcounter(&STMD3);
-	// if (cnt_500ms++ >= 5000) {
-	// 	cnt_500ms = 0;
-	// 	// GPIO_TogglePin(&LED3);
-	// }
-	
-	MEAS_GetValue();
 
-	/* Delay fault by 10 cycles to allow the system to stabilize */
-	if (cnt_delay_1ms++ > 10)  flag_fault_run = 1;
-	if (flag_fault_run)
-	{
-		FAULT_UpdateMode();
-	}
+	MEAS_GetValue();
+	FAULT_UpdateMode();
+	BTN_Update();
 
 	STATE_UpdateState(&thisPTR);
 

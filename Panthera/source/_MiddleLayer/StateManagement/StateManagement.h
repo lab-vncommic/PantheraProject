@@ -11,6 +11,7 @@
 #include "MotorDriver.h"
 #include "Measurement.h"
 #include "FaultManagement.h"
+#include "Button.h"
 
 typedef enum{
 	STATE_IDLE			= 0x00,
@@ -56,6 +57,8 @@ void STATE_autoHandle(void);
 void STATE_faultHandle(void);
 void STATE_autorecoveryHandle(void);
 void STATE_shutdownHandle(void);
+
+void STATE_HandleButton(PTR_TypeDef *pState, Button_TypeDef *pButton);
 
 extern PTR_TypeDef thisPTR;
 #endif /* SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_ */

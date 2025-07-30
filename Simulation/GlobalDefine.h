@@ -10,7 +10,9 @@
 // #include "stm_lld_cfg.h"
 // #include "components.h"
 // #include "pit_lld_cfg.h"
-#include "stdbool.h"
+
+#define F_SAMPLE	10000.0f
+#define T_SAMPLE	1/10000.0f
 
 void GDE_Config(void);
 
