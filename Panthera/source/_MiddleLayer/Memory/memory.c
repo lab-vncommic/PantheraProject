@@ -6,7 +6,7 @@
  */
 #include "memory.h"
 
-Memory_TypeDef thisMemory[3];
+Memory_TypeDef thisMemory;
 
 /**
  * @brief  Converts a decimal (base-10) number to a hexadecimal string.
@@ -87,14 +87,14 @@ uint32_t convert_charHex_to_uint32_t(const char* hex_str) {
 }
 
 /**
- * @brief  Encodes three decimal values into a single 32-bit hexadecimal representation.
+ * @brief  Encodes three separate coordinate values (x, y, z) into a single 32-bit number.
  *
- * @param  x, y, z: Input decimal values (expected to be <= 255).
- * @retval A 32-bit unsigned integer encoding the 3 values as 6 hex digits.
+ * @param  x, y, z: Input decimal values (expected to be 0�255 for 2-digit hex representation).
+ * @retval A 32-bit value representing the merged hex of x, y, and z.
  *
- * @note   Each value is converted to 2-digit hex, concatenated, and then parsed back to uint32.
+ * @note   Values are converted to 2-digit hex, concatenated, then parsed to uint32_t.
  */
-uint32_t input_EEPROM(uint32_t x,uint32_t y, uint32_t z){
+uint32_t convert_coordinates_into_single_value(uint32_t x,uint32_t y, uint32_t z){
     char result[10],a[3],b[3],c[3];
     strcpy(a,convert_Dec_to_Hex(x));
     strcpy(b,convert_Dec_to_Hex(y));
@@ -102,6 +102,17 @@ uint32_t input_EEPROM(uint32_t x,uint32_t y, uint32_t z){
     merge_char(a, b,c, result, sizeof(result));
     uint32_t d = convert_charHex_to_uint32_t(result);
     return d;
+}
+
+/**
+ * @brief  Stores (x, y, z) coordinates into EEPROM as a single encoded value.
+ *
+ * @param  x, y, z: Coordinate values to be stored.
+ * @param  id_recall: EEPROM storage index/ID.
+ */
+void MEM_Write(uint32_t x,uint32_t y, uint32_t z, uint16_t id_recall){
+	uint32_t coordinates = convert_coordinates_into_single_value(x,y,z);
+	EEPROM_Write(coordinates, id_recall);
 }
 
 /**
@@ -126,25 +137,22 @@ void seperate_char( char* a,  char* b,  char* c, char* input) {
 }
 
 /**
- * @brief  Decodes a single 32-bit EEPROM-encoded value and stores it into the memory array.
+ * @brief  Reads encoded coordinate data from EEPROM and decodes it to x, y, z values.
  *
- * @param  output_EEPROM: 32-bit value previously encoded by input_EEPROM().
- * @retval None
+ * @param  id_recall: EEPROM index/ID to read from.
  *
- * @note   The function uses a rotating index (0→1→2→0) to fill `thisMemory[3]`.
+ * @note   Decoded values are stored in global variable `thisMemory`.
  */
-void position_Memory(uint32_t output_EEPROM){
-    char a[10], b[3],c[3],e[3];
-    strcpy(a,convert_Dec_to_Hex(output_EEPROM));
-    seperate_char(b,c,e,a);
-    static uint32_t index_memory = 0;
-    thisMemory[index_memory].x = convert_charHex_to_uint32_t(b);
-    thisMemory[index_memory].y = convert_charHex_to_uint32_t(c);
-    thisMemory[index_memory].z = convert_charHex_to_uint32_t(e);
-    index_memory ++;
-    if(index_memory == 3){
-    	index_memory = 0;
-    }
+void MEM_Read(uint16_t id_recall){
+	uint32_t output_EEPROM = EEPROM_Read(id_recall);
+
+    char str_source[10], x_axis_str[3],y_axis_str[3],z_axis_str[3];
+    strcpy(str_source,convert_Dec_to_Hex(output_EEPROM));
+    seperate_char(x_axis_str,y_axis_str,z_axis_str,str_source);
+    thisMemory.x = convert_charHex_to_uint32_t(x_axis_str);
+    thisMemory.y = convert_charHex_to_uint32_t(y_axis_str);
+    thisMemory.z = convert_charHex_to_uint32_t(z_axis_str);
+
 }
 
 
