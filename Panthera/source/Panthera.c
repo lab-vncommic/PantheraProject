@@ -16,9 +16,7 @@ void PTR_system_initialization(void)
 	MD_Init();
 	STATE_Init(&thisPTR);
 	EEPROM_Start();
-
 }
-
 /*====== Execute Time ======*/
 /*
  * Total: 4000 cycles
