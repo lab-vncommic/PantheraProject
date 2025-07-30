@@ -43,6 +43,7 @@ typedef struct{
 typedef struct{
 	PTR_State_TypeDef 			state;
 	SeatAxis_TypeDef			seat_axis;
+	SeatAxis_TypeDef			seat_memory[3];
 	Motor_Active_TypeDef		motor_active;
 	uint8_t  		  			faultCounter;
 	uint8_t  		  			faultLimit;

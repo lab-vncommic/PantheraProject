@@ -7,6 +7,7 @@
 #include "StateManagement.h"
 PTR_TypeDef thisPTR;
 uint16_t counter = 0;
+uint16_t index_memory = 0;
 
 void STATE_Init(PTR_TypeDef *pState)
 {
@@ -39,6 +40,17 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 
 			break;
 
+		case STATE_AUTO:
+			// Processing: handle MANUAL state
+			STATE_autoHandle();
+
+			// Post-processing: check for faults and state transitions
+			if (thisFault.fault_mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			}
+
+			break;
+
 		case STATE_FAULT:
 			// Processing: handle FAULT state
 			STATE_faultHandle();
@@ -61,6 +73,20 @@ void STATE_idleHandle(void)
 	thisPTR.seat_axis.height 	= motor_height.axis;
 	thisPTR.seat_axis.recliner 	= motor_recliner.axis;
 	thisPTR.seat_axis.slider 	= motor_slider.axis;
+
+	if (thisButton.name == BTN_SAVE)
+	{
+		thisPTR.seat_memory[index_memory].height = thisPTR.seat_axis.height;
+		if (counter++ >= 2000)
+		{
+			index_memory++;
+		}
+		if (index_memory >= 3)
+		{
+			index_memory = 0;
+		}
+	}
+	
 }
 
 void STATE_manualHandle(void)
@@ -88,6 +114,23 @@ void STATE_manualHandle(void)
 			MD_StopAll();
 			break;
 	}
+}
+
+void STATE_autoHandle(void)
+{
+	if (motor_height.axis > thisPTR.seat_memory[0].height)
+	{
+		MD_UpdateStatusMotor(&motor_height, BACKWARD);
+	} else if (motor_height.axis < thisPTR.seat_memory[0].height)
+	{
+		MD_UpdateStatusMotor(&motor_height, FORWARD);
+	} else {
+		MD_UpdateStatusMotor(&motor_height, STOP);
+		thisPTR.state = STATE_IDLE;
+	}
+	
+	MD_UpdateDriver(&motor_height);
+	MD_UpdateAxis(&motor_height);
 }
 
 void STATE_faultHandle(void)
