@@ -7,6 +7,20 @@
 #include "MotorDriver.h"
 Motor_TypeDef motor_height, motor_recliner, motor_slider;
 
+/**
+ * @brief Configures the motor driver GPIO pins
+ *
+ * @param pMotor Pointer to the motor structure to be configured
+ * @param pin_ina GPIO pin for the INA signal of the motor driver
+ * @param pin_inb GPIO pin for the INB signal of the motor driver
+ * @param pin_sel0 GPIO pin for the SEL0 signal of the motor driver
+ * @param pin_sel1 GPIO pin for the SEL1 signal of the motor driver
+ * @param pin_mul_en GPIO pin for the MUL_EN signal of the motor driver
+ * @param pin_pwm GPIO pin for the PWM signal of the motor driver
+ *
+ * @note This function assigns the specified GPIO pins to the driver configuration
+ *       in the provided motor structure.
+ */
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
 					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm)
 {
@@ -18,6 +32,23 @@ void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef p
     pMotor->driver.pwm       = pin_pwm;
 }
 
+/**
+ * @brief Updates the motor driver GPIO pins based on current configuration
+ *
+ * This function configures the motor driver GPIO pins according to the values
+ * stored in the Motor_TypeDef structure. It sets or clears pins for:
+ * - Input A (INA)
+ * - Input B (INB)
+ * - Select 0 (SEL0)
+ * - Select 1 (SEL1)
+ * - Multiple Enable (MUL_EN)
+ * - PWM control
+ *
+ * @param[in] pMotor Pointer to the motor configuration structure
+ *
+ * @note This function should be called after any changes to the motor driver 
+ *       configuration to update the physical hardware state
+ */
 void MD_UpdateDriver(Motor_TypeDef *pMotor)
 {
     if (pMotor->driver.ina.value == 1) {
@@ -45,6 +76,20 @@ void MD_UpdateDriver(Motor_TypeDef *pMotor)
     } else GPIO_ClearPin(&pMotor->driver.pwm);
 }
 
+/**
+ * @brief Updates the status of a motor and configures its driver pins accordingly
+ * 
+ * @param pMotor Pointer to the motor structure to be updated
+ * @param status New status to be applied to the motor (FORWARD, BACKWARD, or STOP)
+ * 
+ * @details This function updates the status field of the motor structure and configures
+ * the motor's driver pins (INA, INB, PWM) based on the new status:
+ *   - FORWARD: INA=1, INB=0, PWM=1
+ *   - BACKWARD: INA=0, INB=1, PWM=1
+ *   - STOP (and default): INA=0, INB=0, PWM=0
+ * 
+ * @return None
+ */
 void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
 {
 	pMotor->status = status;
@@ -76,6 +121,18 @@ void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
 	}
 }
 
+/**
+ * @brief Updates the motor driver status for multiple sensing options
+ *
+ * This function configures the motor driver's multi-sensor pins based on the requested
+ * measurement type. It enables the multi-sensor functionality and sets the appropriate
+ * selection pins to measure current, temperature, or supply voltage.
+ *
+ * @param[in,out] pMotor    Pointer to the motor structure to be configured
+ * @param[in]     meas_type Measurement type to be selected (CURRENT, THERMAL, VCC)
+ *
+ * @note The default measurement type is CURRENT if an invalid type is provided
+ */
 void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_type)
 {
 	// Enable multi sens pin
@@ -106,6 +163,22 @@ void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_typ
 	}
 }
 
+/**
+ * @brief Initializes all motor drivers in the system
+ *
+ * @details This function performs the initialization of three motors:
+ *          - Height motor
+ *          - Recliner motor
+ *          - Slider motor
+ *          For each motor, it configures the driver pins, updates the MULSEN 
+ *          (Multi-Sense) status with current values, and finally stops all motors
+ *          to ensure a safe initial state.
+ *
+ * @pre The PIN constants for all motors must be defined before calling this function
+ * @post All motors will be configured and stopped after initialization
+ *
+ * @return None
+ */
 void MD_Init(void)
 {
 	MD_ConfigDriver(&motor_height, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1);
@@ -118,6 +191,18 @@ void MD_Init(void)
 	MD_StopAll();
 }
 
+/**
+ * @brief Stops all motors in the system
+ *
+ * This function stops all motors (height, recliner, and slider) by:
+ * 1. Setting the status of each motor to STOP
+ * 2. Updating the driver for each motor to apply the new status
+ *
+ * @return None
+ *
+ * @note This is a safety function that can be called to immediately halt all motor operations
+ * @see MD_UpdateStatusMotor(), MD_UpdateDriver()
+ */
 void MD_StopAll(void)
 {
 	// Update status to STOP for all motors
@@ -131,6 +216,21 @@ void MD_StopAll(void)
 	MD_UpdateDriver(&motor_slider);
 }
 
+/**
+ * @brief Detects a rising edge on a signal with debounce protection
+ *
+ * @details This function implements a debounced rising edge detector. It requires the
+ *          high state (1) to persist for at least 100 consecutive calls before
+ *          triggering. Once triggered, it will not detect another rising edge until
+ *          the signal returns to low state (0).
+ *
+ * @param[in] current_value Current value of the signal (0 for low, 1 for high)
+ *
+ * @return true  Rising edge detected (after debouncing)
+ * @return false No rising edge detected or debouncing in progress
+ *
+ * @note This function maintains state between calls using static variables
+ */
 _Bool MD_CheckRisingEdge(uint8_t current_value)
 {
 	static _Bool is_edge_detection_enabled = true;
@@ -139,7 +239,7 @@ _Bool MD_CheckRisingEdge(uint8_t current_value)
 	if (is_edge_detection_enabled == true) {
 		if (current_value == 1)
 		{
-			if (counter++ >= 100)
+			if (counter++ >= TIME_DEBOUNCE_RISING_EDGE)
 			{
 				counter = 0;
 				is_edge_detection_enabled = false;
@@ -156,6 +256,18 @@ _Bool MD_CheckRisingEdge(uint8_t current_value)
 	return false;
 }
 
+/**
+ * @brief Updates the axis position counter based on hall sensor edge detection
+ *
+ * This function monitors the hall sensor for rising edges and updates the motor's
+ * axis position counter accordingly. When a rising edge is detected, the function
+ * increments the axis counter if the motor is moving forward, or decrements it
+ * if the motor is moving backward.
+ *
+ * @param[in,out] pMotor Pointer to the motor structure containing status and sensor data
+ *
+ * @note This function should be called periodically to track motor position
+ */
 void MD_UpdateAxis(Motor_TypeDef *pMotor)
 {
     if (MD_CheckRisingEdge(pMotor->driver.hall.value)) {

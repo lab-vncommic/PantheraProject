@@ -69,6 +69,14 @@ void BTN_Init(void)
 	thisButton.cnt_action = 0;
 }
 
+/**
+ * @brief  Gets the current status of all buttons
+ * @details Updates the button status register (temp_btn_stt) based on the current
+ *          state of each button input. Each button corresponds to a specific bit
+ *          in the status register.
+ * @note   This function performs direct GPIO reading without debouncing
+ * @see    BTN_Update
+ */
 void BTN_GetStatusButton(void)
 {
 //	if (BTN_Debouncing(&thisButtonAll.height_1, thisButtonAll.height_1.value, TIMEOUT_DEBOUNCE_BTN)) {
@@ -172,6 +180,15 @@ void BTN_GetStatusButton(void)
 	}
 }
 
+/**
+ * @brief Checks if exactly one button is currently pressed
+ *
+ * This function checks the current button status register to determine
+ * if exactly one button is being pressed.
+ *
+ * @return true if exactly one button is pressed
+ * @return false if no buttons are pressed or if multiple buttons are pressed
+ */
 _Bool BTN_OnlyOneBtnPress(void)
 {
     uint16_t buttonRegister = thisButton.btn_stt;
@@ -184,6 +201,17 @@ _Bool BTN_OnlyOneBtnPress(void)
     return false;
 }
 
+/**
+ * @brief  Analyzes the button input state to determine action and name
+ * @param  pButton Pointer to a Button_TypeDef structure
+ * @retval None
+ *
+ * @details This function determines the button action (PRESSED or HOLD) based on
+ *          press duration and identifies the button name based on its state value.
+ *          If the counter exceeds TIMEOUT_PRESSED_BTN, the action is set to HOLD,
+ *          otherwise it's set to PRESSED. The button name is determined based on
+ *          the bit position in the btn_stt field.
+ */
 void BTN_AnalyzeInputState(Button_TypeDef *pButton)
 {
 	// Analyze action of button
@@ -229,6 +257,17 @@ void BTN_AnalyzeInputState(Button_TypeDef *pButton)
 	}
 }
 
+/**
+ * @brief  Updates the button state and processes button input
+ * @param  None
+ * @retval None
+ * 
+ * @details This function performs the complete button update sequence:
+ *          1. Updates GPIO values
+ *          2. Gets button status from GPIO values
+ *          3. If only one button is pressed, it analyzes the input state
+ *          4. If multiple buttons are pressed or none, it resets button properties
+ */
 void BTN_Update(void)
 {
 	GPIO_Update();
@@ -240,6 +279,5 @@ void BTN_Update(void)
 		thisButton.name 	  = BTN_NA;
 		thisButton.action 	  = ACTION_NA;
 		thisButton.cnt_action = 0;
-//		thisButton.btn_stt    = 0x0000;
 	}
 }

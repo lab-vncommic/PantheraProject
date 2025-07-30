@@ -10,6 +10,8 @@
 #include "components.h"
 #include "Button.h"
 
+#define TIME_DEBOUNCE_RISING_EDGE     100			// T = 100/10000 = 10ms
+
 typedef enum {
 	SENSOR = 0,
 	SENSORLESS
