@@ -7,10 +7,10 @@
 
 #ifndef MEMORY_MEMORY_H_
 #define MEMORY_MEMORY_H_
-
 #include <string.h>
 #include <stdint.h>
 #include "my_eeprom.h"
+#include "GlobalDefine.h"
 
 typedef struct{
 	uint32_t x;
@@ -27,5 +27,7 @@ void seperate_char( char* a,  char* b,  char* c, char* input);
 void MEM_Read(uint16_t id_recall);
 void MEM_Write(uint32_t x,uint32_t y, uint32_t z, uint16_t id_recall);
 
-extern Memory_TypeDef thisMemory;
+SeatAxis_TypeDef MEM_GetSeatAxis(uint16_t id_recall);
+
+//extern Memory_TypeDef thisMemory;
 #endif /* MEMORY_MEMORY_H_ */

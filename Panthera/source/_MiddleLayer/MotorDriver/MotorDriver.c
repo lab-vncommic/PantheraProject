@@ -7,6 +7,14 @@
 #include "MotorDriver.h"
 Motor_TypeDef motor_height, motor_recliner, motor_slider;
 
+void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
+					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm);
+void MD_UpdateDriver(Motor_TypeDef *pMotor);
+void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
+void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type);
+_Bool MD_CheckRisingEdge(uint8_t current_value);
+void MD_UpdateAxis(Motor_TypeDef *pMotor);
+
 /**
  * @brief Configures the motor driver GPIO pins
  *
@@ -133,7 +141,7 @@ void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
  *
  * @note The default measurement type is CURRENT if an invalid type is provided
  */
-void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_type)
+void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type)
 {
 	// Enable multi sens pin
 	pMotor->driver.mul_en.value = 1;
@@ -164,56 +172,26 @@ void MD_UpdateStatusMulsen(Motor_TypeDef *pMotor, MotorMeasType_TypeDef meas_typ
 }
 
 /**
- * @brief Initializes all motor drivers in the system
+ * @brief Updates the axis position counter based on hall sensor edge detection
  *
- * @details This function performs the initialization of three motors:
- *          - Height motor
- *          - Recliner motor
- *          - Slider motor
- *          For each motor, it configures the driver pins, updates the MULSEN 
- *          (Multi-Sense) status with current values, and finally stops all motors
- *          to ensure a safe initial state.
+ * This function monitors the hall sensor for rising edges and updates the motor's
+ * axis position counter accordingly. When a rising edge is detected, the function
+ * increments the axis counter if the motor is moving forward, or decrements it
+ * if the motor is moving backward.
  *
- * @pre The PIN constants for all motors must be defined before calling this function
- * @post All motors will be configured and stopped after initialization
+ * @param[in,out] pMotor Pointer to the motor structure containing status and sensor data
  *
- * @return None
+ * @note This function should be called periodically to track motor position
  */
-void MD_Init(void)
+void MD_UpdateAxis(Motor_TypeDef *pMotor)
 {
-	MD_ConfigDriver(&motor_height, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1);
-	MD_ConfigDriver(&motor_recliner, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2);
-	MD_ConfigDriver(&motor_slider, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
-
-	MD_UpdateStatusMulsen(&motor_height, CURRENT);
-	MD_UpdateStatusMulsen(&motor_recliner, CURRENT);
-	MD_UpdateStatusMulsen(&motor_slider, CURRENT);
-	MD_StopAll();
-}
-
-/**
- * @brief Stops all motors in the system
- *
- * This function stops all motors (height, recliner, and slider) by:
- * 1. Setting the status of each motor to STOP
- * 2. Updating the driver for each motor to apply the new status
- *
- * @return None
- *
- * @note This is a safety function that can be called to immediately halt all motor operations
- * @see MD_UpdateStatusMotor(), MD_UpdateDriver()
- */
-void MD_StopAll(void)
-{
-	// Update status to STOP for all motors
-	MD_UpdateStatusMotor(&motor_height, STOP);
-	MD_UpdateStatusMotor(&motor_recliner, STOP);
-	MD_UpdateStatusMotor(&motor_slider, STOP);
-
-	// Update driver for all motors
-	MD_UpdateDriver(&motor_height);
-	MD_UpdateDriver(&motor_recliner);
-	MD_UpdateDriver(&motor_slider);
+    if (MD_CheckRisingEdge(pMotor->driver.hall.value)) {
+        if (pMotor->status == FORWARD) {
+            pMotor->axis += 1;
+        } else if (pMotor->status == BACKWARD) {
+            pMotor->axis -= 1;
+        }
+    }
 }
 
 /**
@@ -257,25 +235,95 @@ _Bool MD_CheckRisingEdge(uint8_t current_value)
 }
 
 /**
- * @brief Updates the axis position counter based on hall sensor edge detection
+ * @brief Initializes all motor drivers in the system
  *
- * This function monitors the hall sensor for rising edges and updates the motor's
- * axis position counter accordingly. When a rising edge is detected, the function
- * increments the axis counter if the motor is moving forward, or decrements it
- * if the motor is moving backward.
+ * @details This function performs the initialization of three motors:
+ *          - Height motor
+ *          - Recliner motor
+ *          - Slider motor
+ *          For each motor, it configures the driver pins, updates the MULSEN 
+ *          (Multi-Sense) status with current values, and finally stops all motors
+ *          to ensure a safe initial state.
  *
- * @param[in,out] pMotor Pointer to the motor structure containing status and sensor data
+ * @pre The PIN constants for all motors must be defined before calling this function
+ * @post All motors will be configured and stopped after initialization
  *
- * @note This function should be called periodically to track motor position
+ * @return None
  */
-void MD_UpdateAxis(Motor_TypeDef *pMotor)
+void MD_Init(void)
 {
-    if (MD_CheckRisingEdge(pMotor->driver.hall.value)) {
-        if (pMotor->status == FORWARD) {
-            pMotor->axis += 1;
-        } else if (pMotor->status == BACKWARD) {
-            pMotor->axis -= 1;
-        }
-    }
+	MD_ConfigDriver(&motor_height, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1);
+	MD_ConfigDriver(&motor_recliner, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2);
+	MD_ConfigDriver(&motor_slider, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
+
+	MD_UpdateMeasType(&motor_height, CURRENT);
+	MD_UpdateMeasType(&motor_recliner, CURRENT);
+	MD_UpdateMeasType(&motor_slider, CURRENT);
+	MD_StopAll();
 }
+
+/**
+ * @brief Stops all motors in the system
+ *
+ * This function stops all motors (height, recliner, and slider) by:
+ * 1. Setting the status of each motor to STOP
+ * 2. Updating the driver for each motor to apply the new status
+ *
+ * @return None
+ *
+ * @note This is a safety function that can be called to immediately halt all motor operations
+ * @see MD_UpdateStatusMotor(), MD_UpdateDriver()
+ */
+void MD_StopAll(void)
+{
+	// Update status to STOP for all motors
+	MD_UpdateStatusMotor(&motor_height, STOP);
+	MD_UpdateStatusMotor(&motor_recliner, STOP);
+	MD_UpdateStatusMotor(&motor_slider, STOP);
+
+	// Update driver for all motors
+	MD_UpdateDriver(&motor_height);
+	MD_UpdateDriver(&motor_recliner);
+	MD_UpdateDriver(&motor_slider);
+}
+
+void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status)
+{
+	switch (motor_name) {
+		case MOTOR_HEIGHT:
+			MD_UpdateStatusMotor(&motor_height, status);
+			MD_UpdateDriver(&motor_height);
+			MD_UpdateAxis(&motor_height);
+			break;
+
+		case MOTOR_RECLINER:
+			MD_UpdateStatusMotor(&motor_recliner, status);
+			MD_UpdateDriver(&motor_recliner);
+			MD_UpdateAxis(&motor_recliner);
+			break;
+
+		case MOTOR_SLIDER:
+			MD_UpdateStatusMotor(&motor_slider, status);
+			MD_UpdateDriver(&motor_slider);
+			MD_UpdateAxis(&motor_slider);
+			break;
+
+		default:
+			MD_StopAll();
+			break;
+	}
+}
+
+SeatAxis_TypeDef MD_GetSeatAxis(void)
+{
+	SeatAxis_TypeDef temp_axis;
+	temp_axis.height 	= motor_height.axis;
+	temp_axis.recliner  = motor_height.axis;
+	temp_axis.slider 	= motor_height.axis;
+	return temp_axis;
+}
+
+
+
+
 

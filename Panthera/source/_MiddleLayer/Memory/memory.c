@@ -152,7 +152,16 @@ void MEM_Read(uint16_t id_recall){
     thisMemory.x = convert_charHex_to_uint32_t(x_axis_str);
     thisMemory.y = convert_charHex_to_uint32_t(y_axis_str);
     thisMemory.z = convert_charHex_to_uint32_t(z_axis_str);
+}
 
+SeatAxis_TypeDef MEM_GetSeatAxis(uint16_t id_recall)
+{
+	MEM_Read(id_recall - 1);
+	SeatAxis_TypeDef temp_memory_axis;
+	temp_memory_axis.height   = thisMemory.x;
+	temp_memory_axis.recliner = thisMemory.y;
+	temp_memory_axis.slider   = thisMemory.z;
+	return temp_memory_axis;
 }
 
 
