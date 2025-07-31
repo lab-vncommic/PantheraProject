@@ -149,9 +149,9 @@ void MEM_Read(uint16_t id_recall){
     char str_source[10], x_axis_str[3],y_axis_str[3],z_axis_str[3];
     strcpy(str_source,convert_Dec_to_Hex(output_EEPROM));
     seperate_char(x_axis_str,y_axis_str,z_axis_str,str_source);
-    thisMemory.x = convert_charHex_to_uint32_t(x_axis_str);
-    thisMemory.y = convert_charHex_to_uint32_t(y_axis_str);
-    thisMemory.z = convert_charHex_to_uint32_t(z_axis_str);
+    thisMemory.x = (uint16_t) convert_charHex_to_uint32_t(x_axis_str);
+    thisMemory.y = (uint16_t) convert_charHex_to_uint32_t(y_axis_str);
+    thisMemory.z = (uint16_t) convert_charHex_to_uint32_t(z_axis_str);
 }
 
 SeatAxis_TypeDef MEM_GetSeatAxis(uint16_t id_recall)

@@ -13,9 +13,9 @@
 #include "GlobalDefine.h"
 
 typedef struct{
-	uint32_t x;
-	uint32_t y;
-	uint32_t z;
+	uint16_t x;
+	uint16_t y;
+	uint16_t z;
 } Memory_TypeDef;
 
 const char* convert_Dec_to_Hex(uint32_t a);
