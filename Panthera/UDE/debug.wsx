@@ -57,7 +57,7 @@
 					<DocumentDockStyle>Top</DocumentDockStyle>
 					<DockingControls>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>510</DockedDimension>
+							<DockedDimension>576</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Left</DockingType>
 							<FloatingBounds>
@@ -75,7 +75,7 @@
 							<UniqueIdentifier>MainFrame.StdTargetManagerWin.OPEN_VIEW</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>1668</DockedDimension>
+							<DockedDimension>917</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Bottom</DockingType>
 							<FloatingBounds>
@@ -93,7 +93,7 @@
 							<UniqueIdentifier>MainFrame.StdUDEMessageWin.OPEN_VIEW</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>250</DockedDimension>
+							<DockedDimension>484</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Bottom</DockingType>
 							<FloatingBounds>
@@ -104,50 +104,14 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>1</DockingIndex>
+							<DockingIndex>2</DockingIndex>
 							<PanelIndex>0</PanelIndex>
 							<ContainerType>DockPanel</ContainerType>
 							<Selected>false</Selected>
 							<UniqueIdentifier>MainFrame.UDEProgressWin.OPEN_VIEW</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>0</DockedDimension>
-							<Cancelled>false</Cancelled>
-							<DockingType>Top</DockingType>
-							<FloatingBounds>
-								<X>0</X>
-								<Y>0</Y>
-								<Width>0</Width>
-								<Height>0</Height>
-							</FloatingBounds>
-							<AutoHide>false</AutoHide>
-							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>3</DockingIndex>
-							<PanelIndex>-1</PanelIndex>
-							<ContainerType>TabbedDocument</ContainerType>
-							<Selected>false</Selected>
-							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW00</UniqueIdentifier>
-						</UniqueControlIdDockingControlData>
-						<UniqueControlIdDockingControlData>
-							<DockedDimension>0</DockedDimension>
-							<Cancelled>false</Cancelled>
-							<DockingType>Top</DockingType>
-							<FloatingBounds>
-								<X>0</X>
-								<Y>0</Y>
-								<Width>0</Width>
-								<Height>0</Height>
-							</FloatingBounds>
-							<AutoHide>false</AutoHide>
-							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>2</DockingIndex>
-							<PanelIndex>-1</PanelIndex>
-							<ContainerType>TabbedDocument</ContainerType>
-							<Selected>false</Selected>
-							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW01</UniqueIdentifier>
-						</UniqueControlIdDockingControlData>
-						<UniqueControlIdDockingControlData>
-							<DockedDimension>528</DockedDimension>
+							<DockedDimension>576</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Left</DockingType>
 							<FloatingBounds>
@@ -165,6 +129,24 @@
 							<UniqueIdentifier>Core2.ViewSrv.StdUDESymbolExplWin.OPEN_VIEW</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
+							<DockedDimension>453</DockedDimension>
+							<Cancelled>false</Cancelled>
+							<DockingType>Bottom</DockingType>
+							<FloatingBounds>
+								<X>0</X>
+								<Y>0</Y>
+								<Width>0</Width>
+								<Height>0</Height>
+							</FloatingBounds>
+							<AutoHide>false</AutoHide>
+							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
+							<DockingIndex>1</DockingIndex>
+							<PanelIndex>0</PanelIndex>
+							<ContainerType>DockPanel</ContainerType>
+							<Selected>false</Selected>
+							<UniqueIdentifier>Core2.ViewSrv.StdUDEWatchWin.OPEN_VIEW00</UniqueIdentifier>
+						</UniqueControlIdDockingControlData>
+						<UniqueControlIdDockingControlData>
 							<DockedDimension>0</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Top</DockingType>
@@ -176,11 +158,11 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>0</DockingIndex>
+							<DockingIndex>2</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
-							<Selected>true</Selected>
-							<UniqueIdentifier>Core2.ViewSrv.StdUDEWatchWin.OPEN_VIEW00</UniqueIdentifier>
+							<Selected>false</Selected>
+							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW00</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
 							<DockedDimension>0</DockedDimension>
@@ -197,14 +179,32 @@
 							<DockingIndex>1</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
+							<Selected>true</Selected>
+							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW01</UniqueIdentifier>
+						</UniqueControlIdDockingControlData>
+						<UniqueControlIdDockingControlData>
+							<DockedDimension>0</DockedDimension>
+							<Cancelled>false</Cancelled>
+							<DockingType>Top</DockingType>
+							<FloatingBounds>
+								<X>0</X>
+								<Y>0</Y>
+								<Width>0</Width>
+								<Height>0</Height>
+							</FloatingBounds>
+							<AutoHide>false</AutoHide>
+							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
+							<DockingIndex>0</DockingIndex>
+							<PanelIndex>-1</PanelIndex>
+							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
-							<UniqueIdentifier>Core2.ViewSrv.StdUDEMemWin.OPEN_VIEW00</UniqueIdentifier>
+							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW02</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 					</DockingControls>
 					<LeftDockingContainerControlData>
 						<DockingContainerControlData>
 							<Tabbed>true</Tabbed>
-							<Dimension>200</Dimension>
+							<Dimension>308</Dimension>
 						</DockingContainerControlData>
 					</LeftDockingContainerControlData>
 					<RightDockingContainerControlData>
@@ -255,7 +255,7 @@
 						<PanelBounds>
 							<X>0</X>
 							<Y>0</Y>
-							<Width>1920</Width>
+							<Width>1858</Width>
 							<Height>74</Height>
 						</PanelBounds>
 						<ToolBars>
@@ -303,7 +303,7 @@
 								<Bounds>
 									<X>0</X>
 									<Y>0</Y>
-									<Width>1920</Width>
+									<Width>1858</Width>
 									<Height>24</Height>
 								</Bounds>
 								<Name>Platform Main Menu</Name>
@@ -1015,8 +1015,8 @@
 					<BottomContainer>
 						<PanelBounds>
 							<X>0</X>
-							<Y>981</Y>
-							<Width>1920</Width>
+							<Y>1029</Y>
+							<Width>1858</Width>
 							<Height>28</Height>
 						</PanelBounds>
 						<ToolBars>
@@ -1024,7 +1024,7 @@
 								<Bounds>
 									<X>0</X>
 									<Y>0</Y>
-									<Width>1920</Width>
+									<Width>1858</Width>
 									<Height>28</Height>
 								</Bounds>
 								<Name>Platform Status Bar</Name>
@@ -1034,7 +1034,7 @@
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text>WARNING: Process Debug Manager not installed - script debugger is not available</Text>
+										<Text>Ready</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
@@ -1055,7 +1055,7 @@
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text>Core2 running</Text>
+										<Text>Core2 halted by reset</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
@@ -1075,16 +1075,16 @@
 							<X>0</X>
 							<Y>74</Y>
 							<Width>0</Width>
-							<Height>907</Height>
+							<Height>955</Height>
 						</PanelBounds>
 						<ToolBars></ToolBars>
 					</LeftContainer>
 					<RightContainer>
 						<PanelBounds>
-							<X>1920</X>
+							<X>1858</X>
 							<Y>74</Y>
 							<Width>0</Width>
-							<Height>907</Height>
+							<Height>955</Height>
 						</PanelBounds>
 						<ToolBars></ToolBars>
 					</RightContainer>
@@ -1096,15 +1096,15 @@
 						<ScreenControlData>
 							<Bounds>
 								<X>1920</X>
-								<Y>-197</Y>
+								<Y>0</Y>
 								<Width>1920</Width>
 								<Height>1080</Height>
 							</Bounds>
 							<WorkingArea>
-								<X>1920</X>
-								<Y>-197</Y>
-								<Width>1920</Width>
-								<Height>1032</Height>
+								<X>1982</X>
+								<Y>0</Y>
+								<Width>1858</Width>
+								<Height>1080</Height>
 							</WorkingArea>
 							<Primary>false</Primary>
 							<DeviceName>\\.\DISPLAY1</DeviceName>
@@ -1117,10 +1117,10 @@
 								<Height>1080</Height>
 							</Bounds>
 							<WorkingArea>
-								<X>0</X>
+								<X>62</X>
 								<Y>0</Y>
-								<Width>1920</Width>
-								<Height>1032</Height>
+								<Width>1858</Width>
+								<Height>1080</Height>
 							</WorkingArea>
 							<Primary>true</Primary>
 							<DeviceName>\\.\DISPLAY2</DeviceName>
@@ -1215,7 +1215,7 @@
 			<OPEN_VIEW type="key">
 				<FrameCreated type="string">29.10.2016 20:28:29:326</FrameCreated>
 				<ViewSrv type="key">
-					<_ExtentX type="bin" size="8">bRkAAA==</_ExtentX>
+					<_ExtentX type="bin" size="8">nDEAAA==</_ExtentX>
 					<_ExtentY type="bin" size="8">GyIAAA==</_ExtentY>
 					<_StockProps type="bin" size="8">AAAAAA==</_StockProps>
 					<Columns type="bin" size="8">CAAAAA==</Columns>
@@ -1252,7 +1252,7 @@
 					<Format07 type="bin" size="8">AAAAAA==</Format07>
 					<Size07 type="bin" size="8">UAAAAA==</Size07>
 				</ViewSrv>
-				<NETFrameMode type="int">90113</NETFrameMode>
+				<NETFrameMode type="int">90114</NETFrameMode>
 				<NETFrameSaveIndex type="int">2</NETFrameSaveIndex>
 				<FrameUserTitle type="string"></FrameUserTitle>
 				<CommonVisibilityGroup type="flag">1</CommonVisibilityGroup>
@@ -1298,7 +1298,7 @@
 			<REPORT_LEVEL type="int">10</REPORT_LEVEL>
 		</System>
 		<PLACEMENT type="key">
-			<MULTICORELOADERDLG type="string">2540,3221,196,442</MULTICORELOADERDLG>
+			<MULTICORELOADERDLG type="string">2571,3252,417,663</MULTICORELOADERDLG>
 		</PLACEMENT>
 		<EXTRAVALUE type="key">
 			<MULTICORELOADERDLG type="int">0</MULTICORELOADERDLG>
@@ -1311,7 +1311,7 @@
 		<UDESTK.Script type="key">
 			<MacroGuiEntries type="key">
 				<LastScriptFilePath type="string">..\..\UDESTK 4.8</LastScriptFilePath>
-				<Macro_01_08_25_09_04_19_0 type="key">
+				<Macro_01_08_25_15_15_42_0 type="key">
 					<ScriptDescription type="string">The script contains a collection of macros to save memory content into different file formats 
 and fill target memory ranges</ScriptDescription>
 					<ScriptPath type="string">V:\UDE\AddOns\Macro\MacroLibrary\StdMacros1.dsm</ScriptPath>
@@ -1591,7 +1591,7 @@ End Sub</ScriptSource>
 					<ScriptFromStg type="flag">1</ScriptFromStg>
 					<LocalComputerName type="string">WS_CORE_DUO</LocalComputerName>
 					<ExternalScriptPath type="string"></ExternalScriptPath>
-					<NextNodeName type="string">Macro_01_08_25_10_15_20_0</NextNodeName>
+					<NextNodeName type="string">Macro_01_08_25_15_26_22_0</NextNodeName>
 					<UnAss type="key">
 						<GUIEntry type="key">
 							<MenuID type="int">10</MenuID>
@@ -1648,7 +1648,7 @@ End Sub</ScriptSource>
 						<GUIEntryDescription type="string"></GUIEntryDescription>
 					</FillDWord>
 					<NoOfFunctions type="int">5</NoOfFunctions>
-				</Macro_01_08_25_09_04_19_0>
+				</Macro_01_08_25_15_15_42_0>
 			</MacroGuiEntries>
 			<LastSelectedMacro type="string"></LastSelectedMacro>
 		</UDESTK.Script>
@@ -1661,13 +1661,19 @@ End Sub</ScriptSource>
 		<ViewSrv type="key">
 			<PowerPcCpuWin type="key">
 				<SAVED_VIEW_OBJS type="int">0</SAVED_VIEW_OBJS>
+				<OPEN_VIEW type="key">
+					<FrameCreated type="string">01.08.2025 14:57:51:735</FrameCreated>
+					<ViewSrv type="key"></ViewSrv>
+					<NETFrameMode type="int">73728</NETFrameMode>
+					<FrameUserTitle type="string"></FrameUserTitle>
+				</OPEN_VIEW>
 			</PowerPcCpuWin>
 			<StdUDESymbolExplWin type="key">
 				<OPEN_VIEW type="key">
 					<FrameCreated type="string">29.10.2016 20:28:29:374</FrameCreated>
 					<ViewSrv type="key"></ViewSrv>
 					<NETFrameMode type="int">77825</NETFrameMode>
-					<NETFrameSaveIndex type="int">5</NETFrameSaveIndex>
+					<NETFrameSaveIndex type="int">3</NETFrameSaveIndex>
 					<FrameUserTitle type="string"></FrameUserTitle>
 					<CommonVisibilityGroup type="flag">0</CommonVisibilityGroup>
 					<VisibilityGroup_1 type="string">Target0.Controller0.Core2</VisibilityGroup_1>
@@ -1677,9 +1683,9 @@ End Sub</ScriptSource>
 				<SAVED_VIEW type="int">0</SAVED_VIEW>
 			</StdUDESymbolExplWin>
 			<StdUDEProgWin type="key">
-				<SAVED_VIEW_OBJS type="int">2</SAVED_VIEW_OBJS>
+				<SAVED_VIEW_OBJS type="int">3</SAVED_VIEW_OBJS>
 				<OPEN_VIEW00 type="key">
-					<FrameCreated type="string">31.10.2016 11:30:02:513</FrameCreated>
+					<FrameCreated type="string">01.08.2025 15:25:02:504</FrameCreated>
 					<ViewSrv type="key">
 						<AnimateQueue type="key">
 							<RunningPeriod type="int">0</RunningPeriod>
@@ -1689,7 +1695,7 @@ End Sub</ScriptSource>
 					<SourceFile type="string">..\main.c</SourceFile>
 					<SourceFileInstFlag type="int">1</SourceFileInstFlag>
 					<NETFrameMode type="int">73728</NETFrameMode>
-					<NETFrameSaveIndex type="int">3</NETFrameSaveIndex>
+					<NETFrameSaveIndex type="int">5</NETFrameSaveIndex>
 					<FrameUserTitle type="string"></FrameUserTitle>
 					<CommonVisibilityGroup type="flag">0</CommonVisibilityGroup>
 					<VisibilityGroup_1 type="string">Target0.Controller0.Core2</VisibilityGroup_1>
@@ -1697,7 +1703,7 @@ End Sub</ScriptSource>
 				</OPEN_VIEW00>
 				<SAVED_VIEW00 type="int">0</SAVED_VIEW00>
 				<OPEN_VIEW01 type="key">
-					<FrameCreated type="string">28.07.2025 12:54:10:472</FrameCreated>
+					<FrameCreated type="string">01.08.2025 15:25:57:174</FrameCreated>
 					<ViewSrv type="key">
 						<AnimateQueue type="key">
 							<RunningPeriod type="int">0</RunningPeriod>
@@ -1705,15 +1711,60 @@ End Sub</ScriptSource>
 						</AnimateQueue>
 					</ViewSrv>
 					<SourceFile type="string">code &lt;0xFC0000-0xFC03FF&gt;</SourceFile>
-					<SourceFileInstFlag type="int">4</SourceFileInstFlag>
+					<SourceFileInstFlag type="int">8</SourceFileInstFlag>
 					<NETFrameMode type="int">73728</NETFrameMode>
-					<NETFrameSaveIndex type="int">4</NETFrameSaveIndex>
+					<NETFrameSaveIndex type="int">6</NETFrameSaveIndex>
 					<FrameUserTitle type="string"></FrameUserTitle>
 					<CommonVisibilityGroup type="flag">0</CommonVisibilityGroup>
 					<VisibilityGroup_1 type="string">Target0.Controller0.Core2</VisibilityGroup_1>
 					<VisibilityGroupsCnt type="int">1</VisibilityGroupsCnt>
 				</OPEN_VIEW01>
 				<SAVED_VIEW01 type="int">1</SAVED_VIEW01>
+				<OPEN_VIEW02 type="key">
+					<FrameCreated type="string">01.08.2025 15:26:20:417</FrameCreated>
+					<ViewSrv type="key">
+						<AnimateQueue type="key">
+							<RunningPeriod type="int">0</RunningPeriod>
+							<HoldedPeriod type="int">0</HoldedPeriod>
+						</AnimateQueue>
+					</ViewSrv>
+					<SourceFile type="string">..\source\Panthera.c</SourceFile>
+					<SourceFileInstFlag type="int">1</SourceFileInstFlag>
+					<NETFrameMode type="int">73728</NETFrameMode>
+					<NETFrameSaveIndex type="int">7</NETFrameSaveIndex>
+					<FrameUserTitle type="string"></FrameUserTitle>
+				</OPEN_VIEW02>
+				<OPEN_VIEW03 type="key">
+					<FrameCreated type="string">01.08.2025 15:13:27:114</FrameCreated>
+					<ViewSrv type="key">
+						<AnimateQueue type="key">
+							<RunningPeriod type="int">0</RunningPeriod>
+							<HoldedPeriod type="int">0</HoldedPeriod>
+						</AnimateQueue>
+					</ViewSrv>
+					<SourceFile type="string">..\source\_MiddleLayer\Button\Button.c</SourceFile>
+					<SourceFileInstFlag type="int">1</SourceFileInstFlag>
+					<NETFrameMode type="int">73728</NETFrameMode>
+					<NETFrameSaveIndex type="int">8</NETFrameSaveIndex>
+					<FrameUserTitle type="string"></FrameUserTitle>
+				</OPEN_VIEW03>
+				<OPEN_VIEW04 type="key">
+					<FrameCreated type="string">01.08.2025 15:14:18:479</FrameCreated>
+					<ViewSrv type="key">
+						<AnimateQueue type="key">
+							<RunningPeriod type="int">0</RunningPeriod>
+							<HoldedPeriod type="int">0</HoldedPeriod>
+						</AnimateQueue>
+					</ViewSrv>
+					<SourceFile type="string">..\source\Panthera.c</SourceFile>
+					<SourceFileInstFlag type="int">2</SourceFileInstFlag>
+					<NETFrameMode type="int">73728</NETFrameMode>
+					<NETFrameSaveIndex type="int">9</NETFrameSaveIndex>
+					<FrameUserTitle type="string"></FrameUserTitle>
+				</OPEN_VIEW04>
+				<SAVED_VIEW02 type="int">2</SAVED_VIEW02>
+				<SAVED_VIEW03 type="int">3</SAVED_VIEW03>
+				<SAVED_VIEW04 type="int">4</SAVED_VIEW04>
 			</StdUDEProgWin>
 			<StdUDESFRView type="key">
 				<SAVED_VIEW_OBJS type="int">0</SAVED_VIEW_OBJS>
@@ -1724,13 +1775,13 @@ End Sub</ScriptSource>
 			<StdUDEWatchWin type="key">
 				<SAVED_VIEW_OBJS type="int">1</SAVED_VIEW_OBJS>
 				<OPEN_VIEW00 type="key">
-					<FrameCreated type="string">29.07.2025 14:29:00:295</FrameCreated>
+					<FrameCreated type="string">01.08.2025 14:57:15:057</FrameCreated>
 					<ViewSrv type="key">
-						<TopIndex type="int">1</TopIndex>
-						<CaretIndex type="int">29</CaretIndex>
-						<NameWidth type="int">999</NameWidth>
+						<TopIndex type="int">0</TopIndex>
+						<CaretIndex type="int">10</CaretIndex>
+						<NameWidth type="int">252</NameWidth>
 						<AddressWidth type="int">0</AddressWidth>
-						<ValueWidth type="int">701</ValueWidth>
+						<ValueWidth type="int">197</ValueWidth>
 						<Value2Width type="int">0</Value2Width>
 						<MinMaxWidth type="int">0</MinMaxWidth>
 						<Watches type="key">
@@ -1742,51 +1793,31 @@ End Sub</ScriptSource>
 							<FloatFormatForValue2 type="int">3</FloatFormatForValue2>
 							<RefreshPeriodGlobalEnable type="int">1</RefreshPeriodGlobalEnable>
 							<Watch1 type="key">
-								<Name type="string">adc_value_readback1 [D:\Mantis_2500W\Github\Panthera-project\Panthera\source\Panthera.c]:{PTR_system_initialization}</Name>
+								<Name type="string">elapsed (global) @1</Name>
+								<RunningPeriod1 type="int">500</RunningPeriod1>
+								<HoldedPeriod1 type="int">0</HoldedPeriod1>
 							</Watch1>
 							<Watch2 type="key">
-								<Name type="string">thisMemory (global) @1</Name>
+								<Name type="string">thisGPIO (global) @1</Name>
+								<Status type="string">#0,6#</Status>
 								<RunningPeriod2 type="int">500</RunningPeriod2>
 								<HoldedPeriod2 type="int">0</HoldedPeriod2>
 							</Watch2>
 							<Watch3 type="key">
-								<Name type="string">thatADC (global) @1</Name>
+								<Name type="string">thisPTR (global) @1</Name>
+								<Status type="string">#0#0,0$-1,0$#0,5$0,2$#0,6$0,2$</Status>
 								<RunningPeriod3 type="int">500</RunningPeriod3>
 								<HoldedPeriod3 type="int">0</HoldedPeriod3>
 							</Watch3>
 							<Watch4 type="key">
-								<Name type="string">thisPWM1 (global) @1</Name>
-								<Status type="string">#0#0,0#0,1#</Status>
+								<Name type="string">index_memory (global) @1</Name>
 								<RunningPeriod4 type="int">500</RunningPeriod4>
 								<HoldedPeriod4 type="int">0</HoldedPeriod4>
 							</Watch4>
-							<Watch5 type="key">
-								<Name type="string">thisPWM2 (global) @1</Name>
-								<Status type="string">#0#</Status>
-								<RunningPeriod5 type="int">500</RunningPeriod5>
-								<HoldedPeriod5 type="int">0</HoldedPeriod5>
-							</Watch5>
-							<Watch6 type="key">
-								<Name type="string">thisPWM3 (global) @1</Name>
-								<Status type="string">#0#</Status>
-								<RunningPeriod6 type="int">500</RunningPeriod6>
-								<HoldedPeriod6 type="int">0</HoldedPeriod6>
-							</Watch6>
-							<Watch7 type="key">
-								<Name type="string">check [D:\Mantis_2500W\Github\Panthera-project\Panthera\source\Panthera.c] @1</Name>
-								<RunningPeriod7 type="int">500</RunningPeriod7>
-								<HoldedPeriod7 type="int">0</HoldedPeriod7>
-							</Watch7>
-							<Watch8 type="key">
-								<Name type="string">PWMD9 (global) @1</Name>
-							</Watch8>
-							<Watch9 type="key">
-								<Name type="string">PWMD10 (global) @1</Name>
-							</Watch9>
 						</Watches>
 					</ViewSrv>
-					<NETFrameMode type="int">73728</NETFrameMode>
-					<NETFrameSaveIndex type="int">6</NETFrameSaveIndex>
+					<NETFrameMode type="int">90113</NETFrameMode>
+					<NETFrameSaveIndex type="int">4</NETFrameSaveIndex>
 					<FrameUserTitle type="string"></FrameUserTitle>
 				</OPEN_VIEW00>
 				<SAVED_VIEW00 type="int">0</SAVED_VIEW00>
@@ -1807,7 +1838,7 @@ End Sub</ScriptSource>
 				<SAVED_VIEW_OBJS type="int">0</SAVED_VIEW_OBJS>
 			</UDEProfilingWin>
 			<StdUDEMemWin type="key">
-				<SAVED_VIEW_OBJS type="int">1</SAVED_VIEW_OBJS>
+				<SAVED_VIEW_OBJS type="int">0</SAVED_VIEW_OBJS>
 				<OPEN_VIEW00 type="key">
 					<FrameCreated type="string">29.07.2025 14:25:43:181</FrameCreated>
 					<ViewSrv type="key">
@@ -1961,7 +1992,7 @@ End Sub</ScriptSource>
 		</MRUSourceFileList>
 	</Core2>
 	<TargetInfoFile type="string">stm_spc582b60_chorus_discovery_starterkit_debug_jtag.cfg</TargetInfoFile>
-	<LastWriteDate type="string">01.08.2025 10:15:20:000</LastWriteDate>
+	<LastWriteDate type="string">01.08.2025 15:35:53:000</LastWriteDate>
 	<Logging type="key">
 		<DontClearLogOnCloseWorkspace type="flag">0</DontClearLogOnCloseWorkspace>
 		<UdeApiLogging type="flag">0</UdeApiLogging>

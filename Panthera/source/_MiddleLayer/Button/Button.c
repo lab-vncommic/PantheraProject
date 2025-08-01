@@ -77,7 +77,7 @@ void BTN_Init(void)
  * @note   This function performs direct GPIO reading without debouncing
  * @see    BTN_Update
  */
-void BTN_GetStatusButton(void)
+void BTN_GetStatusBtnReg(void)
 {
 //	if (BTN_Debouncing(&thisButtonAll.height_1, thisButtonAll.height_1.value, TIMEOUT_DEBOUNCE_BTN)) {
 //		temp_btn_stt |= BTN_STT_0;
@@ -178,6 +178,7 @@ void BTN_GetStatusButton(void)
 	} else {
 		temp_btn_stt &= ~BTN_STT_9;
 	}
+	thisButton.btn_stt = temp_btn_stt;
 }
 
 /**
@@ -272,7 +273,7 @@ void BTN_Update(void)
 {
 	GPIO_Update();
 	BTN_GetGpioValue(&thisGPIO);
-	BTN_GetStatusButton();
+	BTN_GetStatusBtnReg();
 	if (BTN_OnlyOneBtnPress()) {
 		BTN_AnalyzeInputState(&thisButton);
 	} else {
@@ -280,4 +281,14 @@ void BTN_Update(void)
 		thisButton.action 	  = ACTION_NA;
 		thisButton.cnt_action = 0;
 	}
+}
+
+ButtonState_TypeDef BTN_GetStatus(void)
+{
+	BTN_Update();
+
+	ButtonState_TypeDef temp_button;
+	temp_button.name = thisButton.name;
+	temp_button.action 	 = thisButton.action;
+	return temp_button;
 }

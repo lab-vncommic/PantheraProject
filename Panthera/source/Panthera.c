@@ -6,6 +6,7 @@
  */
 #include "Panthera.h"
 uint16_t cnt_500ms;
+uint16_t cnt;
 
 void PTR_system_initialization(void)
 {
@@ -20,6 +21,7 @@ void PTR_system_initialization(void)
 	MD_Init();
 	STATE_Init(&thisPTR);
 	EEPROM_Start();
+//	EEPROM_Restart();
 }
 /*====== Execute Time ======*/
 /*
@@ -31,10 +33,18 @@ void PTR_main_interrupt_service(void)
 {
 	begin = stm_lld_getcounter(&STMD3);
 
+	if (cnt++ >= 10000) {
+		cnt = 0;
+		GPIO_TogglePin(&PIN_SEL0_2);
+	}
+
 	MEAS_GetValue();
-	FAULT_UpdateMode();
+//	FAULT_UpdateMode();
 	BTN_Update();
 
+	thisPTR.seat_current_axis.height 	= 200 + index_memory;
+	thisPTR.seat_current_axis.recliner 	= 202 + index_memory;
+	thisPTR.seat_current_axis.slider 	= 205 + index_memory;
 	STATE_UpdateState(&thisPTR);
 
     end = stm_lld_getcounter(&STMD3);

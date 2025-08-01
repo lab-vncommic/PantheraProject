@@ -11,7 +11,7 @@
 #include "stdbool.h"
 
 #define TIMEOUT_DEBOUNCE_BTN   500    // 50ms
-#define TIMEOUT_PRESSED_BTN	   1000   // 100ms
+#define TIMEOUT_PRESSED_BTN	   5000   // 500ms
 
 // Button status bit definitions (16-bit)
 #define BTN_STT_0     ((uint16_t) 1U<<0)  // BT_HEIGHT_1 - Height up button
@@ -35,26 +35,26 @@
  * REUSABLE CODE SECTION
  *===========================================================================*/
 typedef enum{
-	ACTION_NA,
-	ACTION_PRESSED,
-	ACTION_HOLD
+	ACTION_NA		= 0,
+	ACTION_PRESSED	= 1,
+	ACTION_HOLD		= 2
 } Btn_Action_TypeDef;
 
 /*===========================================================================
  * PTR CODE SECTION
  *===========================================================================*/
 typedef enum{
-	BTN_NA = 0,
-	BTN_HEIGHT_1,
-	BTN_HEIGHT_2,
-	BTN_RECLINER_1,
-	BTN_RECLINER_2,
-	BTN_SLIDER_1,
-	BTN_SLIDER_2,
-	BTN_SAVE,
-	BTN_RECALL_1,
-	BTN_RECALL_2,
-	BTN_RECALL_3
+	BTN_NA 			= 0,
+	BTN_HEIGHT_1	= 1,
+	BTN_HEIGHT_2	= 2,
+	BTN_RECLINER_1	= 3,
+	BTN_RECLINER_2	= 4,
+	BTN_SLIDER_1	= 5,
+	BTN_SLIDER_2	= 6,
+	BTN_SAVE		= 7,
+	BTN_RECALL_1	= 8,
+	BTN_RECALL_2	= 9,
+	BTN_RECALL_3	= 10
 } Btn_Name_TypeDef;
 
 typedef struct {
@@ -83,6 +83,11 @@ typedef struct {
 	uint16_t			btn_stt;
 } Button_TypeDef;
 
+typedef struct{
+	Btn_Name_TypeDef		name;
+	Btn_Action_TypeDef		action;
+} ButtonState_TypeDef;
+
 /*===========================================================================
  * REUSABLE CODE SECTION
  *===========================================================================*/
@@ -93,10 +98,12 @@ _Bool BTN_Debouncing(Btn_Object_TypeDef *pButton, _Bool condition, uint16_t time
  * PTR CODE SECTION
  *===========================================================================*/
 void BTN_Init(void);
-void BTN_GetStatusButton(void);
+void BTN_GetStatusBtnReg(void);
 _Bool BTN_OnlyOneBtnPress(void);
 void BTN_AnalyzeInputState(Button_TypeDef *pButton);
 void BTN_Update(void);
+
+ButtonState_TypeDef BTN_GetStatus(void);
 
 extern Button_TypeDef		thisButton;
 #endif /* SOURCE__MIDDLELAYER_BUTTON_BUTTON_H_ */

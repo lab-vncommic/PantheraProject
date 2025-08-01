@@ -6,21 +6,41 @@
  */
 #include "StateManagement.h"
 PTR_TypeDef thisPTR;
+uint16_t index_memory = 1;
+uint16_t save_available = 1;
+uint16_t cnt_delay_btw_save = 0;
 
+// List API
+void STATE_idleHandle(PTR_TypeDef *pState);
+void STATE_manualHandle(PTR_TypeDef *pState);
+void STATE_autoHandle(PTR_TypeDef *pState);
+void STATE_faultHandle(void);
+//void STATE_autorecoveryHandle(PTR_TypeDef *pState);
+//void STATE_shutdownHandle(PTR_TypeDef *pState);
+
+void STATE_HandleButton(PTR_TypeDef *pState);
+void STATE_GetSeatAxis(PTR_TypeDef *pState);
+
+// Defination API
 void STATE_Init(PTR_TypeDef *pState)
 {
 	pState->state = STATE_IDLE;
+//	save_available 		= 1;
+//	index_memory 		= 1;
+//	cnt_delay_btw_save 	= 0;
 }
 
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
 	// Determine state machine for system
-	STATE_HandleButton(pState, &thisButton);
+	if ((pState->state != STATE_FAULT) && (pState->state != STATE_SHUTDOWN) && (pState->state != STATE_AUTORECOVERY)) {
+		STATE_HandleButton(pState);
+	}
 
 	switch (pState->state) {
 		case STATE_IDLE:
 			// Processing: handle IDLE state
-			STATE_idleHandle();
+			STATE_idleHandle(pState);
 
 			// Post-processing: check for faults and state transitions
 			if (thisFault.fault_mode != FAULT_NONE) {
@@ -31,7 +51,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 
 		case STATE_MANUAL:
 			// Processing: handle MANUAL state
-			STATE_manualHandle();
+			STATE_manualHandle(pState);
 
 			// Post-processing: check for faults and state transitions
 			if (thisFault.fault_mode != FAULT_NONE) {
@@ -41,8 +61,8 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			break;
 
 		case STATE_AUTO:
-			// Processing: handle MANUAL state
-			STATE_autoHandle();
+			// Processing: handle AUTO state
+			STATE_autoHandle(pState);
 
 			// Post-processing: check for faults and state transitions
 			if (thisFault.fault_mode != FAULT_NONE) {
@@ -64,47 +84,40 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 	}
 }
 
-void STATE_idleHandle(void)
+void STATE_idleHandle(PTR_TypeDef *pState)
 {
-	// Stop all motors
 	MD_StopAll();
-
-	// Update seat position
-	thisPTR.seat_axis.height 	= motor_height.axis;
-	thisPTR.seat_axis.recliner 	= motor_recliner.axis;
-	thisPTR.seat_axis.slider 	= motor_slider.axis;
-}
-
-void STATE_manualHandle(void)
-{
-	switch (thisPTR.motor_active.name) {
-		case MOTOR_ACTIVE_HEIGHT:
-			MD_UpdateStatusMotor(&motor_height, thisPTR.motor_active.status);
-			MD_UpdateDriver(&motor_height);
-			MD_UpdateAxis(&motor_height);
-			break;
-
-		case MOTOR_ACTIVE_RECLINER:
-			MD_UpdateStatusMotor(&motor_recliner, thisPTR.motor_active.status);
-			MD_UpdateDriver(&motor_recliner);
-			MD_UpdateAxis(&motor_recliner);
-			break;
-
-		case MOTOR_ACTIVE_SLIDER:
-			MD_UpdateStatusMotor(&motor_slider, thisPTR.motor_active.status);
-			MD_UpdateDriver(&motor_slider);
-			MD_UpdateAxis(&motor_slider);
-			break;
-
-		default:
-			MD_StopAll();
-			break;
+//	STATE_GetSeatAxis(pState);
+	if (save_available == 0) {
+		if (cnt_delay_btw_save++ >= TIMEOUT_SAVE_AXIS) {
+			cnt_delay_btw_save = 0;
+			save_available 	   = 1;
+		}
 	}
 }
 
-void STATE_autoHandle(void)
+void STATE_manualHandle(PTR_TypeDef *pState)
 {
+	MD_Run(pState->motor.motor_name, pState->motor.status);
+}
 
+void STATE_autoHandle(PTR_TypeDef *pState)
+{
+	if (pState->seat_current_axis.height > pState->seat_memory_axis.height) {
+		MD_Run(MOTOR_HEIGHT, BACKWARD);
+	} else if (pState->seat_current_axis.height < pState->seat_memory_axis.height) {
+		MD_Run(MOTOR_HEIGHT, FORWARD);
+	} else if (pState->seat_current_axis.recliner > pState->seat_memory_axis.recliner) {
+		MD_Run(MOTOR_RECLINER, BACKWARD);
+	} else if (pState->seat_current_axis.recliner < pState->seat_memory_axis.recliner) {
+		MD_Run(MOTOR_RECLINER, FORWARD);
+	} else if (pState->seat_current_axis.slider > pState->seat_memory_axis.slider) {
+		MD_Run(MOTOR_SLIDER, BACKWARD);
+	} else if (pState->seat_current_axis.slider < pState->seat_memory_axis.slider) {
+		MD_Run(MOTOR_SLIDER, FORWARD);
+	} else {
+		MD_StopAll();
+	}
 }
 
 void STATE_faultHandle(void)
@@ -112,88 +125,113 @@ void STATE_faultHandle(void)
 	MD_StopAll();
 }
 
-void STATE_HandleButton(PTR_TypeDef *pState, Button_TypeDef *pButton)
+//void STATE_autorecoveryHandle(PTR_TypeDef *pState)
+//{
+//
+//}
+//
+//void STATE_shutdownHandle(PTR_TypeDef *pState)
+//{
+//
+//}
+
+void STATE_HandleButton(PTR_TypeDef *pState)
 {
-	switch (pButton->name) {
+	pState->button = BTN_GetStatus();
+	switch (pState->button.name) {
 		case BTN_HEIGHT_1:
-			if (pButton->action == ACTION_HOLD) {
-				thisPTR.motor_active.name   = MOTOR_ACTIVE_HEIGHT;
-				thisPTR.motor_active.status = FORWARD;
+			if (pState->button.action == ACTION_HOLD) {
+				thisPTR.motor.motor_name = MOTOR_HEIGHT;
+				thisPTR.motor.status 	 = FORWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_HEIGHT_2:
-			if (pButton->action == ACTION_HOLD) {
-				thisPTR.motor_active.name   = MOTOR_ACTIVE_HEIGHT;
-				thisPTR.motor_active.status = BACKWARD;
+			if (pState->button.action == ACTION_HOLD) {
+				thisPTR.motor.motor_name = MOTOR_HEIGHT;
+				thisPTR.motor.status 	 = BACKWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_RECLINER_1:
-			if (pButton->action == ACTION_HOLD) {
-				thisPTR.motor_active.name   = MOTOR_ACTIVE_RECLINER;
-				thisPTR.motor_active.status = FORWARD;
+			if (pState->button.action == ACTION_HOLD) {
+				thisPTR.motor.motor_name = MOTOR_RECLINER;
+				thisPTR.motor.status 	 = FORWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_RECLINER_2:
-			if (pButton->action == ACTION_HOLD) {
-				thisPTR.motor_active.name   = MOTOR_ACTIVE_RECLINER;
-				thisPTR.motor_active.status = BACKWARD;
+			if (pState->button.action == ACTION_HOLD) {
+				thisPTR.motor.motor_name = MOTOR_RECLINER;
+				thisPTR.motor.status 	 = BACKWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_SLIDER_1:
-			if (pButton->action == ACTION_HOLD) {
-				thisPTR.motor_active.name   = MOTOR_ACTIVE_SLIDER;
-				thisPTR.motor_active.status = FORWARD;
+			if (pState->button.action == ACTION_HOLD) {
+				thisPTR.motor.motor_name = MOTOR_SLIDER;
+				thisPTR.motor.status 	 = FORWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_SLIDER_2:
-			if (pButton->action == ACTION_HOLD) {
-				thisPTR.motor_active.name   = MOTOR_ACTIVE_SLIDER;
-				thisPTR.motor_active.status = BACKWARD;
+			if (pState->button.action == ACTION_HOLD) {
+				thisPTR.motor.motor_name = MOTOR_SLIDER;
+				thisPTR.motor.status 	 = BACKWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_SAVE:
-			if (pButton->action == ACTION_PRESSED) {
-				// Save logic
+			if (pState->button.action == ACTION_PRESSED) {
+				if (save_available == 1) {
+					MEM_Write(pState->seat_current_axis.height, pState->seat_current_axis.recliner, pState->seat_current_axis.slider, index_memory);
+					index_memory++;
+					if (index_memory > 3) {
+						index_memory = 1;
+					}
+					save_available = 0;
+				}
 			}
 			break;
 
 		case BTN_RECALL_1:
-			if (pButton->action == ACTION_PRESSED) {
-				// Recall 1 logic
+			if (pState->button.action == ACTION_HOLD) {
+				// Get seat axis from eeprom
+				pState->seat_memory_axis = MEM_GetSeatAxis(1);
+
 			}
 			pState->state = STATE_AUTO;
 			break;
 
 		case BTN_RECALL_2:
-			if (pButton->action == ACTION_PRESSED) {
-				// Recall 2 logic
+			if (pState->button.action == ACTION_HOLD) {
+				pState->seat_memory_axis = MEM_GetSeatAxis(2);
 			}
 			pState->state = STATE_AUTO;
 			break;
 
 		case BTN_RECALL_3:
-			if (pButton->action == ACTION_PRESSED) {
-				// Recall 3 logic
+			if (pState->button.action == ACTION_HOLD) {
+				pState->seat_memory_axis = MEM_GetSeatAxis(3);
 			}
 			pState->state = STATE_AUTO;
 			break;
 
 		default:
 			pState->state = STATE_IDLE;
-			thisPTR.motor_active.name = MOTOR_ACTIVE_NONE;
-			thisPTR.motor_active.status = STOP;
+			thisPTR.motor.motor_name = MOTOR_NONE;
+			thisPTR.motor.status 	 = STOP;
 			break;
 	}
+}
+
+void STATE_GetSeatAxis(PTR_TypeDef *pState)
+{
+	pState->seat_current_axis = MD_GetSeatAxis();
 }

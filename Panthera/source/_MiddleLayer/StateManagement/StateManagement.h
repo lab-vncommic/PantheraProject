@@ -12,53 +12,41 @@
 #include "Measurement.h"
 #include "FaultManagement.h"
 #include "Button.h"
+#include "GlobalDefine.h"
+#include "memory.h"
+
+#define TIMEOUT_SAVE_AXIS        50000   // Delay 2s between t position saves
 
 typedef enum{
-	STATE_IDLE			= 0x00,
-	STATE_MANUAL	 	= 0x01,
-	STATE_AUTO		 	= 0x02,
-	STATE_FAULT     	= 0x03,
-	STATE_AUTORECOVERY 	= 0x04,
+	STATE_IDLE		   = 0,
+	STATE_MANUAL	   = 1,
+	STATE_AUTO		   = 2,
+	STATE_FAULT		   = 3,
+	STATE_AUTORECOVERY = 4,
 	STATE_SHUTDOWN
-} PTR_State_TypeDef;
-
-typedef enum{
-	MOTOR_ACTIVE_NONE		= 0x00,
-	MOTOR_ACTIVE_HEIGHT		= 0x01,
-	MOTOR_ACTIVE_RECLINER	= 0x02,
-	MOTOR_ACTIVE_SLIDER		= 0x03
-} Motor_Active_Name_TypeDef;
+} State_TypeDef;
 
 typedef struct{
-	Motor_Active_Name_TypeDef		name;
-	MotorStatus_TypeDef				status;
-} Motor_Active_TypeDef;
+	MotorName_TypeDef		motor_name;
+	MotorStatus_TypeDef		status;
+} StateMotor_TypeDef;
 
 typedef struct{
-	uint16_t height;
-	uint16_t recliner;
-	uint16_t slider;
-} SeatAxis_TypeDef;
+	State_TypeDef 			state;
 
-typedef struct{
-	PTR_State_TypeDef 			state;
-	SeatAxis_TypeDef			seat_axis;
-	Motor_Active_TypeDef		motor_active;
-	uint8_t  		  			faultCounter;
-	uint8_t  		  			faultLimit;
+	StateMotor_TypeDef		motor;
+	SeatAxis_TypeDef		seat_current_axis;
+	SeatAxis_TypeDef		seat_memory_axis;
+
+	ButtonState_TypeDef		button;
+
+	uint8_t  		  		faultCounter;
+	uint8_t  		  		faultLimit;
 } PTR_TypeDef;
 
 void STATE_Init(PTR_TypeDef *pState);
 void STATE_UpdateState(PTR_TypeDef *pState);
 
-void STATE_idleHandle(void);
-void STATE_manualHandle(void);
-void STATE_autoHandle(void);
-void STATE_faultHandle(void);
-void STATE_autorecoveryHandle(void);
-void STATE_shutdownHandle(void);
-
-void STATE_HandleButton(PTR_TypeDef *pState, Button_TypeDef *pButton);
-
 extern PTR_TypeDef thisPTR;
+extern uint16_t index_memory;
 #endif /* SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_ */

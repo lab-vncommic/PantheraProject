@@ -65,11 +65,11 @@ out[5] 	= motor_height.driver.mul_en.value;
 out[6] 	= thisPTR.state;
 out[7] 	= thisButton.btn_stt;
 out[8] 	= thisButton.name;;
-out[9] 	= thisButton.cnt_action;
-out[10] = thisButton.action;
-out[11] = temp_btn_stt;
-out[12] = thisPTR.motor_active.status;
-out[13] = thisPTR.motor_active.name;
+out[9] 	= thisPTR.seat_memory[0].height;
+out[10] = thisPTR.seat_memory[1].height;
+out[11] = thisPTR.seat_memory[2].height;
+out[12] = thisPTR.seat_axis.height;
+out[13] = motor_height.axis;
 }
 
 
