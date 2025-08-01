@@ -6,7 +6,9 @@
  */
 #include "StateManagement.h"
 PTR_TypeDef thisPTR;
-uint16_t index_memory;
+uint16_t index_memory = 1;
+uint16_t save_available = 1;
+uint16_t cnt_delay_btw_save = 0;
 
 // List API
 void STATE_idleHandle(PTR_TypeDef *pState);
@@ -23,14 +25,17 @@ void STATE_GetSeatAxis(PTR_TypeDef *pState);
 void STATE_Init(PTR_TypeDef *pState)
 {
 	pState->state = STATE_IDLE;
+//	save_available 		= 1;
+//	index_memory 		= 1;
+//	cnt_delay_btw_save 	= 0;
 }
 
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
-
-
 	// Determine state machine for system
-	STATE_HandleButton(pState);
+	if ((pState->state != STATE_FAULT) && (pState->state != STATE_SHUTDOWN) && (pState->state != STATE_AUTORECOVERY)) {
+		STATE_HandleButton(pState);
+	}
 
 	switch (pState->state) {
 		case STATE_IDLE:
@@ -82,7 +87,13 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 void STATE_idleHandle(PTR_TypeDef *pState)
 {
 	MD_StopAll();
-	STATE_GetSeatAxis(pState);
+//	STATE_GetSeatAxis(pState);
+	if (save_available == 0) {
+		if (cnt_delay_btw_save++ >= TIMEOUT_SAVE_AXIS) {
+			cnt_delay_btw_save = 0;
+			save_available 	   = 1;
+		}
+	}
 }
 
 void STATE_manualHandle(PTR_TypeDef *pState)
@@ -178,12 +189,19 @@ void STATE_HandleButton(PTR_TypeDef *pState)
 
 		case BTN_SAVE:
 			if (pState->button.action == ACTION_PRESSED) {
-				// Save logic
+				if (save_available == 1) {
+					MEM_Write(pState->seat_current_axis.height, pState->seat_current_axis.recliner, pState->seat_current_axis.slider, index_memory);
+					index_memory++;
+					if (index_memory > 3) {
+						index_memory = 1;
+					}
+					save_available = 0;
+				}
 			}
 			break;
 
 		case BTN_RECALL_1:
-			if (pState->button.action == ACTION_PRESSED) {
+			if (pState->button.action == ACTION_HOLD) {
 				// Get seat axis from eeprom
 				pState->seat_memory_axis = MEM_GetSeatAxis(1);
 
@@ -192,14 +210,14 @@ void STATE_HandleButton(PTR_TypeDef *pState)
 			break;
 
 		case BTN_RECALL_2:
-			if (pState->button.action == ACTION_PRESSED) {
+			if (pState->button.action == ACTION_HOLD) {
 				pState->seat_memory_axis = MEM_GetSeatAxis(2);
 			}
 			pState->state = STATE_AUTO;
 			break;
 
 		case BTN_RECALL_3:
-			if (pState->button.action == ACTION_PRESSED) {
+			if (pState->button.action == ACTION_HOLD) {
 				pState->seat_memory_axis = MEM_GetSeatAxis(3);
 			}
 			pState->state = STATE_AUTO;

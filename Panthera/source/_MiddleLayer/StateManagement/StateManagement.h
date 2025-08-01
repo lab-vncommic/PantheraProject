@@ -15,6 +15,8 @@
 #include "GlobalDefine.h"
 #include "memory.h"
 
+#define TIMEOUT_SAVE_AXIS        50000   // Delay 2s between t position saves
+
 typedef enum{
 	STATE_IDLE		   = 0,
 	STATE_MANUAL	   = 1,
@@ -46,4 +48,5 @@ void STATE_Init(PTR_TypeDef *pState);
 void STATE_UpdateState(PTR_TypeDef *pState);
 
 extern PTR_TypeDef thisPTR;
+extern uint16_t index_memory;
 #endif /* SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_ */

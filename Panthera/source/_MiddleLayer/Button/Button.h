@@ -11,7 +11,7 @@
 #include "stdbool.h"
 
 #define TIMEOUT_DEBOUNCE_BTN   500    // 50ms
-#define TIMEOUT_PRESSED_BTN	   1000   // 100ms
+#define TIMEOUT_PRESSED_BTN	   5000   // 500ms
 
 // Button status bit definitions (16-bit)
 #define BTN_STT_0     ((uint16_t) 1U<<0)  // BT_HEIGHT_1 - Height up button
@@ -105,5 +105,5 @@ void BTN_Update(void);
 
 ButtonState_TypeDef BTN_GetStatus(void);
 
-//extern Button_TypeDef		thisButton;
+extern Button_TypeDef		thisButton;
 #endif /* SOURCE__MIDDLELAYER_BUTTON_BUTTON_H_ */

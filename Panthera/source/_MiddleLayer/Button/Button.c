@@ -178,6 +178,7 @@ void BTN_GetStatusBtnReg(void)
 	} else {
 		temp_btn_stt &= ~BTN_STT_9;
 	}
+	thisButton.btn_stt = temp_btn_stt;
 }
 
 /**
@@ -285,6 +286,7 @@ void BTN_Update(void)
 ButtonState_TypeDef BTN_GetStatus(void)
 {
 	BTN_Update();
+
 	ButtonState_TypeDef temp_button;
 	temp_button.name = thisButton.name;
 	temp_button.action 	 = thisButton.action;
