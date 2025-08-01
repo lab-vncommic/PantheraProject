@@ -29,7 +29,9 @@ const char* convert_Dec_to_Hex(uint32_t a) {
         hex_output[--index] = hex_digits[a % 16];
         a /= 16;
     }
-
+    if (index == 7) {
+        hex_output[--index] = '0';
+    }
     return &hex_output[index];
 }
 
@@ -123,17 +125,31 @@ void MEM_Write(uint32_t x,uint32_t y, uint32_t z, uint16_t id_recall){
  * @retval None
  */
 void seperate_char( char* a,  char* b,  char* c, char* input) {
-    a[0] = input[0];
-    a[1] = input[1];
-    a[2] = '\0';
+    if(strlen(input)==5){
+        a[0] = '0';
+        a[1] = input[0];
+        a[2] = '\0';
 
-    b[0] = input[2];
-    b[1] = input[3];
-    b[2] = '\0';
+        b[0] = input[1];
+        b[1] = input[2];
+        b[2] = '\0';
 
-    c[0] = input[4];
-    c[1] = input[5];
-    c[2] = '\0';
+        c[0] = input[3];
+        c[1] = input[4];
+        c[2] = '\0';
+    }else{
+        a[0] = input[0];
+        a[1] = input[1];
+        a[2] = '\0';
+
+        b[0] = input[2];
+        b[1] = input[3];
+        b[2] = '\0';
+
+        c[0] = input[4];
+        c[1] = input[5];
+        c[2] = '\0';
+    }
 }
 
 /**

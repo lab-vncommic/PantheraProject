@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include "my_eeprom.h"
 
+//Address EEPROM 0x00800000
+
 typedef struct{
 	uint32_t x;
 	uint32_t y;
