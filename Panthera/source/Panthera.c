@@ -51,6 +51,12 @@ void PTR_main_interrupt_service(void)
 
 	end = stm_lld_getcounter(&STMD3);
     elapsed = end - begin;
+
+    /********************************** Code test communication **********************************/
+    if(uart_rx_flag == 1){
+    	update_Communication(BufRX);
+    }
+
 }
 
 void PTR_inf_loop_system(void)
