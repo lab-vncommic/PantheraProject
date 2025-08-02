@@ -16,29 +16,6 @@ void PTR_system_initialization(void)
 	MD_Init();
 	STATE_Init(&thisPTR);
 	EEPROM_Start();
-
-	/**************************************Test memory****************************************/
-	//ID 1
-	EEPROM_Restart();
-	thisPTR.seat_axis.height 	= 12;
-	thisPTR.seat_axis.recliner 	= 25;
-	thisPTR.seat_axis.slider 	= 15;
-	MEM_Write(thisPTR.seat_axis.height, thisPTR.seat_axis.recliner, thisPTR.seat_axis.slider, ID_EEPROM_1);
-	MEM_Read(ID_EEPROM_1);
-
-////	ID2
-//	uint32_t test_id2_a = 60;
-//	uint32_t test_id2_b = 62;
-//	uint32_t test_id2_c = 64;
-//	MEM_Write(test_id2_a, test_id2_b, test_id2_c, ID_EEPROM_2);
-//	MEM_Read(ID_EEPROM_2);
-//
-////	ID3
-//	uint32_t test_id3_a = 50;
-//	uint32_t test_id3_b = 51;
-//	uint32_t test_id3_c = 52;
-//	MEM_Write(test_id3_a, test_id3_b, test_id3_c, ID_EEPROM_3);
-//	MEM_Read(ID_EEPROM_3);
 }
 /*====== Execute Time ======*/
 /*
