@@ -21,7 +21,6 @@ void PTR_system_initialization(void)
 	MD_Init();
 	STATE_Init(&thisPTR);
 	EEPROM_Start();
-//	EEPROM_Restart();
 }
 /*====== Execute Time ======*/
 /*
@@ -39,8 +38,17 @@ void PTR_main_interrupt_service(void)
 	}
 
 	MEAS_GetValue();
-//	FAULT_UpdateMode();
+	FAULT_UpdateMode();
 	BTN_Update();
+
+	// FIXME: Need to transfer to middleware layer
+	if (uart_process_flag) {
+		uart_process_flag = 0;
+		// Function to decode received UART message
+
+		sd_lld_write(&SD2, (uint8_t*) BufTX, UART_TX_LENGTH);
+	}
+
 	STATE_UpdateState(&thisPTR);
 
     end = stm_lld_getcounter(&STMD3);
@@ -49,12 +57,8 @@ void PTR_main_interrupt_service(void)
 
 void PTR_inf_loop_system(void)
 {
-	if (uart_tx_flag == 1){
-		uart_tx_flag = 0;
-		sd_lld_write(&SD2, (uint8_t*) BufTX, UART_TX_LENGTH);
-	}
-    snprintf(BufTX, sizeof(BufTX), "uart_test_1 = %ld, uart_test_2 = %f \r\n",
-    		uart_test_1,
-			uart_test_2
-    );
+	UART_StartRX();
+
+	// Uncomment this code for debugging
+//	UART_Monitor();
 }

@@ -287,6 +287,15 @@ void MD_StopAll(void)
 	MD_UpdateDriver(&motor_slider);
 }
 
+/**
+ * @brief Runs a specified motor with a given status
+ * @details Activates the selected motor (height, recliner, or slider) with
+ *          the specified status (FORWARD, BACKWARD, or STOP). Updates the motor
+ *          driver configuration and tracks axis position changes.
+ * @param[in] motor_name The motor to control (MOTOR_HEIGHT, MOTOR_RECLINER, MOTOR_SLIDER)
+ * @param[in] status The operation to perform (FORWARD, BACKWARD, or STOP)
+ * @return None
+ */
 void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status)
 {
 	switch (motor_name) {
@@ -314,6 +323,14 @@ void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status)
 	}
 }
 
+/**
+ * @brief Retrieves the current position of all seat axes
+ * @details Reads the current axis position values from all motors and
+ *          returns them in a unified SeatAxis structure
+ * @return SeatAxis_TypeDef Structure containing the current position values
+ *         for height, recliner and slider axes
+ * @note Currently returns the same value (height axis) for all axes
+ */
 SeatAxis_TypeDef MD_GetSeatAxis(void)
 {
 	SeatAxis_TypeDef temp_axis;

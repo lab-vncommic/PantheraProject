@@ -91,7 +91,7 @@ uint32_t convert_charHex_to_uint32_t(const char* hex_str) {
 /**
  * @brief  Encodes three separate coordinate values (x, y, z) into a single 32-bit number.
  *
- * @param  x, y, z: Input decimal values (expected to be 0–255 for 2-digit hex representation).
+ * @param  x, y, z: Input decimal values (expected to be 0ï¿½255 for 2-digit hex representation).
  * @retval A 32-bit value representing the merged hex of x, y, and z.
  *
  * @note   Values are converted to 2-digit hex, concatenated, then parsed to uint32_t.
@@ -173,6 +173,13 @@ void MEM_Read(uint16_t id_recall){
 //    thisMemory.z = (uint16_t) convert_charHex_to_uint32_t(z_axis_str);
 }
 
+/**
+ * @brief Retrieves seat axis data from memory for a specific recall position
+ * @details Reads the stored coordinates from EEPROM at the specified recall ID
+ *          and converts them to a SeatAxis_TypeDef structure
+ * @param[in] id_recall The recall position ID (1-3) to retrieve
+ * @return SeatAxis_TypeDef Structure containing the height, recliner, and slider positions
+ */
 SeatAxis_TypeDef MEM_GetSeatAxis(uint16_t id_recall)
 {
 	MEM_Read(id_recall);
