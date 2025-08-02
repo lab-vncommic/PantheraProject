@@ -16,8 +16,9 @@
 | 12  | 29/07/2025    | v1.0.11             | Bổ sung thêm thư viện driver: eeprom                                       | Tống Văn Toàn     | Obsoleted|
 | 13  | 30/07/2025    | v1.0.12             | Bổ sung thêm thư viện middleware: memory                                   | Tống Văn Toàn     | Obsoleted|
 | 14  | 30/07/2025    | v1.1.0              | Release version 1.1.0: hoàn thiện State MANUAL                             | Nguyễn Quốc Uy    | Obsoleted|
-| 15  | 01/08/2025    | v1.1.1              | Bổ sung code đọc (khi nút RECALL được nhấn), ghi (khi nút SAVE được nhấn) vào state machine | Nguyễn Quốc Uy    | Active   |
-| 16  | 02/08/2025    | v1.1.2              | Bổ sung code sửa lỗi MEMORY đọc ghi số giá trị nhỏ hơn 16 bị lỗi           | Tống Văn Toàn     | Active   |
+| 15  | 01/08/2025    | v1.1.1              | Bổ sung code đọc (khi nút RECALL được nhấn), ghi (khi nút SAVE được nhấn) vào state machine | Nguyễn Quốc Uy    | Obsoleted|
+| 16  | 02/08/2025    | v1.1.2              | Bổ sung code sửa lỗi MEMORY đọc ghi số giá trị nhỏ hơn 16 bị lỗi           | Tống Văn Toàn     | Obsoleted|
+| 17  | 02/08/2025    | v1.1.3              | Bổ sung code chống rung cho nút nhấn                                       | Nguyễn Quốc Uy    | Active   |
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
