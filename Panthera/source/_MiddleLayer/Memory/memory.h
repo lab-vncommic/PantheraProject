@@ -12,6 +12,8 @@
 #include "my_eeprom.h"
 #include "GlobalDefine.h"
 
+//Address EEPROM 0x00800000
+
 typedef struct{
 	uint16_t x;
 	uint16_t y;
