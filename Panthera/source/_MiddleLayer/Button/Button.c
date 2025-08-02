@@ -216,9 +216,12 @@ _Bool BTN_OnlyOneBtnPress(void)
 void BTN_AnalyzeInputState(Button_TypeDef *pButton)
 {
 	// Analyze action of button
-	if (pButton->cnt_action++ > TIMEOUT_PRESSED_BTN) {
-		pButton->action = ACTION_HOLD;
-	} else pButton->action = ACTION_PRESSED;
+	pButton->cnt_action++;
+	if (pButton->cnt_action < TIMEOUT_DEBOUNCE_BTN) {
+		pButton->action = ACTION_NA;
+	}else if ((pButton->cnt_action >= TIMEOUT_DEBOUNCE_BTN) && (pButton->cnt_action < TIMEOUT_PRESSED_BTN)) {
+		pButton->action = ACTION_PRESSED;
+	} else pButton->action = ACTION_HOLD;
 
 	// Analyze name of button
 	switch (pButton->btn_stt) {
@@ -288,7 +291,7 @@ ButtonState_TypeDef BTN_GetStatus(void)
 	BTN_Update();
 
 	ButtonState_TypeDef temp_button;
-	temp_button.name = thisButton.name;
-	temp_button.action 	 = thisButton.action;
+	temp_button.name 	= thisButton.name;
+	temp_button.action	= thisButton.action;
 	return temp_button;
 }
