@@ -87,7 +87,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 void STATE_idleHandle(PTR_TypeDef *pState)
 {
 	MD_StopAll();
-//	STATE_GetSeatAxis(pState);
+	STATE_GetSeatAxis(pState);
 	if (save_available == 0) {
 		if (cnt_delay_btw_save++ >= TIMEOUT_SAVE_AXIS) {
 			cnt_delay_btw_save = 0;
@@ -202,7 +202,6 @@ void STATE_HandleButton(PTR_TypeDef *pState)
 
 		case BTN_RECALL_1:
 			if (pState->button.action == ACTION_HOLD) {
-				// Get seat axis from eeprom
 				pState->seat_memory_axis = MEM_GetSeatAxis(1);
 
 			}

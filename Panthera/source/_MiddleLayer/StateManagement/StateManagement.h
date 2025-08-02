@@ -15,7 +15,7 @@
 #include "GlobalDefine.h"
 #include "memory.h"
 
-#define TIMEOUT_SAVE_AXIS        50000   // Delay 2s between t position saves
+#define TIMEOUT_SAVE_AXIS        50000   // Delay 5s between t position saves
 
 typedef enum{
 	STATE_IDLE		   = 0,

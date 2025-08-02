@@ -41,10 +41,6 @@ void PTR_main_interrupt_service(void)
 	MEAS_GetValue();
 //	FAULT_UpdateMode();
 	BTN_Update();
-
-	thisPTR.seat_current_axis.height 	= 200 + index_memory;
-	thisPTR.seat_current_axis.recliner 	= 202 + index_memory;
-	thisPTR.seat_current_axis.slider 	= 205 + index_memory;
 	STATE_UpdateState(&thisPTR);
 
     end = stm_lld_getcounter(&STMD3);
