@@ -69,7 +69,7 @@ void FAULT_UpdateStatus(void){
    if (FAULT_IS_MT3_OTP(&thisMeas.thermal_mt3) ) {
    	temp_fault_status |= FAULT_STT_5;
    }
-    thisFault.fault_status = temp_fault_status;
+   thisFault.fault_status = temp_fault_status;
 }
 
 /**
