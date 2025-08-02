@@ -22,14 +22,27 @@ void STATE_HandleButton(PTR_TypeDef *pState);
 void STATE_GetSeatAxis(PTR_TypeDef *pState);
 
 // Defination API
+/**
+ * @brief Initializes the state management system
+ * @details Sets the initial state to IDLE to ensure the system starts in a safe mode
+ * @param[out] pState Pointer to the state management structure to be initialized
+ * @return None
+ */
 void STATE_Init(PTR_TypeDef *pState)
 {
 	pState->state = STATE_IDLE;
-//	save_available 		= 1;
-//	index_memory 		= 1;
-//	cnt_delay_btw_save 	= 0;
+	save_available 		= 1;
+	index_memory 		= 1;
+	cnt_delay_btw_save 	= 0;
 }
 
+/**
+ * @brief Updates the system state based on current conditions
+ * @details Processes button inputs if not in fault, shutdown, or auto-recovery states,
+ *          then executes the appropriate handler for the current state
+ * @param[in,out] pState Pointer to the state management structure
+ * @return None
+ */
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
 	// Determine state machine for system
@@ -84,6 +97,13 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 	}
 }
 
+/**
+ * @brief Handles the system behavior in IDLE state
+ * @details Stops all motors, updates current seat axis position, and manages
+ *          save availability timing for memory functions
+ * @param[in,out] pState Pointer to the state management structure
+ * @return None
+ */
 void STATE_idleHandle(PTR_TypeDef *pState)
 {
 	MD_StopAll();
@@ -96,11 +116,24 @@ void STATE_idleHandle(PTR_TypeDef *pState)
 	}
 }
 
+/**
+ * @brief Handles the system behavior in MANUAL state
+ * @details Runs the selected motor with the specified status (forward/backward)
+ * @param[in] pState Pointer to the state management structure with motor settings
+ * @return None
+ */
 void STATE_manualHandle(PTR_TypeDef *pState)
 {
 	MD_Run(pState->motor.motor_name, pState->motor.status);
 }
 
+/**
+ * @brief Handles the system behavior in AUTO state
+ * @details Compares current seat axis positions with memory positions and
+ *          runs appropriate motors to move the seat to the target position
+ * @param[in] pState Pointer to the state management structure
+ * @return None
+ */
 void STATE_autoHandle(PTR_TypeDef *pState)
 {
 	if (pState->seat_current_axis.height > pState->seat_memory_axis.height) {
@@ -120,6 +153,11 @@ void STATE_autoHandle(PTR_TypeDef *pState)
 	}
 }
 
+/**
+ * @brief Handles the system behavior in FAULT state
+ * @details Stops all motors to ensure safe operation when a fault is detected
+ * @return None
+ */
 void STATE_faultHandle(void)
 {
 	MD_StopAll();
@@ -135,6 +173,13 @@ void STATE_faultHandle(void)
 //
 //}
 
+/**
+ * @brief Processes button inputs and updates system state accordingly
+ * @details Gets the current button status and determines the appropriate
+ *          state and motor actions based on which button is pressed
+ * @param[in,out] pState Pointer to the state management structure to update
+ * @return None
+ */
 void STATE_HandleButton(PTR_TypeDef *pState)
 {
 	pState->button = BTN_GetStatus();
@@ -230,6 +275,13 @@ void STATE_HandleButton(PTR_TypeDef *pState)
 	}
 }
 
+/**
+ * @brief Updates the current seat axis positions in the state structure
+ * @details Retrieves the current position values for all seat axes from
+ *          the motor driver and stores them in the state structure
+ * @param[out] pState Pointer to the state management structure to update
+ * @return None
+ */
 void STATE_GetSeatAxis(PTR_TypeDef *pState)
 {
 	pState->seat_current_axis = MD_GetSeatAxis();

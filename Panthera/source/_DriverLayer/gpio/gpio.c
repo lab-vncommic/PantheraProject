@@ -51,6 +51,13 @@ uint8_t GPIO_ReadPin(GPIO_TypeDef *pPin)
 	return pal_readpad(pPin->port, pPin->pin);
 }
 
+/**
+ * @brief  Initializes all GPIO pins used in the system.
+ *
+ * This function sets up the GPIO configuration for each control signal,
+ * including height, recall, recliner, slider, save, and hall sensors.
+ * Each GPIO is initialized with its corresponding port, pin, and default value.
+ */
 void GPIO_Init(void)
 {
 	thisGPIO.height_1   = (GPIO_TypeDef){PORT_HIEGHT_1, HIEGHT_1, 0};
@@ -68,6 +75,13 @@ void GPIO_Init(void)
 	thisGPIO.hall_3     = (GPIO_TypeDef){PORT_HALL_3, HALL_3, 0};
 }
 
+/**
+ * @brief  Updates the value of all GPIO pins.
+ *
+ * This function reads the current state of each GPIO pin and updates
+ * the corresponding value in the thisGPIO structure. It should be called
+ * periodically to refresh the input states.
+ */
 void GPIO_Update(void)
 {
 	thisGPIO.height_1.value     = GPIO_ReadPin(&thisGPIO.height_1);

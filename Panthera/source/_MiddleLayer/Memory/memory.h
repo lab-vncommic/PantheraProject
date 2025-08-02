@@ -9,7 +9,8 @@
 #define MEMORY_MEMORY_H_
 #include <string.h>
 #include <stdint.h>
-#include "my_eeprom.h"
+
+#include "../../_DriverLayer/eeprom/my_eeprom.h"
 #include "GlobalDefine.h"
 
 //Address EEPROM 0x00800000

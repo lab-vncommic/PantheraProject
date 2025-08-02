@@ -10,18 +10,11 @@ Button_TypeDef		thisButton;
 uint16_t			temp_btn_stt = 0x0000;
 
 /**
- * @brief  Updates the current status of all buttons
- * @details Reads the physical state of all GPIO pins connected to buttons
- *          and updates the internal button status structure
- * @note   Should be called periodically to maintain current button states
- */
-
-
-/**
- * @brief  Processes the button states and triggers corresponding actions
- * @details Analyzes the current button states and executes appropriate
- *          system responses based on which buttons are pressed
- * @note   This function is currently empty and needs to be implemented
+ * @brief Updates the button values from GPIO inputs
+ * @details Copies the current GPIO input values for all buttons to the 
+ *          internal button state structure
+ * @param[in] pGpio Pointer to the GPIO input structure containing current pin values
+ * @return None
  */
 void BTN_GetGpioValue(GPIO_Input_TypeDef *pGpio)
 {
@@ -37,6 +30,15 @@ void BTN_GetGpioValue(GPIO_Input_TypeDef *pGpio)
 	thisButtonAll.save.value 		= pGpio->save.value;
 }
 
+/**
+ * @brief Implements button debouncing to filter out noise and false triggers
+ * @details Uses a counter-based approach to ensure a signal remains stable
+ *          for a specified timeout period before confirming it as valid
+ * @param[in,out] pButton Pointer to button object containing debounce counter
+ * @param[in] condition Current state of the button input being checked
+ * @param[in] timeout Number of consecutive checks required to confirm state
+ * @return _Bool TRUE if the condition is stable for the timeout period, FALSE otherwise
+ */
 _Bool BTN_Debouncing(Btn_Object_TypeDef *pButton, _Bool condition, uint16_t timeout)
 {
 	if (condition)
@@ -286,6 +288,12 @@ void BTN_Update(void)
 	}
 }
 
+/**
+ * @brief Returns the current button state after updating all button states
+ * @details Updates all button states by calling BTN_Update() and returns
+ *          a copy of the current button state (name and action)
+ * @return ButtonState_TypeDef Current button state with name and action
+ */
 ButtonState_TypeDef BTN_GetStatus(void)
 {
 	BTN_Update();

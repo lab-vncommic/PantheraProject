@@ -35,7 +35,7 @@
 
  
 SerialConfig serial_config_My_UART = {
-  115200,
+  9600,
   SD_MODE_8BITS_PARITY_NONE,
   SPC5_LIN_API_MODE_ASYNCHRONOUS,
   UART_TX_Callback,
