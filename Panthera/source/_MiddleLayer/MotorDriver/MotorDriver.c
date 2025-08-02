@@ -9,6 +9,7 @@ Motor_TypeDef motor_height, motor_recliner, motor_slider;
 
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
 					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm);
+void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology);
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
 void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
 void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type);
@@ -38,6 +39,11 @@ void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef p
     pMotor->driver.sel1      = pin_sel1;
     pMotor->driver.mul_en    = pin_mul_en;
     pMotor->driver.pwm       = pin_pwm;
+}
+
+void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology)
+{
+	pMotor->topology = topology;
 }
 
 /**
@@ -185,13 +191,19 @@ void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type)
  */
 void MD_UpdateAxis(Motor_TypeDef *pMotor)
 {
-    if (MD_CheckRisingEdge(pMotor->driver.hall.value)) {
-        if (pMotor->status == FORWARD) {
-            pMotor->axis += 1;
-        } else if (pMotor->status == BACKWARD) {
-            pMotor->axis -= 1;
-        }
-    }
+	if (pMotor->topology == SENSOR) {
+		pMotor->driver.hall.value = GPIO_ReadPin(&pMotor->driver.hall);
+	    if (MD_CheckRisingEdge(pMotor->driver.hall.value)) {
+	        if (pMotor->status == FORWARD) {
+	            pMotor->axis += 1;
+	        } else if (pMotor->status == BACKWARD) {
+	            pMotor->axis -= 1;
+	        }
+	    }
+	} else {
+
+	}
+
 }
 
 /**
@@ -255,6 +267,10 @@ void MD_Init(void)
 	MD_ConfigDriver(&motor_slider, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1);
 	MD_ConfigDriver(&motor_height, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2);
 	MD_ConfigDriver(&motor_recliner, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
+
+	MD_ConfigTopology(&motor_height, SENSOR);
+	MD_ConfigTopology(&motor_recliner, SENSOR);
+	MD_ConfigTopology(&motor_slider, SENSOR);
 
 	MD_UpdateMeasType(&motor_height, CURRENT);
 	MD_UpdateMeasType(&motor_recliner, CURRENT);

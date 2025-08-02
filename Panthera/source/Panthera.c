@@ -24,8 +24,10 @@ void PTR_system_initialization(void)
 }
 /*====== Execute Time ======*/
 /*
- * Total: 4000 cycles
- *
+ * Time available: 4000 cycles
+ * Meas: 118 cycles
+ * Fault: 436 cycles
+ * Button: 266 cycles
  *
  */
 void PTR_main_interrupt_service(void)
@@ -48,7 +50,7 @@ void PTR_main_interrupt_service(void)
 
 	STATE_UpdateState(&thisPTR);
 
-    end = stm_lld_getcounter(&STMD3);
+	end = stm_lld_getcounter(&STMD3);
     elapsed = end - begin;
 }
 

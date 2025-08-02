@@ -1992,7 +1992,7 @@ End Sub</ScriptSource>
 		</MRUSourceFileList>
 	</Core2>
 	<TargetInfoFile type="string">stm_spc582b60_chorus_discovery_starterkit_debug_jtag.cfg</TargetInfoFile>
-	<LastWriteDate type="string">02.08.2025 15:01:47:000</LastWriteDate>
+	<LastWriteDate type="string">02.08.2025 16:51:02:000</LastWriteDate>
 	<Logging type="key">
 		<DontClearLogOnCloseWorkspace type="flag">0</DontClearLogOnCloseWorkspace>
 		<UdeApiLogging type="flag">0</UdeApiLogging>
