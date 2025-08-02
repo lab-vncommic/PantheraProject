@@ -14,6 +14,7 @@ void MD_UpdateDriver(Motor_TypeDef *pMotor);
 void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
 void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type);
 _Bool MD_CheckRisingEdge(uint8_t current_value);
+_Bool MD_CurrentRippleCounting(uint16_t current_value);
 void MD_UpdateAxis(Motor_TypeDef *pMotor);
 
 /**
@@ -201,7 +202,30 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor)
 	        }
 	    }
 	} else {
+		switch (pMotor->meas_motor) {
+			case MEAS_MOTOR_HEIGHT:
+				pMotor->current_value = MEAS_GetCurrentValue(MEAS_MOTOR_HEIGHT);
+				break;
 
+			case MEAS_MOTOR_RECLINER:
+				pMotor->current_value = MEAS_GetCurrentValue(MEAS_MOTOR_RECLINER);
+				break;
+
+			case MEAS_MOTOR_SLIDER:
+				pMotor->current_value = MEAS_GetCurrentValue(MEAS_MOTOR_SLIDER);
+				break;
+
+			default:
+				pMotor->current_value = 0;
+				break;
+		}
+		if (MD_CurrentRippleCounting(pMotor->current_value)) {
+	        if (pMotor->status == FORWARD) {
+		        pMotor->axis += 1;
+		    } else if (pMotor->status == BACKWARD) {
+		    	pMotor->axis -= 1;
+		    }
+		}
 	}
 
 }
@@ -243,6 +267,12 @@ _Bool MD_CheckRisingEdge(uint8_t current_value)
 	{
 		is_edge_detection_enabled = true;
 	}
+	return false;
+}
+
+_Bool MD_CurrentRippleCounting(uint16_t current_value)
+{
+
 	return false;
 }
 

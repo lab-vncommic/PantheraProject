@@ -231,5 +231,15 @@ void MEAS_UpdateValue(void)
 
 }
 
+uint16_t MEAS_GetCurrentValue(MeasMotor_TypeDef meas_motor)
+{
+	switch (meas_motor) {
+		case MEAS_MOTOR_HEIGHT: return thisMeas.current_mt1.value_q15;
+		case MEAS_MOTOR_RECLINER: return thisMeas.current_mt2.value_q15;
+		case MEAS_MOTOR_SLIDER:	return thisMeas.current_mt3.value_q15;
+		default: return 0;
+	}
+}
+
 
 

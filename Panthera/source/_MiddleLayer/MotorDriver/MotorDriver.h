@@ -10,6 +10,7 @@
 #include "components.h"
 #include "Button.h"
 #include "GlobalDefine.h"
+#include "Measurement.h"
 
 #define TIME_DEBOUNCE_RISING_EDGE     100			// T = 100/10000 = 10ms
 
@@ -55,9 +56,9 @@ typedef struct{
 	DriverMeasType_TypeDef		meas_type;
 	uint16_t					axis;
 
-	// Parameters when using hall sensor option
-
 	// Parameters when using sensorless option
+	MeasMotor_TypeDef			meas_motor;
+	uint16_t					current_value;
 } Motor_TypeDef;
 
 void MD_Init(void);

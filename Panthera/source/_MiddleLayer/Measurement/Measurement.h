@@ -37,7 +37,14 @@ typedef struct{
 /*===========================================================================
  * PTR CODE SECTION
  *===========================================================================*/
-// Motor 1: Current parameters for Q15 concept (Motor Slider)
+typedef enum{
+	MEAS_NONE				= 0,
+	MEAS_MOTOR_HEIGHT		= 1,
+	MEAS_MOTOR_RECLINER		= 2,
+	MEAS_MOTOR_SLIDER		= 3
+} MeasMotor_TypeDef;
+
+// Motor 1: Current parameters for Q15 concept
 #define CURRENT_MT1_HIGH_LIMIT_HARD  25.0f
 #define CURRENT_MT1_HIGH_LIMIT_SOFT  20.0f
 #define CURRENT_MT1_SCALE_FACTOR     (uq31_t)(CURRENT_MT1_HIGH_LIMIT_HARD/CURRENT_MT1_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
@@ -96,6 +103,9 @@ void MEAS_Init(void);
 void MEAS_GetValue(uint16_t meas_type);
 void MEAS_GetRealValue(uint16_t meas_type);
 void MEAS_UpdateValue(void);
+void MEAS_GetValue(void);
+void MEAS_GetRealValue(void);
+uint16_t MEAS_GetCurrentValue(MeasMotor_TypeDef meas_motor);
 
 extern MeasAll_TypeDef thisMeas;
 #endif /* MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_ */
