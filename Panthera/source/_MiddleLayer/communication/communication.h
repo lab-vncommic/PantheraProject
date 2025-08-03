@@ -7,9 +7,13 @@
 
 #include "stdint.h"
 #include "string.h"
+#include "uart.h"
 
 #ifndef SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_
 #define SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_
+
+#define READ_MODE 	0
+#define WRITE_MODE 	1
 
 typedef struct{
 	uint16_t ID_Message ;
@@ -20,7 +24,8 @@ typedef struct{
 
 void seperate_char_communication( char* a,  char* b,  char* c, char* input);
 uint32_t convert_charHex_to_uint32_t_Communication(const char* hex_str);
-void update_Communication(char* string_input);
+void Communication_Receive(void);
+void Communication_Transmit(void);
 
 extern Communication_TypeDef thisCommunication;
 #endif /* SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_ */

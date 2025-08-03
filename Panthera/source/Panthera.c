@@ -54,7 +54,7 @@ void PTR_main_interrupt_service(void)
 
     /********************************** Code test communication **********************************/
     if(uart_rx_flag == 1){
-    	update_Communication(BufRX);
+    	Communication_Receive();
     }
 
 }
