@@ -43,8 +43,9 @@ void PTR_main_interrupt_service(void)
 	if (uart_process_flag) {
 		uart_process_flag = 0;
 		// Function to decode received UART message
+		Communication_Receive();
+		Communication_Transmit();
 
-		sd_lld_write(&SD2, (uint8_t*) BufTX, UART_TX_LENGTH);
 	}
 
 	STATE_UpdateState(&thisPTR);
@@ -52,10 +53,6 @@ void PTR_main_interrupt_service(void)
 	end = stm_lld_getcounter(&STMD3);
     elapsed = end - begin;
 
-    /********************************** Code test communication **********************************/
-    if(uart_rx_flag == 1){
-    	Communication_Receive();
-    }
 
 }
 

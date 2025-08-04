@@ -8,6 +8,8 @@
 #include "stdint.h"
 #include "string.h"
 #include "uart.h"
+#include "button.h"
+#include "MotorDriver.h"
 
 #ifndef SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_
 #define SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_

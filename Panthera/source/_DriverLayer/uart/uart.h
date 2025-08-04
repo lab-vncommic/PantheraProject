@@ -14,7 +14,7 @@
 #include <stddef.h>
 
 #define UART_TX_DEBUG_LENGTH 		100
-#define UART_TX_LENGTH				4
+#define UART_TX_LENGTH				50
 #define UART_RX_LENGTH 				4
 
 void UART_Init(void);

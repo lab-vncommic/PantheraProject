@@ -73,5 +73,5 @@ void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t c
 void MD_UpdateMeas(MeasType_TypeDef meas_type);
 SeatAxis_TypeDef MD_GetSeatAxis(void);
 
-//extern Motor_TypeDef motor_height, motor_recliner, motor_slider;
+extern Motor_TypeDef motor_height, motor_recliner, motor_slider;
 #endif /* MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_ */
