@@ -8,6 +8,7 @@
 #ifndef MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_
 #define MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_
 #include "components.h"
+#include "MotorDriver.h"
 #include "IQMath.h"
 #include "adc.h"
 
@@ -66,6 +67,11 @@ typedef struct{
 #define THERMAL_MT3_GAIN_F32				-0.01387162642f		// Use for calculate real value
 #define THERMAL_MT3_OFFSET_F32				402.4545454545f		// Use for calculate real value
 
+#define MEAS_CURRENT		0
+#define MEAS_THERMAL		1
+
+#define SAMPLE_TIME_MEAS_THERMAL	10000	// 10000/10000 = 1s
+
 typedef struct{
 	Meas_TypeDef current_mt1;
 	Meas_TypeDef current_mt2;
@@ -87,8 +93,9 @@ void MEAS_GetValueF32(Meas_TypeDef *pMeas);
  * PTR CODE SECTION
  *===========================================================================*/
 void MEAS_Init(void);
-void MEAS_GetValue(void);
-void MEAS_GetRealValue(void);
+void MEAS_GetValue(uint16_t meas_type);
+void MEAS_GetRealValue(uint16_t meas_type);
+void MEAS_UpdateValue(void);
 
 extern MeasAll_TypeDef thisMeas;
 #endif /* MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_ */

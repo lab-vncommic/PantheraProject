@@ -6,6 +6,7 @@
  */
 #include "Measurement.h"
 MeasAll_TypeDef thisMeas;
+uint16_t cnt_meas_type;
 
 /**
  * @brief  Configures a measurement object with specified parameters
@@ -152,23 +153,33 @@ void MEAS_Init(void)
  * @see MEAS_GetRawValue
  * @see MEAS_GetValueQ15
  */
-void MEAS_GetValue(void)
+void MEAS_GetValue(uint16_t meas_type)
 {
 	// Get adc value
 	ADC_startOfConversion();
 
-	// Get raw value from adc driver
-    MEAS_GetRawValue(&thisMeas.current_mt1, thatADC.ADC_MulSens_1);
-    MEAS_GetRawValue(&thisMeas.current_mt2, thatADC.ADC_MulSens_2);
-    MEAS_GetRawValue(&thisMeas.current_mt3, thatADC.ADC_MulSens_3);
+	if (meas_type) {
+		// Get raw value from adc driver
+	    MEAS_GetRawValue(&thisMeas.thermal_mt1, thatADC.ADC_MulSens_1);
+	    MEAS_GetRawValue(&thisMeas.thermal_mt2, thatADC.ADC_MulSens_2);
+	    MEAS_GetRawValue(&thisMeas.thermal_mt3, thatADC.ADC_MulSens_3);
 
-	// Get value in Q15 concept
-	MEAS_GetValueQ15(&thisMeas.current_mt1);
-	MEAS_GetValueQ15(&thisMeas.current_mt2);
-	MEAS_GetValueQ15(&thisMeas.current_mt3);
-    MEAS_GetValueQ15(&thisMeas.thermal_mt1);
-    MEAS_GetValueQ15(&thisMeas.thermal_mt2);
-    MEAS_GetValueQ15(&thisMeas.thermal_mt3);
+		// Get value in Q15 concept
+	    MEAS_GetValueQ15(&thisMeas.thermal_mt1);
+	    MEAS_GetValueQ15(&thisMeas.thermal_mt2);
+	    MEAS_GetValueQ15(&thisMeas.thermal_mt3);
+	} else {
+		// Get raw value from adc driver
+	    MEAS_GetRawValue(&thisMeas.current_mt1, thatADC.ADC_MulSens_1);
+	    MEAS_GetRawValue(&thisMeas.current_mt2, thatADC.ADC_MulSens_2);
+	    MEAS_GetRawValue(&thisMeas.current_mt3, thatADC.ADC_MulSens_3);
+
+		// Get value in Q15 concept
+		MEAS_GetValueQ15(&thisMeas.current_mt1);
+		MEAS_GetValueQ15(&thisMeas.current_mt2);
+		MEAS_GetValueQ15(&thisMeas.current_mt3);
+	}
+	MEAS_GetRealValue(meas_type);
 }
 
 /**
@@ -184,14 +195,40 @@ void MEAS_GetValue(void)
  *
  * @return None
  */
-void MEAS_GetRealValue(void)
+void MEAS_GetRealValue(uint16_t meas_type)
 {
-	MEAS_GetValueF32(&thisMeas.current_mt1);
-	MEAS_GetValueF32(&thisMeas.current_mt2);
-	MEAS_GetValueF32(&thisMeas.current_mt3);
-    MEAS_GetValueF32(&thisMeas.thermal_mt1);
-    MEAS_GetValueF32(&thisMeas.thermal_mt2);
-    MEAS_GetValueF32(&thisMeas.thermal_mt3);
+	if (meas_type) {
+	    MEAS_GetValueF32(&thisMeas.thermal_mt1);
+	    MEAS_GetValueF32(&thisMeas.thermal_mt2);
+	    MEAS_GetValueF32(&thisMeas.thermal_mt3);
+	} else {
+		MEAS_GetValueF32(&thisMeas.current_mt1);
+		MEAS_GetValueF32(&thisMeas.current_mt2);
+		MEAS_GetValueF32(&thisMeas.current_mt3);
+	}
+}
+
+void MEAS_UpdateValue(void)
+{
+	/*
+	 * Spend 5 cycles to measure thermal
+	 * Spend 2 cycles to update driver to measure thermal mode, 3 cycles to get value thermal
+	 */
+	cnt_meas_type++;
+	if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 5)) {
+		if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 2))
+		{
+			MD_UpdateMeas(THERMAL);
+			MEAS_GetValue(MEAS_THERMAL);
+		}
+		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
+			cnt_meas_type = 0;
+		}
+	} else {
+		MD_UpdateMeas(CURRENT);
+		MEAS_GetValue(MEAS_CURRENT);
+	}
+
 }
 
 

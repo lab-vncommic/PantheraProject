@@ -10,18 +10,11 @@ Button_TypeDef		thisButton;
 uint16_t			temp_btn_stt = 0x0000;
 
 /**
- * @brief  Updates the current status of all buttons
- * @details Reads the physical state of all GPIO pins connected to buttons
- *          and updates the internal button status structure
- * @note   Should be called periodically to maintain current button states
- */
-
-
-/**
- * @brief  Processes the button states and triggers corresponding actions
- * @details Analyzes the current button states and executes appropriate
- *          system responses based on which buttons are pressed
- * @note   This function is currently empty and needs to be implemented
+ * @brief Updates the button values from GPIO inputs
+ * @details Copies the current GPIO input values for all buttons to the 
+ *          internal button state structure
+ * @param[in] pGpio Pointer to the GPIO input structure containing current pin values
+ * @return None
  */
 void BTN_GetGpioValue(GPIO_Input_TypeDef *pGpio)
 {
@@ -37,6 +30,15 @@ void BTN_GetGpioValue(GPIO_Input_TypeDef *pGpio)
 	thisButtonAll.save.value 		= pGpio->save.value;
 }
 
+/**
+ * @brief Implements button debouncing to filter out noise and false triggers
+ * @details Uses a counter-based approach to ensure a signal remains stable
+ *          for a specified timeout period before confirming it as valid
+ * @param[in,out] pButton Pointer to button object containing debounce counter
+ * @param[in] condition Current state of the button input being checked
+ * @param[in] timeout Number of consecutive checks required to confirm state
+ * @return _Bool TRUE if the condition is stable for the timeout period, FALSE otherwise
+ */
 _Bool BTN_Debouncing(Btn_Object_TypeDef *pButton, _Bool condition, uint16_t timeout)
 {
 	if (condition)
@@ -69,48 +71,55 @@ void BTN_Init(void)
 	thisButton.cnt_action = 0;
 }
 
-void BTN_GetStatusButton(void)
+/**
+ * @brief  Gets the current status of all buttons
+ * @details Updates the button status register (temp_btn_stt) based on the current
+ *          state of each button input. Each button corresponds to a specific bit
+ *          in the status register.
+ * @note   This function performs direct GPIO reading without debouncing
+ * @see    BTN_Update
+ */
+void BTN_GetStatusBtnReg(void)
 {
-	// if (BTN_Debouncing(&thisButtonAll.height_1, thisButtonAll.height_1.value, TIMEOUT_DEBOUNCE_BTN)) {
-	// 	temp_btn_stt |= BTN_STT_0;
-	// }
-	// else temp_btn_stt &= ~BTN_STT_0;
-	
-	// if (BTN_Debouncing(&thisButtonAll.height_2, thisButtonAll.height_2.value, TIMEOUT_DEBOUNCE_BTN)) {
-	// 	temp_btn_stt |= BTN_STT_1;
-	// }
-	
-	// if (BTN_Debouncing(&thisButtonAll.recliner_1, thisButtonAll.recliner_1.value, TIMEOUT_DEBOUNCE_BTN)) {
-	// 	temp_btn_stt |= BTN_STT_2;
-	// }
-	
-	// if (BTN_Debouncing(&thisButtonAll.recliner_2, thisButtonAll.recliner_2.value, TIMEOUT_DEBOUNCE_BTN)) {
-	// 	temp_btn_stt |= BTN_STT_3;
-	// }
-	
-	// if (BTN_Debouncing(&thisButtonAll.slider_1, thisButtonAll.slider_1.value, TIMEOUT_DEBOUNCE_BTN)) {
-	// 	temp_btn_stt |= BTN_STT_4;
-	// }
-	
-	// if (BTN_Debouncing(&thisButtonAll.slider_2, thisButtonAll.slider_2.value, TIMEOUT_DEBOUNCE_BTN)) {
-	// 	temp_btn_stt |= BTN_STT_5;
-	// }
-	
-	// if (BTN_Debouncing(&thisButtonAll.save, thisButtonAll.save.value, TIMEOUT_DEBOUNCE_BTN)) {
-	// 	temp_btn_stt |= BTN_STT_6;
-	// }
-	
-	// if (BTN_Debouncing(&thisButtonAll.recall_1, thisButtonAll.recall_1.value, TIMEOUT_DEBOUNCE_BTN)) {
-	// 	temp_btn_stt |= BTN_STT_7;
-	// }
-
-	// if (BTN_Debouncing(&thisButtonAll.recall_2, thisButtonAll.recall_2.value, TIMEOUT_DEBOUNCE_BTN)) {
-	// 	temp_btn_stt |= BTN_STT_8;
-	// }
-
-	// if (BTN_Debouncing(&thisButtonAll.recall_3, thisButtonAll.recall_3.value, TIMEOUT_DEBOUNCE_BTN)) {
-	// 	temp_btn_stt |= BTN_STT_9;
-	// }
+//	if (BTN_Debouncing(&thisButtonAll.height_1, thisButtonAll.height_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+//		temp_btn_stt |= BTN_STT_0;
+//	}
+//
+//	if (BTN_Debouncing(&thisButtonAll.height_2, thisButtonAll.height_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+//		temp_btn_stt |= BTN_STT_1;
+//	}
+//
+//	if (BTN_Debouncing(&thisButtonAll.recliner_1, thisButtonAll.recliner_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+//		temp_btn_stt |= BTN_STT_2;
+//	}
+//
+//	if (BTN_Debouncing(&thisButtonAll.recliner_2, thisButtonAll.recliner_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+//		temp_btn_stt |= BTN_STT_3;
+//	}
+//
+//	if (BTN_Debouncing(&thisButtonAll.slider_1, thisButtonAll.slider_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+//		temp_btn_stt |= BTN_STT_4;
+//	}
+//
+//	if (BTN_Debouncing(&thisButtonAll.slider_2, thisButtonAll.slider_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+//		temp_btn_stt |= BTN_STT_5;
+//	}
+//
+//	if (BTN_Debouncing(&thisButtonAll.save, thisButtonAll.save.value, TIMEOUT_DEBOUNCE_BTN)) {
+//		temp_btn_stt |= BTN_STT_6;
+//	}
+//
+//	if (BTN_Debouncing(&thisButtonAll.recall_1, thisButtonAll.recall_1.value, TIMEOUT_DEBOUNCE_BTN)) {
+//		temp_btn_stt |= BTN_STT_7;
+//	}
+//
+//	if (BTN_Debouncing(&thisButtonAll.recall_2, thisButtonAll.recall_2.value, TIMEOUT_DEBOUNCE_BTN)) {
+//		temp_btn_stt |= BTN_STT_8;
+//	}
+//
+//	if (BTN_Debouncing(&thisButtonAll.recall_3, thisButtonAll.recall_3.value, TIMEOUT_DEBOUNCE_BTN)) {
+//		temp_btn_stt |= BTN_STT_9;
+//	}
 
 	if (thisButtonAll.height_1.value) {
 		temp_btn_stt |= BTN_STT_0;
@@ -159,23 +168,33 @@ void BTN_GetStatusButton(void)
 	} else {
 		temp_btn_stt &= ~BTN_STT_7;
 	}
-	
+
 	if (thisButtonAll.recall_2.value == 1) {
 		temp_btn_stt |= BTN_STT_8;
 	} else {
 		temp_btn_stt &= ~BTN_STT_8;
 	}
-	
+
 	if (thisButtonAll.recall_3.value == 1) {
 		temp_btn_stt |= BTN_STT_9;
 	} else {
 		temp_btn_stt &= ~BTN_STT_9;
 	}
+	thisButton.btn_stt = temp_btn_stt;
 }
 
+/**
+ * @brief Checks if exactly one button is currently pressed
+ *
+ * This function checks the current button status register to determine
+ * if exactly one button is being pressed.
+ *
+ * @return true if exactly one button is pressed
+ * @return false if no buttons are pressed or if multiple buttons are pressed
+ */
 _Bool BTN_OnlyOneBtnPress(void)
 {
-    uint16_t buttonRegister = temp_btn_stt;
+    uint16_t buttonRegister = thisButton.btn_stt;
     if (buttonRegister == 0) {
         return false;
     }
@@ -185,13 +204,26 @@ _Bool BTN_OnlyOneBtnPress(void)
     return false;
 }
 
-
+/**
+ * @brief  Analyzes the button input state to determine action and name
+ * @param  pButton Pointer to a Button_TypeDef structure
+ * @retval None
+ *
+ * @details This function determines the button action (PRESSED or HOLD) based on
+ *          press duration and identifies the button name based on its state value.
+ *          If the counter exceeds TIMEOUT_PRESSED_BTN, the action is set to HOLD,
+ *          otherwise it's set to PRESSED. The button name is determined based on
+ *          the bit position in the btn_stt field.
+ */
 void BTN_AnalyzeInputState(Button_TypeDef *pButton)
 {
 	// Analyze action of button
-	if (pButton->cnt_action++ > TIMEOUT_PRESSED_BTN) {
-		pButton->action = ACTION_HOLD;
-	} else pButton->action = ACTION_PRESSED;
+	pButton->cnt_action++;
+	if (pButton->cnt_action < TIMEOUT_DEBOUNCE_BTN) {
+		pButton->action = ACTION_NA;
+	}else if ((pButton->cnt_action >= TIMEOUT_DEBOUNCE_BTN) && (pButton->cnt_action < TIMEOUT_PRESSED_BTN)) {
+		pButton->action = ACTION_PRESSED;
+	} else pButton->action = ACTION_HOLD;
 
 	// Analyze name of button
 	switch (pButton->btn_stt) {
@@ -229,22 +261,45 @@ void BTN_AnalyzeInputState(Button_TypeDef *pButton)
 			pButton->name = BTN_NA;
 			break;
 	}
-	thisButton.btn_stt = temp_btn_stt;
 }
 
+/**
+ * @brief  Updates the button state and processes button input
+ * @param  None
+ * @retval None
+ * 
+ * @details This function performs the complete button update sequence:
+ *          1. Updates GPIO values
+ *          2. Gets button status from GPIO values
+ *          3. If only one button is pressed, it analyzes the input state
+ *          4. If multiple buttons are pressed or none, it resets button properties
+ */
 void BTN_Update(void)
 {
 	GPIO_Update();
 	BTN_GetGpioValue(&thisGPIO);
-	BTN_GetStatusButton();
+	BTN_GetStatusBtnReg();
 	if (BTN_OnlyOneBtnPress()) {
 		BTN_AnalyzeInputState(&thisButton);
 	} else {
 		thisButton.name 	  = BTN_NA;
 		thisButton.action 	  = ACTION_NA;
 		thisButton.cnt_action = 0;
-		thisButton.btn_stt    = 0x0000;
-		// temp_btn_stt 		  = 0x0000;
 	}
 }
 
+/**
+ * @brief Returns the current button state after updating all button states
+ * @details Updates all button states by calling BTN_Update() and returns
+ *          a copy of the current button state (name and action)
+ * @return ButtonState_TypeDef Current button state with name and action
+ */
+ButtonState_TypeDef BTN_GetStatus(void)
+{
+	BTN_Update();
+
+	ButtonState_TypeDef temp_button;
+	temp_button.name 	= thisButton.name;
+	temp_button.action	= thisButton.action;
+	return temp_button;
+}

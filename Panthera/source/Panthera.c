@@ -32,12 +32,9 @@ void PTR_main_interrupt_service(void)
 {
 	begin = stm_lld_getcounter(&STMD3);
 
-	if (cnt++ >= 10000) {
-		cnt = 0;
-		GPIO_TogglePin(&PIN_SEL0_2);
-	}
+	// Measure thermal every 1s
+	MEAS_UpdateValue();
 
-	MEAS_GetValue();
 	FAULT_UpdateMode();
 	BTN_Update();
 

@@ -7,8 +7,8 @@
 
 #ifndef SOURCE__DRIVERLAYER_UART_UART_H_
 #define SOURCE__DRIVERLAYER_UART_UART_H_
-#include "components.h"
-#include "serial_lld_cfg.h"
+// #include "components.h"
+// #include "serial_lld_cfg.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stddef.h>

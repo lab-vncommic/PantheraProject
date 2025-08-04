@@ -9,7 +9,7 @@
 #define EEPROM_MY_EEPROM_H_
 
 #include <stdint.h>
-#include "components.h"
+// #include "components.h"
 
 #define ID_EEPROM_1	1 //ID of the record to write
 #define ID_EEPROM_2	2

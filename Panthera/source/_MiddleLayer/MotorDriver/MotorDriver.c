@@ -324,6 +324,32 @@ void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status)
 }
 
 /**
+ * @brief   Updates measurement types and drivers for all motors
+ * @details This function updates the measurement type settings for all motors
+ *          (height, recliner, slider) and then updates their respective drivers
+ *          with the new configuration.
+ *
+ * @param[in] meas_type  The measurement type to be applied to all motors
+ *
+ * @return    None
+ *
+ * @note      This function should be called whenever the measurement type
+ *            needs to be changed for all motors simultaneously.
+ *
+ * @see       MD_UpdateMeasType
+ * @see       MD_UpdateDriver
+ */
+void MD_UpdateMeas(DriverMeasType_TypeDef meas_type)
+{
+	MD_UpdateMeasType(&motor_height, meas_type);
+	MD_UpdateMeasType(&motor_recliner, meas_type);
+	MD_UpdateMeasType(&motor_slider, meas_type);
+	MD_UpdateDriver(&motor_height);
+	MD_UpdateDriver(&motor_recliner);
+	MD_UpdateDriver(&motor_slider);
+}
+
+/**
  * @brief Retrieves the current position of all seat axes
  * @details Reads the current axis position values from all motors and
  *          returns them in a unified SeatAxis structure

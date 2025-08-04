@@ -6,7 +6,7 @@
  */
 
 #include "adc.h"
-ADCTypeDef thatADC;
+ADC_TypeDef thatADC;
 // SARADCDriver* driverUser;
 
 uint8_t anp[NUMOFCHANNELS] = {CHANNEL_MULSENS_1, CHANNEL_MULSENS_2, CHANNEL_MULSENS_3, CHANNEL_FB_5V};
@@ -20,12 +20,12 @@ uint8_t anp[NUMOFCHANNELS] = {CHANNEL_MULSENS_1, CHANNEL_MULSENS_2, CHANNEL_MULS
  * @param  saradcp: Pointer to the SARADC driver instance that completed conversion.
  * @retval None
  */
-void saradcconf_conv_cb() {
-    // thatADC.ADC_MulSens_1 = saradc_lld_readchannel(saradcp, anp[0]);
-    // thatADC.ADC_MulSens_2 = saradc_lld_readchannel(saradcp, anp[1]);
-	// thatADC.ADC_MulSens_3 = saradc_lld_readchannel(saradcp, anp[2]);
-	// thatADC.ADC_FB_5V 	  = saradc_lld_readchannel(saradcp, anp[3]);
-}
+// void saradcconf_conv_cb(SARADCDriver *saradcp) {
+//     thatADC.ADC_MulSens_1 = saradc_lld_readchannel(saradcp, anp[0]);
+//     thatADC.ADC_MulSens_2 = saradc_lld_readchannel(saradcp, anp[1]);
+// 	thatADC.ADC_MulSens_3 = saradc_lld_readchannel(saradcp, anp[2]);
+// 	thatADC.ADC_FB_5V 	  = saradc_lld_readchannel(saradcp, anp[3]);
+// }
 
 /**
  * @brief  Callback function for DMA-based SARADC conversion.
@@ -37,11 +37,11 @@ void saradcconf_conv_cb() {
  * @param  len:    Length of the data buffer.
  * @retval None
  */
-void saradcconfdma_conv_cb() {
-	// (void)saradcp;
-	// (void)buffer;
-	// (void)len;
-}
+// void saradcconfdma_conv_cb(SARADCDriver *saradcp, uint16_t* buffer, uint16_t len) {
+// 	(void)saradcp;
+// 	(void)buffer;
+// 	(void)len;
+// }
 
 /**
  * @brief  Initializes the ADCTypeDef structure by resetting all ADC-related values.
@@ -49,7 +49,7 @@ void saradcconfdma_conv_cb() {
  * @retval int: 0 if success, -1 if invalid parameter (NULL pointer)
  * @note   This function checks for null pointer and initializes all buffer elements.
  */
-int ADC_Init(ADCTypeDef *pADC) {
+int ADC_Init(ADC_TypeDef *pADC) {
 	// if (pADC == NULL) {
 	// 	/* Invalid parameter: NULL pointer */
 	// 	return -1;
