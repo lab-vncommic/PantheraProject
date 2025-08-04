@@ -9,6 +9,8 @@
 #include "adc.c"
 #include "gpio.h"
 #include "gpio.c"
+#include "my_eeprom.h"
+#include "my_eeprom.c"
 
 #include "GlobalDefine.h"
 #include "GlobalDefine.c"
@@ -16,16 +18,14 @@
 #include "Button.c"
 #include "IQMath.h"
 #include "IQMath.c"
+#include "memory.h"
+#include "memory.c"
 #include "Measurement.h"
 #include "Measurement.c"
 #include "FaultManagement.h"
 #include "FaultManagement.c"
 #include "MotorDriver.h"
 #include "MotorDriver.c"
-#include "my_eeprom.h"
-#include "my_eeprom.c"
-#include "memory.h"
-#include "memory.c"
 #include "StateManagement.h"
 #include "StateManagement.c"
 
@@ -69,11 +69,11 @@ out[5] 	= motor_height.driver.mul_en.value;
 out[6] 	= thisPTR.state;
 out[7] 	= thisButton.btn_stt;
 out[8] 	= thisButton.name;;
-out[9] 	= cnt;
+out[9] 	= thisPTR.seat_current_axis.height;
 out[10] = thisFault.fault_status;
-out[11] = thisMeas.thermal_mt2.raw;
-out[12] = thisMeas.thermal_mt2.value_q15;
-out[13] = thisMeas.thermal_mt2.value_f32;
+out[11] = thisMeas.current_mt2.value_q15;
+out[12] = motor_height.current_value;
+out[13] = cnt_current_ripple;
 out[14] = thatADC.ADC_MulSens_2;
 }
 

@@ -7,8 +7,7 @@
 
 #ifndef MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_
 #define MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_
-#include "components.h"
-#include "MotorDriver.h"
+#include "GlobalDefine.h"
 #include "IQMath.h"
 #include "adc.h"
 
@@ -37,13 +36,6 @@ typedef struct{
 /*===========================================================================
  * PTR CODE SECTION
  *===========================================================================*/
-typedef enum{
-	MEAS_NONE				= 0,
-	MEAS_MOTOR_HEIGHT		= 1,
-	MEAS_MOTOR_RECLINER		= 2,
-	MEAS_MOTOR_SLIDER		= 3
-} MeasMotor_TypeDef;
-
 // Motor 1: Current parameters for Q15 concept
 #define CURRENT_MT1_HIGH_LIMIT_HARD  25.0f
 #define CURRENT_MT1_HIGH_LIMIT_SOFT  20.0f
@@ -74,10 +66,20 @@ typedef enum{
 #define THERMAL_MT3_GAIN_F32				-0.01387162642f		// Use for calculate real value
 #define THERMAL_MT3_OFFSET_F32				402.4545454545f		// Use for calculate real value
 
-#define MEAS_CURRENT		0
-#define MEAS_THERMAL		1
-
 #define SAMPLE_TIME_MEAS_THERMAL	10000	// 10000/10000 = 1s
+
+typedef enum{
+	MEAS_NONE				= 0,
+	MEAS_MOTOR_HEIGHT		= 1,
+	MEAS_MOTOR_RECLINER		= 2,
+	MEAS_MOTOR_SLIDER		= 3
+} MeasMotor_TypeDef;
+
+typedef enum{
+	MEAS_CURRENT 	= 0,
+	MEAS_THERMAL	= 1,
+	MEAS_VCC		= 2
+} DriverMeasType_TypeDef;
 
 typedef struct{
 	Meas_TypeDef current_mt1;
@@ -100,11 +102,9 @@ void MEAS_GetValueF32(Meas_TypeDef *pMeas);
  * PTR CODE SECTION
  *===========================================================================*/
 void MEAS_Init(void);
-void MEAS_GetValue(uint16_t meas_type);
-void MEAS_GetRealValue(uint16_t meas_type);
+void MEAS_GetValue(DriverMeasType_TypeDef meas_type);
+void MEAS_GetRealValue(DriverMeasType_TypeDef meas_type);
 void MEAS_UpdateValue(void);
-void MEAS_GetValue(void);
-void MEAS_GetRealValue(void);
 uint16_t MEAS_GetCurrentValue(MeasMotor_TypeDef meas_motor);
 
 extern MeasAll_TypeDef thisMeas;

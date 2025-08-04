@@ -6,7 +6,6 @@
  */
 #include "Measurement.h"
 MeasAll_TypeDef thisMeas;
-uint16_t cnt_meas_type;
 
 /**
  * @brief  Configures a measurement object with specified parameters
@@ -153,12 +152,12 @@ void MEAS_Init(void)
  * @see MEAS_GetRawValue
  * @see MEAS_GetValueQ15
  */
-void MEAS_GetValue(uint16_t meas_type)
+void MEAS_GetValue(DriverMeasType_TypeDef meas_type)
 {
-// Get adc value
+	// Get adc value
 	ADC_startOfConversion();
 
-	if (meas_type == MEAS_THERMAL) {
+	if (meas_type) {
 		// Get raw value from adc driver
 	    MEAS_GetRawValue(&thisMeas.thermal_mt1, thatADC.ADC_MulSens_1);
 	    MEAS_GetRawValue(&thisMeas.thermal_mt2, thatADC.ADC_MulSens_2);
@@ -195,7 +194,7 @@ void MEAS_GetValue(uint16_t meas_type)
  *
  * @return None
  */
-void MEAS_GetRealValue(uint16_t meas_type)
+void MEAS_GetRealValue(DriverMeasType_TypeDef meas_type)
 {
 	if (meas_type) {
 	    MEAS_GetValueF32(&thisMeas.thermal_mt1);
@@ -214,21 +213,31 @@ void MEAS_UpdateValue(void)
 	 * Spend 5 cycles to measure thermal
 	 * Spend 2 cycles to update driver to measure thermal mode, 3 cycles to get value thermal
 	 */
-	cnt_meas_type++;
-	if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 5)) {
-		if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 2))
-		{
-			MD_UpdateMeas(THERMAL);
-			MEAS_GetValue(MEAS_THERMAL);
-		}
-		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
-			cnt_meas_type = 0;
-		}
-	} else {
-		MD_UpdateMeas(CURRENT);
-		MEAS_GetValue(MEAS_CURRENT);
-	}
+//	cnt_meas_type++;
+//	if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 5)) {
+//		if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 2))
+//		{
+//			MD_UpdateMeas(THERMAL);
+//			MEAS_GetValue(THERMAL);
+//		}
+//		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
+//			cnt_meas_type = 0;
+//		}
+//	} else {
+//		MD_UpdateMeas(CURRENT);
+//		MEAS_GetValue(CURRENT);
+//	}
 
+}
+
+uint16_t MEAS_GetCurrentValue(MeasMotor_TypeDef meas_motor)
+{
+	switch (meas_motor) {
+		case MEAS_MOTOR_HEIGHT: return thisMeas.current_mt2.value_q15;
+		case MEAS_MOTOR_RECLINER: return thisMeas.current_mt3.value_q15;
+		case MEAS_MOTOR_SLIDER:	return thisMeas.current_mt1.value_q15;
+		default: return 0;
+	}
 }
 
 

@@ -7,12 +7,13 @@
 
 #ifndef MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_
 #define MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_
-#include "components.h"
 #include "Button.h"
 #include "GlobalDefine.h"
 #include "Measurement.h"
 
 #define TIME_DEBOUNCE_RISING_EDGE     100			// T = 100/10000 = 10ms
+#define PULSE_PER_ROUND				  500			// 500 peak current /round
+#define WINDOW_SIZE 				  10  			// Size of the sliding window buffer
 
 typedef enum {
 	SENSOR 		= 0,
@@ -32,12 +33,6 @@ typedef enum{
 	FORWARD  = 2
 } MotorStatus_TypeDef;
 
-typedef enum{
-	CURRENT = 0,
-	THERMAL	= 1,
-	VCC		= 2
-} DriverMeasType_TypeDef;
-
 typedef struct{
 	GPIO_TypeDef ina;
 	GPIO_TypeDef inb;
@@ -47,6 +42,18 @@ typedef struct{
 	GPIO_TypeDef pwm;
 	GPIO_TypeDef hall;
 } MotorDriver_TypeDef;
+
+typedef struct {
+	uint16_t values[WINDOW_SIZE];  // Buffer in Q15 format
+
+    uint16_t current_value;
+    uint16_t previous_value;
+
+    uint16_t cnt_rising;
+    uint16_t cnt_falling;
+    uint16_t flag_rising;
+    uint16_t flag_falling;
+} PeakDetector_TypeDef;
 
 typedef struct{
 	MotorDriver_TypeDef			driver;

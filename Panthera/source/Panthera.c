@@ -35,7 +35,7 @@ void PTR_main_interrupt_service(void)
 	begin = stm_lld_getcounter(&STMD3);
 
 	// Measure thermal every 1s
-	MEAS_UpdateValue();
+	STATE_GetMeasValue();
 
 	FAULT_UpdateMode();
 	BTN_Update();

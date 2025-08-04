@@ -20,12 +20,14 @@ void PTR_system_initialization(void)
 	FAULT_Init();
 	MD_Init();
 	STATE_Init(&thisPTR);
-	EEPROM_Start();
+	// EEPROM_Start();
 }
 /*====== Execute Time ======*/
 /*
- * Total: 4000 cycles
- *
+ * Time available: 4000 cycles
+ * Meas: 118 cycles
+ * Fault: 436 cycles
+ * Button: 266 cycles
  *
  */
 void PTR_main_interrupt_service(void)
@@ -33,25 +35,12 @@ void PTR_main_interrupt_service(void)
 	// begin = stm_lld_getcounter(&STMD3);
 
 	// Measure thermal every 1s
-	// if (cnt++ >= 10000) {
-	// 	// cnt = 0;
-
-	// 	// FIXME: Code toggle led to test on kit SPC582B
-	// 	// GPIO_TogglePin(&PIN_SEL0_2);
-
-	// 	MD_UpdateMeas(THERMAL);
-	// 	MEAS_GetValue(MEAS_THERMAL);
-	// } else {
-	// 	MD_UpdateMeas(CURRENT);
-	// 	MEAS_GetValue(MEAS_CURRENT);
-	// }
-
-	MEAS_UpdateValue();
+	STATE_GetMeasValue();
 
 	// FAULT_UpdateMode();
 	BTN_Update();
 
-	// FIXME: Need to transfer to middleware layer
+	// // FIXME: Need to transfer to middleware layer
 	// if (uart_process_flag) {
 	// 	uart_process_flag = 0;
 	// 	// Function to decode received UART message
@@ -61,7 +50,7 @@ void PTR_main_interrupt_service(void)
 
 	STATE_UpdateState(&thisPTR);
 
-    // end = stm_lld_getcounter(&STMD3);
+	// end = stm_lld_getcounter(&STMD3);
     // elapsed = end - begin;
 }
 

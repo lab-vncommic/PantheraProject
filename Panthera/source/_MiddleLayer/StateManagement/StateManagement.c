@@ -9,6 +9,7 @@ PTR_TypeDef thisPTR;
 uint16_t index_memory = 1;
 uint16_t save_available = 1;
 uint16_t cnt_delay_btw_save = 0;
+uint16_t cnt_meas_type;
 
 // List API
 void STATE_idleHandle(PTR_TypeDef *pState);
@@ -272,6 +273,24 @@ void STATE_HandleButton(PTR_TypeDef *pState)
 			thisPTR.motor.motor_name = MOTOR_NONE;
 			thisPTR.motor.status 	 = STOP;
 			break;
+	}
+}
+
+void STATE_GetMeasValue(void)
+{
+	cnt_meas_type++;
+	if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 5)) {
+		if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 2))
+		{
+			MD_UpdateMeas(MEAS_THERMAL);
+			MEAS_GetValue(MEAS_THERMAL);
+		}
+		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
+			cnt_meas_type = 0;
+		}
+	} else {
+		MD_UpdateMeas(MEAS_CURRENT);
+		MEAS_GetValue(MEAS_CURRENT);
 	}
 }
 

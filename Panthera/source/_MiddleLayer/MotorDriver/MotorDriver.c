@@ -6,6 +6,9 @@
  */
 #include "MotorDriver.h"
 Motor_TypeDef motor_height, motor_recliner, motor_slider;
+uint16_t cnt_current_ripple;
+PeakDetector_TypeDef thisDetetor;
+int i = 0;
 
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
 					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm);
@@ -15,6 +18,7 @@ void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
 void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type);
 _Bool MD_CheckRisingEdge(uint8_t current_value);
 _Bool MD_CurrentRippleCounting(uint16_t current_value);
+_Bool MD_DetectPeak(uint16_t current_value);
 void MD_UpdateAxis(Motor_TypeDef *pMotor);
 
 /**
@@ -155,17 +159,17 @@ void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type)
 
 	pMotor->meas_type = meas_type;
 	switch (pMotor->meas_type) {
-		case CURRENT:
+		case MEAS_CURRENT:
 			pMotor->driver.sel0.value  = pMotor->driver.ina.value ;
 			pMotor->driver.sel1.value  = 0;
 			break;
 
-		case THERMAL:
+		case MEAS_THERMAL:
 			pMotor->driver.sel0.value  = 0;
 			pMotor->driver.sel1.value  = 1;
 			break;
 
-		case VCC:
+		case MEAS_VCC:
 			pMotor->driver.sel0.value  = 1;
 			pMotor->driver.sel1.value  = 1;
 			break;
@@ -272,7 +276,48 @@ _Bool MD_CheckRisingEdge(uint8_t current_value)
 
 _Bool MD_CurrentRippleCounting(uint16_t current_value)
 {
+	if (cnt_current_ripple >= PULSE_PER_ROUND) {
+		cnt_current_ripple = 0;
+		return true;
+	}
+	if (MD_DetectPeak(current_value)) {
+		cnt_current_ripple++;
+	}
+	return false;
+}
 
+_Bool MD_DetectPeak(uint16_t current_value)
+{
+	// Update new value to buffer
+//	for (i = 0; i < WINDOW_SIZE - 1; i++) {
+//		thisDetetor.values[i] = thisDetetor.values[i + 1];
+//	}
+//	thisDetetor.values[WINDOW_SIZE-1] = current_value;
+
+	thisDetetor.previous_value = thisDetetor.current_value;
+	thisDetetor.current_value  = current_value;
+
+	if (thisDetetor.current_value - thisDetetor.previous_value > 0) {
+		thisDetetor.cnt_rising++;
+	} else thisDetetor.cnt_rising = 0;
+
+	if (thisDetetor.current_value - thisDetetor.previous_value < 0) {
+		thisDetetor.cnt_falling++;
+	} else thisDetetor.cnt_falling = 0;
+
+	if (thisDetetor.cnt_rising >= 3) {
+		thisDetetor.flag_rising = 1;
+	}
+
+	if (thisDetetor.cnt_falling >= 3) {
+		thisDetetor.flag_falling = 1;
+	}
+
+	if ((thisDetetor.flag_rising) && (thisDetetor.flag_falling)) {
+		thisDetetor.flag_falling = 0;
+		thisDetetor.flag_rising  = 0;
+		return true;
+	}
 	return false;
 }
 
@@ -302,9 +347,13 @@ void MD_Init(void)
 	MD_ConfigTopology(&motor_recliner, SENSOR);
 	MD_ConfigTopology(&motor_slider, SENSOR);
 
-	MD_UpdateMeasType(&motor_height, CURRENT);
-	MD_UpdateMeasType(&motor_recliner, CURRENT);
-	MD_UpdateMeasType(&motor_slider, CURRENT);
+	motor_height.meas_motor   = MEAS_MOTOR_HEIGHT;
+	motor_recliner.meas_motor = MEAS_MOTOR_RECLINER;
+	motor_slider.meas_type    = MEAS_MOTOR_SLIDER;
+
+	MD_UpdateMeasType(&motor_height, MEAS_CURRENT);
+	MD_UpdateMeasType(&motor_recliner, MEAS_CURRENT);
+	MD_UpdateMeasType(&motor_slider, MEAS_CURRENT);
 	MD_StopAll();
 }
 
@@ -407,8 +456,8 @@ SeatAxis_TypeDef MD_GetSeatAxis(void)
 {
 	SeatAxis_TypeDef temp_axis;
 	temp_axis.height 	= motor_height.axis;
-	temp_axis.recliner  = motor_height.axis;
-	temp_axis.slider 	= motor_height.axis;
+	temp_axis.recliner  = motor_recliner.axis;
+	temp_axis.slider 	= motor_slider.axis;
 	return temp_axis;
 }
 
