@@ -19,7 +19,8 @@
 | 15  | 01/08/2025    | v1.1.1              | Bổ sung code đọc (khi nút RECALL được nhấn), ghi (khi nút SAVE được nhấn) vào state machine | Nguyễn Quốc Uy    | Obsoleted|
 | 16  | 02/08/2025    | v1.1.2              | Bổ sung code sửa lỗi MEMORY đọc ghi số giá trị nhỏ hơn 16 bị lỗi           | Tống Văn Toàn     | Obsoleted|
 | 17  | 02/08/2025    | v1.1.3              | Bổ sung code chống rung cho nút nhấn                                       | Nguyễn Quốc Uy    | Obsoleted|
-| 18  | 02/08/2025    | v1.1.4              | Bổ sung tính năng truyền nhận UART giao tiếp với người dùng                | Nguyễn Quốc Uy    | Active   |
+| 18  | 02/08/2025    | v1.1.4              | Bổ sung tính năng truyền nhận UART giao tiếp với người dùng                | Nguyễn Quốc Uy    | Obsoleted|
+| 19  | 04/08/2025    | v1.1.5              | Chỉnh sửa lại thứ tự động cơ theo bảng CAN/UART interface                  | Nguyễn Quốc Uy    | Active   |
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
