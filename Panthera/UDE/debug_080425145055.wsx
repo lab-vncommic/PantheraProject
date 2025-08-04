@@ -75,7 +75,7 @@
 							<UniqueIdentifier>MainFrame.StdTargetManagerWin.OPEN_VIEW</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>951</DockedDimension>
+							<DockedDimension>953</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Bottom</DockingType>
 							<FloatingBounds>
@@ -93,7 +93,7 @@
 							<UniqueIdentifier>MainFrame.StdUDEMessageWin.OPEN_VIEW</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>496</DockedDimension>
+							<DockedDimension>494</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Bottom</DockingType>
 							<FloatingBounds>
@@ -304,7 +304,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Window Toolbar</Name>
+								<Name>Show Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -421,7 +421,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Show Toolbar</Name>
+								<Name>Window Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -684,7 +684,7 @@
 							</ToolbarPersistData>
 							<ToolbarPersistData>
 								<Bounds>
-									<X>794</X>
+									<X>765</X>
 									<Y>24</Y>
 									<Width>486</Width>
 									<Height>25</Height>
@@ -844,7 +844,7 @@
 							</ToolbarPersistData>
 							<ToolbarPersistData>
 								<Bounds>
-									<X>373</X>
+									<X>3</X>
 									<Y>49</Y>
 									<Width>276</Width>
 									<Height>25</Height>
@@ -906,7 +906,7 @@
 							</ToolbarPersistData>
 							<ToolbarPersistData>
 								<Bounds>
-									<X>878</X>
+									<X>279</X>
 									<Y>49</Y>
 									<Width>141</Width>
 									<Height>25</Height>
@@ -961,7 +961,7 @@
 							</ToolbarPersistData>
 							<ToolbarPersistData>
 								<Bounds>
-									<X>1019</X>
+									<X>420</X>
 									<Y>49</Y>
 									<Width>249</Width>
 									<Height>25</Height>
@@ -1052,7 +1052,7 @@
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text>ERROR: Failed to update resources to target !</Text>
+										<Text>WARNING: Failed to determine user application running state ! Assume still running.</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
@@ -1073,14 +1073,14 @@
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text>Core2 not connected</Text>
+										<Text>Core2 inactive</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text></Text>
+										<Text>Function disabled</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
@@ -1233,7 +1233,7 @@
 			<OPEN_VIEW type="key">
 				<FrameCreated type="string">29.10.2016 20:28:29:326</FrameCreated>
 				<ViewSrv type="key">
-					<_ExtentX type="bin" size="8">2jIAAA==</_ExtentX>
+					<_ExtentX type="bin" size="8">pTIAAA==</_ExtentX>
 					<_ExtentY type="bin" size="8">GyIAAA==</_ExtentY>
 					<_StockProps type="bin" size="8">AAAAAA==</_StockProps>
 					<Columns type="bin" size="8">CAAAAA==</Columns>
@@ -1329,7 +1329,7 @@
 		<UDESTK.Script type="key">
 			<MacroGuiEntries type="key">
 				<LastScriptFilePath type="string">..\..\UDESTK 4.8</LastScriptFilePath>
-				<Macro_04_08_25_09_20_47_0 type="key">
+				<Macro_04_08_25_12_59_45_0 type="key">
 					<ScriptDescription type="string">The script contains a collection of macros to save memory content into different file formats 
 and fill target memory ranges</ScriptDescription>
 					<ScriptPath type="string">V:\UDE\AddOns\Macro\MacroLibrary\StdMacros1.dsm</ScriptPath>
@@ -1609,7 +1609,7 @@ End Sub</ScriptSource>
 					<ScriptFromStg type="flag">1</ScriptFromStg>
 					<LocalComputerName type="string">WS_CORE_DUO</LocalComputerName>
 					<ExternalScriptPath type="string"></ExternalScriptPath>
-					<NextNodeName type="string">Macro_04_08_25_11_24_56_0</NextNodeName>
+					<NextNodeName type="string">Macro_04_08_25_14_50_52_0</NextNodeName>
 					<UnAss type="key">
 						<GUIEntry type="key">
 							<MenuID type="int">10</MenuID>
@@ -1666,7 +1666,7 @@ End Sub</ScriptSource>
 						<GUIEntryDescription type="string"></GUIEntryDescription>
 					</FillDWord>
 					<NoOfFunctions type="int">5</NoOfFunctions>
-				</Macro_04_08_25_09_20_47_0>
+				</Macro_04_08_25_12_59_45_0>
 			</MacroGuiEntries>
 			<LastSelectedMacro type="string"></LastSelectedMacro>
 		</UDESTK.Script>
@@ -2001,7 +2001,7 @@ End Sub</ScriptSource>
 		</MRUSourceFileList>
 	</Core2>
 	<TargetInfoFile type="string">stm_spc582b60_chorus_discovery_starterkit_debug_jtag.cfg</TargetInfoFile>
-	<LastWriteDate type="string">04.08.2025 11:25:07:000</LastWriteDate>
+	<LastWriteDate type="string">04.08.2025 14:50:55:000</LastWriteDate>
 	<Logging type="key">
 		<DontClearLogOnCloseWorkspace type="flag">0</DontClearLogOnCloseWorkspace>
 		<UdeApiLogging type="flag">0</UdeApiLogging>
