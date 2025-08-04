@@ -22,6 +22,10 @@
 #include "FaultManagement.c"
 #include "MotorDriver.h"
 #include "MotorDriver.c"
+#include "my_eeprom.h"
+#include "my_eeprom.c"
+#include "memory.h"
+#include "memory.c"
 #include "StateManagement.h"
 #include "StateManagement.c"
 
@@ -51,7 +55,7 @@ thisGPIO.save.value 	  	   = in[2];
 thisGPIO.recall_1.value 	   = in[3];
 thisGPIO.recall_2.value 	   = in[4];
 thisGPIO.recall_3.value 	   = in[5];
-thatADC.ADC_MulSens_1 	  	   = in[6];
+thatADC.ADC_MulSens_2 	  	   = in[6];
 motor_height.driver.hall.value = in[7];
 
 PTR_main_interrupt_service();
@@ -65,11 +69,12 @@ out[5] 	= motor_height.driver.mul_en.value;
 out[6] 	= thisPTR.state;
 out[7] 	= thisButton.btn_stt;
 out[8] 	= thisButton.name;;
-out[9] 	= thisPTR.seat_memory[0].height;
-out[10] = thisPTR.seat_memory[1].height;
-out[11] = thisPTR.seat_memory[2].height;
-out[12] = thisPTR.seat_axis.height;
-out[13] = motor_height.axis;
+out[9] 	= cnt;
+out[10] = thisFault.fault_status;
+out[11] = thisMeas.thermal_mt2.raw;
+out[12] = thisMeas.thermal_mt2.value_q15;
+out[13] = thisMeas.thermal_mt2.value_f32;
+out[14] = thatADC.ADC_MulSens_2;
 }
 
 

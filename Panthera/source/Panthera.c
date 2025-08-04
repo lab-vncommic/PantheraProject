@@ -33,18 +33,7 @@ void PTR_main_interrupt_service(void)
 	begin = stm_lld_getcounter(&STMD3);
 
 	// Measure thermal every 1s
-	if (cnt++ >= 10000) {
-		cnt = 0;
-
-		// FIXME: Code toggle led to test on kit SPC582B
-		GPIO_TogglePin(&PIN_SEL0_2);
-
-		MD_UpdateMeas(THERMAL);
-		MEAS_GetValue(MEAS_THERMAL);
-	} else {
-		MD_UpdateMeas(CURRENT);
-		MEAS_GetValue(MEAS_CURRENT);
-	}
+	MEAS_UpdateValue();
 
 	FAULT_UpdateMode();
 	BTN_Update();

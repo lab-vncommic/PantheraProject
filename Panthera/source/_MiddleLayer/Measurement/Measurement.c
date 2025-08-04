@@ -6,6 +6,7 @@
  */
 #include "Measurement.h"
 MeasAll_TypeDef thisMeas;
+uint16_t cnt_meas_type;
 
 /**
  * @brief  Configures a measurement object with specified parameters
@@ -205,6 +206,29 @@ void MEAS_GetRealValue(uint16_t meas_type)
 		MEAS_GetValueF32(&thisMeas.current_mt2);
 		MEAS_GetValueF32(&thisMeas.current_mt3);
 	}
+}
+
+void MEAS_UpdateValue(void)
+{
+	/*
+	 * Spend 5 cycles to measure thermal
+	 * Spend 2 cycles to update driver to measure thermal mode, 3 cycles to get value thermal
+	 */
+	cnt_meas_type++;
+	if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 5)) {
+		if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 2))
+		{
+			MD_UpdateMeas(THERMAL);
+			MEAS_GetValue(MEAS_THERMAL);
+		}
+		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
+			cnt_meas_type = 0;
+		}
+	} else {
+		MD_UpdateMeas(CURRENT);
+		MEAS_GetValue(MEAS_CURRENT);
+	}
+
 }
 
 

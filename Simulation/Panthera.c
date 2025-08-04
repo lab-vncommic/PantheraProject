@@ -6,6 +6,7 @@
  */
 #include "Panthera.h"
 uint16_t cnt_500ms;
+uint16_t cnt;
 
 void PTR_system_initialization(void)
 {
@@ -19,10 +20,8 @@ void PTR_system_initialization(void)
 	FAULT_Init();
 	MD_Init();
 	STATE_Init(&thisPTR);
-	// EEPROM_Start();
-
+	EEPROM_Start();
 }
-
 /*====== Execute Time ======*/
 /*
  * Total: 4000 cycles
@@ -33,9 +32,32 @@ void PTR_main_interrupt_service(void)
 {
 	// begin = stm_lld_getcounter(&STMD3);
 
-	MEAS_GetValue();
-	FAULT_UpdateMode();
+	// Measure thermal every 1s
+	// if (cnt++ >= 10000) {
+	// 	// cnt = 0;
+
+	// 	// FIXME: Code toggle led to test on kit SPC582B
+	// 	// GPIO_TogglePin(&PIN_SEL0_2);
+
+	// 	MD_UpdateMeas(THERMAL);
+	// 	MEAS_GetValue(MEAS_THERMAL);
+	// } else {
+	// 	MD_UpdateMeas(CURRENT);
+	// 	MEAS_GetValue(MEAS_CURRENT);
+	// }
+
+	MEAS_UpdateValue();
+
+	// FAULT_UpdateMode();
 	BTN_Update();
+
+	// FIXME: Need to transfer to middleware layer
+	// if (uart_process_flag) {
+	// 	uart_process_flag = 0;
+	// 	// Function to decode received UART message
+
+	// 	sd_lld_write(&SD2, (uint8_t*) BufTX, UART_TX_LENGTH);
+	// }
 
 	STATE_UpdateState(&thisPTR);
 
@@ -45,12 +67,8 @@ void PTR_main_interrupt_service(void)
 
 void PTR_inf_loop_system(void)
 {
-	// if (uart_tx_flag == 1){
-	// 	uart_tx_flag = 0;
-	// 	sd_lld_write(&SD2, (uint8_t*) BufTX, UART_TX_LENGTH);
-	// }
-    // snprintf(BufTX, sizeof(BufTX), "uart_test_1 = %ld, uart_test_2 = %f \r\n",
-    // 		uart_test_1,
-	// 		uart_test_2
-    // );
+	// UART_StartRX();
+
+	// Uncomment this code for debugging
+//	UART_Monitor();
 }
