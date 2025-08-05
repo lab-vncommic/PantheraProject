@@ -7,7 +7,6 @@
 
 #ifndef SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_
 #define SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_
-#include "components.h"
 #include "MotorDriver.h"
 #include "Measurement.h"
 #include "FaultManagement.h"
@@ -46,6 +45,8 @@ typedef struct{
 
 void STATE_Init(PTR_TypeDef *pState);
 void STATE_UpdateState(PTR_TypeDef *pState);
+
+void STATE_GetMeasValue(void);
 
 extern PTR_TypeDef thisPTR;
 extern uint16_t index_memory;

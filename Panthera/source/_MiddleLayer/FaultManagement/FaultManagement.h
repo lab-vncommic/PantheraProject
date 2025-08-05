@@ -7,7 +7,7 @@
 
 #ifndef MIDDLELAYER_FAULTMANAGEMENT_FAULTMANAGEMENT_H_
 #define MIDDLELAYER_FAULTMANAGEMENT_FAULTMANAGEMENT_H_
-#include "components.h"
+#include "GlobalDefine.h"
 #include "Measurement.h"
 
 /*===========================================================================
