@@ -21,7 +21,8 @@
 | 17  | 02/08/2025    | v1.1.3              | Bổ sung code chống rung cho nút nhấn                                       | Nguyễn Quốc Uy    | Obsoleted|
 | 18  | 02/08/2025    | v1.1.4              | Bổ sung tính năng truyền nhận UART giao tiếp với người dùng                | Nguyễn Quốc Uy    | Obsoleted|
 | 19  | 04/08/2025    | v1.1.5              | Chỉnh sửa lại thứ tự động cơ theo bảng CAN/UART interface                  | Nguyễn Quốc Uy    | Obsoleted|
-| 20  | 04/08/2025    | v1.1.6              | Cập nhật chức năng đo nhiệt độ mỗi 1s                                      | Nguyễn Quốc Uy    | Active   |
+| 20  | 04/08/2025    | v1.1.6              | Cập nhật chức năng đo nhiệt độ mỗi 1s                                      | Nguyễn Quốc Uy    | Obsoleted|
+| 20  | 05/08/2025    | v1.1.7              | Khởi tạo thuật toán sensorless xác định vị trí động cơ                     | Nguyễn Quốc Uy    | Active   |
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
