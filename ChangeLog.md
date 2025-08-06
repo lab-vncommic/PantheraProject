@@ -23,7 +23,8 @@
 | 19  | 04/08/2025    | v1.1.5              | Chỉnh sửa lại thứ tự động cơ theo bảng CAN/UART interface                  | Nguyễn Quốc Uy    | Obsoleted|
 | 20  | 04/08/2025    | v1.1.6              | Cập nhật chức năng đo nhiệt độ mỗi 1s                                      | Nguyễn Quốc Uy    | Obsoleted|
 | 21  | 05/08/2025    | v1.1.7              | Khởi tạo thuật toán sensorless xác định vị trí động cơ                     | Nguyễn Quốc Uy    | Obsoleted|
-| 22  | 05/08/2025    | v1.1.8              | Chỉnh sửa ngưỡng bảo vệ quá dòng và quá nhiệt                              | Nguyễn Quốc Uy    | Active   |
+| 22  | 05/08/2025    | v1.1.8              | Chỉnh sửa ngưỡng bảo vệ quá dòng và quá nhiệt                              | Nguyễn Quốc Uy    | Obsoleted|
+| 23  | 06/08/2025    | v1.1.9              | Bổ sung phần điều chỉnh độ phân giải của 1 đơn vị vị trí                   | Nguyễn Quốc Uy    | Active   |
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
