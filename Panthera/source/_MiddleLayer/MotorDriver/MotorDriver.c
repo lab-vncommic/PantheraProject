@@ -17,6 +17,7 @@ void MD_UpdateDriver(Motor_TypeDef *pMotor);
 void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
 void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type);
 _Bool MD_CheckRisingEdge(uint8_t current_value);
+_Bool MD_ScaleResolution(uint8_t current_value);
 _Bool MD_CurrentRippleCounting(uint16_t current_value);
 _Bool MD_DetectPeak(uint16_t current_value);
 void MD_UpdateAxis(Motor_TypeDef *pMotor);
@@ -198,7 +199,7 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor)
 {
 	if (pMotor->topology == SENSOR) {
 		pMotor->driver.hall.value = GPIO_ReadPin(&pMotor->driver.hall);
-	    if (MD_CheckRisingEdge(pMotor->driver.hall.value)) {
+	    if (MD_ScaleResolution(pMotor->driver.hall.value)) {
 	        if (pMotor->status == FORWARD) {
 	            pMotor->axis += 1;
 	        } else if (pMotor->status == BACKWARD) {
@@ -270,6 +271,21 @@ _Bool MD_CheckRisingEdge(uint8_t current_value)
 	if (current_value == 0)
 	{
 		is_edge_detection_enabled = true;
+	}
+	return false;
+}
+
+_Bool MD_ScaleResolution(uint8_t current_value)
+{
+	static uint16_t counter_pulse = 0;
+
+	if (MD_CheckRisingEdge(current_value)) {
+		counter_pulse++;
+
+		if (counter_pulse >= NO_PULSE_PER_AXIS) {
+			counter_pulse = 0;
+			return true;
+		}
 	}
 	return false;
 }
