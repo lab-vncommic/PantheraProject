@@ -40,7 +40,7 @@ SerialConfig serial_config_My_UART = {
   SPC5_LIN_API_MODE_ASYNCHRONOUS,
   UART_TX_Callback,
   UART_RX_Callback,
-  TRUE,
+  FALSE,
   NULL,
   0,
   NULL 

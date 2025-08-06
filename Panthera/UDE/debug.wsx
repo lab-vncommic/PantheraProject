@@ -57,7 +57,7 @@
 					<DocumentDockStyle>Top</DocumentDockStyle>
 					<DockingControls>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>576</DockedDimension>
+							<DockedDimension>510</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Left</DockingType>
 							<FloatingBounds>
@@ -165,7 +165,7 @@
 							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW02</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>576</DockedDimension>
+							<DockedDimension>510</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Left</DockingType>
 							<FloatingBounds>
@@ -204,7 +204,7 @@
 					<LeftDockingContainerControlData>
 						<DockingContainerControlData>
 							<Tabbed>true</Tabbed>
-							<Dimension>308</Dimension>
+							<Dimension>488</Dimension>
 						</DockingContainerControlData>
 					</LeftDockingContainerControlData>
 					<RightDockingContainerControlData>
@@ -286,7 +286,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Window Toolbar</Name>
+								<Name>Show Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -403,7 +403,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Show Toolbar</Name>
+								<Name>Window Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -1034,7 +1034,7 @@
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text>WARNING: could not read memory at 0x00000000000000FC</Text>
+										<Text>Ready</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
@@ -1311,7 +1311,7 @@
 		<UDESTK.Script type="key">
 			<MacroGuiEntries type="key">
 				<LastScriptFilePath type="string">..\..\UDESTK 4.8</LastScriptFilePath>
-				<Macro_07_08_25_19_55_07_0 type="key">
+				<Macro_08_08_25_19_57_35_0 type="key">
 					<ScriptDescription type="string">The script contains a collection of macros to save memory content into different file formats 
 and fill target memory ranges</ScriptDescription>
 					<ScriptPath type="string">V:\UDE\AddOns\Macro\MacroLibrary\StdMacros1.dsm</ScriptPath>
@@ -1591,7 +1591,7 @@ End Sub</ScriptSource>
 					<ScriptFromStg type="flag">1</ScriptFromStg>
 					<LocalComputerName type="string">WS_CORE_DUO</LocalComputerName>
 					<ExternalScriptPath type="string"></ExternalScriptPath>
-					<NextNodeName type="string">Macro_07_08_25_19_57_23_0</NextNodeName>
+					<NextNodeName type="string">Macro_09_08_25_09_24_39_0</NextNodeName>
 					<UnAss type="key">
 						<GUIEntry type="key">
 							<MenuID type="int">10</MenuID>
@@ -1648,7 +1648,7 @@ End Sub</ScriptSource>
 						<GUIEntryDescription type="string"></GUIEntryDescription>
 					</FillDWord>
 					<NoOfFunctions type="int">5</NoOfFunctions>
-				</Macro_07_08_25_19_55_07_0>
+				</Macro_08_08_25_19_57_35_0>
 			</MacroGuiEntries>
 			<LastSelectedMacro type="string"></LastSelectedMacro>
 		</UDESTK.Script>
@@ -1778,10 +1778,10 @@ End Sub</ScriptSource>
 					<FrameCreated type="string">01.08.2025 14:57:15:057</FrameCreated>
 					<ViewSrv type="key">
 						<TopIndex type="int">0</TopIndex>
-						<CaretIndex type="int">9</CaretIndex>
-						<NameWidth type="int">163</NameWidth>
+						<CaretIndex type="int">23</CaretIndex>
+						<NameWidth type="int">320</NameWidth>
 						<AddressWidth type="int">0</AddressWidth>
-						<ValueWidth type="int">128</ValueWidth>
+						<ValueWidth type="int">151</ValueWidth>
 						<Value2Width type="int">0</Value2Width>
 						<MinMaxWidth type="int">0</MinMaxWidth>
 						<Watches type="key">
@@ -1804,7 +1804,6 @@ End Sub</ScriptSource>
 							</Watch2>
 							<Watch3 type="key">
 								<Name type="string">thisPTR (global) @1</Name>
-								<Status type="string">#0#0,0$-1,0$#0,1#0,2#</Status>
 								<RunningPeriod3 type="int">500</RunningPeriod3>
 								<HoldedPeriod3 type="int">0</HoldedPeriod3>
 							</Watch3>
@@ -1813,7 +1812,6 @@ End Sub</ScriptSource>
 							</Watch4>
 							<Watch5 type="key">
 								<Name type="string">motor_height (global) @1</Name>
-								<Status type="string">#0#0,0$-1,0$#0,2$-1,0$#0,3$-1,0$#0,4$-1,0$</Status>
 								<RunningPeriod5 type="int">500</RunningPeriod5>
 								<HoldedPeriod5 type="int">0</HoldedPeriod5>
 							</Watch5>
@@ -1822,6 +1820,33 @@ End Sub</ScriptSource>
 								<RunningPeriod6 type="int">500</RunningPeriod6>
 								<HoldedPeriod6 type="int">0</HoldedPeriod6>
 							</Watch6>
+							<Watch7 type="key">
+								<Name type="string">cnt_rx_success (global) @1</Name>
+								<RunningPeriod7 type="int">500</RunningPeriod7>
+								<HoldedPeriod7 type="int">0</HoldedPeriod7>
+							</Watch7>
+							<Watch8 type="key">
+								<Name type="string">flag_enable_process_comm (global) @1</Name>
+								<RunningPeriod8 type="int">500</RunningPeriod8>
+								<HoldedPeriod8 type="int">0</HoldedPeriod8>
+							</Watch8>
+							<Watch9 type="key">
+								<Name type="string">BufRX (global) @1</Name>
+								<Status type="string">#0#0?13762661?#0,0$1,2$#0,1$1,2$#0,2$1,2$#0,3$1,2$#0,4$1,2$#0,5$1,2$</Status>
+								<RunningPeriod9 type="int">500</RunningPeriod9>
+								<HoldedPeriod9 type="int">0</HoldedPeriod9>
+							</Watch9>
+							<Watch10 type="key">
+								<Name type="string">subBufRX (global) @1</Name>
+								<Status type="string">#0#0?13762661?#0,0$1,2$#0,1$1,2$#0,2$1,2$#0,3$1,2$#0,4$1,2$#0,5$1,2$</Status>
+								<RunningPeriod10 type="int">500</RunningPeriod10>
+								<HoldedPeriod10 type="int">0</HoldedPeriod10>
+							</Watch10>
+							<Watch11 type="key">
+								<Name type="string">num (global) @1</Name>
+								<RunningPeriod11 type="int">500</RunningPeriod11>
+								<HoldedPeriod11 type="int">0</HoldedPeriod11>
+							</Watch11>
 						</Watches>
 					</ViewSrv>
 					<NETFrameMode type="int">77824</NETFrameMode>
@@ -2001,7 +2026,7 @@ End Sub</ScriptSource>
 		</MRUSourceFileList>
 	</Core2>
 	<TargetInfoFile type="string">stm_spc582b60_chorus_discovery_starterkit_debug_jtag.cfg</TargetInfoFile>
-	<LastWriteDate type="string">07.08.2025 19:57:23:000</LastWriteDate>
+	<LastWriteDate type="string">09.08.2025 09:24:39:000</LastWriteDate>
 	<Logging type="key">
 		<DontClearLogOnCloseWorkspace type="flag">0</DontClearLogOnCloseWorkspace>
 		<UdeApiLogging type="flag">0</UdeApiLogging>

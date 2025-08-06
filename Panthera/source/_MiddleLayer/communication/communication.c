@@ -6,8 +6,10 @@
  */
 
 #include "Communication.h"
-
 Communication_TypeDef thisCommunication;
+
+uint16_t convertUint16BE(const char *buffer, uint16_t offset);
+uint8_t ByteToUint8(const char *buffer, uint16_t offset);
 
 /**
  * @brief Converts a buffer of bytes into a hexadecimal string.
@@ -85,14 +87,15 @@ uint32_t convert_charHex_to_uint32_t_Communication(const char* hex_str) {
 /**
  * @brief Parses received UART data and stores extracted values in the global communication structure.
  */
-void Communication_Receive(void){
+void COMM_Receive(void){
 	char string_input[9];
+	// 2100 cycles
 	convert_BufRX_to_HexString(BufRX, UART_RX_LENGTH, string_input);
     char a[5],b[3],c[3];
     seperate_char_communication(a,b,c,string_input);
-    thisCommunication.ID_Message = (uint16_t) convert_charHex_to_uint32_t_Communication(a);
-    thisCommunication.Write_Read = (uint16_t) convert_charHex_to_uint32_t_Communication(b);
-    thisCommunication.value		 = (uint16_t) convert_charHex_to_uint32_t_Communication(c);
+    thisCommunication.id 		  = (uint16_t) convert_charHex_to_uint32_t_Communication(a);
+    thisCommunication.access_type = (uint16_t) convert_charHex_to_uint32_t_Communication(b);
+    thisCommunication.value		  = (uint16_t) convert_charHex_to_uint32_t_Communication(c);
 }
 
 /**
@@ -142,12 +145,12 @@ void Comm_SendTopology(uint8_t topology, const char* name) {
  *
  * This function only sends data if the mode is READ_MODE.
  */
-void Communication_Transmit(void){
-	if (thisCommunication.Write_Read != READ_MODE) return;
+void COMM_Transmit(void){
+	if (thisCommunication.access_type != READ_MODE) return;
 
 	memset(BufTX, 0, sizeof(BufTX));
 
-	switch (thisCommunication.ID_Message) {
+	switch (thisCommunication.id) {
 		case 1 : Comm_SendButtonState(thisButtonAll.slider_1.value,   "Positioning KEY: Seat Slider Forward");   break;
 		case 2 : Comm_SendButtonState(thisButtonAll.slider_2.value,   "Positioning KEY: Seat Slider Backward");  break;
 		case 3 : Comm_SendButtonState(thisButtonAll.height_1.value,   "Positioning KEY: Seat Height Upward");    break;
@@ -182,6 +185,24 @@ void Communication_Transmit(void){
 	}
 	// Transmit result over UART
 	sd_lld_write(&SD2, (uint8_t*) BufTX, UART_TX_LENGTH);
+}
+
+void COMM_DecodeMessage(void)
+{
+//	thisCommunication.id		  = convertUint16BE(BufRX, 2);
+//	thisCommunication.access_type = ByteToUint8(BufRX, 4);
+//	thisCommunication.value		  = ByteToUint8(BufRX, 5);
+//	memset(BufRX, 0, sizeof(BufRX));
+}
+
+uint16_t convertUint16BE(const char *buffer, uint16_t offset)
+{
+    return (uint16_t)((buffer[offset] << 8) | buffer[offset + 1]);
+}
+
+uint8_t ByteToUint8(const char *buffer, uint16_t offset)
+{
+	return (uint8_t)(buffer[offset] - '0');
 }
 
 

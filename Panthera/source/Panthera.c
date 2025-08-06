@@ -32,7 +32,7 @@ void PTR_system_initialization(void)
  */
 void PTR_main_interrupt_service(void)
 {
-	begin = stm_lld_getcounter(&STMD3);
+
 
 	// Measure thermal every 1s
 	STATE_UpdateMeas(&thisPTR);
@@ -40,17 +40,24 @@ void PTR_main_interrupt_service(void)
 	STATE_UpdateButton(&thisPTR);
 
 	// FIXME: Need to transfer to middleware layer
-	if (uart_process_flag) {
-		uart_process_flag = 0;
+	if (flag_enable_process_comm) {
+		begin = stm_lld_getcounter(&STMD3);
+//		flag_enable_process_comm = 0;
 		// Function to decode received UART message
-		Communication_Receive();
-		Communication_Transmit();
+//		COMM_Receive();
+//		COMM_DecodeMessage();
+		end = stm_lld_getcounter(&STMD3);
+//		COMM_Transmit();
+	}
 
+	if (cnt_500ms++ >= 5000) {
+		cnt_500ms = 0;
+		cnt_rx_success = 0;
 	}
 
 	STATE_UpdateState(&thisPTR);
 
-	end = stm_lld_getcounter(&STMD3);
+
     elapsed = end - begin;
 
 

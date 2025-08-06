@@ -18,16 +18,18 @@
 #define WRITE_MODE 	1
 
 typedef struct{
-	uint16_t ID_Message ;
-	uint16_t Write_Read ;
-	uint16_t value;
+	uint16_t id;
+	uint8_t  access_type;
+	uint8_t  value;
 }Communication_TypeDef;
 
 
 void seperate_char_communication( char* a,  char* b,  char* c, char* input);
 uint32_t convert_charHex_to_uint32_t_Communication(const char* hex_str);
-void Communication_Receive(void);
-void Communication_Transmit(void);
+void COMM_Receive(void);
+void COMM_Transmit(void);
+
+void COMM_DecodeMessage(void);
 
 extern Communication_TypeDef thisCommunication;
 #endif /* SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_ */

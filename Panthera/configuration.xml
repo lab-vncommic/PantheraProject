@@ -4316,9 +4316,9 @@
                 </notifications>
                 <dma>
                   <dma_enable>
-                    <value>true</value>
+                    <value>false</value>
                   </dma_enable>
-                  <dma_error_callback>
+                  <dma_error_callback disabled="true">
                     <value />
                   </dma_error_callback>
                 </dma>
