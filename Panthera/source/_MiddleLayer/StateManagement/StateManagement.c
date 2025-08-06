@@ -151,6 +151,7 @@ void STATE_autoHandle(PTR_TypeDef *pState)
 		MD_Run(MOTOR_SLIDER, FORWARD, &pState->measurement);
 	} else {
 		MD_StopAll();
+		pState->state = STATE_IDLE;
 	}
 }
 
