@@ -6,7 +6,6 @@
  */
 #include "MotorDriver.h"
 Motor_TypeDef motor_height, motor_recliner, motor_slider;
-uint16_t cnt_current_ripple;
 PeakDetector_TypeDef thisDetetor;
 int i = 0;
 
@@ -292,12 +291,15 @@ _Bool MD_ScaleResolution(uint8_t current_value)
 
 _Bool MD_CurrentRippleCounting(uint16_t current_value)
 {
-	if (cnt_current_ripple >= PULSE_PER_ROUND) {
-		cnt_current_ripple = 0;
-		return true;
-	}
+	static uint16_t cnt_current_ripple;
+
 	if (MD_DetectPeak(current_value)) {
 		cnt_current_ripple++;
+
+		if (cnt_current_ripple >= PULSE_PER_ROUND) {
+			cnt_current_ripple = 0;
+			return true;
+		}
 	}
 	return false;
 }
