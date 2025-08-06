@@ -36,7 +36,7 @@ typedef struct{
 /*===========================================================================
  * PTR CODE SECTION
  *===========================================================================*/
-// Motor 1: Current parameters for Q15 concept
+// Motor 1: Current parameters for Q15 concept (Motor Slider)
 #define CURRENT_MT1_HIGH_LIMIT_HARD  25.0f
 #define CURRENT_MT1_HIGH_LIMIT_SOFT  20.0f
 #define CURRENT_MT1_SCALE_FACTOR     (uq31_t)(CURRENT_MT1_HIGH_LIMIT_HARD/CURRENT_MT1_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
