@@ -44,7 +44,9 @@ typedef struct{
 void STATE_Init(PTR_TypeDef *pState);
 void STATE_UpdateState(PTR_TypeDef *pState);
 
-void STATE_GetMeasValue(PTR_TypeDef *pState);
+void STATE_UpdateMeas(PTR_TypeDef *pState);
+void STATE_UpdateFault(PTR_TypeDef *pState);
+void STATE_UpdateButton(PTR_TypeDef *pState);
 
 extern PTR_TypeDef thisPTR;
 #endif /* SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_ */

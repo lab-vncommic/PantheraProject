@@ -36,6 +36,8 @@ typedef enum {
 typedef struct{
 	uint8_t					fault_status;
 	Fault_Mode_TypeDef 	  	fault_mode;
+	uint8_t					limit;
+	uint8_t					counter;
 	uint8_t 			  	fault_save[FAULT_SAVE_MEMORY];
 } Fault_TypeDef;
 

@@ -187,7 +187,7 @@ void MEAS_GetValue(MeasType_TypeDef meas_type)
 	}
 
 	// FIXME: Only use for debugging
-	MEAS_GetRealValue(meas_type);
+//	MEAS_GetRealValue(meas_type);
 }
 
 /**

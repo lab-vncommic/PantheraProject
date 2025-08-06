@@ -276,7 +276,7 @@ void STATE_HandleButton(PTR_TypeDef *pState)
 	}
 }
 
-void STATE_GetMeasValue(PTR_TypeDef *pState)
+void STATE_UpdateMeas(PTR_TypeDef *pState)
 {
 	cnt_meas_type++;
 	if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 5)) {
@@ -293,6 +293,16 @@ void STATE_GetMeasValue(PTR_TypeDef *pState)
 		MD_UpdateMeas(MEAS_CURRENT);
 		pState->measurement = MEAS_UpdateValue(MEAS_CURRENT);
 	}
+}
+
+void STATE_UpdateFault(PTR_TypeDef *pState)
+{
+	pState->fault.mode = FAULT_UpdateMode(&pState->measurement);
+}
+
+void STATE_UpdateButton(PTR_TypeDef *pState)
+{
+	pState->button	   = BTN_GetStatus();
 }
 
 /**
