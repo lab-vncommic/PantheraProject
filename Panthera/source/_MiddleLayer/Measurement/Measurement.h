@@ -69,43 +69,32 @@ typedef struct{
 #define SAMPLE_TIME_MEAS_THERMAL	10000	// 10000/10000 = 1s
 
 typedef enum{
-	MEAS_NONE				= 0,
-	MEAS_MOTOR_HEIGHT		= 1,
-	MEAS_MOTOR_RECLINER		= 2,
-	MEAS_MOTOR_SLIDER		= 3
-} MeasMotor_TypeDef;
-
-typedef enum{
 	MEAS_CURRENT 	= 0,
 	MEAS_THERMAL	= 1,
 	MEAS_VCC		= 2
-} DriverMeasType_TypeDef;
+} MeasType_TypeDef;
 
 typedef struct{
-	Meas_TypeDef current_mt1;
-	Meas_TypeDef current_mt2;
-	Meas_TypeDef current_mt3;
-	Meas_TypeDef thermal_mt1;
-	Meas_TypeDef thermal_mt2;
-	Meas_TypeDef thermal_mt3;
+	Meas_TypeDef current_slider;
+	Meas_TypeDef current_height;
+	Meas_TypeDef current_recliner;
+	Meas_TypeDef thermal_slider;
+	Meas_TypeDef thermal_height;
+	Meas_TypeDef thermal_recliner;
 } MeasAll_TypeDef;
 
-/*===========================================================================
- * REUSABLE CODE SECTION
- *===========================================================================*/
-void MEAS_Config(Meas_TypeDef *pMeas, q15_t offset, uq31_t scale_factor, uq15_t alpha, uq15_t high_limit_soft, float gain_f32, float offset_f32, uint8_t calc_method);
-void MEAS_GetRawValue(Meas_TypeDef *pMeas, q15_t raw_value);
-void MEAS_GetValueQ15(Meas_TypeDef *pMeas);
-void MEAS_GetValueF32(Meas_TypeDef *pMeas);
+typedef struct{
+	uq15_t current_slider_q15;
+	uq15_t current_height_q15;
+	uq15_t current_recliner_q15;
+	uq15_t thermal_slider_q15;
+	uq15_t thermal_height_q15;
+	uq15_t thermal_recliner_q15;
+} MeasSystem_TypeDef;
 
-/*===========================================================================
- * PTR CODE SECTION
- *===========================================================================*/
+// Public API
 void MEAS_Init(void);
-void MEAS_GetValue(DriverMeasType_TypeDef meas_type);
-void MEAS_GetRealValue(DriverMeasType_TypeDef meas_type);
-void MEAS_UpdateValue(void);
-uint16_t MEAS_GetCurrentValue(MeasMotor_TypeDef meas_motor);
+MeasSystem_TypeDef MEAS_UpdateValue(MeasType_TypeDef meas_type);
 
-extern MeasAll_TypeDef thisMeas;
+//extern MeasAll_TypeDef thisMeas;
 #endif /* MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_ */

@@ -57,7 +57,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_idleHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (thisFault.fault_mode != FAULT_NONE) {
+			if (pState->fault.mode != FAULT_NONE) {
 				pState->state = STATE_FAULT;
 			}
 
@@ -68,7 +68,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_manualHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (thisFault.fault_mode != FAULT_NONE) {
+			if (pState->fault.mode != FAULT_NONE) {
 				pState->state = STATE_FAULT;
 			}
 
@@ -79,7 +79,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_autoHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (thisFault.fault_mode != FAULT_NONE) {
+			if (pState->fault.mode != FAULT_NONE) {
 				pState->state = STATE_FAULT;
 			}
 
@@ -125,7 +125,7 @@ void STATE_idleHandle(PTR_TypeDef *pState)
  */
 void STATE_manualHandle(PTR_TypeDef *pState)
 {
-	MD_Run(pState->motor.motor_name, pState->motor.status);
+	MD_Run(pState->motor_manual.name, pState->motor_manual.status, &pState->measurement);
 }
 
 /**
@@ -138,17 +138,17 @@ void STATE_manualHandle(PTR_TypeDef *pState)
 void STATE_autoHandle(PTR_TypeDef *pState)
 {
 	if (pState->seat_current_axis.height > pState->seat_memory_axis.height) {
-		MD_Run(MOTOR_HEIGHT, BACKWARD);
+		MD_Run(MOTOR_HEIGHT, BACKWARD, &pState->measurement);
 	} else if (pState->seat_current_axis.height < pState->seat_memory_axis.height) {
-		MD_Run(MOTOR_HEIGHT, FORWARD);
+		MD_Run(MOTOR_HEIGHT, FORWARD, &pState->measurement);
 	} else if (pState->seat_current_axis.recliner > pState->seat_memory_axis.recliner) {
-		MD_Run(MOTOR_RECLINER, BACKWARD);
+		MD_Run(MOTOR_RECLINER, BACKWARD, &pState->measurement);
 	} else if (pState->seat_current_axis.recliner < pState->seat_memory_axis.recliner) {
-		MD_Run(MOTOR_RECLINER, FORWARD);
+		MD_Run(MOTOR_RECLINER, FORWARD, &pState->measurement);
 	} else if (pState->seat_current_axis.slider > pState->seat_memory_axis.slider) {
-		MD_Run(MOTOR_SLIDER, BACKWARD);
+		MD_Run(MOTOR_SLIDER, BACKWARD, &pState->measurement);
 	} else if (pState->seat_current_axis.slider < pState->seat_memory_axis.slider) {
-		MD_Run(MOTOR_SLIDER, FORWARD);
+		MD_Run(MOTOR_SLIDER, FORWARD, &pState->measurement);
 	} else {
 		MD_StopAll();
 	}
@@ -187,48 +187,48 @@ void STATE_HandleButton(PTR_TypeDef *pState)
 	switch (pState->button.name) {
 		case BTN_HEIGHT_1:
 			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor.motor_name = MOTOR_HEIGHT;
-				thisPTR.motor.status 	 = FORWARD;
+				thisPTR.motor_manual.name = MOTOR_HEIGHT;
+				thisPTR.motor_manual.status 	 = FORWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_HEIGHT_2:
 			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor.motor_name = MOTOR_HEIGHT;
-				thisPTR.motor.status 	 = BACKWARD;
+				thisPTR.motor_manual.name = MOTOR_HEIGHT;
+				thisPTR.motor_manual.status 	 = BACKWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_RECLINER_1:
 			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor.motor_name = MOTOR_RECLINER;
-				thisPTR.motor.status 	 = FORWARD;
+				thisPTR.motor_manual.name = MOTOR_RECLINER;
+				thisPTR.motor_manual.status 	 = FORWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_RECLINER_2:
 			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor.motor_name = MOTOR_RECLINER;
-				thisPTR.motor.status 	 = BACKWARD;
+				thisPTR.motor_manual.name = MOTOR_RECLINER;
+				thisPTR.motor_manual.status 	 = BACKWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_SLIDER_1:
 			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor.motor_name = MOTOR_SLIDER;
-				thisPTR.motor.status 	 = FORWARD;
+				thisPTR.motor_manual.name = MOTOR_SLIDER;
+				thisPTR.motor_manual.status 	 = FORWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
 
 		case BTN_SLIDER_2:
 			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor.motor_name = MOTOR_SLIDER;
-				thisPTR.motor.status 	 = BACKWARD;
+				thisPTR.motor_manual.name = MOTOR_SLIDER;
+				thisPTR.motor_manual.status 	 = BACKWARD;
 			}
 			pState->state = STATE_MANUAL;
 			break;
@@ -270,28 +270,39 @@ void STATE_HandleButton(PTR_TypeDef *pState)
 
 		default:
 			pState->state = STATE_IDLE;
-			thisPTR.motor.motor_name = MOTOR_NONE;
-			thisPTR.motor.status 	 = STOP;
+			thisPTR.motor_manual.name = MOTOR_NONE;
+			thisPTR.motor_manual.status 	 = STOP;
 			break;
 	}
 }
 
-void STATE_GetMeasValue(void)
+void STATE_UpdateMeas(PTR_TypeDef *pState)
 {
 	cnt_meas_type++;
 	if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 5)) {
 		if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 2))
 		{
 			MD_UpdateMeas(MEAS_THERMAL);
-			MEAS_GetValue(MEAS_THERMAL);
+			pState->measurement = MEAS_UpdateValue(MEAS_THERMAL);
+
 		}
 		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
 			cnt_meas_type = 0;
 		}
 	} else {
 		MD_UpdateMeas(MEAS_CURRENT);
-		MEAS_GetValue(MEAS_CURRENT);
+		pState->measurement = MEAS_UpdateValue(MEAS_CURRENT);
 	}
+}
+
+void STATE_UpdateFault(PTR_TypeDef *pState)
+{
+	pState->fault.mode = FAULT_UpdateMode(&pState->measurement);
+}
+
+void STATE_UpdateButton(PTR_TypeDef *pState)
+{
+	pState->button	   = BTN_GetStatus();
 }
 
 /**

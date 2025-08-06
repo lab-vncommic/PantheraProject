@@ -26,28 +26,27 @@ typedef enum{
 } State_TypeDef;
 
 typedef struct{
-	MotorName_TypeDef		motor_name;
+	MotorName_TypeDef		name;
 	MotorStatus_TypeDef		status;
 } StateMotor_TypeDef;
 
 typedef struct{
 	State_TypeDef 			state;
-
-	StateMotor_TypeDef		motor;
+	StateMotor_TypeDef		motor_manual;
 	SeatAxis_TypeDef		seat_current_axis;
 	SeatAxis_TypeDef		seat_memory_axis;
 
-	ButtonState_TypeDef		button;
-
-	uint8_t  		  		faultCounter;
-	uint8_t  		  		faultLimit;
+	MeasSystem_TypeDef		measurement;
+	FaultSystem_TypeDef		fault;
+	ButtonSystem_TypeDef	button;
 } PTR_TypeDef;
 
 void STATE_Init(PTR_TypeDef *pState);
 void STATE_UpdateState(PTR_TypeDef *pState);
 
-void STATE_GetMeasValue(void);
+void STATE_UpdateMeas(PTR_TypeDef *pState);
+void STATE_UpdateFault(PTR_TypeDef *pState);
+void STATE_UpdateButton(PTR_TypeDef *pState);
 
 extern PTR_TypeDef thisPTR;
-extern uint16_t index_memory;
 #endif /* SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_ */

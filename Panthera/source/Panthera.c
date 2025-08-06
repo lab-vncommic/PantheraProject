@@ -35,10 +35,9 @@ void PTR_main_interrupt_service(void)
 	begin = stm_lld_getcounter(&STMD3);
 
 	// Measure thermal every 1s
-	STATE_GetMeasValue();
-
-	FAULT_UpdateMode();
-	BTN_Update();
+	STATE_UpdateMeas(&thisPTR);
+	STATE_UpdateFault(&thisPTR);
+	STATE_UpdateButton(&thisPTR);
 
 	// FIXME: Need to transfer to middleware layer
 	if (uart_process_flag) {

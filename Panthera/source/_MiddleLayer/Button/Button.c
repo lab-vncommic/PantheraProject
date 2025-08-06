@@ -9,6 +9,13 @@ Btn_All_TypeDef		thisButtonAll;
 Button_TypeDef		thisButton;
 uint16_t			temp_btn_stt = 0x0000;
 
+void BTN_GetGpioValue(GPIO_Input_TypeDef *pGpio);
+_Bool BTN_Debouncing(Btn_Object_TypeDef *pButton, _Bool condition, uint16_t timeout);
+void BTN_GetStatusBtnReg(void);
+_Bool BTN_OnlyOneBtnPress(void);
+void BTN_AnalyzeInputState(Button_TypeDef *pButton);
+void BTN_Update(void);
+
 /**
  * @brief Updates the button values from GPIO inputs
  * @details Copies the current GPIO input values for all buttons to the 
@@ -294,11 +301,11 @@ void BTN_Update(void)
  *          a copy of the current button state (name and action)
  * @return ButtonState_TypeDef Current button state with name and action
  */
-ButtonState_TypeDef BTN_GetStatus(void)
+ButtonSystem_TypeDef BTN_GetStatus(void)
 {
 	BTN_Update();
 
-	ButtonState_TypeDef temp_button;
+	ButtonSystem_TypeDef temp_button;
 	temp_button.name 	= thisButton.name;
 	temp_button.action	= thisButton.action;
 	return temp_button;
