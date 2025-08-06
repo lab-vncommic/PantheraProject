@@ -28,16 +28,22 @@
 #define FAULT_AUTO_RECOVERY_BITS		(FAULT_STT_0 | FAULT_STT_1 | FAULT_STT_2 | FAULT_STT_3 | FAULT_STT_4 | FAULT_STT_5)
 
 typedef enum {
-	FAULT_NONE = 0,
-	FAULT_LATCH,
-	FAULT_AUTO_RECOVER,
+	FAULT_NONE 			= 0,
+	FAULT_LATCH			= 1,
+	FAULT_AUTO_RECOVER	= 2
 } Fault_Mode_TypeDef;
 
 typedef struct{
 	uint8_t					fault_status;
-	uint8_t 			  	fault_save[FAULT_SAVE_MEMORY];
 	Fault_Mode_TypeDef 	  	fault_mode;
+	uint8_t 			  	fault_save[FAULT_SAVE_MEMORY];
 } Fault_TypeDef;
+
+typedef struct{
+	Fault_Mode_TypeDef		mode;
+	uint8_t					limit;
+	uint8_t					counter;
+} FaultSystem_TypeDef;
 
 /*===========================================================================
  * PTR CODE SECTION
@@ -58,16 +64,17 @@ typedef struct{
 #define FAULT_MT3_OTP_THRESH_Q15      	(THERMAL_MT3_OTP - THERMAL_MT3_OFFSET_F32)/(2*THERMAL_MT3_GAIN_F32)
 
 /* ====== Macros for Fault Protection in Q15 format ====== */
-#define FAULT_IS_MT1_OCP(pMeas)       	((pMeas)->value_q15 > FAULT_MT1_OCP_THRESH_Q15)
-#define FAULT_IS_MT1_OTP(pMeas)       	((pMeas)->value_q15 < FAULT_MT1_OTP_THRESH_Q15)
-#define FAULT_IS_MT2_OCP(pMeas)       	((pMeas)->value_q15 > FAULT_MT2_OCP_THRESH_Q15)
-#define FAULT_IS_MT2_OTP(pMeas)       	((pMeas)->value_q15 < FAULT_MT2_OTP_THRESH_Q15)
-#define FAULT_IS_MT3_OCP(pMeas)       	((pMeas)->value_q15 > FAULT_MT3_OCP_THRESH_Q15)
-#define FAULT_IS_MT3_OTP(pMeas)       	((pMeas)->value_q15 < FAULT_MT3_OTP_THRESH_Q15)
+#define FAULT_IS_MT1_OCP(value)       	(value > FAULT_MT1_OCP_THRESH_Q15)
+#define FAULT_IS_MT1_OTP(value)       	(value < FAULT_MT1_OTP_THRESH_Q15)
+#define FAULT_IS_MT2_OCP(value)       	(value > FAULT_MT2_OCP_THRESH_Q15)
+#define FAULT_IS_MT2_OTP(value)       	(value < FAULT_MT2_OTP_THRESH_Q15)
+#define FAULT_IS_MT3_OCP(value)       	(value > FAULT_MT3_OCP_THRESH_Q15)
+#define FAULT_IS_MT3_OTP(value)       	(value < FAULT_MT3_OTP_THRESH_Q15)
 
+// Public API
 void FAULT_Init(void);
-void FAULT_UpdateStatus(void);
-void FAULT_UpdateMode(void);
+Fault_Mode_TypeDef FAULT_UpdateMode(MeasSystem_TypeDef *pMeas);
 
-extern Fault_TypeDef 	thisFault;
+// FIXME: Only use extern in dev
+//extern Fault_TypeDef 	thisFault;
 #endif /* MIDDLELAYER_FAULTMANAGEMENT_FAULTMANAGEMENT_H_ */

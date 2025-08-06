@@ -7,6 +7,13 @@
 #include "Measurement.h"
 MeasAll_TypeDef thisMeas;
 
+void MEAS_Config(Meas_TypeDef *pMeas, q15_t offset, uq31_t scale_factor, uq15_t alpha, uq15_t high_limit_soft, float gain_f32, float offset_f32, uint8_t calc_method);
+void MEAS_GetRawValue(Meas_TypeDef *pMeas, q15_t raw_value);
+void MEAS_GetValueQ15(Meas_TypeDef *pMeas);
+void MEAS_GetValueF32(Meas_TypeDef *pMeas);
+void MEAS_GetValue(MeasType_TypeDef meas_type);
+void MEAS_GetRealValue(MeasType_TypeDef meas_type);
+
 /**
  * @brief  Configures a measurement object with specified parameters
  * @details This function initializes and configures a measurement object with the provided
@@ -130,12 +137,12 @@ void MEAS_Init(void)
 	ADC_Init(&thatADC);
 
 	// Config parameters for measurement objects
-    MEAS_Config(&thisMeas.current_mt1, CURRENT_MT1_OFFSET, CURRENT_MT1_SCALE_FACTOR, 0U, CURRENT_MT1_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
-    MEAS_Config(&thisMeas.current_mt2, CURRENT_MT2_OFFSET, CURRENT_MT2_SCALE_FACTOR, 0U, CURRENT_MT2_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
-    MEAS_Config(&thisMeas.current_mt3, CURRENT_MT3_OFFSET, CURRENT_MT3_SCALE_FACTOR, 0U, CURRENT_MT3_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
-    MEAS_Config(&thisMeas.thermal_mt1, 0U, 0U, 0U, 0U, THERMAL_MT1_GAIN_F32, THERMAL_MT1_OFFSET_F32, CALC_METHOD_F32);
-    MEAS_Config(&thisMeas.thermal_mt2, 0U, 0U, 0U, 0U, THERMAL_MT2_GAIN_F32, THERMAL_MT2_OFFSET_F32, CALC_METHOD_F32);
-    MEAS_Config(&thisMeas.thermal_mt3, 0U, 0U, 0U, 0U, THERMAL_MT3_GAIN_F32, THERMAL_MT3_OFFSET_F32, CALC_METHOD_F32);
+    MEAS_Config(&thisMeas.current_slider, CURRENT_MT1_OFFSET, CURRENT_MT1_SCALE_FACTOR, 0U, CURRENT_MT1_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
+    MEAS_Config(&thisMeas.current_height, CURRENT_MT2_OFFSET, CURRENT_MT2_SCALE_FACTOR, 0U, CURRENT_MT2_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
+    MEAS_Config(&thisMeas.current_recliner, CURRENT_MT3_OFFSET, CURRENT_MT3_SCALE_FACTOR, 0U, CURRENT_MT3_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
+    MEAS_Config(&thisMeas.thermal_slider, 0U, 0U, 0U, 0U, THERMAL_MT1_GAIN_F32, THERMAL_MT1_OFFSET_F32, CALC_METHOD_F32);
+    MEAS_Config(&thisMeas.thermal_height, 0U, 0U, 0U, 0U, THERMAL_MT2_GAIN_F32, THERMAL_MT2_OFFSET_F32, CALC_METHOD_F32);
+    MEAS_Config(&thisMeas.thermal_recliner, 0U, 0U, 0U, 0U, THERMAL_MT3_GAIN_F32, THERMAL_MT3_OFFSET_F32, CALC_METHOD_F32);
 }
 
 /**
@@ -152,32 +159,34 @@ void MEAS_Init(void)
  * @see MEAS_GetRawValue
  * @see MEAS_GetValueQ15
  */
-void MEAS_GetValue(DriverMeasType_TypeDef meas_type)
+void MEAS_GetValue(MeasType_TypeDef meas_type)
 {
 	// Get adc value
 	ADC_startOfConversion();
 
 	if (meas_type) {
 		// Get raw value from adc driver
-	    MEAS_GetRawValue(&thisMeas.thermal_mt1, thatADC.ADC_MulSens_1);
-	    MEAS_GetRawValue(&thisMeas.thermal_mt2, thatADC.ADC_MulSens_2);
-	    MEAS_GetRawValue(&thisMeas.thermal_mt3, thatADC.ADC_MulSens_3);
+	    MEAS_GetRawValue(&thisMeas.thermal_slider, thatADC.ADC_MulSens_1);
+	    MEAS_GetRawValue(&thisMeas.thermal_height, thatADC.ADC_MulSens_2);
+	    MEAS_GetRawValue(&thisMeas.thermal_recliner, thatADC.ADC_MulSens_3);
 
 		// Get value in Q15 concept
-	    MEAS_GetValueQ15(&thisMeas.thermal_mt1);
-	    MEAS_GetValueQ15(&thisMeas.thermal_mt2);
-	    MEAS_GetValueQ15(&thisMeas.thermal_mt3);
+	    MEAS_GetValueQ15(&thisMeas.thermal_slider);
+	    MEAS_GetValueQ15(&thisMeas.thermal_height);
+	    MEAS_GetValueQ15(&thisMeas.thermal_recliner);
 	} else {
 		// Get raw value from adc driver
-	    MEAS_GetRawValue(&thisMeas.current_mt1, thatADC.ADC_MulSens_1);
-	    MEAS_GetRawValue(&thisMeas.current_mt2, thatADC.ADC_MulSens_2);
-	    MEAS_GetRawValue(&thisMeas.current_mt3, thatADC.ADC_MulSens_3);
+	    MEAS_GetRawValue(&thisMeas.current_slider, thatADC.ADC_MulSens_1);
+	    MEAS_GetRawValue(&thisMeas.current_height, thatADC.ADC_MulSens_2);
+	    MEAS_GetRawValue(&thisMeas.current_recliner, thatADC.ADC_MulSens_3);
 
 		// Get value in Q15 concept
-		MEAS_GetValueQ15(&thisMeas.current_mt1);
-		MEAS_GetValueQ15(&thisMeas.current_mt2);
-		MEAS_GetValueQ15(&thisMeas.current_mt3);
+		MEAS_GetValueQ15(&thisMeas.current_slider);
+		MEAS_GetValueQ15(&thisMeas.current_height);
+		MEAS_GetValueQ15(&thisMeas.current_recliner);
 	}
+
+	// FIXME: Only use for debugging
 	MEAS_GetRealValue(meas_type);
 }
 
@@ -194,51 +203,32 @@ void MEAS_GetValue(DriverMeasType_TypeDef meas_type)
  *
  * @return None
  */
-void MEAS_GetRealValue(DriverMeasType_TypeDef meas_type)
+void MEAS_GetRealValue(MeasType_TypeDef meas_type)
 {
 	if (meas_type) {
-	    MEAS_GetValueF32(&thisMeas.thermal_mt1);
-	    MEAS_GetValueF32(&thisMeas.thermal_mt2);
-	    MEAS_GetValueF32(&thisMeas.thermal_mt3);
+	    MEAS_GetValueF32(&thisMeas.thermal_slider);
+	    MEAS_GetValueF32(&thisMeas.thermal_height);
+	    MEAS_GetValueF32(&thisMeas.thermal_recliner);
 	} else {
-		MEAS_GetValueF32(&thisMeas.current_mt1);
-		MEAS_GetValueF32(&thisMeas.current_mt2);
-		MEAS_GetValueF32(&thisMeas.current_mt3);
+		MEAS_GetValueF32(&thisMeas.current_slider);
+		MEAS_GetValueF32(&thisMeas.current_height);
+		MEAS_GetValueF32(&thisMeas.current_recliner);
 	}
 }
 
-void MEAS_UpdateValue(void)
+MeasSystem_TypeDef MEAS_UpdateValue(MeasType_TypeDef meas_type)
 {
-	/*
-	 * Spend 5 cycles to measure thermal
-	 * Spend 2 cycles to update driver to measure thermal mode, 3 cycles to get value thermal
-	 */
-//	cnt_meas_type++;
-//	if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 5)) {
-//		if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 2))
-//		{
-//			MD_UpdateMeas(THERMAL);
-//			MEAS_GetValue(THERMAL);
-//		}
-//		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
-//			cnt_meas_type = 0;
-//		}
-//	} else {
-//		MD_UpdateMeas(CURRENT);
-//		MEAS_GetValue(CURRENT);
-//	}
+	MeasSystem_TypeDef temp_meas;
 
+	MEAS_GetValue(meas_type);
+
+	temp_meas.current_slider_q15   = thisMeas.current_slider.value_q15;
+	temp_meas.current_height_q15   = thisMeas.current_height.value_q15;
+	temp_meas.current_recliner_q15 = thisMeas.current_recliner.value_q15;
+	temp_meas.thermal_slider_q15   = thisMeas.thermal_slider.value_q15;
+	temp_meas.thermal_height_q15   = thisMeas.thermal_height.value_q15;
+	temp_meas.thermal_recliner_q15 = thisMeas.thermal_recliner.value_q15;
+	return temp_meas;
 }
-
-uint16_t MEAS_GetCurrentValue(MeasMotor_TypeDef meas_motor)
-{
-	switch (meas_motor) {
-		case MEAS_MOTOR_SLIDER:	return thisMeas.current_mt1.value_q15;
-		case MEAS_MOTOR_HEIGHT: return thisMeas.current_mt2.value_q15;
-		case MEAS_MOTOR_RECLINER: return thisMeas.current_mt3.value_q15;
-		default: return 0;
-	}
-}
-
 
 

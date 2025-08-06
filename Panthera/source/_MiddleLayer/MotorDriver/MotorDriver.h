@@ -21,19 +21,10 @@
 #define PULSE_PER_ROUND				  1000									// 1000 peak current /round
 #define WINDOW_SIZE 				  10  									// Size of the sliding window buffer
 
-
-
 typedef enum {
 	SENSOR 		= 0,
 	SENSORLESS	= 1
 } MotorTopology_TypeDef;
-
-typedef enum{
-	MOTOR_NONE		= 0,
-	MOTOR_HEIGHT	= 1,
-	MOTOR_RECLINER	= 2,
-	MOTOR_SLIDER	= 3
-} MotorName_TypeDef;
 
 typedef enum{
 	STOP	 = 0,
@@ -64,24 +55,22 @@ typedef struct {
 } PeakDetector_TypeDef;
 
 typedef struct{
+	MotorName_TypeDef			name;
 	MotorDriver_TypeDef			driver;
 	MotorTopology_TypeDef		topology;
 
 	MotorStatus_TypeDef 		status;
-	DriverMeasType_TypeDef		meas_type;
+	MeasType_TypeDef			meas_type;
 	uint16_t					axis;
-
-	// Parameters when using sensorless option
-	MeasMotor_TypeDef			meas_motor;
-	uint16_t					current_value;
 } Motor_TypeDef;
 
+// Public API
 void MD_Init(void);
 
 void MD_StopAll(void);
-void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status);
+void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, MeasSystem_TypeDef *pMeas);
 
-void MD_UpdateMeas(DriverMeasType_TypeDef meas_type);
+void MD_UpdateMeas(MeasType_TypeDef meas_type);
 SeatAxis_TypeDef MD_GetSeatAxis(void);
 
 //extern Motor_TypeDef motor_height, motor_recliner, motor_slider;

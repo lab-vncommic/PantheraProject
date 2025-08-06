@@ -14,12 +14,12 @@ void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef p
 void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology);
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
 void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
-void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type);
+void MD_UpdateMeasType(Motor_TypeDef *pMotor, MeasType_TypeDef meas_type);
 _Bool MD_CheckRisingEdge(uint8_t current_value);
 _Bool MD_ScaleResolution(uint8_t current_value);
 _Bool MD_CurrentRippleCounting(uint16_t current_value);
 _Bool MD_DetectPeak(uint16_t current_value);
-void MD_UpdateAxis(Motor_TypeDef *pMotor);
+void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value);
 
 /**
  * @brief Configures the motor driver GPIO pins
@@ -152,7 +152,7 @@ void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
  *
  * @note The default measurement type is CURRENT if an invalid type is provided
  */
-void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type)
+void MD_UpdateMeasType(Motor_TypeDef *pMotor, MeasType_TypeDef meas_type)
 {
 	// Enable multi sens pin
 	pMotor->driver.mul_en.value = 1;
@@ -194,7 +194,7 @@ void MD_UpdateMeasType(Motor_TypeDef *pMotor, DriverMeasType_TypeDef meas_type)
  *
  * @note This function should be called periodically to track motor position
  */
-void MD_UpdateAxis(Motor_TypeDef *pMotor)
+void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value)
 {
 	if (pMotor->topology == SENSOR) {
 		pMotor->driver.hall.value = GPIO_ReadPin(&pMotor->driver.hall);
@@ -206,24 +206,7 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor)
 	        }
 	    }
 	} else {
-		switch (pMotor->meas_motor) {
-			case MEAS_MOTOR_HEIGHT:
-				pMotor->current_value = MEAS_GetCurrentValue(MEAS_MOTOR_HEIGHT);
-				break;
-
-			case MEAS_MOTOR_RECLINER:
-				pMotor->current_value = MEAS_GetCurrentValue(MEAS_MOTOR_RECLINER);
-				break;
-
-			case MEAS_MOTOR_SLIDER:
-				pMotor->current_value = MEAS_GetCurrentValue(MEAS_MOTOR_SLIDER);
-				break;
-
-			default:
-				pMotor->current_value = 0;
-				break;
-		}
-		if (MD_CurrentRippleCounting(pMotor->current_value)) {
+		if (MD_CurrentRippleCounting(current_value)) {
 	        if (pMotor->status == FORWARD) {
 		        pMotor->axis += 1;
 		    } else if (pMotor->status == BACKWARD) {
@@ -365,9 +348,9 @@ void MD_Init(void)
 	MD_ConfigTopology(&motor_recliner, SENSOR);
 	MD_ConfigTopology(&motor_slider, SENSOR);
 
-	motor_height.meas_motor   = MEAS_MOTOR_HEIGHT;
-	motor_recliner.meas_motor = MEAS_MOTOR_RECLINER;
-	motor_slider.meas_type    = MEAS_MOTOR_SLIDER;
+	motor_height.name   = MOTOR_HEIGHT;
+	motor_recliner.name = MOTOR_RECLINER;
+	motor_slider.name   = MOTOR_SLIDER;
 
 	MD_UpdateMeasType(&motor_height, MEAS_CURRENT);
 	MD_UpdateMeasType(&motor_recliner, MEAS_CURRENT);
@@ -409,25 +392,25 @@ void MD_StopAll(void)
  * @param[in] status The operation to perform (FORWARD, BACKWARD, or STOP)
  * @return None
  */
-void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status)
+void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, MeasSystem_TypeDef *pMeas)
 {
 	switch (motor_name) {
 		case MOTOR_HEIGHT:
 			MD_UpdateStatusMotor(&motor_height, status);
 			MD_UpdateDriver(&motor_height);
-			MD_UpdateAxis(&motor_height);
+			MD_UpdateAxis(&motor_height, pMeas->current_height_q15);
 			break;
 
 		case MOTOR_RECLINER:
 			MD_UpdateStatusMotor(&motor_recliner, status);
 			MD_UpdateDriver(&motor_recliner);
-			MD_UpdateAxis(&motor_recliner);
+			MD_UpdateAxis(&motor_recliner, pMeas->current_recliner_q15);
 			break;
 
 		case MOTOR_SLIDER:
 			MD_UpdateStatusMotor(&motor_slider, status);
 			MD_UpdateDriver(&motor_slider);
-			MD_UpdateAxis(&motor_slider);
+			MD_UpdateAxis(&motor_slider, pMeas->current_slider_q15);
 			break;
 
 		default:
@@ -452,7 +435,7 @@ void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status)
  * @see       MD_UpdateMeasType
  * @see       MD_UpdateDriver
  */
-void MD_UpdateMeas(DriverMeasType_TypeDef meas_type)
+void MD_UpdateMeas(MeasType_TypeDef meas_type)
 {
 	MD_UpdateMeasType(&motor_height, meas_type);
 	MD_UpdateMeasType(&motor_recliner, meas_type);

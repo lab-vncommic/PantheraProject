@@ -86,24 +86,13 @@ typedef struct {
 typedef struct{
 	Btn_Name_TypeDef		name;
 	Btn_Action_TypeDef		action;
-} ButtonState_TypeDef;
+} ButtonSystem_TypeDef;
 
 /*===========================================================================
- * REUSABLE CODE SECTION
- *===========================================================================*/
-void BTN_GetGpioValue(GPIO_Input_TypeDef *pGpio);
-_Bool BTN_Debouncing(Btn_Object_TypeDef *pButton, _Bool condition, uint16_t timeout);
-
-/*===========================================================================
- * PTR CODE SECTION
+ * Public API
  *===========================================================================*/
 void BTN_Init(void);
-void BTN_GetStatusBtnReg(void);
-_Bool BTN_OnlyOneBtnPress(void);
-void BTN_AnalyzeInputState(Button_TypeDef *pButton);
-void BTN_Update(void);
+ButtonSystem_TypeDef BTN_GetStatus(void);
 
-ButtonState_TypeDef BTN_GetStatus(void);
-
-extern Button_TypeDef		thisButton;
+//extern Button_TypeDef		thisButton;
 #endif /* SOURCE__MIDDLELAYER_BUTTON_BUTTON_H_ */
