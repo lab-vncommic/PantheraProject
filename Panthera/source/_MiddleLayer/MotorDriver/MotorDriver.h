@@ -11,9 +11,17 @@
 #include "GlobalDefine.h"
 #include "Measurement.h"
 
-#define TIME_DEBOUNCE_RISING_EDGE     100			// T = 100/10000 = 10ms
-#define PULSE_PER_ROUND				  500			// 500 peak current /round
-#define WINDOW_SIZE 				  10  			// Size of the sliding window buffer
+// Sensor parameteres
+#define TIME_DEBOUNCE_RISING_EDGE     100									// T = 100/10000 = 10ms
+#define GAIN_GEAR					  336U
+#define RESOLUTION_DISTANCE			  0.25f							 		// Unit: round, 1 axis = 0.25 round
+#define NO_PULSE_PER_AXIS			  GAIN_GEAR*RESOLUTION_DISTANCE
+
+// Sensorless parameters
+#define PULSE_PER_ROUND				  1000									// 1000 peak current /round
+#define WINDOW_SIZE 				  10  									// Size of the sliding window buffer
+
+
 
 typedef enum {
 	SENSOR 		= 0,
