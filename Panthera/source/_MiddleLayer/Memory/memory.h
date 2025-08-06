@@ -10,7 +10,7 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "../../_DriverLayer/eeprom/my_eeprom.h"
+#include "../../_DriverLayer/eeprom/eeprom_user.h"
 #include "GlobalDefine.h"
 
 //Address EEPROM 0x00800000

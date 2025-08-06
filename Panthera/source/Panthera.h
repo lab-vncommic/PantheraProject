@@ -7,6 +7,7 @@
 
 #ifndef PANTHERA_H_
 #define PANTHERA_H_
+#include "_MiddleLayer/Communication/Communication.h"
 #include "GlobalDefine.h"
 #include "Measurement.h"
 #include "FaultManagement.h"
@@ -14,7 +15,6 @@
 
 #include "uart.h"
 #include "memory.h"
-#include "communication.h"
 
 void PTR_system_initialization(void);
 void PTR_main_interrupt_service(void);

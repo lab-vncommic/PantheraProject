@@ -96,5 +96,6 @@ typedef struct{
 void BTN_Init(void);
 ButtonSystem_TypeDef BTN_Update(void);
 
-//extern Button_TypeDef		thisButton;
+extern Button_TypeDef		thisButton;
+extern Btn_All_TypeDef		thisButtonAll;
 #endif /* SOURCE__MIDDLELAYER_BUTTON_BUTTON_H_ */

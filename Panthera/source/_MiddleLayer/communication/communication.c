@@ -5,7 +5,7 @@
  *      Author: Admin
  */
 
-#include "communication.h"
+#include "Communication.h"
 
 Communication_TypeDef thisCommunication;
 
