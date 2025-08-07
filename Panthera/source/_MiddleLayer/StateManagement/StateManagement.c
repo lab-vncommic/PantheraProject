@@ -6,23 +6,24 @@
  */
 #include "StateManagement.h"
 PTR_TypeDef thisPTR;
-uint16_t index_memory = 1;
-uint16_t save_available = 1;
-uint16_t cnt_delay_btw_save = 0;
 uint16_t cnt_meas_type;
+_Bool flag_auto_completed = false;
+_Bool flag_save_to_idle   = false;
+uint16_t cnt_delay_500ms;
+uint16_t cnt_schedule_motor_auto;
+uint16_t cnt_schedule_motor_manual;
 
 // List API
 void STATE_idleHandle(PTR_TypeDef *pState);
+void STATE_saveHandle(PTR_TypeDef *pState);
 void STATE_manualHandle(PTR_TypeDef *pState);
 void STATE_autoHandle(PTR_TypeDef *pState);
 void STATE_faultHandle(void);
 //void STATE_autorecoveryHandle(PTR_TypeDef *pState);
 //void STATE_shutdownHandle(PTR_TypeDef *pState);
 
-void STATE_HandleButton(PTR_TypeDef *pState);
 void STATE_GetSeatAxis(PTR_TypeDef *pState);
 
-// Defination API
 /**
  * @brief Initializes the state management system
  * @details Sets the initial state to IDLE to ensure the system starts in a safe mode
@@ -32,9 +33,6 @@ void STATE_GetSeatAxis(PTR_TypeDef *pState);
 void STATE_Init(PTR_TypeDef *pState)
 {
 	pState->state = STATE_IDLE;
-	save_available 		= 1;
-	index_memory 		= 1;
-	cnt_delay_btw_save 	= 0;
 }
 
 /**
@@ -46,17 +44,60 @@ void STATE_Init(PTR_TypeDef *pState)
  */
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
-	// Determine state machine for system
-	if ((pState->state != STATE_FAULT) && (pState->state != STATE_SHUTDOWN) && (pState->state != STATE_AUTORECOVERY)) {
-		STATE_HandleButton(pState);
-	}
-
 	switch (pState->state) {
 		case STATE_IDLE:
 			// Processing: handle IDLE state
 			STATE_idleHandle(pState);
 
 			// Post-processing: check for faults and state transitions
+			if (pState->button.height_1.action == ACTION_HOLD || 
+				pState->button.height_2.action == ACTION_HOLD ||
+				pState->button.recliner_1.action == ACTION_HOLD ||
+				pState->button.recliner_2.action == ACTION_HOLD ||
+				pState->button.slider_1.action == ACTION_HOLD ||
+				pState->button.slider_2.action == ACTION_HOLD) {
+					pState->state = STATE_MANUAL;
+			} else if (pState->button.save.action == ACTION_PRESSED ||pState->button.save.action == ACTION_HOLD) {
+				pState->state = STATE_SAVE;
+			} else if (pState->button.recall_1.action == ACTION_PRESSED || pState->button.recall_1.action == ACTION_HOLD) {
+				pState->seat_memory_axis = MEM_GetSeatAxis(1);
+				pState->state = STATE_AUTO;
+			} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
+				pState->seat_memory_axis = MEM_GetSeatAxis(2);
+				pState->state = STATE_AUTO;
+			} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
+				pState->seat_memory_axis = MEM_GetSeatAxis(3);
+				pState->state = STATE_AUTO;
+			}
+
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			}
+
+			break;
+
+		case STATE_SAVE:
+			// Processing: handle AUTO state
+			STATE_saveHandle(pState);
+
+			// Post-processing: check for faults and state transitions
+			if (pState->button.recall_1.action == ACTION_PRESSED ||
+				pState->button.recall_1.action == ACTION_HOLD ||
+				pState->button.recall_2.action == ACTION_PRESSED ||
+				pState->button.recall_2.action == ACTION_HOLD ||
+				pState->button.recall_3.action == ACTION_PRESSED ||
+				pState->button.recall_3.action == ACTION_HOLD) {
+					flag_save_to_idle = true;
+			}
+
+			if (flag_save_to_idle) {
+				if (cnt_delay_500ms++ >= 2500) {
+					cnt_delay_500ms = 0;
+					pState->state = STATE_IDLE;
+					flag_save_to_idle = false;
+				}
+			}
+
 			if (pState->fault.mode != FAULT_NONE) {
 				pState->state = STATE_FAULT;
 			}
@@ -68,6 +109,15 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_manualHandle(pState);
 
 			// Post-processing: check for faults and state transitions
+			if (pState->button.height_1.action == ACTION_NA &&
+				pState->button.height_2.action == ACTION_NA &&
+				pState->button.recliner_1.action == ACTION_NA &&
+				pState->button.recliner_2.action == ACTION_NA &&
+				pState->button.slider_1.action == ACTION_NA &&
+				pState->button.slider_2.action == ACTION_NA) {
+				pState->state = STATE_IDLE;
+			}
+
 			if (pState->fault.mode != FAULT_NONE) {
 				pState->state = STATE_FAULT;
 			}
@@ -79,6 +129,12 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_autoHandle(pState);
 
 			// Post-processing: check for faults and state transitions
+			if (flag_auto_completed == true) {
+				cnt_schedule_motor_auto = 0;
+				flag_auto_completed    = false;
+				pState->state 		   = STATE_IDLE;
+			}
+
 			if (pState->fault.mode != FAULT_NONE) {
 				pState->state = STATE_FAULT;
 			}
@@ -109,11 +165,20 @@ void STATE_idleHandle(PTR_TypeDef *pState)
 {
 	MD_StopAll();
 	STATE_GetSeatAxis(pState);
-	if (save_available == 0) {
-		if (cnt_delay_btw_save++ >= TIMEOUT_SAVE_AXIS) {
-			cnt_delay_btw_save = 0;
-			save_available 	   = 1;
-		}
+}
+
+void STATE_saveHandle(PTR_TypeDef *pState)
+{
+	if (pState->button.recall_1.action == ACTION_PRESSED || pState->button.recall_1.action == ACTION_HOLD) {
+		MEM_Write(pState->seat_current_axis.height, pState->seat_current_axis.recliner, pState->seat_current_axis.slider, 1);
+	}
+
+	if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
+		MEM_Write(pState->seat_current_axis.height, pState->seat_current_axis.recliner, pState->seat_current_axis.slider, 2);
+	}
+
+	if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
+		MEM_Write(pState->seat_current_axis.height, pState->seat_current_axis.recliner, pState->seat_current_axis.slider, 3);
 	}
 }
 
@@ -125,7 +190,36 @@ void STATE_idleHandle(PTR_TypeDef *pState)
  */
 void STATE_manualHandle(PTR_TypeDef *pState)
 {
-	MD_Run(pState->motor_manual.name, pState->motor_manual.status, &pState->measurement);
+	if (cnt_schedule_motor_manual >= MANUAL_ENABLE_MT) {
+		cnt_schedule_motor_manual = MANUAL_ENABLE_MT;
+	} else cnt_schedule_motor_manual++;
+
+	if (cnt_schedule_motor_manual >= MANUAL_ENABLE_MT1) {
+		// Handle height motor
+		if ((pState->button.height_1.action == ACTION_HOLD) && (pState->button.height_2.action == ACTION_NA))  {
+			MD_Run(MOTOR_HEIGHT, FORWARD, pState->measurement.current_height_q15);
+		} else if ((pState->button.height_2.action == ACTION_HOLD) && (pState->button.height_1.action == ACTION_NA)) {
+			MD_Run(MOTOR_HEIGHT, BACKWARD, pState->measurement.current_height_q15);
+		} else MD_Run(MOTOR_HEIGHT, STOP, pState->measurement.current_height_q15);
+	}
+
+	if (cnt_schedule_motor_manual >= MANUAL_ENABLE_MT2) {
+		// Handle recliner motor
+		if ((pState->button.recliner_1.action == ACTION_HOLD) && (pState->button.recliner_2.action == ACTION_NA))  {
+			MD_Run(MOTOR_RECLINER, FORWARD, pState->measurement.current_recliner_q15);
+		} else if ((pState->button.recliner_2.action == ACTION_HOLD) && (pState->button.recliner_1.action == ACTION_NA)) {
+			MD_Run(MOTOR_RECLINER, BACKWARD, pState->measurement.current_recliner_q15);
+		} else MD_Run(MOTOR_RECLINER, STOP, pState->measurement.current_recliner_q15);
+	}
+	
+	if (cnt_schedule_motor_manual >= MANUAL_ENABLE_MT3) {
+		// Handle slider motor
+		if ((pState->button.slider_1.action == ACTION_HOLD) && (pState->button.slider_2.action == ACTION_NA))  {
+			MD_Run(MOTOR_SLIDER, FORWARD, pState->measurement.current_slider_q15);
+		} else if ((pState->button.slider_2.action == ACTION_HOLD) && (pState->button.slider_1.action == ACTION_NA)) {
+			MD_Run(MOTOR_SLIDER, BACKWARD, pState->measurement.current_slider_q15);
+		} else MD_Run(MOTOR_SLIDER, STOP, pState->measurement.current_slider_q15);
+	}
 }
 
 /**
@@ -137,24 +231,52 @@ void STATE_manualHandle(PTR_TypeDef *pState)
  */
 void STATE_autoHandle(PTR_TypeDef *pState)
 {
-	if (pState->seat_current_axis.height > pState->seat_memory_axis.height) {
-		MD_Run(MOTOR_HEIGHT, BACKWARD, &pState->measurement);
-	} else if (pState->seat_current_axis.height < pState->seat_memory_axis.height) {
-		MD_Run(MOTOR_HEIGHT, FORWARD, &pState->measurement);
-	} else if (pState->seat_current_axis.recliner > pState->seat_memory_axis.recliner) {
-		MD_Run(MOTOR_RECLINER, BACKWARD, &pState->measurement);
-	} else if (pState->seat_current_axis.recliner < pState->seat_memory_axis.recliner) {
-		MD_Run(MOTOR_RECLINER, FORWARD, &pState->measurement);
-	} else if (pState->seat_current_axis.slider > pState->seat_memory_axis.slider) {
-		MD_Run(MOTOR_SLIDER, BACKWARD, &pState->measurement);
-	} else if (pState->seat_current_axis.slider < pState->seat_memory_axis.slider) {
-		MD_Run(MOTOR_SLIDER, FORWARD, &pState->measurement);
-	} else {
-		MD_StopAll();
-		pState->state = STATE_IDLE;
+	if (pState->button.recall_1.action == ACTION_PRESSED || pState->button.recall_1.action == ACTION_HOLD) {
+		pState->seat_memory_axis = MEM_GetSeatAxis(1);
+	} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
+		pState->seat_memory_axis = MEM_GetSeatAxis(2);
+	} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
+		pState->seat_memory_axis = MEM_GetSeatAxis(3);
+	}
+
+	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT) {
+		cnt_schedule_motor_auto = AUTO_ENABLE_MT;
+	} else cnt_schedule_motor_auto++;
+
+	// Height motor - starts first (1ms)
+	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT1) {
+		if (pState->seat_current_axis.height > pState->seat_memory_axis.height) {
+			MD_Run(MOTOR_HEIGHT, BACKWARD, pState->measurement.current_height_q15);
+		} else if (pState->seat_current_axis.height < pState->seat_memory_axis.height) {
+			MD_Run(MOTOR_HEIGHT, FORWARD, pState->measurement.current_height_q15);
+		} else MD_Run(MOTOR_HEIGHT, STOP, pState->measurement.current_height_q15);
+	}
+
+	// Recliner motor - starts second (333ms)
+	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT2) {
+		if (pState->seat_current_axis.recliner > pState->seat_memory_axis.recliner) {
+			MD_Run(MOTOR_RECLINER, BACKWARD, pState->measurement.current_recliner_q15);
+		} else if (pState->seat_current_axis.recliner < pState->seat_memory_axis.recliner) {
+			MD_Run(MOTOR_RECLINER, FORWARD, pState->measurement.current_recliner_q15);
+		} else MD_Run(MOTOR_RECLINER, STOP, pState->measurement.current_recliner_q15);
+	}
+
+	// Slider motor - starts last (666ms)
+	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT3) {
+		if (pState->seat_current_axis.slider > pState->seat_memory_axis.slider) {
+			MD_Run(MOTOR_SLIDER, BACKWARD, pState->measurement.current_slider_q15);
+		} else if (pState->seat_current_axis.slider < pState->seat_memory_axis.slider) {
+			MD_Run(MOTOR_SLIDER, FORWARD, pState->measurement.current_slider_q15);
+		} else MD_Run(MOTOR_SLIDER, STOP, pState->measurement.current_slider_q15);
+	}
+
+	// Check if all motors have reached their target positions
+	if ((pState->seat_current_axis.height == pState->seat_memory_axis.height) &&
+		(pState->seat_current_axis.recliner == pState->seat_memory_axis.recliner) &&
+		(pState->seat_current_axis.slider == pState->seat_memory_axis.slider)) {
+		flag_auto_completed = true;
 	}
 }
-
 /**
  * @brief Handles the system behavior in FAULT state
  * @details Stops all motors to ensure safe operation when a fault is detected
@@ -174,108 +296,6 @@ void STATE_faultHandle(void)
 //{
 //
 //}
-
-/**
- * @brief Processes button inputs and updates system state accordingly
- * @details Gets the current button status and determines the appropriate
- *          state and motor actions based on which button is pressed
- * @param[in,out] pState Pointer to the state management structure to update
- * @return None
- */
-void STATE_HandleButton(PTR_TypeDef *pState)
-{
-	pState->button = BTN_GetStatus();
-	switch (pState->button.name) {
-		case BTN_HEIGHT_1:
-			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor_manual.name = MOTOR_HEIGHT;
-				thisPTR.motor_manual.status 	 = FORWARD;
-			}
-			pState->state = STATE_MANUAL;
-			break;
-
-		case BTN_HEIGHT_2:
-			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor_manual.name = MOTOR_HEIGHT;
-				thisPTR.motor_manual.status 	 = BACKWARD;
-			}
-			pState->state = STATE_MANUAL;
-			break;
-
-		case BTN_RECLINER_1:
-			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor_manual.name = MOTOR_RECLINER;
-				thisPTR.motor_manual.status 	 = FORWARD;
-			}
-			pState->state = STATE_MANUAL;
-			break;
-
-		case BTN_RECLINER_2:
-			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor_manual.name = MOTOR_RECLINER;
-				thisPTR.motor_manual.status 	 = BACKWARD;
-			}
-			pState->state = STATE_MANUAL;
-			break;
-
-		case BTN_SLIDER_1:
-			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor_manual.name = MOTOR_SLIDER;
-				thisPTR.motor_manual.status 	 = FORWARD;
-			}
-			pState->state = STATE_MANUAL;
-			break;
-
-		case BTN_SLIDER_2:
-			if (pState->button.action == ACTION_HOLD) {
-				thisPTR.motor_manual.name = MOTOR_SLIDER;
-				thisPTR.motor_manual.status 	 = BACKWARD;
-			}
-			pState->state = STATE_MANUAL;
-			break;
-
-		case BTN_SAVE:
-			if (pState->button.action == ACTION_PRESSED) {
-				if (save_available == 1) {
-					MEM_Write(pState->seat_current_axis.height, pState->seat_current_axis.recliner, pState->seat_current_axis.slider, index_memory);
-					index_memory++;
-					if (index_memory > 3) {
-						index_memory = 1;
-					}
-					save_available = 0;
-				}
-			}
-			break;
-
-		case BTN_RECALL_1:
-			if (pState->button.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(1);
-
-			}
-			pState->state = STATE_AUTO;
-			break;
-
-		case BTN_RECALL_2:
-			if (pState->button.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(2);
-			}
-			pState->state = STATE_AUTO;
-			break;
-
-		case BTN_RECALL_3:
-			if (pState->button.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(3);
-			}
-			pState->state = STATE_AUTO;
-			break;
-
-		default:
-			pState->state = STATE_IDLE;
-			thisPTR.motor_manual.name = MOTOR_NONE;
-			thisPTR.motor_manual.status 	 = STOP;
-			break;
-	}
-}
 
 void STATE_UpdateMeas(PTR_TypeDef *pState)
 {
@@ -303,7 +323,7 @@ void STATE_UpdateFault(PTR_TypeDef *pState)
 
 void STATE_UpdateButton(PTR_TypeDef *pState)
 {
-	pState->button	   = BTN_GetStatus();
+	pState->button = BTN_Update();
 }
 
 /**

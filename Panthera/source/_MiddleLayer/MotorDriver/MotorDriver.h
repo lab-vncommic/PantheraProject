@@ -68,7 +68,7 @@ typedef struct{
 void MD_Init(void);
 
 void MD_StopAll(void);
-void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, MeasSystem_TypeDef *pMeas);
+void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t current_value);
 
 void MD_UpdateMeas(MeasType_TypeDef meas_type);
 SeatAxis_TypeDef MD_GetSeatAxis(void);

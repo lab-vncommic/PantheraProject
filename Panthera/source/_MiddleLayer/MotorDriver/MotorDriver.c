@@ -392,25 +392,25 @@ void MD_StopAll(void)
  * @param[in] status The operation to perform (FORWARD, BACKWARD, or STOP)
  * @return None
  */
-void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, MeasSystem_TypeDef *pMeas)
+void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t current_value)
 {
 	switch (motor_name) {
 		case MOTOR_HEIGHT:
 			MD_UpdateStatusMotor(&motor_height, status);
 			MD_UpdateDriver(&motor_height);
-			MD_UpdateAxis(&motor_height, pMeas->current_height_q15);
+			MD_UpdateAxis(&motor_height, current_value);
 			break;
 
 		case MOTOR_RECLINER:
 			MD_UpdateStatusMotor(&motor_recliner, status);
 			MD_UpdateDriver(&motor_recliner);
-			MD_UpdateAxis(&motor_recliner, pMeas->current_recliner_q15);
+			MD_UpdateAxis(&motor_recliner, current_value);
 			break;
 
 		case MOTOR_SLIDER:
 			MD_UpdateStatusMotor(&motor_slider, status);
 			MD_UpdateDriver(&motor_slider);
-			MD_UpdateAxis(&motor_slider, pMeas->current_slider_q15);
+			MD_UpdateAxis(&motor_slider, current_value);
 			break;
 
 		default:

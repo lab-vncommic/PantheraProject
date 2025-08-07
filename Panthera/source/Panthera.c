@@ -36,7 +36,7 @@ void PTR_main_interrupt_service(void)
 
 	// Measure thermal every 1s
 	STATE_UpdateMeas(&thisPTR);
-	STATE_UpdateFault(&thisPTR);
+//	STATE_UpdateFault(&thisPTR);
 	STATE_UpdateButton(&thisPTR);
 
 	// FIXME: Need to transfer to middleware layer
