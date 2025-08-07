@@ -14,33 +14,39 @@
 #include "GlobalDefine.h"
 #include "memory.h"
 
-#define TIMEOUT_SAVE_AXIS        50000   // Delay 5s between t position saves
+#define MANUAL_ENABLE_MT			1000
+#define MANUAL_ENABLE_MT1			1
+#define MANUAL_ENABLE_MT2			MANUAL_ENABLE_MT / 3
+#define MANUAL_ENABLE_MT3			MANUAL_ENABLE_MT * 2 / 3
+
+#define AUTO_ENABLE_MT				1000
+#define AUTO_ENABLE_MT1				1
+#define AUTO_ENABLE_MT2				AUTO_ENABLE_MT / 3
+#define AUTO_ENABLE_MT3				AUTO_ENABLE_MT * 2 / 3
 
 typedef enum{
 	STATE_IDLE		   = 0,
-	STATE_MANUAL	   = 1,
-	STATE_AUTO		   = 2,
-	STATE_FAULT		   = 3,
-	STATE_AUTORECOVERY = 4,
-	STATE_SHUTDOWN
+	STATE_SAVE		   = 1,
+	STATE_MANUAL	   = 2,
+	STATE_AUTO		   = 3,
+	STATE_FAULT		   = 4,
+	STATE_AUTORECOVERY = 5,
+	STATE_SHUTDOWN	   = 6
 } State_TypeDef;
 
 typedef struct{
-	MotorName_TypeDef		name;
-	MotorStatus_TypeDef		status;
-} StateMotor_TypeDef;
-
-typedef struct{
 	State_TypeDef 			state;
-	StateMotor_TypeDef		motor_manual;
 	SeatAxis_TypeDef		seat_current_axis;
 	SeatAxis_TypeDef		seat_memory_axis;
 
 	MeasSystem_TypeDef		measurement;
 	FaultSystem_TypeDef		fault;
-	ButtonSystem_TypeDef	button;
+	ButtonSystem_TypeDef 	button;
 } PTR_TypeDef;
 
+/*===========================================================================
+ * Public API
+ *===========================================================================*/
 void STATE_Init(PTR_TypeDef *pState);
 void STATE_UpdateState(PTR_TypeDef *pState);
 
