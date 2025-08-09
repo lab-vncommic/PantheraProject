@@ -7,8 +7,11 @@
 
 #include "Communication.h"
 Communication_TypeDef thisCommunication;
+uint16_t offset_id;
+uint16_t offset_access_type;
+uint16_t offset_value;
 
-uint16_t convertUint16BE(const char *buffer, uint16_t offset);
+uint8_t TwoBytetoUint8(const char *buffer, uint16_t offset);
 uint8_t ByteToUint8(const char *buffer, uint16_t offset);
 
 /**
@@ -187,17 +190,11 @@ void COMM_Transmit(void){
 	sd_lld_write(&SD2, (uint8_t*) BufTX, UART_TX_LENGTH);
 }
 
-void COMM_DecodeMessage(void)
+uint8_t TwoBytetoUint8(const char *buffer, uint16_t offset)
 {
-//	thisCommunication.id		  = convertUint16BE(BufRX, 2);
-//	thisCommunication.access_type = ByteToUint8(BufRX, 4);
-//	thisCommunication.value		  = ByteToUint8(BufRX, 5);
-//	memset(BufRX, 0, sizeof(BufRX));
-}
-
-uint16_t convertUint16BE(const char *buffer, uint16_t offset)
-{
-    return (uint16_t)((buffer[offset] << 8) | buffer[offset + 1]);
+    uint8_t tens  = buffer[offset] - '0';
+    uint8_t units = buffer[offset + 1] - '0';
+    return (tens * 10) + units;
 }
 
 uint8_t ByteToUint8(const char *buffer, uint16_t offset)
@@ -205,6 +202,19 @@ uint8_t ByteToUint8(const char *buffer, uint16_t offset)
 	return (uint8_t)(buffer[offset] - '0');
 }
 
+void COMM_DecodeMessage(void)
+{
+	offset_id 		   = start_index + 2;
+	offset_access_type = start_index + 4;
+	offset_value	   = start_index + 5;
+	if (offset_id >=6)			offset_id -= 6;
+	if (offset_access_type >=6) offset_access_type -= 6;
+	if (offset_value >=6) 		offset_value -= 6;
+
+	thisCommunication.id		  = TwoBytetoUint8(BufRX, offset_id);
+	thisCommunication.access_type = ByteToUint8(BufRX, offset_access_type);
+	thisCommunication.value		  = ByteToUint8(BufRX, offset_value);
+}
 
 
 

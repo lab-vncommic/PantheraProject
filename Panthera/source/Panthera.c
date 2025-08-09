@@ -42,12 +42,11 @@ void PTR_main_interrupt_service(void)
 	// FIXME: Need to transfer to middleware layer
 	if (flag_enable_process_comm) {
 		begin = stm_lld_getcounter(&STMD3);
-//		flag_enable_process_comm = 0;
-		// Function to decode received UART message
-//		COMM_Receive();
-//		COMM_DecodeMessage();
+
+		flag_enable_process_comm = 0;
+		COMM_DecodeMessage();
+
 		end = stm_lld_getcounter(&STMD3);
-//		COMM_Transmit();
 	}
 
 	if (cnt_500ms++ >= 5000) {

@@ -18,7 +18,7 @@
 #define WRITE_MODE 	1
 
 typedef struct{
-	uint16_t id;
+	uint8_t id;
 	uint8_t  access_type;
 	uint8_t  value;
 }Communication_TypeDef;

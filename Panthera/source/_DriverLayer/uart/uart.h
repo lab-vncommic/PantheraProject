@@ -37,6 +37,6 @@ extern uint16_t flag_enable_process_comm;
 extern uint32_t uart_test_1;
 extern float 	uart_test_2;
 extern char bufByte[1];
-extern uint8_t  num;
+extern uint8_t  start_index;
 extern uint8_t  cnt_rx_success;
 #endif /* SOURCE__DRIVERLAYER_UART_UART_H_ */

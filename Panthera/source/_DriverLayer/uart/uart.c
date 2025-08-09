@@ -11,7 +11,7 @@ char BufRX[UART_RX_LENGTH];
 char subBufRX[UART_RX_LENGTH];
 char bufByte[1];
 
-uint8_t  num = 0;
+uint8_t  start_index = 0;
 uint8_t  cnt_rx_success = 0;
 uint16_t flag_uart_tx_completed;
 uint16_t flag_uart_rx_completed;
@@ -61,11 +61,11 @@ void UART_StartRX(void)
 void UART_AntiDisturbance(void)
 {
 	if (bufByte[0] >= '0' && bufByte[0] <= '9') {
-		subBufRX[num] = bufByte[0];
-		num++;
+		subBufRX[start_index] = bufByte[0];
+		start_index++;
 
-		if (num == UART_RX_LENGTH) {
-			num = 0;
+		if (start_index == UART_RX_LENGTH) {
+			start_index = 0;
 		}
 	}
 }
