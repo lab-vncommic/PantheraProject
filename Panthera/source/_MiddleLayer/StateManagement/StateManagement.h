@@ -7,6 +7,7 @@
 
 #ifndef SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_
 #define SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_
+#include "../Communication/Communication.h"
 #include "MotorDriver.h"
 #include "Measurement.h"
 #include "FaultManagement.h"
@@ -39,6 +40,7 @@ typedef struct{
 	SeatAxis_TypeDef		seat_current_axis;
 	SeatAxis_TypeDef		seat_memory_axis;
 
+	CommSystem_TypeDef	    communication;
 	MeasSystem_TypeDef		measurement;
 	FaultSystem_TypeDef		fault;
 	ButtonSystem_TypeDef 	button;
@@ -50,6 +52,7 @@ typedef struct{
 void STATE_Init(PTR_TypeDef *pState);
 void STATE_UpdateState(PTR_TypeDef *pState);
 
+void STATE_ProcessInputSignals(PTR_TypeDef *pState);
 void STATE_UpdateMeas(PTR_TypeDef *pState);
 void STATE_UpdateFault(PTR_TypeDef *pState);
 void STATE_UpdateButton(PTR_TypeDef *pState);

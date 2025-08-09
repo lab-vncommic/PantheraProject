@@ -14,29 +14,23 @@
 #include <stddef.h>
 #include "string.h"
 
+#include "Measurement.h"
+
 #define UART_TX_DEBUG_LENGTH 		100
 #define UART_TX_LENGTH				1
 #define UART_RX_LENGTH 				6
 
 void UART_Init(void);
 void UART_Monitor(void);
-void UART_StartRX(void);
-void UART_AntiDisturbance(void);
+void UART_HandleRequest(void);
 
 void UART_TX_Callback(SerialDriver *sdp);
-void UART_RX_Callback(SerialDriver *sdp);
-void *sbrk(ptrdiff_t incr);
 
 extern char BufTXDebug[UART_TX_DEBUG_LENGTH];
 extern char BufTX[UART_TX_LENGTH];
 extern char BufRX[UART_RX_LENGTH];
-extern char subBufRX[UART_RX_LENGTH];
-extern uint16_t flag_uart_tx_completed;
-extern uint16_t flag_uart_rx_completed;
-extern uint16_t flag_enable_process_comm;
-extern uint32_t uart_test_1;
-extern float 	uart_test_2;
-extern char bufByte[1];
-extern uint8_t  start_index;
-extern uint8_t  cnt_rx_success;
+extern _Bool flag_debug_tx_completed;
+extern _Bool flag_rx_fail;
+extern _Bool flag_enable_tx;
+extern _Bool flag_enable_rx;
 #endif /* SOURCE__DRIVERLAYER_UART_UART_H_ */

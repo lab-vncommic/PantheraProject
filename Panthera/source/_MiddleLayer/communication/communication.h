@@ -5,31 +5,50 @@
  *      Author: Admin
  */
 
+#ifndef SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_
+#define SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_
+
 #include "stdint.h"
 #include "string.h"
 #include "uart.h"
-#include "button.h"
+#include "Button.h"
 #include "MotorDriver.h"
-
-#ifndef SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_
-#define SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_
 
 #define READ_MODE 	0
 #define WRITE_MODE 	1
 
+#define OFFSET_ID		2
+#define OFFSET_REQUEST	4
+#define OFFSET_DATA		5
+
 typedef struct{
 	uint8_t id;
-	uint8_t  access_type;
-	uint8_t  value;
-}Communication_TypeDef;
+	uint8_t request;		// request value: 1 = write, 0 = read
+	uint8_t value;
+} CommMessage_TypeDef;
 
+typedef enum{
+	COMM_DEBUG  = 0,
+	COMM_UART	= 1,
+	COMM_CAN	= 2
+} CommMode_Enum;
 
-void seperate_char_communication( char* a,  char* b,  char* c, char* input);
-uint32_t convert_charHex_to_uint32_t_Communication(const char* hex_str);
-void COMM_Receive(void);
-void COMM_Transmit(void);
+typedef struct{
+	CommMode_Enum			mode;
+	ButtonComm_TypeDef 		button;
+	ButtonComm_TypeDef   	button_comm;
+	MotorComm_TypeDef		motor;
+	MotorComm_TypeDef		motor_comm;
+} Communication_TypeDef;
 
-void COMM_DecodeMessage(void);
+typedef struct{
+	ButtonComm_TypeDef   	button_comm;
+	MotorComm_TypeDef		motor_comm;
+} CommSystem_TypeDef;
 
-extern Communication_TypeDef thisCommunication;
+void COMM_Init(void);
+CommSystem_TypeDef COMM_CommToState(void);
+void COMM_TransmitReceiveHandle(void);
+
+extern CommMessage_TypeDef thisMessage;
 #endif /* SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_ */

@@ -96,5 +96,6 @@ typedef struct{
 void MEAS_Init(void);
 MeasSystem_TypeDef MEAS_UpdateValue(MeasType_TypeDef meas_type);
 
-//extern MeasAll_TypeDef thisMeas;
+// Uncomment extern variables for debugging
+extern MeasAll_TypeDef thisMeas;
 #endif /* MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_ */

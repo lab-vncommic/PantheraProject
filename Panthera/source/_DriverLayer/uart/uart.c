@@ -8,20 +8,11 @@
 char BufTXDebug[UART_TX_DEBUG_LENGTH];
 char BufTX[UART_TX_LENGTH];
 char BufRX[UART_RX_LENGTH];
-char subBufRX[UART_RX_LENGTH];
-char bufByte[1];
 
-uint8_t  start_index = 0;
-uint8_t  cnt_rx_success = 0;
-uint16_t flag_uart_tx_completed;
-uint16_t flag_uart_rx_completed;
-uint16_t flag_enable_process_comm;
-uint32_t temp_num;
-
-uint32_t uart_test_1;
-float 	 uart_test_2;
-
-void UART_AntiDisturbance(void);
+_Bool flag_debug_tx_completed;
+_Bool flag_enable_tx;
+_Bool flag_enable_rx;
+_Bool flag_rx_fail;
 
 void UART_Init(void)
 {
@@ -29,64 +20,48 @@ void UART_Init(void)
 	
 	memset(BufTXDebug, 0, UART_TX_DEBUG_LENGTH);
 	memset(BufTX, 0, UART_TX_LENGTH);
-	memset(BufRX, 0, UART_RX_LENGTH);
-	memset(subBufRX, 0, UART_RX_LENGTH);
-	bufByte[0] = 0;
-	
-	flag_uart_tx_completed 		= 1;
-	flag_uart_rx_completed 		= 1;
-	flag_enable_process_comm    = 0;
+	memset(BufRX, '0', UART_RX_LENGTH);
+
+	flag_debug_tx_completed  = true;
+	flag_enable_rx 		 	 = true;
 }
 
 void UART_Monitor(void)
 {
-	if (flag_uart_tx_completed == 1){
-		flag_uart_tx_completed = 0;
+	if (flag_debug_tx_completed == 1){
+		flag_debug_tx_completed = 0;
 		sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
 	}
-	snprintf(BufTXDebug, sizeof(BufTXDebug), "uart_test_1 = %ld, uart_test_2 = %f aaaa\r\n",
-			uart_test_1,
-			uart_test_2
+	snprintf(BufTXDebug, sizeof(BufTXDebug), "cur_slider = %f, cur_height = %f, cur_recliner = %f\r\n",
+			thisMeas.current_slider.value_f32,
+			thisMeas.current_height.value_f32,
+			thisMeas.current_recliner.value_f32
 	);
 }
 
-void UART_StartRX(void)
+void UART_HandleRequest(void)
 {
-	if (flag_uart_rx_completed == 1) {
-		flag_uart_rx_completed = 0;
-		sd_lld_read(&SD2, (uint8_t*) bufByte, 1);
+	if (flag_enable_rx) {
+		sd_lld_read(&SD2, (uint8_t*) BufRX, UART_RX_LENGTH);
+		osalThreadDelayMilliseconds(300);
+		flag_enable_rx = 0;
 	}
-}
 
-void UART_AntiDisturbance(void)
-{
-	if (bufByte[0] >= '0' && bufByte[0] <= '9') {
-		subBufRX[start_index] = bufByte[0];
-		start_index++;
+	if (flag_enable_tx == 1) {
+		sd_lld_write(&SD2, (uint8_t*) BufTX, UART_TX_LENGTH);
+		flag_enable_tx = 0;
+	}
 
-		if (start_index == UART_RX_LENGTH) {
-			start_index = 0;
-		}
+	if (flag_rx_fail == true) {
+		sd_lld_write(&SD2, (uint8_t*) "FAIL", 4);
+		flag_rx_fail = false;
 	}
 }
 
 void UART_TX_Callback(SerialDriver *sdp)
 {
 	(void)sdp;
-	flag_uart_tx_completed = 1;
-}
-
-void UART_RX_Callback(SerialDriver *sdp)
-{
-	(void)sdp;
-	cnt_rx_success++;
-	UART_AntiDisturbance();
-	flag_uart_rx_completed = 1;
-
-	if (cnt_rx_success >= 6) {
-		memcpy(BufRX, subBufRX, UART_RX_LENGTH);
-		flag_enable_process_comm = 1;
-	}
+	flag_debug_tx_completed = 1;
 }
 
 void *sbrk(ptrdiff_t incr) {

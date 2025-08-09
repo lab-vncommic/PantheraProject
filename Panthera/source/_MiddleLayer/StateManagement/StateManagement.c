@@ -9,6 +9,7 @@ PTR_TypeDef thisPTR;
 uint16_t cnt_meas_type;
 _Bool flag_auto_completed = false;
 _Bool flag_save_to_idle   = false;
+
 uint16_t cnt_delay_500ms;
 uint16_t cnt_schedule_motor_auto;
 uint16_t cnt_schedule_motor_manual;
@@ -44,13 +45,16 @@ void STATE_Init(PTR_TypeDef *pState)
  */
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
+	// Update input signals include communication
+	STATE_ProcessInputSignals(pState);
+
 	switch (pState->state) {
 		case STATE_IDLE:
 			// Processing: handle IDLE state
 			STATE_idleHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (pState->button.height_1.action == ACTION_HOLD || 
+			if (pState->button.height_1.action == ACTION_HOLD ||
 				pState->button.height_2.action == ACTION_HOLD ||
 				pState->button.recliner_1.action == ACTION_HOLD ||
 				pState->button.recliner_2.action == ACTION_HOLD ||
@@ -109,12 +113,12 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_manualHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (pState->button.height_1.action == ACTION_NA &&
-				pState->button.height_2.action == ACTION_NA &&
-				pState->button.recliner_1.action == ACTION_NA &&
-				pState->button.recliner_2.action == ACTION_NA &&
-				pState->button.slider_1.action == ACTION_NA &&
-				pState->button.slider_2.action == ACTION_NA) {
+			if (pState->button.height_1.action == ACTION_RELEASED &&
+				pState->button.height_2.action == ACTION_RELEASED &&
+				pState->button.recliner_1.action == ACTION_RELEASED &&
+				pState->button.recliner_2.action == ACTION_RELEASED &&
+				pState->button.slider_1.action == ACTION_RELEASED &&
+				pState->button.slider_2.action == ACTION_RELEASED) {
 				pState->state = STATE_IDLE;
 			}
 
@@ -196,27 +200,27 @@ void STATE_manualHandle(PTR_TypeDef *pState)
 
 	if (cnt_schedule_motor_manual >= MANUAL_ENABLE_MT1) {
 		// Handle height motor
-		if ((pState->button.height_1.action == ACTION_HOLD) && (pState->button.height_2.action == ACTION_NA))  {
+		if ((pState->button.height_1.action == ACTION_HOLD) && (pState->button.height_2.action == ACTION_RELEASED))  {
 			MD_Run(MOTOR_HEIGHT, FORWARD, pState->measurement.current_height_q15);
-		} else if ((pState->button.height_2.action == ACTION_HOLD) && (pState->button.height_1.action == ACTION_NA)) {
+		} else if ((pState->button.height_2.action == ACTION_HOLD) && (pState->button.height_1.action == ACTION_RELEASED)) {
 			MD_Run(MOTOR_HEIGHT, BACKWARD, pState->measurement.current_height_q15);
 		} else MD_Run(MOTOR_HEIGHT, STOP, pState->measurement.current_height_q15);
 	}
 
 	if (cnt_schedule_motor_manual >= MANUAL_ENABLE_MT2) {
 		// Handle recliner motor
-		if ((pState->button.recliner_1.action == ACTION_HOLD) && (pState->button.recliner_2.action == ACTION_NA))  {
+		if ((pState->button.recliner_1.action == ACTION_HOLD) && (pState->button.recliner_2.action == ACTION_RELEASED))  {
 			MD_Run(MOTOR_RECLINER, FORWARD, pState->measurement.current_recliner_q15);
-		} else if ((pState->button.recliner_2.action == ACTION_HOLD) && (pState->button.recliner_1.action == ACTION_NA)) {
+		} else if ((pState->button.recliner_2.action == ACTION_HOLD) && (pState->button.recliner_1.action == ACTION_RELEASED)) {
 			MD_Run(MOTOR_RECLINER, BACKWARD, pState->measurement.current_recliner_q15);
 		} else MD_Run(MOTOR_RECLINER, STOP, pState->measurement.current_recliner_q15);
 	}
 	
 	if (cnt_schedule_motor_manual >= MANUAL_ENABLE_MT3) {
 		// Handle slider motor
-		if ((pState->button.slider_1.action == ACTION_HOLD) && (pState->button.slider_2.action == ACTION_NA))  {
+		if ((pState->button.slider_1.action == ACTION_HOLD) && (pState->button.slider_2.action == ACTION_RELEASED))  {
 			MD_Run(MOTOR_SLIDER, FORWARD, pState->measurement.current_slider_q15);
-		} else if ((pState->button.slider_2.action == ACTION_HOLD) && (pState->button.slider_1.action == ACTION_NA)) {
+		} else if ((pState->button.slider_2.action == ACTION_HOLD) && (pState->button.slider_1.action == ACTION_RELEASED)) {
 			MD_Run(MOTOR_SLIDER, BACKWARD, pState->measurement.current_slider_q15);
 		} else MD_Run(MOTOR_SLIDER, STOP, pState->measurement.current_slider_q15);
 	}
@@ -297,6 +301,77 @@ void STATE_faultHandle(void)
 //
 //}
 
+void STATE_ProcessInputSignals(PTR_TypeDef *pState)
+{
+	pState->communication = COMM_CommToState();
+
+	// Height 1 button
+	if (pState->communication.button_comm.height_1_value == 0 &&
+		pState->communication.motor_comm.motor_height.ina_value == 0 &&
+		(pState->button.height_1.action == ACTION_RELEASED || pState->button.height_1.action == ACTION_PRESSED)) {
+		pState->button.height_1.action = ACTION_RELEASED;
+	} else pState->button.height_1.action = ACTION_HOLD;
+
+	// Height 2 button
+	if (pState->communication.button_comm.height_2_value == 0 &&
+		pState->communication.motor_comm.motor_height.inb_value == 0 &&
+		(pState->button.height_2.action == ACTION_RELEASED || pState->button.height_2.action == ACTION_PRESSED)) {
+		pState->button.height_2.action = ACTION_RELEASED;
+	} else pState->button.height_2.action = ACTION_HOLD;
+
+	// Recliner 1 button
+	if (pState->communication.button_comm.recliner_1_value == 0 &&
+		pState->communication.motor_comm.motor_recliner.ina_value == 0 &&
+		(pState->button.recliner_1.action == ACTION_RELEASED || pState->button.recliner_1.action == ACTION_PRESSED)) {
+		pState->button.recliner_1.action = ACTION_RELEASED;
+	} else pState->button.recliner_1.action = ACTION_HOLD;
+
+	// Recliner 2 button
+	if (pState->communication.button_comm.recliner_2_value == 0 &&
+		pState->communication.motor_comm.motor_recliner.inb_value == 0 &&
+		(pState->button.recliner_2.action == ACTION_RELEASED || pState->button.recliner_2.action == ACTION_PRESSED)) {
+		pState->button.recliner_2.action = ACTION_RELEASED;
+	} else pState->button.recliner_2.action = ACTION_HOLD;
+
+	// Slider 1 button
+	if (pState->communication.button_comm.slider_1_value == 0 &&
+		pState->communication.motor_comm.motor_slider.ina_value == 0 &&
+		(pState->button.slider_1.action == ACTION_RELEASED || pState->button.slider_1.action == ACTION_PRESSED)) {
+		pState->button.slider_1.action = ACTION_RELEASED;
+	} else pState->button.slider_1.action = ACTION_HOLD;
+
+	// Slider 2 button
+	if (pState->communication.button_comm.slider_2_value == 0 &&
+		pState->communication.motor_comm.motor_slider.inb_value == 0 &&
+		(pState->button.slider_2.action == ACTION_RELEASED || pState->button.slider_2.action == ACTION_PRESSED)) {
+		pState->button.slider_2.action = ACTION_RELEASED;
+	} else pState->button.slider_2.action = ACTION_HOLD;
+
+	// Save button
+	if (pState->communication.button_comm.save_value == 0 &&
+		(pState->button.save.action == ACTION_RELEASED || pState->button.save.action == ACTION_PRESSED)) {
+		pState->button.save.action = ACTION_RELEASED;
+	} else pState->button.save.action = ACTION_HOLD;
+
+	// Recall 1 button
+	if (pState->communication.button_comm.recall_1_value == 0 &&
+		(pState->button.recall_1.action == ACTION_RELEASED || pState->button.recall_1.action == ACTION_PRESSED)) {
+		pState->button.recall_1.action = ACTION_RELEASED;
+	} else pState->button.recall_1.action = ACTION_HOLD;
+
+	// Recall 2 button
+	if (pState->communication.button_comm.recall_2_value == 0 &&
+		(pState->button.recall_2.action == ACTION_RELEASED || pState->button.recall_2.action == ACTION_PRESSED)) {
+		pState->button.recall_2.action = ACTION_RELEASED;
+	} else pState->button.recall_2.action = ACTION_HOLD;
+
+	// Recall 3 button
+	if (pState->communication.button_comm.recall_3_value == 0 &&
+		(pState->button.recall_3.action == ACTION_RELEASED || pState->button.recall_3.action == ACTION_PRESSED)) {
+		pState->button.recall_3.action = ACTION_RELEASED;
+	} else pState->button.recall_3.action = ACTION_HOLD;
+}
+
 void STATE_UpdateMeas(PTR_TypeDef *pState)
 {
 	cnt_meas_type++;
@@ -337,3 +412,5 @@ void STATE_GetSeatAxis(PTR_TypeDef *pState)
 {
 	pState->seat_current_axis = MD_GetSeatAxis();
 }
+
+

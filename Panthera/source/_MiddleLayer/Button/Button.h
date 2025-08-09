@@ -32,7 +32,7 @@
 #define BTN_STT_15    ((uint16_t) 1U<<15) // Reserved for future use
 
 typedef enum{
-	ACTION_NA		= 0,
+	ACTION_RELEASED	= 0,
 	ACTION_PRESSED	= 1,
 	ACTION_HOLD		= 2
 } Btn_Action_TypeDef;
@@ -90,11 +90,25 @@ typedef struct{
     Button_TypeDef recall_3;
 } ButtonSystem_TypeDef;
 
+typedef struct{
+	uint16_t recliner_1_value;
+	uint16_t recliner_2_value;
+	uint16_t height_1_value;
+	uint16_t height_2_value;
+	uint16_t slider_1_value;
+	uint16_t slider_2_value;
+	uint16_t save_value;
+	uint16_t recall_1_value;
+    uint16_t recall_2_value;
+    uint16_t recall_3_value;
+} ButtonComm_TypeDef;
+
 /*===========================================================================
  * Public API
  *===========================================================================*/
 void BTN_Init(void);
 ButtonSystem_TypeDef BTN_Update(void);
+ButtonComm_TypeDef BTN_UpdateToComm(void);
 
 extern Button_TypeDef		thisButton;
 extern Btn_All_TypeDef		thisButtonAll;
