@@ -28,6 +28,7 @@ typedef struct{
 } SeatAxis_TypeDef;
 
 void GDE_Config(void);
+_Bool GDE_DebounceConditon(_Bool condition, uint32_t timeout, uint32_t *pCounter);
 
 extern uint32_t begin, end, elapsed;
 #endif /* MIDDLELAYER_GLOBALDEFINE_GLOBALDEFINE_H_ */
