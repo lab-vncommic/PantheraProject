@@ -7,18 +7,25 @@
 
 #ifndef MIDDLELAYER_GLOBALDEFINE_GLOBALDEFINE_H_
 #define MIDDLELAYER_GLOBALDEFINE_GLOBALDEFINE_H_
-// #include "stm_lld_cfg.h"
 // #include "components.h"
+// #include "stm_lld_cfg.h"
 // #include "pit_lld_cfg.h"
+
+#define F_SAMPLE	10000.0f
+#define T_SAMPLE	1/10000.0f
+
+typedef enum{
+	MOTOR_NONE		= 0,
+	MOTOR_SLIDER	= 1,
+	MOTOR_HEIGHT	= 2,
+	MOTOR_RECLINER	= 3
+} MotorName_TypeDef;
 
 typedef struct{
 	uint16_t	height;
 	uint16_t	recliner;
 	uint16_t	slider;
 } SeatAxis_TypeDef;
-
-#define F_SAMPLE	10000.0f
-#define T_SAMPLE	1/10000.0f
 
 void GDE_Config(void);
 

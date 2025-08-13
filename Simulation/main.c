@@ -11,6 +11,8 @@
 #include "gpio.c"
 #include "my_eeprom.h"
 #include "my_eeprom.c"
+#include "uart.h"
+#include "uart.c"
 
 #include "GlobalDefine.h"
 #include "GlobalDefine.c"
@@ -26,6 +28,8 @@
 #include "FaultManagement.c"
 #include "MotorDriver.h"
 #include "MotorDriver.c"
+#include "communication.h"
+#include "communication.c"
 #include "StateManagement.h"
 #include "StateManagement.c"
 
@@ -67,13 +71,13 @@ out[3] 	= motor_height.driver.sel0.value;
 out[4] 	= motor_height.driver.sel1.value;
 out[5] 	= motor_height.driver.mul_en.value;
 out[6] 	= thisPTR.state;
-out[7] 	= thisButton.btn_stt;
-out[8] 	= thisButton.name;;
+out[7] 	= CURRENT_LIMIT_MT_HEIGHT_Q15;
+out[8] 	= 0;
 out[9] 	= thisPTR.seat_current_axis.height;
 out[10] = thisFault.fault_status;
-out[11] = thisMeas.current_mt2.value_q15;
-out[12] = motor_height.current_value;
-out[13] = cnt_current_ripple;
+out[11] = thisMeas.current_height.value_q15;
+out[12] = 1;
+out[13] = 0;
 out[14] = thatADC.ADC_MulSens_2;
 }
 

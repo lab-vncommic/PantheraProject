@@ -5,75 +5,85 @@
  *      Author: ADMIN
  */
 #include "uart.h"
-
-/** @brief Buffer for UART transmission data */
+char BufTXDebug[UART_TX_DEBUG_LENGTH];
 char BufTX[UART_TX_LENGTH];
+char BufRX[UART_RX_LENGTH];
 
-/** @brief Flag indicating UART transmit status (1 = ready to transmit) */
-uint16_t uart_tx_flag;
+_Bool flag_debug_tx_completed;
+_Bool flag_enable_tx;
+_Bool flag_enable_rx;
+_Bool flag_rx_fail;
+_Bool flag_rx_success;
 
-/** @brief Test variable for UART debugging */
-uint32_t uart_test_1;
-float 	 uart_test_2;
-
-/**
- * @brief Initializes the UART peripheral
- * @details Starts the serial driver with the appropriate configuration
- *          and sets the transmit flag to indicate ready state
- * @return None
- */
 void UART_Init(void)
 {
-	sd_lld_start(&SD2,&serial_config_My_UART);
-	uart_tx_flag = 1;
+	// sd_lld_start(&SD2,&serial_config_My_UART);
+	
+	memset(BufTXDebug, 0, UART_TX_DEBUG_LENGTH);
+	BufTX[1] = '\r';
+	BufTX[2] = '\n';
+	memset(BufRX, '0', UART_RX_LENGTH);
+
+	flag_debug_tx_completed  = true;
+	flag_enable_rx 		 	 = true;
 }
 
-/**
- * @brief Callback function for UART transmission completion
- * @details Sets the transmit flag to indicate that the UART is ready for
- *          the next transmission
- * @param[in] sdp Pointer to the serial driver
- * @return None
- */
-void UART_TX_Callback(SerialDriver *sdp)
+void UART_Monitor(void)
 {
-	(void)sdp;
-	uart_tx_flag = 1;
+	if (flag_debug_tx_completed == 1){
+		flag_debug_tx_completed = 0;
+		// sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
+	}
+	snprintf(BufTXDebug, sizeof(BufTXDebug), "cur_slider = %f, cur_height = %f, cur_recliner = %f\r\n",
+			thisMeas.current_slider.value_f32,
+			thisMeas.current_height.value_f32,
+			thisMeas.current_recliner.value_f32
+	);
 }
 
-/**
- * @brief Callback function for UART receive events
- * @details Currently empty implementation for handling received data
- * @param[in] sdp Pointer to the serial driver
- * @return None
- */
-void UART_RX_Callback(SerialDriver *sdp)
+void UART_HandleRequest(void)
 {
-	(void)sdp;
+	if (flag_enable_rx) {
+		// sd_lld_read(&SD2, (uint8_t*) BufRX, UART_RX_LENGTH);
+		// osalThreadDelayMilliseconds(300);
+		flag_enable_rx = 0;
+	}
+
+	if (flag_enable_tx == 1) {
+		// sd_lld_write(&SD2, (uint8_t*) BufTX, UART_TX_LENGTH);
+		flag_enable_tx = 0;
+	}
+
+	if (flag_rx_fail == true) {
+		// sd_lld_write(&SD2, (uint8_t*) "FAIL\r\n", 6);
+		flag_rx_fail = false;
+	}
+
+	if (flag_rx_success == true) {
+		// sd_lld_write(&SD2, (uint8_t*) "SUCCESS\r\n", 9);
+		flag_rx_success = false;
+	}
 }
 
-/**
- * @brief Implementation of sbrk to support sprintf/snprintf functions
- * @details This function provides dynamic memory allocation required by
- *          standard C library functions. It maintains a pointer to the
- *          current heap position and increments it as memory is allocated.
- *          If the heap would exceed its maximum allowed size, an error is returned.
- * @param[in] incr Number of bytes to allocate
- * @return void* Pointer to the allocated memory block, or (void*)-1 if out of memory
- */
-void *sbrk(ptrdiff_t incr) {
-  extern uint8_t __heap_base__;
-  extern uint8_t __heap_end__;
-  static uint8_t *p = &__heap_base__;
-  uint8_t *newp;
+// void UART_TX_Callback(SerialDriver *sdp)
+// {
+// 	(void)sdp;
+// 	flag_debug_tx_completed = 1;
+// }
 
-  newp = p + incr;
-  if (newp > &__heap_end__) {
-    errno = ENOMEM;
-    return (void *)-1;
-  }
+// void *sbrk(ptrdiff_t incr) {
+//   extern uint8_t __heap_base__;
+//   extern uint8_t __heap_end__;
+//   static uint8_t *p = &__heap_base__;
+//   uint8_t *newp;
 
-  uint8_t *oldp = p;
-  p = newp;
-  return oldp;
-}
+//   newp = p + incr;
+//   if (newp > &__heap_end__) {
+// 	errno = ENOMEM;
+// 	return (void *)-1;
+//   }
+
+//   uint8_t *oldp = p;
+//   p = newp;
+//   return oldp;
+// }

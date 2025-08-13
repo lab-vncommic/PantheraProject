@@ -7,26 +7,24 @@
 
 #ifndef MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_
 #define MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_
-// #include "components.h"
 #include "Button.h"
 #include "GlobalDefine.h"
 #include "Measurement.h"
 
-#define TIME_DEBOUNCE_RISING_EDGE     100			// T = 100/10000 = 10ms
-#define PULSE_PER_ROUND				  500			// 500 peak current /round
-#define WINDOW_SIZE 				  10  			// Size of the sliding window buffer
+// Sensor parameteres
+#define TIME_DEBOUNCE_RISING_EDGE     100									// T = 100/10000 = 10ms
+#define GAIN_GEAR					  336U
+#define RESOLUTION_DISTANCE			  0.25f							 		// Unit: round, 1 axis = 0.25 round
+#define NO_PULSE_PER_AXIS			  GAIN_GEAR*RESOLUTION_DISTANCE
+
+// Sensorless parameters
+#define PULSE_PER_ROUND				  1000									// 1000 peak current /round
+#define WINDOW_SIZE 				  10  									// Size of the sliding window buffer
 
 typedef enum {
 	SENSOR 		= 0,
 	SENSORLESS	= 1
 } MotorTopology_TypeDef;
-
-typedef enum{
-	MOTOR_NONE		= 0,
-	MOTOR_HEIGHT	= 1,
-	MOTOR_RECLINER	= 2,
-	MOTOR_SLIDER	= 3
-} MotorName_TypeDef;
 
 typedef enum{
 	STOP	 = 0,
@@ -57,26 +55,37 @@ typedef struct {
 } PeakDetector_TypeDef;
 
 typedef struct{
+	MotorName_TypeDef			name;
 	MotorDriver_TypeDef			driver;
 	MotorTopology_TypeDef		topology;
 
 	MotorStatus_TypeDef 		status;
-	DriverMeasType_TypeDef		meas_type;
+	MeasType_TypeDef			meas_type;
 	uint16_t					axis;
-
-	// Parameters when using sensorless option
-	MeasMotor_TypeDef			meas_motor;
-	uint16_t					current_value;
 } Motor_TypeDef;
 
+typedef struct{
+	MotorName_TypeDef			name;
+	MotorTopology_TypeDef	    topology;
+	uint8_t						ina_value;
+	uint8_t						inb_value;
+} MotorObject_TypeDef;
+
+typedef struct{
+	MotorObject_TypeDef			motor_slider;
+	MotorObject_TypeDef			motor_height;
+	MotorObject_TypeDef			motor_recliner;
+} MotorComm_TypeDef;
+
+// Public API
 void MD_Init(void);
 
 void MD_StopAll(void);
-void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status);
+void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t current_value);
 
-void MD_UpdateMeas(DriverMeasType_TypeDef meas_type);
+void MD_UpdateMeas(MeasType_TypeDef meas_type);
 SeatAxis_TypeDef MD_GetSeatAxis(void);
+MotorComm_TypeDef MD_UpdateToComm(void);
 
-//extern Motor_TypeDef motor_height, motor_recliner, motor_slider;
-extern uint16_t cnt_current_ripple;
+extern Motor_TypeDef motor_height, motor_recliner, motor_slider;
 #endif /* MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_ */
