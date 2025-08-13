@@ -7,12 +7,13 @@
 
 #ifndef PANTHERA_H_
 #define PANTHERA_H_
+#include "Communication.h"
 #include "GlobalDefine.h"
 #include "Measurement.h"
 #include "FaultManagement.h"
 #include "StateManagement.h"
 
-// #include "uart.h"
+#include "uart.h"
 #include "memory.h"
 
 void PTR_system_initialization(void);

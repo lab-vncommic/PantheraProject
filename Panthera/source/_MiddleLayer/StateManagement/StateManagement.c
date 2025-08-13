@@ -23,6 +23,7 @@ void STATE_faultHandle(void);
 //void STATE_autorecoveryHandle(PTR_TypeDef *pState);
 //void STATE_shutdownHandle(PTR_TypeDef *pState);
 
+void STATE_ProcessInputSignals(PTR_TypeDef *pState);
 void STATE_GetSeatAxis(PTR_TypeDef *pState);
 
 /**
@@ -199,30 +200,42 @@ void STATE_manualHandle(PTR_TypeDef *pState)
 	} else cnt_schedule_motor_manual++;
 
 	if (cnt_schedule_motor_manual >= MANUAL_ENABLE_MT1) {
-		// Handle height motor
-		if ((pState->button.height_1.action == ACTION_HOLD) && (pState->button.height_2.action == ACTION_RELEASED))  {
-			MD_Run(MOTOR_HEIGHT, FORWARD, pState->measurement.current_height_q15);
-		} else if ((pState->button.height_2.action == ACTION_HOLD) && (pState->button.height_1.action == ACTION_RELEASED)) {
-			MD_Run(MOTOR_HEIGHT, BACKWARD, pState->measurement.current_height_q15);
-		} else MD_Run(MOTOR_HEIGHT, STOP, pState->measurement.current_height_q15);
+		// Handle slider motor
+		if ((pState->button.slider_1.action == ACTION_HOLD) &&
+			(pState->button.slider_2.action == ACTION_RELEASED) &&
+			(pState->measurement.current_slider_q15 <= CURRENT_LIMIT_MT_SLIDER_Q15))  {
+			MD_Run(MOTOR_SLIDER, FORWARD, pState->measurement.current_slider_q15);
+		} else if ((pState->button.slider_2.action == ACTION_HOLD) &&
+				   (pState->button.slider_1.action == ACTION_RELEASED) &&
+				   (pState->measurement.current_slider_q15 <= CURRENT_LIMIT_MT_SLIDER_Q15)) {
+				   MD_Run(MOTOR_SLIDER, BACKWARD, pState->measurement.current_slider_q15);
+		} else MD_Run(MOTOR_SLIDER, STOP, pState->measurement.current_slider_q15);
 	}
 
 	if (cnt_schedule_motor_manual >= MANUAL_ENABLE_MT2) {
-		// Handle recliner motor
-		if ((pState->button.recliner_1.action == ACTION_HOLD) && (pState->button.recliner_2.action == ACTION_RELEASED))  {
-			MD_Run(MOTOR_RECLINER, FORWARD, pState->measurement.current_recliner_q15);
-		} else if ((pState->button.recliner_2.action == ACTION_HOLD) && (pState->button.recliner_1.action == ACTION_RELEASED)) {
-			MD_Run(MOTOR_RECLINER, BACKWARD, pState->measurement.current_recliner_q15);
-		} else MD_Run(MOTOR_RECLINER, STOP, pState->measurement.current_recliner_q15);
+		// Handle height motor
+		if ((pState->button.height_1.action == ACTION_HOLD) &&
+			(pState->button.height_2.action == ACTION_RELEASED) &&
+			(pState->measurement.current_height_q15 <= CURRENT_LIMIT_MT_HEIGHT_Q15))  {
+			MD_Run(MOTOR_HEIGHT, FORWARD, pState->measurement.current_height_q15);
+		} else if ((pState->button.height_2.action == ACTION_HOLD) &&
+				   (pState->button.height_1.action == ACTION_RELEASED) &&
+				   (pState->measurement.current_height_q15 <= CURRENT_LIMIT_MT_HEIGHT_Q15)) {
+				   MD_Run(MOTOR_HEIGHT, BACKWARD, pState->measurement.current_height_q15);
+		} else MD_Run(MOTOR_HEIGHT, STOP, pState->measurement.current_height_q15);
 	}
-	
+
 	if (cnt_schedule_motor_manual >= MANUAL_ENABLE_MT3) {
-		// Handle slider motor
-		if ((pState->button.slider_1.action == ACTION_HOLD) && (pState->button.slider_2.action == ACTION_RELEASED))  {
-			MD_Run(MOTOR_SLIDER, FORWARD, pState->measurement.current_slider_q15);
-		} else if ((pState->button.slider_2.action == ACTION_HOLD) && (pState->button.slider_1.action == ACTION_RELEASED)) {
-			MD_Run(MOTOR_SLIDER, BACKWARD, pState->measurement.current_slider_q15);
-		} else MD_Run(MOTOR_SLIDER, STOP, pState->measurement.current_slider_q15);
+		// Handle recliner motor
+		if ((pState->button.recliner_1.action == ACTION_HOLD) && 
+			(pState->button.recliner_2.action == ACTION_RELEASED) &&
+			(pState->measurement.current_recliner_q15 <= CURRENT_LIMIT_MT_RECLINER_Q15))  {
+			MD_Run(MOTOR_RECLINER, FORWARD, pState->measurement.current_recliner_q15);
+		} else if ((pState->button.recliner_2.action == ACTION_HOLD) && 
+				   (pState->button.recliner_1.action == ACTION_RELEASED) &&
+				   (pState->measurement.current_recliner_q15 <= CURRENT_LIMIT_MT_RECLINER_Q15)) {
+				   MD_Run(MOTOR_RECLINER, BACKWARD, pState->measurement.current_recliner_q15);
+		} else MD_Run(MOTOR_RECLINER, STOP, pState->measurement.current_recliner_q15);
 	}
 }
 
@@ -247,31 +260,38 @@ void STATE_autoHandle(PTR_TypeDef *pState)
 		cnt_schedule_motor_auto = AUTO_ENABLE_MT;
 	} else cnt_schedule_motor_auto++;
 
-	// Height motor - starts first (1ms)
+	// Slider motor - starts last (1ms)
 	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT1) {
-		if (pState->seat_current_axis.height > pState->seat_memory_axis.height) {
+		if (pState->seat_current_axis.slider > pState->seat_memory_axis.slider &&
+			pState->measurement.current_slider_q15 <= CURRENT_LIMIT_MT_SLIDER_Q15) {
+			MD_Run(MOTOR_SLIDER, BACKWARD, pState->measurement.current_slider_q15);
+		} else if (pState->seat_current_axis.slider < pState->seat_memory_axis.slider &&
+				  pState->measurement.current_slider_q15 <= CURRENT_LIMIT_MT_SLIDER_Q15) {
+			MD_Run(MOTOR_SLIDER, FORWARD, pState->measurement.current_slider_q15);
+		} else MD_Run(MOTOR_SLIDER, STOP, pState->measurement.current_slider_q15);
+	}
+
+	// Height motor - starts first (333ms)
+
+	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT2) {
+		if (pState->seat_current_axis.height > pState->seat_memory_axis.height &&
+			pState->measurement.current_height_q15 <= CURRENT_LIMIT_MT_HEIGHT_Q15) {
 			MD_Run(MOTOR_HEIGHT, BACKWARD, pState->measurement.current_height_q15);
-		} else if (pState->seat_current_axis.height < pState->seat_memory_axis.height) {
+		} else if (pState->seat_current_axis.height < pState->seat_memory_axis.height &&
+				  pState->measurement.current_height_q15 <= CURRENT_LIMIT_MT_HEIGHT_Q15) {
 			MD_Run(MOTOR_HEIGHT, FORWARD, pState->measurement.current_height_q15);
 		} else MD_Run(MOTOR_HEIGHT, STOP, pState->measurement.current_height_q15);
 	}
 
-	// Recliner motor - starts second (333ms)
-	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT2) {
-		if (pState->seat_current_axis.recliner > pState->seat_memory_axis.recliner) {
+	// Recliner motor - starts second (666ms)
+	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT3) {
+		if (pState->seat_current_axis.recliner > pState->seat_memory_axis.recliner &&
+			pState->measurement.current_recliner_q15 <= CURRENT_LIMIT_MT_RECLINER_Q15) {
 			MD_Run(MOTOR_RECLINER, BACKWARD, pState->measurement.current_recliner_q15);
-		} else if (pState->seat_current_axis.recliner < pState->seat_memory_axis.recliner) {
+		} else if (pState->seat_current_axis.recliner < pState->seat_memory_axis.recliner &&
+				  pState->measurement.current_recliner_q15 <= CURRENT_LIMIT_MT_RECLINER_Q15) {
 			MD_Run(MOTOR_RECLINER, FORWARD, pState->measurement.current_recliner_q15);
 		} else MD_Run(MOTOR_RECLINER, STOP, pState->measurement.current_recliner_q15);
-	}
-
-	// Slider motor - starts last (666ms)
-	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT3) {
-		if (pState->seat_current_axis.slider > pState->seat_memory_axis.slider) {
-			MD_Run(MOTOR_SLIDER, BACKWARD, pState->measurement.current_slider_q15);
-		} else if (pState->seat_current_axis.slider < pState->seat_memory_axis.slider) {
-			MD_Run(MOTOR_SLIDER, FORWARD, pState->measurement.current_slider_q15);
-		} else MD_Run(MOTOR_SLIDER, STOP, pState->measurement.current_slider_q15);
 	}
 
 	// Check if all motors have reached their target positions

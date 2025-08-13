@@ -8,6 +8,8 @@
 Fault_TypeDef 	thisFault;
 uint8_t 		temp_fault_status = 0x00;
 
+void FAULT_UpdateStatus(MeasSystem_TypeDef *pMeas);
+
 /**
  * @brief Initializes the fault management system
  *
@@ -45,28 +47,29 @@ void FAULT_Init(void)
  * 
  * @note This function must be called periodically to keep fault status up-to-date
  */
-void FAULT_UpdateStatus(void){
-   if (FAULT_IS_MT1_OCP(&thisMeas.current_mt1)) {
+void FAULT_UpdateStatus(MeasSystem_TypeDef *pMeas)
+{
+   if (FAULT_IS_MT1_OCP(pMeas->current_slider_q15)) {
    	temp_fault_status |= FAULT_STT_0;
    }
 
-   if (FAULT_IS_MT2_OCP(&thisMeas.current_mt2) ) {
+   if (FAULT_IS_MT2_OCP(pMeas->current_height_q15)) {
    	temp_fault_status |= FAULT_STT_1;
    }
 
-   if (FAULT_IS_MT3_OCP(&thisMeas.current_mt3) ) {
+   if (FAULT_IS_MT3_OCP(pMeas->current_recliner_q15)) {
    	temp_fault_status |= FAULT_STT_2;
    }
 
-   if (FAULT_IS_MT1_OTP(&thisMeas.thermal_mt1)) {
+   if (FAULT_IS_MT1_OTP(pMeas->thermal_slider_q15)) {
    	temp_fault_status |= FAULT_STT_3;
    }
 
-   if (FAULT_IS_MT2_OTP(&thisMeas.thermal_mt2) ) {
+   if (FAULT_IS_MT2_OTP(pMeas->thermal_height_q15)) {
    	temp_fault_status |= FAULT_STT_4;
    }
 
-   if (FAULT_IS_MT3_OTP(&thisMeas.thermal_mt3) ) {
+   if (FAULT_IS_MT3_OTP(pMeas->thermal_recliner_q15)) {
    	temp_fault_status |= FAULT_STT_5;
    }
    thisFault.fault_status = temp_fault_status;
@@ -86,14 +89,16 @@ void FAULT_UpdateStatus(void){
  *
  * @note The fault mode priority is: FAULT_LATCH > FAULT_AUTO_RECOVER > FAULT_NONE
  */
-void FAULT_UpdateMode(void)
+Fault_Mode_TypeDef FAULT_UpdateMode(MeasSystem_TypeDef *pMeas)
 {
-	FAULT_UpdateStatus();
+	FAULT_UpdateStatus(pMeas);
 
 	if ((thisFault.fault_status) & FAULT_LATCH_BITS) {
 		thisFault.fault_mode = FAULT_LATCH;
 	} else if ((thisFault.fault_status) & FAULT_AUTO_RECOVERY_BITS) {
 		thisFault.fault_mode = FAULT_AUTO_RECOVER;
 	} else thisFault.fault_mode = FAULT_NONE;
+
+	return thisFault.fault_mode;
 }
 

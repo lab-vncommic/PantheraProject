@@ -11,7 +11,7 @@
 #include "stdbool.h"
 
 #define TIMEOUT_DEBOUNCE_BTN   5000    // 0.5s
-#define TIMEOUT_PRESSED_BTN	   10000   // 1s
+#define TIMEOUT_PRESSED_BTN	   7500   // 1s
 
 // Button status bit definitions (16-bit)
 #define BTN_STT_0     ((uint16_t) 1U<<0)  // BT_HEIGHT_1 - Height up button
@@ -31,18 +31,12 @@
 #define BTN_STT_14    ((uint16_t) 1U<<14) // Reserved for future use
 #define BTN_STT_15    ((uint16_t) 1U<<15) // Reserved for future use
 
-/*===========================================================================
- * REUSABLE CODE SECTION
- *===========================================================================*/
 typedef enum{
-	ACTION_NA		= 0,
+	ACTION_RELEASED	= 0,
 	ACTION_PRESSED	= 1,
 	ACTION_HOLD		= 2
 } Btn_Action_TypeDef;
 
-/*===========================================================================
- * PTR CODE SECTION
- *===========================================================================*/
 typedef enum{
 	BTN_NA 			= 0,
 	BTN_HEIGHT_1	= 1,
@@ -58,8 +52,11 @@ typedef enum{
 } Btn_Name_TypeDef;
 
 typedef struct {
-	uint16_t	value;
-	uint16_t	cnt_debounce;
+	Btn_Name_TypeDef	name;
+	Btn_Action_TypeDef	action;
+
+	uint16_t			value;
+	uint16_t			cnt_debounce;
 } Btn_Object_TypeDef;
 
 typedef struct {
@@ -75,35 +72,44 @@ typedef struct {
     Btn_Object_TypeDef recall_3;
 } Btn_All_TypeDef;
 
-typedef struct {
-	Btn_Name_TypeDef 	name;
-	Btn_Action_TypeDef 	action;
-
-	uint32_t 			cnt_action;
-	uint16_t			btn_stt;
-} Button_TypeDef;
-
 typedef struct{
 	Btn_Name_TypeDef		name;
 	Btn_Action_TypeDef		action;
-} ButtonState_TypeDef;
+} Button_TypeDef;
+
+typedef struct{
+	Button_TypeDef recliner_1;
+	Button_TypeDef recliner_2;
+	Button_TypeDef height_1;
+	Button_TypeDef height_2;
+	Button_TypeDef slider_1;
+	Button_TypeDef slider_2;
+	Button_TypeDef save;
+    Button_TypeDef recall_1;
+    Button_TypeDef recall_2;
+    Button_TypeDef recall_3;
+} ButtonSystem_TypeDef;
+
+typedef struct{
+	uint16_t recliner_1_value;
+	uint16_t recliner_2_value;
+	uint16_t height_1_value;
+	uint16_t height_2_value;
+	uint16_t slider_1_value;
+	uint16_t slider_2_value;
+	uint16_t save_value;
+	uint16_t recall_1_value;
+    uint16_t recall_2_value;
+    uint16_t recall_3_value;
+} ButtonComm_TypeDef;
 
 /*===========================================================================
- * REUSABLE CODE SECTION
- *===========================================================================*/
-void BTN_GetGpioValue(GPIO_Input_TypeDef *pGpio);
-_Bool BTN_Debouncing(Btn_Object_TypeDef *pButton, _Bool condition, uint16_t timeout);
-
-/*===========================================================================
- * PTR CODE SECTION
+ * Public API
  *===========================================================================*/
 void BTN_Init(void);
-void BTN_GetStatusBtnReg(void);
-_Bool BTN_OnlyOneBtnPress(void);
-void BTN_AnalyzeInputState(Button_TypeDef *pButton);
-void BTN_Update(void);
-
-ButtonState_TypeDef BTN_GetStatus(void);
+ButtonSystem_TypeDef BTN_Update(void);
+ButtonComm_TypeDef BTN_UpdateToComm(void);
 
 extern Button_TypeDef		thisButton;
+extern Btn_All_TypeDef		thisButtonAll;
 #endif /* SOURCE__MIDDLELAYER_BUTTON_BUTTON_H_ */

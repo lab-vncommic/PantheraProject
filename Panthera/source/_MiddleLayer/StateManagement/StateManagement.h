@@ -7,7 +7,7 @@
 
 #ifndef SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_
 #define SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_
-#include "../Communication/Communication.h"
+#include "Communication.h"
 #include "MotorDriver.h"
 #include "Measurement.h"
 #include "FaultManagement.h"
@@ -24,6 +24,14 @@
 #define AUTO_ENABLE_MT1				1
 #define AUTO_ENABLE_MT2				AUTO_ENABLE_MT / 3
 #define AUTO_ENABLE_MT3				AUTO_ENABLE_MT * 2 / 3
+
+#define CURRENT_LIMIT_MT_SLIDER		12.7f
+#define CURRENT_LIMIT_MT_HEIGHT		12.7f
+#define CURRENT_LIMIT_MT_RECLINER	12.7f
+
+#define CURRENT_LIMIT_MT_SLIDER_Q15		_q15(CURRENT_LIMIT_MT_SLIDER / CURRENT_MT1_HIGH_LIMIT_SOFT)
+#define CURRENT_LIMIT_MT_HEIGHT_Q15		_q15(CURRENT_LIMIT_MT_HEIGHT / CURRENT_MT2_HIGH_LIMIT_SOFT)
+#define CURRENT_LIMIT_MT_RECLINER_Q15	_q15(CURRENT_LIMIT_MT_RECLINER / CURRENT_MT2_HIGH_LIMIT_SOFT)
 
 typedef enum{
 	STATE_IDLE		   = 0,
@@ -52,7 +60,6 @@ typedef struct{
 void STATE_Init(PTR_TypeDef *pState);
 void STATE_UpdateState(PTR_TypeDef *pState);
 
-void STATE_ProcessInputSignals(PTR_TypeDef *pState);
 void STATE_UpdateMeas(PTR_TypeDef *pState);
 void STATE_UpdateFault(PTR_TypeDef *pState);
 void STATE_UpdateButton(PTR_TypeDef *pState);
