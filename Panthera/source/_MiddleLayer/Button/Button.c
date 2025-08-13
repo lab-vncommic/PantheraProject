@@ -75,12 +75,12 @@ void BTN_Analyze(Btn_Object_TypeDef *pButton)
 	if(pButton->value == 1){
 		pButton->cnt_debounce++;
 		if (pButton->cnt_debounce < TIMEOUT_DEBOUNCE_BTN ) {
-			pButton->action = ACTION_NA;
+			pButton->action = ACTION_RELEASED;
 		} else if ((pButton->cnt_debounce >= TIMEOUT_DEBOUNCE_BTN) && (pButton->cnt_debounce < TIMEOUT_PRESSED_BTN)) {
 			pButton->action = ACTION_PRESSED;
 		} else pButton->action = ACTION_HOLD;
 	} else {
-		pButton->action 	  = ACTION_NA;
+		pButton->action 	  = ACTION_RELEASED;
 		pButton->cnt_debounce = 0;
 	}
 }
@@ -122,5 +122,21 @@ ButtonSystem_TypeDef BTN_Update(void)
 	BTN_UpdateToState(&temp_button.recall_2, &thisButtonAll.recall_2);
 	BTN_UpdateToState(&temp_button.recall_3, &thisButtonAll.recall_3);
 
+	return temp_button;
+}
+
+ButtonComm_TypeDef BTN_UpdateToComm(void)
+{
+	ButtonComm_TypeDef temp_button;
+	temp_button.height_1_value = thisButtonAll.height_1.value;
+	temp_button.height_2_value = thisButtonAll.height_2.value;
+	temp_button.recliner_1_value = thisButtonAll.recliner_1.value;
+	temp_button.recliner_2_value = thisButtonAll.recliner_2.value;
+	temp_button.slider_1_value = thisButtonAll.slider_1.value;
+	temp_button.slider_2_value = thisButtonAll.slider_2.value;
+	temp_button.save_value 	   = thisButtonAll.save.value;
+	temp_button.recall_1_value = thisButtonAll.recall_1.value;
+	temp_button.recall_2_value = thisButtonAll.recall_2.value;
+	temp_button.recall_3_value = thisButtonAll.recall_3.value;
 	return temp_button;
 }

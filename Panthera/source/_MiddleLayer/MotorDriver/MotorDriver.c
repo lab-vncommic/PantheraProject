@@ -345,7 +345,7 @@ void MD_Init(void)
 	MD_ConfigDriver(&motor_recliner, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
 
 	MD_ConfigTopology(&motor_height, SENSOR);
-	MD_ConfigTopology(&motor_recliner, SENSOR);
+	MD_ConfigTopology(&motor_recliner, SENSORLESS);
 	MD_ConfigTopology(&motor_slider, SENSOR);
 
 	motor_height.name   = MOTOR_HEIGHT;
@@ -461,6 +461,25 @@ SeatAxis_TypeDef MD_GetSeatAxis(void)
 	temp_axis.slider 	= motor_slider.axis;
 	return temp_axis;
 }
+
+MotorComm_TypeDef MD_UpdateToComm(void)
+{
+	MotorComm_TypeDef temp_motor_system;
+	temp_motor_system.motor_slider.topology   = motor_slider.topology;
+	temp_motor_system.motor_slider.ina_value  = motor_slider.driver.ina.value;
+	temp_motor_system.motor_slider.inb_value  = motor_slider.driver.inb.value;
+	
+	temp_motor_system.motor_height.topology   = motor_height.topology;
+	temp_motor_system.motor_height.ina_value  = motor_height.driver.ina.value;
+	temp_motor_system.motor_height.inb_value  = motor_height.driver.inb.value;
+	
+	temp_motor_system.motor_recliner.topology  = motor_recliner.topology;
+	temp_motor_system.motor_recliner.ina_value = motor_recliner.driver.ina.value;
+	temp_motor_system.motor_recliner.inb_value = motor_recliner.driver.inb.value;
+	return temp_motor_system;
+}
+
+
 
 
 

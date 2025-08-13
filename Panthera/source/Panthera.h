@@ -7,6 +7,7 @@
 
 #ifndef PANTHERA_H_
 #define PANTHERA_H_
+#include "_MiddleLayer/Communication/Communication.h"
 #include "GlobalDefine.h"
 #include "Measurement.h"
 #include "FaultManagement.h"

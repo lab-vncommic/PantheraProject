@@ -5,7 +5,7 @@
  *      Author: Admin
  */
 
-#include "my_eeprom.h"
+#include "eeprom_user.h"
 
 /**
  * @brief  Initializes the EEPROM for the first time using the specified configuration.

@@ -34,7 +34,7 @@ int main(void) {
 
 	/* Interrupts are enabled and the system is ready.*/
 	irqIsrEnable();
-
+	//sd_lld_read(&SD2, (uint8_t*) bufByte, 1);
 	/* Application main loop.*/
 	for ( ; ; ) {
 	  PTR_inf_loop_system();

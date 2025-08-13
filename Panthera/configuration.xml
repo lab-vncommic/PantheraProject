@@ -4293,7 +4293,7 @@
                   <value>My_UART</value>
                 </symbolic_name>
                 <baud_rate>
-                  <value>9600</value>
+                  <value>115200</value>
                 </baud_rate>
                 <mode index="0">
                   <value>8BITS_PARITY_NONE</value>
@@ -4311,14 +4311,14 @@
                     <value>UART_TX_Callback</value>
                   </tx_callback>
                   <rx_callback>
-                    <value>UART_RX_Callback</value>
+                    <value />
                   </rx_callback>
                 </notifications>
                 <dma>
                   <dma_enable>
-                    <value>true</value>
+                    <value>false</value>
                   </dma_enable>
-                  <dma_error_callback>
+                  <dma_error_callback disabled="true">
                     <value />
                   </dma_error_callback>
                 </dma>

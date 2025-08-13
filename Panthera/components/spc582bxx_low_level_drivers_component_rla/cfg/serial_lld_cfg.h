@@ -58,7 +58,6 @@ extern "C" {
   /* List of the callback functions referenced from the SerialConfig
      structures in serial_lld_cfg.c.*/
     void UART_TX_Callback(SerialDriver *sdp);
-    void UART_RX_Callback(SerialDriver *sdp);
 #ifdef __cplusplus
 }
 #endif
