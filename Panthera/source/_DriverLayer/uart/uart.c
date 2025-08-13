@@ -13,13 +13,15 @@ _Bool flag_debug_tx_completed;
 _Bool flag_enable_tx;
 _Bool flag_enable_rx;
 _Bool flag_rx_fail;
+_Bool flag_rx_success;
 
 void UART_Init(void)
 {
 	sd_lld_start(&SD2,&serial_config_My_UART);
 	
 	memset(BufTXDebug, 0, UART_TX_DEBUG_LENGTH);
-	memset(BufTX, 0, UART_TX_LENGTH);
+	BufTX[1] = '\r';
+	BufTX[2] = '\n';
 	memset(BufRX, '0', UART_RX_LENGTH);
 
 	flag_debug_tx_completed  = true;
@@ -53,8 +55,13 @@ void UART_HandleRequest(void)
 	}
 
 	if (flag_rx_fail == true) {
-		sd_lld_write(&SD2, (uint8_t*) "FAIL", 4);
+		sd_lld_write(&SD2, (uint8_t*) "FAIL\r\n", 6);
 		flag_rx_fail = false;
+	}
+
+	if (flag_rx_success == true) {
+		sd_lld_write(&SD2, (uint8_t*) "SUCCESS\r\n", 9);
+		flag_rx_success = false;
 	}
 }
 

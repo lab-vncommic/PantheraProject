@@ -17,7 +17,7 @@
 #include "Measurement.h"
 
 #define UART_TX_DEBUG_LENGTH 		100
-#define UART_TX_LENGTH				1
+#define UART_TX_LENGTH				3
 #define UART_RX_LENGTH 				6
 
 void UART_Init(void);
@@ -30,7 +30,8 @@ extern char BufTXDebug[UART_TX_DEBUG_LENGTH];
 extern char BufTX[UART_TX_LENGTH];
 extern char BufRX[UART_RX_LENGTH];
 extern _Bool flag_debug_tx_completed;
-extern _Bool flag_rx_fail;
 extern _Bool flag_enable_tx;
 extern _Bool flag_enable_rx;
+extern _Bool flag_rx_fail;
+extern _Bool flag_rx_success;
 #endif /* SOURCE__DRIVERLAYER_UART_UART_H_ */

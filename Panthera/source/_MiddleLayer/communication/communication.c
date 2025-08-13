@@ -44,6 +44,7 @@ void COMM_Handle(void)
 			COMM_Respone();
 		} else if (thisMessage.request == 1) {
 			COMM_HandleWriteRequest();
+			flag_rx_success = true;
 		}
 		counter = 0;
 		flag_enable_rx = 1;
