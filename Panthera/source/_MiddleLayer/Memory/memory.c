@@ -18,21 +18,21 @@ const char* convert_Dec_to_Hex(uint32_t a) {
     static char hex_output[9];
     const char hex_digits[] = "0123456789ABCDEF";
 
+    hex_output[0] = '0'; // Initialize first digit
+    hex_output[1] = '0'; // Initialize second digit
+    hex_output[2] = '\0'; // Null-terminate
+
     if (a == 0) {
-        return "00";
+        return hex_output; // Return "00" for input 0
     }
 
-    int index = 8;
-    hex_output[index] = '\0';
-
-    while (a > 0) {
+    int index = 2;
+    while (a > 0 && index > 0) {
         hex_output[--index] = hex_digits[a % 16];
         a /= 16;
     }
-    if (index == 7) {
-        hex_output[--index] = '0';
-    }
-    return &hex_output[index];
+
+    return hex_output;
 }
 
 /**
@@ -124,32 +124,26 @@ void MEM_Write(uint32_t x,uint32_t y, uint32_t z, uint16_t id_recall){
  * @param  input:  Input hex string of at least 6 characters (e.g. "0A1B2C").
  * @retval None
  */
-void seperate_char( char* a,  char* b,  char* c, char* input) {
-    if(strlen(input)==5){
-        a[0] = '0';
-        a[1] = input[0];
-        a[2] = '\0';
-
-        b[0] = input[1];
-        b[1] = input[2];
-        b[2] = '\0';
-
-        c[0] = input[3];
-        c[1] = input[4];
-        c[2] = '\0';
-    }else{
-        a[0] = input[0];
-        a[1] = input[1];
-        a[2] = '\0';
-
-        b[0] = input[2];
-        b[1] = input[3];
-        b[2] = '\0';
-
-        c[0] = input[4];
-        c[1] = input[5];
-        c[2] = '\0';
+void seperate_char(char* a, char* b, char* c, const char* input) {
+    size_t len = strlen(input);
+    if (len != 6) {
+        a[0] = b[0] = c[0] = '0';
+        a[1] = b[1] = c[1] = '0';
+        a[2] = b[2] = c[2] = '\0';
+        return;
     }
+
+    a[0] = input[0];
+    a[1] = input[1];
+    a[2] = '\0';
+
+    b[0] = input[2];
+    b[1] = input[3];
+    b[2] = '\0';
+
+    c[0] = input[4];
+    c[1] = input[5];
+    c[2] = '\0';
 }
 
 /**
@@ -163,7 +157,8 @@ void MEM_Read(uint16_t id_recall){
 	uint32_t output_EEPROM = EEPROM_Read(id_recall);
 
     char str_source[10], x_axis_str[3],y_axis_str[3],z_axis_str[3];
-    strcpy(str_source,convert_Dec_to_Hex(output_EEPROM));
+//    strcpy(str_source,convert_Dec_to_Hex(output_EEPROM));
+    snprintf(str_source, sizeof(str_source), "%06X", (unsigned int)output_EEPROM);
     seperate_char(x_axis_str,y_axis_str,z_axis_str,str_source);
     thisMemory.x = convert_charHex_to_uint32_t(x_axis_str);
     thisMemory.y = convert_charHex_to_uint32_t(y_axis_str);
