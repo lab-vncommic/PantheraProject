@@ -46,6 +46,8 @@ typedef struct{
 	Fault_Mode_TypeDef		mode;
 	uint8_t					limit;
 	uint8_t					counter;
+
+	uint32_t				cnt_debounce_auto_recovery;
 } FaultSystem_TypeDef;
 
 /*===========================================================================
