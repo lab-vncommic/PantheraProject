@@ -5,6 +5,7 @@
  *      Author: ADMIN
  */
 #include "Panthera.h"
+uint16_t counter_fault;
 
 void PTR_system_initialization(void)
 {
@@ -31,7 +32,10 @@ void PTR_main_interrupt_service(void)
 {
 	// begin = stm_lld_getcounter(&STMD3);
 	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
-//	STATE_UpdateFault(&thisPTR);
+	if (counter_fault++ >= 1000)
+	{
+		STATE_UpdateFault(&thisPTR);
+	}
 	STATE_UpdateButton(&thisPTR);
 	STATE_UpdateState(&thisPTR);
 	// end = stm_lld_getcounter(&STMD3);
