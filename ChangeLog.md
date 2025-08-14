@@ -27,7 +27,8 @@
 | 23  | 06/08/2025    | v1.1.9              | Bổ sung phần điều chỉnh độ phân giải của 1 đơn vị vị trí                   | Nguyễn Quốc Uy    | Obsoleted|
 | 24  | 07/08/2025    | v1.1.10             | Chỉnh sửa chức năng nút nhấn theo yêu cầu                                  | Nguyễn Quốc Uy    | Obsoleted|
 | 25  | 13/08/2025    | v1.1.11             | Bổ sung chức năng truyền thông với UART                                    | Nguyễn Quốc Uy    | Obsoleted|
-| 26  | 13/08/2025    | v1.1.12             | Bổ sung điều khiển động cơ ở chế độ peak current mode                      | Nguyễn Quốc Uy    | Active   |
+| 26  | 13/08/2025    | v1.1.12             | Bổ sung điều khiển động cơ ở chế độ peak current mode                      | Nguyễn Quốc Uy    | Obsoleted|
+| 27  | 14/08/2025    | v1.1.13             | Bổ sung tính năng auto-recovery                                            | Nguyễn Quốc Uy    | Active   |
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
