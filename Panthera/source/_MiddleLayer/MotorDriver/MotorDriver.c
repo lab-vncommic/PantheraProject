@@ -479,6 +479,13 @@ MotorComm_TypeDef MD_UpdateToComm(void)
 	return temp_motor_system;
 }
 
+void MD_ResetAxis(void)
+{
+	motor_slider.axis   = 0;
+	motor_height.axis	= 0;
+	motor_recliner.axis = 0;
+}
+
 
 
 

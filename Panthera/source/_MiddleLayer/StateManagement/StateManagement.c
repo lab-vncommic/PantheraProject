@@ -13,6 +13,7 @@ _Bool flag_save_to_idle   = false;
 uint16_t cnt_delay_500ms;
 uint16_t cnt_schedule_motor_auto;
 uint16_t cnt_schedule_motor_manual;
+uint16_t cnt_schedule_motor_home;
 
 // List API
 void STATE_idleHandle(PTR_TypeDef *pState);
@@ -20,20 +21,15 @@ void STATE_saveHandle(PTR_TypeDef *pState);
 void STATE_manualHandle(PTR_TypeDef *pState);
 void STATE_autoHandle(PTR_TypeDef *pState);
 void STATE_faultHandle(void);
-void STATE_autorecoveryHandle(PTR_TypeDef *pState);
+void STATE_autorecoveryHandle(void);
 void STATE_shutdownHandle(void);
+void STATE_homingHandle(PTR_TypeDef *pState);
 
 void STATE_ProcessInputSignals(PTR_TypeDef *pState);
 _Bool STATE_SystemIsNormal(PTR_TypeDef *pState);
 void STATE_GetSeatAxis(PTR_TypeDef *pState);
-
-/**
- * @brief Initializes the state management system
- * @details Sets the initial state to IDLE to ensure the system starts in a safe mode
- * @param[out] pState Pointer to the state management structure to be initialized
- * @return None
- */
-
+_Bool STATE_CheckEndPosition(uint16_t axis);
+void STATE_ResetAxis(PTR_TypeDef *pState);
 
 /**
  * @brief Handles the system behavior in IDLE state
@@ -148,7 +144,6 @@ void STATE_autoHandle(PTR_TypeDef *pState)
 	}
 
 	// Height motor - starts first (333ms)
-
 	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT2) {
 		if (pState->seat_current_axis.height > pState->seat_memory_axis.height &&
 			pState->measurement.current_height_q15 <= CURRENT_LIMIT_MT_HEIGHT_Q15) {
@@ -187,15 +182,57 @@ void STATE_faultHandle(void)
 	MD_StopAll();
 }
 
-void STATE_autorecoveryHandle(PTR_TypeDef *pState)
+void STATE_autorecoveryHandle(void)
 {
-	// Do nothing
 	FAULT_LogError();
 }
 
 void STATE_shutdownHandle(void)
 {
 	// Do nothing
+}
+
+void STATE_homingHandle(PTR_TypeDef *pState)
+{
+	if (cnt_schedule_motor_home >= HOME_ENABLE_MT) {
+		cnt_schedule_motor_home = HOME_ENABLE_MT;
+	} else cnt_schedule_motor_home++;
+
+	if (cnt_schedule_motor_home >= HOME_ENABLE_MT1) {
+		// Handle slider motor
+		if ((pState->measurement.current_slider_q15 <= CURRENT_LIMIT_MT_SLIDER_Q15) &&
+			(pState->state_home.flag_slider_block == false)) {
+			MD_Run(MOTOR_SLIDER, BACKWARD, pState->measurement.current_slider_q15);
+			if (GDE_DebounceConditon(STATE_CheckEndPosition(pState->seat_current_axis.slider), 20000, &pState->cnt_check_end_position.slider)) {
+				MD_Run(MOTOR_SLIDER, STOP, pState->measurement.current_slider_q15);
+				pState->state_home.flag_slider_block = true;
+			}
+		} else MD_Run(MOTOR_SLIDER, STOP, pState->measurement.current_slider_q15);
+	}
+
+	if (cnt_schedule_motor_home >= HOME_ENABLE_MT2) {
+		// Handle height motor
+		if ((pState->measurement.current_height_q15 <= CURRENT_LIMIT_MT_HEIGHT_Q15) &&
+				(pState->state_home.flag_height_block == false)) {
+			MD_Run(MOTOR_HEIGHT, BACKWARD, pState->measurement.current_height_q15);
+			if (GDE_DebounceConditon(STATE_CheckEndPosition(pState->seat_current_axis.height), 20000, &pState->cnt_check_end_position.height)) {
+				MD_Run(MOTOR_HEIGHT, STOP, pState->measurement.current_height_q15);
+				pState->state_home.flag_height_block = true;
+			}
+		} else MD_Run(MOTOR_HEIGHT, STOP, pState->measurement.current_height_q15);
+	}
+
+	if (cnt_schedule_motor_home >= HOME_ENABLE_MT3) {
+		// Handle recliner motor
+		if ((pState->measurement.current_recliner_q15 <= CURRENT_LIMIT_MT_RECLINER_Q15) &&
+			(pState->state_home.flag_recliner_block == false)) {
+			MD_Run(MOTOR_RECLINER, BACKWARD, pState->measurement.current_recliner_q15);
+			if (GDE_DebounceConditon(STATE_CheckEndPosition(pState->seat_current_axis.recliner), 20000, &pState->cnt_check_end_position.recliner)) {
+				MD_Run(MOTOR_RECLINER, STOP, pState->measurement.current_recliner_q15);
+				pState->state_home.flag_recliner_block = true;
+			}
+		} else MD_Run(MOTOR_RECLINER, STOP, pState->measurement.current_recliner_q15);
+	}
 }
 
 void STATE_ProcessInputSignals(PTR_TypeDef *pState)
@@ -294,6 +331,38 @@ void STATE_GetSeatAxis(PTR_TypeDef *pState)
 	pState->seat_current_axis = MD_GetSeatAxis();
 }
 
+_Bool STATE_CheckEndPosition(uint16_t axis)
+{
+	static uint16_t prev_axis;
+	static _Bool flag;
+	if (prev_axis == axis) {
+		flag = true;
+	} else flag = false;
+	prev_axis = axis;
+	return flag;
+}
+
+void STATE_ResetAxis(PTR_TypeDef *pState)
+{
+	// Reset parameters for detecting end of travel
+	pState->state_home.cnt_use_recall       = 0;
+	pState->cnt_check_end_position.slider   = 0;
+	pState->cnt_check_end_position.height   = 0;
+	pState->cnt_check_end_position.recliner = 0;
+	pState->state_home.flag_slider_block    = false;
+	pState->state_home.flag_height_block    = false;
+	pState->state_home.flag_recliner_block  = false;
+
+	// Reset axis
+	MD_ResetAxis();
+}
+
+/**
+ * @brief Initializes the state management system
+ * @details Sets the initial state to IDLE to ensure the system starts in a safe mode
+ * @param[out] pState Pointer to the state management structure to be initialized
+ * @return None
+ */
 void STATE_Init(PTR_TypeDef *pState)
 {
 	pState->state = STATE_IDLE;
@@ -329,12 +398,15 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			} else if (pState->button.recall_1.action == ACTION_PRESSED || pState->button.recall_1.action == ACTION_HOLD) {
 				pState->seat_memory_axis = MEM_GetSeatAxis(1);
 				pState->state = STATE_AUTO;
+				pState->state_home.cnt_use_recall++;
 			} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
 				pState->seat_memory_axis = MEM_GetSeatAxis(2);
 				pState->state = STATE_AUTO;
+				pState->state_home.cnt_use_recall++;
 			} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
 				pState->seat_memory_axis = MEM_GetSeatAxis(3);
 				pState->state = STATE_AUTO;
+				pState->state_home.cnt_use_recall++;
 			}
 
 			if (pState->fault.mode != FAULT_NONE) {
@@ -396,16 +468,35 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_autoHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (flag_auto_completed == true) {
-				cnt_schedule_motor_auto = 0;
-				flag_auto_completed    = false;
-				pState->state 		   = STATE_IDLE;
-			}
+			if (pState->state_home.cnt_use_recall >= 10) {
+				pState->state = STATE_HOMING;
+			} else if (flag_auto_completed == true) {
+						cnt_schedule_motor_auto = 0;
+						flag_auto_completed    = false;
+						pState->state 		   = STATE_IDLE;
+					}
 
 			if (pState->fault.mode != FAULT_NONE) {
 				pState->state = STATE_FAULT;
 			}
 
+			break;
+
+		case STATE_HOMING:
+			// Processing: handle AUTO state
+			STATE_homingHandle(pState);
+
+			// Post-processing: check for faults and state transitions
+			if (pState->state_home.flag_slider_block &&
+				pState->state_home.flag_height_block &&
+				pState->state_home.flag_recliner_block) {
+					pState->state = STATE_AUTO;
+					STATE_ResetAxis(pState);
+			}
+
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			}
 			break;
 
 		case STATE_FAULT:
@@ -422,7 +513,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 
 		case STATE_AUTORECOVERY:
 			// Processing: handle FAULT state
-			STATE_autorecoveryHandle(pState);
+			STATE_autorecoveryHandle();
 
 			// Post-processing: check for faults and state transitions
 			if (GDE_DebounceConditon(STATE_SystemIsNormal(pState), TIME_WAIT_FOR_AUTO_RECOVERY_CYCLES, &pState->fault.cnt_debounce_auto_recovery)) {
