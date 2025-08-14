@@ -25,6 +25,11 @@
 #define AUTO_ENABLE_MT2				AUTO_ENABLE_MT / 3
 #define AUTO_ENABLE_MT3				AUTO_ENABLE_MT * 2 / 3
 
+#define HOME_ENABLE_MT				1000
+#define HOME_ENABLE_MT1				1
+#define HOME_ENABLE_MT2				HOME_ENABLE_MT / 3
+#define HOME_ENABLE_MT3				HOME_ENABLE_MT * 2 / 3
+
 #define CURRENT_LIMIT_MT_SLIDER		12.7f
 #define CURRENT_LIMIT_MT_HEIGHT		12.7f
 #define CURRENT_LIMIT_MT_RECLINER	12.7f
@@ -51,15 +56,26 @@ typedef enum{
 	STATE_SAVE		   = 1,
 	STATE_MANUAL	   = 2,
 	STATE_AUTO		   = 3,
-	STATE_FAULT		   = 4,
-	STATE_AUTORECOVERY = 5,
-	STATE_SHUTDOWN	   = 6
+	STATE_HOMING	   = 4,
+	STATE_FAULT		   = 5,
+	STATE_AUTORECOVERY = 6,
+	STATE_SHUTDOWN	   = 7
 } State_TypeDef;
+
+typedef struct{
+	uint8_t		cnt_use_recall;
+	_Bool		flag_slider_block;
+	_Bool		flag_height_block;
+	_Bool		flag_recliner_block;
+} StateHomeObject_TypeDef;
 
 typedef struct{
 	State_TypeDef 			state;
 	SeatAxis_TypeDef		seat_current_axis;
 	SeatAxis_TypeDef		seat_memory_axis;
+	SeatAxis_TypeDef		cnt_check_end_position;
+
+	StateHomeObject_TypeDef state_home;
 
 	CommSystem_TypeDef	    communication;
 	MeasSystem_TypeDef		measurement;

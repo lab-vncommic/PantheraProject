@@ -30,11 +30,11 @@ void GDE_Config(void)
 	pit_lld_channel_start(&PITD1,PIT0_CHANNEL_CH1);
 }
 
-_Bool GDE_DebounceConditon(_Bool condition, uint32_t timeout, uint32_t *pCounter)
+_Bool GDE_DebounceConditon(_Bool condition, uint32_t timeout_cycles, uint32_t *pCounter)
 {
     if (condition == true)
     {
-        if (*pCounter > timeout)
+        if (*pCounter > timeout_cycles)
         {
             *pCounter = 0;
             return true;

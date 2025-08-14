@@ -21,7 +21,7 @@ uint32_t begin, end, elapsed;
  */
 void GDE_Config(void)
 {
-	// Config timer to measure execute time
+	// // Config timer to measure execute time
 	// stm_lld_start(&STMD3,stm2_config);
 	// stm_lld_enable(&STMD3);
 
@@ -30,3 +30,23 @@ void GDE_Config(void)
 	// pit_lld_channel_start(&PITD1,PIT0_CHANNEL_CH1);
 }
 
+_Bool GDE_DebounceConditon(_Bool condition, uint32_t timeout_cycles, uint32_t *pCounter)
+{
+    if (condition == true)
+    {
+        if (*pCounter > timeout_cycles)
+        {
+            *pCounter = 0;
+            return true;
+        }
+        else {
+            (*pCounter)++;
+            return false;
+        }
+    }
+    else
+    {
+        *pCounter = 0;
+        return false;
+    }
+}

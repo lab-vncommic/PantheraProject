@@ -25,6 +25,11 @@
 #define AUTO_ENABLE_MT2				AUTO_ENABLE_MT / 3
 #define AUTO_ENABLE_MT3				AUTO_ENABLE_MT * 2 / 3
 
+#define HOME_ENABLE_MT				1000
+#define HOME_ENABLE_MT1				1
+#define HOME_ENABLE_MT2				HOME_ENABLE_MT / 3
+#define HOME_ENABLE_MT3				HOME_ENABLE_MT * 2 / 3
+
 #define CURRENT_LIMIT_MT_SLIDER		12.7f
 #define CURRENT_LIMIT_MT_HEIGHT		12.7f
 #define CURRENT_LIMIT_MT_RECLINER	12.7f
@@ -43,20 +48,34 @@
 #define CURRENT_AUTO_RECOVERY_MT3_THRESHOLD_Q15		_q15(CURRENT_AUTO_RECOVERY_THRESHOLD / CURRENT_MT3_HIGH_LIMIT_SOFT)
 #define THERMAL_AUTO_RECOVERY_MT3_THRESHOLD_Q15		(THERMAL_AUTO_RECOVERY_THRESHOLD - THERMAL_MT3_OFFSET_F32)/(2*THERMAL_MT3_GAIN_F32)
 
+#define TIME_WAIT_FOR_AUTO_RECOVERY				2U			// Uint: s
+#define TIME_WAIT_FOR_AUTO_RECOVERY_CYCLES		(uint16_t)TIME_WAIT_FOR_AUTO_RECOVERY * F_SAMPLE     // Uint: cycles
+
 typedef enum{
 	STATE_IDLE		   = 0,
 	STATE_SAVE		   = 1,
 	STATE_MANUAL	   = 2,
 	STATE_AUTO		   = 3,
-	STATE_FAULT		   = 4,
-	STATE_AUTORECOVERY = 5,
-	STATE_SHUTDOWN	   = 6
+	STATE_HOMING	   = 4,
+	STATE_FAULT		   = 5,
+	STATE_AUTORECOVERY = 6,
+	STATE_SHUTDOWN	   = 7
 } State_TypeDef;
+
+typedef struct{
+	uint8_t		cnt_use_recall;
+	_Bool		flag_slider_block;
+	_Bool		flag_height_block;
+	_Bool		flag_recliner_block;
+} StateHomeObject_TypeDef;
 
 typedef struct{
 	State_TypeDef 			state;
 	SeatAxis_TypeDef		seat_current_axis;
 	SeatAxis_TypeDef		seat_memory_axis;
+	SeatAxis_TypeDef		cnt_check_end_position;
+
+	StateHomeObject_TypeDef state_home;
 
 	CommSystem_TypeDef	    communication;
 	MeasSystem_TypeDef		measurement;

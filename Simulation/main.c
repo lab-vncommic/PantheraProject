@@ -77,7 +77,7 @@ out[9] 	= thisPTR.fault.counter;
 out[10] = thisFault.fault_save[0];
 out[11] = thisFault.fault_save[1];
 out[12] = thisFault.fault_save[2];
-out[13] = thisFault.counter;
+out[13] = thisPTR.fault.cnt_debounce_auto_recovery;
 out[14] = thatADC.ADC_MulSens_2;
 }
 
