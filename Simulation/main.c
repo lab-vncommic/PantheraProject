@@ -71,13 +71,13 @@ out[3] 	= motor_height.driver.sel0.value;
 out[4] 	= motor_height.driver.sel1.value;
 out[5] 	= motor_height.driver.mul_en.value;
 out[6] 	= thisPTR.state;
-out[7] 	= CURRENT_LIMIT_MT_HEIGHT_Q15;
-out[8] 	= 0;
-out[9] 	= thisPTR.seat_current_axis.height;
-out[10] = thisFault.fault_status;
-out[11] = thisMeas.current_height.value_q15;
-out[12] = 1;
-out[13] = 0;
+out[7] 	= thisFault.fault_status;
+out[8] 	= thisMeas.current_height.value_f32;
+out[9] 	= thisPTR.fault.counter;
+out[10] = thisFault.fault_save[0];
+out[11] = thisFault.fault_save[1];
+out[12] = thisFault.fault_save[2];
+out[13] = thisFault.counter;
 out[14] = thatADC.ADC_MulSens_2;
 }
 

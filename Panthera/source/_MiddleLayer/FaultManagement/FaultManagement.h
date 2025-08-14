@@ -14,6 +14,7 @@
  * REUSABLE CODE SECTION
  *===========================================================================*/
 #define FAULT_SAVE_MEMORY			 	3U
+#define FAULT_STT_INIT_VALUE			0x00
 
 #define FAULT_STT_0   ((uint8_t) 1U<<0)  // Over current motor Hieght
 #define FAULT_STT_1   ((uint8_t) 1U<<1)  // Over current motor Recliner
@@ -31,20 +32,22 @@ typedef enum {
 	FAULT_NONE 			= 0,
 	FAULT_LATCH			= 1,
 	FAULT_AUTO_RECOVER	= 2
-} Fault_Mode_TypeDef;
+} FaultMode_TypeDef;
 
 typedef struct{
 	uint8_t					fault_status;
-	Fault_Mode_TypeDef 	  	fault_mode;
+	FaultMode_TypeDef 	  	fault_mode;
 	uint8_t					limit;
 	uint8_t					counter;
 	uint8_t 			  	fault_save[FAULT_SAVE_MEMORY];
 } Fault_TypeDef;
 
 typedef struct{
-	Fault_Mode_TypeDef		mode;
+	FaultMode_TypeDef		mode;
 	uint8_t					limit;
 	uint8_t					counter;
+
+	uint32_t				cnt_debounce_auto_recovery;
 } FaultSystem_TypeDef;
 
 /*===========================================================================
@@ -75,7 +78,9 @@ typedef struct{
 
 // Public API
 void FAULT_Init(void);
-Fault_Mode_TypeDef FAULT_UpdateMode(MeasSystem_TypeDef *pMeas);
+FaultSystem_TypeDef FAULT_Handle(MeasSystem_TypeDef *pMeas);
+void FAULT_LogError(void);
+void FAULT_Reset(void);
 
 // FIXME: Only use extern in dev
 //extern Fault_TypeDef 	thisFault;

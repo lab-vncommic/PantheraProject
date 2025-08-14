@@ -14,6 +14,7 @@
  * REUSABLE CODE SECTION
  *===========================================================================*/
 #define FAULT_SAVE_MEMORY			 	3U
+#define FAULT_STT_INIT_VALUE			0x00
 
 #define FAULT_STT_0   ((uint8_t) 1U<<0)  // Over current motor Hieght
 #define FAULT_STT_1   ((uint8_t) 1U<<1)  // Over current motor Recliner
@@ -75,7 +76,9 @@ typedef struct{
 
 // Public API
 void FAULT_Init(void);
-Fault_Mode_TypeDef FAULT_UpdateMode(MeasSystem_TypeDef *pMeas);
+FaultSystem_TypeDef FAULT_Handle(MeasSystem_TypeDef *pMeas);
+void FAULT_LogError(void);
+void FAULT_Reset(void);
 
 // FIXME: Only use extern in dev
 //extern Fault_TypeDef 	thisFault;

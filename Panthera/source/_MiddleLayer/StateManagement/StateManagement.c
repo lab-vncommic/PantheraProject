@@ -20,10 +20,11 @@ void STATE_saveHandle(PTR_TypeDef *pState);
 void STATE_manualHandle(PTR_TypeDef *pState);
 void STATE_autoHandle(PTR_TypeDef *pState);
 void STATE_faultHandle(void);
-//void STATE_autorecoveryHandle(PTR_TypeDef *pState);
-//void STATE_shutdownHandle(PTR_TypeDef *pState);
+void STATE_autorecoveryHandle(PTR_TypeDef *pState);
+void STATE_shutdownHandle(void);
 
 void STATE_ProcessInputSignals(PTR_TypeDef *pState);
+_Bool STATE_SystemIsNormal(PTR_TypeDef *pState);
 void STATE_GetSeatAxis(PTR_TypeDef *pState);
 
 /**
@@ -32,132 +33,7 @@ void STATE_GetSeatAxis(PTR_TypeDef *pState);
  * @param[out] pState Pointer to the state management structure to be initialized
  * @return None
  */
-void STATE_Init(PTR_TypeDef *pState)
-{
-	pState->state = STATE_IDLE;
-}
 
-/**
- * @brief Updates the system state based on current conditions
- * @details Processes button inputs if not in fault, shutdown, or auto-recovery states,
- *          then executes the appropriate handler for the current state
- * @param[in,out] pState Pointer to the state management structure
- * @return None
- */
-void STATE_UpdateState(PTR_TypeDef *pState)
-{
-	// Update input signals include communication
-	STATE_ProcessInputSignals(pState);
-
-	switch (pState->state) {
-		case STATE_IDLE:
-			// Processing: handle IDLE state
-			STATE_idleHandle(pState);
-
-			// Post-processing: check for faults and state transitions
-			if (pState->button.height_1.action == ACTION_HOLD ||
-				pState->button.height_2.action == ACTION_HOLD ||
-				pState->button.recliner_1.action == ACTION_HOLD ||
-				pState->button.recliner_2.action == ACTION_HOLD ||
-				pState->button.slider_1.action == ACTION_HOLD ||
-				pState->button.slider_2.action == ACTION_HOLD) {
-					pState->state = STATE_MANUAL;
-			} else if (pState->button.save.action == ACTION_PRESSED ||pState->button.save.action == ACTION_HOLD) {
-				pState->state = STATE_SAVE;
-			} else if (pState->button.recall_1.action == ACTION_PRESSED || pState->button.recall_1.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(1);
-				pState->state = STATE_AUTO;
-			} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(2);
-				pState->state = STATE_AUTO;
-			} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(3);
-				pState->state = STATE_AUTO;
-			}
-
-			if (pState->fault.mode != FAULT_NONE) {
-				pState->state = STATE_FAULT;
-			}
-
-			break;
-
-		case STATE_SAVE:
-			// Processing: handle AUTO state
-			STATE_saveHandle(pState);
-
-			// Post-processing: check for faults and state transitions
-			if (pState->button.recall_1.action == ACTION_PRESSED ||
-				pState->button.recall_1.action == ACTION_HOLD ||
-				pState->button.recall_2.action == ACTION_PRESSED ||
-				pState->button.recall_2.action == ACTION_HOLD ||
-				pState->button.recall_3.action == ACTION_PRESSED ||
-				pState->button.recall_3.action == ACTION_HOLD) {
-					flag_save_to_idle = true;
-			}
-
-			if (flag_save_to_idle) {
-				if (cnt_delay_500ms++ >= 2500) {
-					cnt_delay_500ms = 0;
-					pState->state = STATE_IDLE;
-					flag_save_to_idle = false;
-				}
-			}
-
-			if (pState->fault.mode != FAULT_NONE) {
-				pState->state = STATE_FAULT;
-			}
-
-			break;
-
-		case STATE_MANUAL:
-			// Processing: handle MANUAL state
-			STATE_manualHandle(pState);
-
-			// Post-processing: check for faults and state transitions
-			if (pState->button.height_1.action == ACTION_RELEASED &&
-				pState->button.height_2.action == ACTION_RELEASED &&
-				pState->button.recliner_1.action == ACTION_RELEASED &&
-				pState->button.recliner_2.action == ACTION_RELEASED &&
-				pState->button.slider_1.action == ACTION_RELEASED &&
-				pState->button.slider_2.action == ACTION_RELEASED) {
-				pState->state = STATE_IDLE;
-			}
-
-			if (pState->fault.mode != FAULT_NONE) {
-				pState->state = STATE_FAULT;
-			}
-
-			break;
-
-		case STATE_AUTO:
-			// Processing: handle AUTO state
-			STATE_autoHandle(pState);
-
-			// Post-processing: check for faults and state transitions
-			if (flag_auto_completed == true) {
-				cnt_schedule_motor_auto = 0;
-				flag_auto_completed    = false;
-				pState->state 		   = STATE_IDLE;
-			}
-
-			if (pState->fault.mode != FAULT_NONE) {
-				pState->state = STATE_FAULT;
-			}
-
-			break;
-
-		case STATE_FAULT:
-			// Processing: handle FAULT state
-			STATE_faultHandle();
-
-			// Post-processing: check for faults and state transitions
-
-			break;
-
-		default:
-			break;
-	}
-}
 
 /**
  * @brief Handles the system behavior in IDLE state
@@ -311,15 +187,16 @@ void STATE_faultHandle(void)
 	MD_StopAll();
 }
 
-//void STATE_autorecoveryHandle(PTR_TypeDef *pState)
-//{
-//
-//}
-//
-//void STATE_shutdownHandle(PTR_TypeDef *pState)
-//{
-//
-//}
+void STATE_autorecoveryHandle(PTR_TypeDef *pState)
+{
+	// Do nothing
+	FAULT_LogError();
+}
+
+void STATE_shutdownHandle(void)
+{
+	// Do nothing
+}
 
 void STATE_ProcessInputSignals(PTR_TypeDef *pState)
 {
@@ -392,6 +269,180 @@ void STATE_ProcessInputSignals(PTR_TypeDef *pState)
 	} else pState->button.recall_3.action = ACTION_HOLD;
 }
 
+_Bool STATE_SystemIsNormal(PTR_TypeDef *pState)
+{
+	if ((pState->measurement.current_slider_q15 <= CURRENT_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
+	 	(pState->measurement.current_height_q15 <= CURRENT_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
+	 	(pState->measurement.current_recliner_q15 <= CURRENT_AUTO_RECOVERY_MT3_THRESHOLD_Q15) &&
+	 	(pState->measurement.thermal_slider_q15 >= THERMAL_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
+	 	(pState->measurement.thermal_height_q15 >= THERMAL_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
+	 	(pState->measurement.thermal_recliner_q15 >= THERMAL_AUTO_RECOVERY_MT3_THRESHOLD_Q15)) {
+			return true;
+	}
+	return false;
+}
+
+/**
+ * @brief Updates the current seat axis positions in the state structure
+ * @details Retrieves the current position values for all seat axes from
+ *          the motor driver and stores them in the state structure
+ * @param[out] pState Pointer to the state management structure to update
+ * @return None
+ */
+void STATE_GetSeatAxis(PTR_TypeDef *pState)
+{
+	pState->seat_current_axis = MD_GetSeatAxis();
+}
+
+void STATE_Init(PTR_TypeDef *pState)
+{
+	pState->state = STATE_IDLE;
+}
+
+/**
+ * @brief Updates the system state based on current conditions
+ * @details Processes button inputs if not in fault, shutdown, or auto-recovery states,
+ *          then executes the appropriate handler for the current state
+ * @param[in,out] pState Pointer to the state management structure
+ * @return None
+ */
+void STATE_UpdateState(PTR_TypeDef *pState)
+{
+	// Update input signals include communication
+	STATE_ProcessInputSignals(pState);
+
+	switch (pState->state) {
+		case STATE_IDLE:
+			// Processing: handle IDLE state
+			STATE_idleHandle(pState);
+
+			// Post-processing: check for faults and state transitions
+			if (pState->button.height_1.action == ACTION_HOLD ||
+				pState->button.height_2.action == ACTION_HOLD ||
+				pState->button.recliner_1.action == ACTION_HOLD ||
+				pState->button.recliner_2.action == ACTION_HOLD ||
+				pState->button.slider_1.action == ACTION_HOLD ||
+				pState->button.slider_2.action == ACTION_HOLD) {
+					pState->state = STATE_MANUAL;
+			} else if (pState->button.save.action == ACTION_PRESSED ||pState->button.save.action == ACTION_HOLD) {
+				pState->state = STATE_SAVE;
+			} else if (pState->button.recall_1.action == ACTION_PRESSED || pState->button.recall_1.action == ACTION_HOLD) {
+				pState->seat_memory_axis = MEM_GetSeatAxis(1);
+				pState->state = STATE_AUTO;
+			} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
+				pState->seat_memory_axis = MEM_GetSeatAxis(2);
+				pState->state = STATE_AUTO;
+			} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
+				pState->seat_memory_axis = MEM_GetSeatAxis(3);
+				pState->state = STATE_AUTO;
+			}
+
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			}
+
+			break;
+
+		case STATE_SAVE:
+			// Processing: handle AUTO state
+			STATE_saveHandle(pState);
+
+			// Post-processing: check for faults and state transitions
+			if (pState->button.recall_1.action == ACTION_PRESSED ||
+				pState->button.recall_1.action == ACTION_HOLD ||
+				pState->button.recall_2.action == ACTION_PRESSED ||
+				pState->button.recall_2.action == ACTION_HOLD ||
+				pState->button.recall_3.action == ACTION_PRESSED ||
+				pState->button.recall_3.action == ACTION_HOLD) {
+					flag_save_to_idle = true;
+			}
+
+			if (flag_save_to_idle) {
+				if (cnt_delay_500ms++ >= 2500) {
+					cnt_delay_500ms = 0;
+					pState->state = STATE_IDLE;
+					flag_save_to_idle = false;
+				}
+			}
+
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			}
+
+			break;
+
+		case STATE_MANUAL:
+			// Processing: handle MANUAL state
+			STATE_manualHandle(pState);
+
+			// Post-processing: check for faults and state transitions
+			if (pState->button.height_1.action == ACTION_RELEASED &&
+				pState->button.height_2.action == ACTION_RELEASED &&
+				pState->button.recliner_1.action == ACTION_RELEASED &&
+				pState->button.recliner_2.action == ACTION_RELEASED &&
+				pState->button.slider_1.action == ACTION_RELEASED &&
+				pState->button.slider_2.action == ACTION_RELEASED) {
+				pState->state = STATE_IDLE;
+			}
+
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			}
+
+			break;
+
+		case STATE_AUTO:
+			// Processing: handle AUTO state
+			STATE_autoHandle(pState);
+
+			// Post-processing: check for faults and state transitions
+			if (flag_auto_completed == true) {
+				cnt_schedule_motor_auto = 0;
+				flag_auto_completed    = false;
+				pState->state 		   = STATE_IDLE;
+			}
+
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			}
+
+			break;
+
+		case STATE_FAULT:
+			// Processing: handle FAULT state
+			STATE_faultHandle();
+
+			// Post-processing: check for faults and state transitions
+			if (pState->fault.mode == FAULT_LATCH) {
+				pState->state = STATE_SHUTDOWN;
+			} else if (pState->fault.mode == FAULT_AUTO_RECOVER) {
+				pState->state = STATE_AUTORECOVERY;
+			}
+			break;
+
+		case STATE_AUTORECOVERY:
+			// Processing: handle FAULT state
+			STATE_autorecoveryHandle(pState);
+
+			// Post-processing: check for faults and state transitions
+			if (GDE_DebounceConditon(STATE_SystemIsNormal(pState), TIME_WAIT_FOR_AUTO_RECOVERY_CYCLES, &pState->fault.cnt_debounce_auto_recovery)) {
+				pState->state = STATE_IDLE;
+				pState->fault.mode = FAULT_NONE;
+				FAULT_Reset();
+			}
+			break;
+
+		case STATE_SHUTDOWN:
+			// Processing: handle FAULT state
+			STATE_shutdownHandle();
+
+			break;
+
+		default:
+			break;
+	}
+}
+
 void STATE_UpdateMeas(PTR_TypeDef *pState)
 {
 	cnt_meas_type++;
@@ -413,24 +464,16 @@ void STATE_UpdateMeas(PTR_TypeDef *pState)
 
 void STATE_UpdateFault(PTR_TypeDef *pState)
 {
-	pState->fault.mode = FAULT_UpdateMode(&pState->measurement);
+	if ((pState->state != STATE_FAULT) &&
+		(pState->state != STATE_SHUTDOWN) &&
+		(pState->state != STATE_AUTORECOVERY)) {
+		pState->fault = FAULT_Handle(&pState->measurement);
+	}
 }
 
 void STATE_UpdateButton(PTR_TypeDef *pState)
 {
 	pState->button = BTN_Update();
-}
-
-/**
- * @brief Updates the current seat axis positions in the state structure
- * @details Retrieves the current position values for all seat axes from
- *          the motor driver and stores them in the state structure
- * @param[out] pState Pointer to the state management structure to update
- * @return None
- */
-void STATE_GetSeatAxis(PTR_TypeDef *pState)
-{
-	pState->seat_current_axis = MD_GetSeatAxis();
 }
 
 
