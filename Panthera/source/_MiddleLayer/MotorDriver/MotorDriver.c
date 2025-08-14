@@ -70,29 +70,29 @@ void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology)
  */
 void MD_UpdateDriver(Motor_TypeDef *pMotor)
 {
-    if (pMotor->driver.ina.value == 1) {
-        GPIO_SetPin(&pMotor->driver.ina);
-    } else GPIO_ClearPin(&pMotor->driver.ina);
-
-    if (pMotor->driver.inb.value == 1) {
-        GPIO_SetPin(&pMotor->driver.inb);
-    } else GPIO_ClearPin(&pMotor->driver.inb);
-
-    if (pMotor->driver.sel0.value == 1) {
-        GPIO_SetPin(&pMotor->driver.sel0);
-    } else GPIO_ClearPin(&pMotor->driver.sel0);
-
-    if (pMotor->driver.sel1.value == 1) {
-        GPIO_SetPin(&pMotor->driver.sel1);
-    } else GPIO_ClearPin(&pMotor->driver.sel1);
-
-    if (pMotor->driver.mul_en.value == 1) {
-        GPIO_SetPin(&pMotor->driver.mul_en);
-    } else GPIO_ClearPin(&pMotor->driver.mul_en);
-
-    if (pMotor->driver.pwm.value == 1) {
-        GPIO_SetPin(&pMotor->driver.pwm);
-    } else GPIO_ClearPin(&pMotor->driver.pwm);
+//    if (pMotor->driver.ina.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.ina);
+//    } else GPIO_ClearPin(&pMotor->driver.ina);
+//
+//    if (pMotor->driver.inb.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.inb);
+//    } else GPIO_ClearPin(&pMotor->driver.inb);
+//
+//    if (pMotor->driver.sel0.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.sel0);
+//    } else GPIO_ClearPin(&pMotor->driver.sel0);
+//
+//    if (pMotor->driver.sel1.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.sel1);
+//    } else GPIO_ClearPin(&pMotor->driver.sel1);
+//
+//    if (pMotor->driver.mul_en.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.mul_en);
+//    } else GPIO_ClearPin(&pMotor->driver.mul_en);
+//
+//    if (pMotor->driver.pwm.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.pwm);
+//    } else GPIO_ClearPin(&pMotor->driver.pwm);
 }
 
 /**
