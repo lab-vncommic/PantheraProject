@@ -5,5 +5,8 @@
     <file componentId="com.st.spc5.components.irq.spc582bxx_rla" version="1.20.0.202402291610" path="component/lib/include/irq.h" user="false">
       <diff />
     </file>
+    <file componentId="com.st.spc5.components.ee.spc5xxxxx" version="1.0.0.202310201228" path="component/lib/src/eeprom.c" user="false">
+      <diff />
+    </file>
   </files>
 </SPC5-Patch>

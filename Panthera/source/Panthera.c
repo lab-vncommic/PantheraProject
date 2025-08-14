@@ -5,6 +5,7 @@
  *      Author: ADMIN
  */
 #include "Panthera.h"
+uint16_t cnt_50ms;
 
 void PTR_system_initialization(void)
 {
@@ -29,13 +30,18 @@ void PTR_system_initialization(void)
  */
 void PTR_main_interrupt_service(void)
 {
-	begin = stm_lld_getcounter(&STMD3);
-	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
-//	STATE_UpdateFault(&thisPTR);
-	STATE_UpdateButton(&thisPTR);
-	STATE_UpdateState(&thisPTR);
-	end = stm_lld_getcounter(&STMD3);
-    elapsed = end - begin;
+	if (cnt_50ms++ >= 500) {
+		cnt_50ms = 0;
+		GPIO_TogglePin(&PIN_SEL0_2);
+	}
+
+//	begin = stm_lld_getcounter(&STMD3);
+//	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
+////	STATE_UpdateFault(&thisPTR);
+//	STATE_UpdateButton(&thisPTR);
+//	STATE_UpdateState(&thisPTR);
+//	end = stm_lld_getcounter(&STMD3);
+//    elapsed = end - begin;
 }
 
 void PTR_inf_loop_system(void)
