@@ -30,6 +30,7 @@
 | 26  | 13/08/2025    | v1.1.12             | Bổ sung điều khiển động cơ ở chế độ peak current mode                      | Nguyễn Quốc Uy    | Obsoleted|
 | 27  | 14/08/2025    | v1.1.13             | Bổ sung tính năng auto-recovery                                            | Nguyễn Quốc Uy    | Obsoleted|
 | 28  | 14/08/2025    | v1.1.14             | Bổ sung tính năng homming sau 10 lần dùng chức năng recall                 | Nguyễn Quốc Uy    | Active   |
+| 29  | 15/08/2025    | v1.1.15             | Sửa lỗi khi đọc ghi giá trị 0 vào EEPROM, chỉnh sửa lỗi bị kẹt tại state HOME  | Toàn & Uy     | Active   |
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
