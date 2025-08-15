@@ -34,11 +34,11 @@ void UART_Monitor(void)
 		flag_debug_tx_completed = 0;
 		sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
 	}
-	snprintf(BufTXDebug, sizeof(BufTXDebug), "cur_slider = %f, cur_height = %f, cur_recliner = %f\r\n",
-			thisMeas.current_slider.value_f32,
-			thisMeas.current_height.value_f32,
-			thisMeas.current_recliner.value_f32
-	);
+//	snprintf(BufTXDebug, sizeof(BufTXDebug), "cur_slider = %d, cur_height = %d, cur_recliner = %d\r\n",
+//			thisPTR.seat_memory_axis.slider,
+//			thisPTR.seat_memory_axis.height,
+//			thisPTR.seat_memory_axis.recliner
+//	);
 }
 
 void UART_HandleRequest(void)

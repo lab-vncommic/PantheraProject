@@ -72,6 +72,7 @@ typedef struct{
 typedef struct{
 	State_TypeDef 			state;
 	SeatAxis_TypeDef		seat_current_axis;
+	SeatAxis_TypeDef		seat_previous_axis;
 	SeatAxis_TypeDef		seat_memory_axis;
 	SeatAxis_TypeDef		cnt_check_end_position;
 

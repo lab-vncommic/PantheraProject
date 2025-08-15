@@ -15,6 +15,8 @@ uint16_t cnt_schedule_motor_auto;
 uint16_t cnt_schedule_motor_manual;
 uint16_t cnt_schedule_motor_home;
 
+State_TypeDef temp_state;
+
 // List API
 void STATE_idleHandle(PTR_TypeDef *pState);
 void STATE_saveHandle(PTR_TypeDef *pState);
@@ -28,7 +30,7 @@ void STATE_homingHandle(PTR_TypeDef *pState);
 void STATE_ProcessInputSignals(PTR_TypeDef *pState);
 _Bool STATE_SystemIsNormal(PTR_TypeDef *pState);
 void STATE_GetSeatAxis(PTR_TypeDef *pState);
-_Bool STATE_CheckEndPosition(uint16_t axis);
+_Bool STATE_CheckEndPosition(uint32_t *pCurrent_value, uint32_t *pPrev_value);
 void STATE_ResetAxis(PTR_TypeDef *pState);
 
 /**
@@ -41,7 +43,10 @@ void STATE_ResetAxis(PTR_TypeDef *pState);
 void STATE_idleHandle(PTR_TypeDef *pState)
 {
 	MD_StopAll();
-	STATE_GetSeatAxis(pState);
+//	STATE_GetSeatAxis(pState);
+	thisPTR.seat_current_axis.slider = 0;
+	thisPTR.seat_current_axis.height = 11;
+	thisPTR.seat_current_axis.recliner = 110;
 }
 
 void STATE_saveHandle(PTR_TypeDef *pState)
@@ -120,14 +125,6 @@ void STATE_manualHandle(PTR_TypeDef *pState)
  */
 void STATE_autoHandle(PTR_TypeDef *pState)
 {
-	if (pState->button.recall_1.action == ACTION_PRESSED || pState->button.recall_1.action == ACTION_HOLD) {
-		pState->seat_memory_axis = MEM_GetSeatAxis(1);
-	} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
-		pState->seat_memory_axis = MEM_GetSeatAxis(2);
-	} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
-		pState->seat_memory_axis = MEM_GetSeatAxis(3);
-	}
-
 	if (cnt_schedule_motor_auto >= AUTO_ENABLE_MT) {
 		cnt_schedule_motor_auto = AUTO_ENABLE_MT;
 	} else cnt_schedule_motor_auto++;
@@ -203,7 +200,7 @@ void STATE_homingHandle(PTR_TypeDef *pState)
 		if ((pState->measurement.current_slider_q15 <= CURRENT_LIMIT_MT_SLIDER_Q15) &&
 			(pState->state_home.flag_slider_block == false)) {
 			MD_Run(MOTOR_SLIDER, BACKWARD, pState->measurement.current_slider_q15);
-			if (GDE_DebounceConditon(STATE_CheckEndPosition(pState->seat_current_axis.slider), 20000, &pState->cnt_check_end_position.slider)) {
+			if (GDE_DebounceConditon(STATE_CheckEndPosition(&pState->seat_current_axis.slider, &pState->seat_previous_axis.slider), 20000, &pState->cnt_check_end_position.slider)) {
 				MD_Run(MOTOR_SLIDER, STOP, pState->measurement.current_slider_q15);
 				pState->state_home.flag_slider_block = true;
 			}
@@ -215,7 +212,7 @@ void STATE_homingHandle(PTR_TypeDef *pState)
 		if ((pState->measurement.current_height_q15 <= CURRENT_LIMIT_MT_HEIGHT_Q15) &&
 				(pState->state_home.flag_height_block == false)) {
 			MD_Run(MOTOR_HEIGHT, BACKWARD, pState->measurement.current_height_q15);
-			if (GDE_DebounceConditon(STATE_CheckEndPosition(pState->seat_current_axis.height), 20000, &pState->cnt_check_end_position.height)) {
+			if (GDE_DebounceConditon(STATE_CheckEndPosition(&pState->seat_current_axis.height, &pState->seat_previous_axis.height), 20000, &pState->cnt_check_end_position.height)) {
 				MD_Run(MOTOR_HEIGHT, STOP, pState->measurement.current_height_q15);
 				pState->state_home.flag_height_block = true;
 			}
@@ -227,7 +224,7 @@ void STATE_homingHandle(PTR_TypeDef *pState)
 		if ((pState->measurement.current_recliner_q15 <= CURRENT_LIMIT_MT_RECLINER_Q15) &&
 			(pState->state_home.flag_recliner_block == false)) {
 			MD_Run(MOTOR_RECLINER, BACKWARD, pState->measurement.current_recliner_q15);
-			if (GDE_DebounceConditon(STATE_CheckEndPosition(pState->seat_current_axis.recliner), 20000, &pState->cnt_check_end_position.recliner)) {
+			if (GDE_DebounceConditon(STATE_CheckEndPosition(&pState->seat_current_axis.recliner, &pState->seat_previous_axis.recliner), 20000, &pState->cnt_check_end_position.recliner)) {
 				MD_Run(MOTOR_RECLINER, STOP, pState->measurement.current_recliner_q15);
 				pState->state_home.flag_recliner_block = true;
 			}
@@ -331,15 +328,12 @@ void STATE_GetSeatAxis(PTR_TypeDef *pState)
 	pState->seat_current_axis = MD_GetSeatAxis();
 }
 
-_Bool STATE_CheckEndPosition(uint16_t axis)
+_Bool STATE_CheckEndPosition(uint32_t *pCurrent_value, uint32_t *pPrev_value)
 {
-	static uint16_t prev_axis;
-	static _Bool flag;
-	if (prev_axis == axis) {
-		flag = true;
-	} else flag = false;
-	prev_axis = axis;
-	return flag;
+	*pPrev_value = *pCurrent_value;
+	if (*pPrev_value == *pCurrent_value) {
+		return true;
+	} return false;
 }
 
 void STATE_ResetAxis(PTR_TypeDef *pState)

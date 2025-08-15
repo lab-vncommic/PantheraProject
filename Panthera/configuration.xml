@@ -4293,7 +4293,7 @@
                   <value>My_UART</value>
                 </symbolic_name>
                 <baud_rate>
-                  <value>115200</value>
+                  <value>9600</value>
                 </baud_rate>
                 <mode index="0">
                   <value>8BITS_PARITY_NONE</value>
@@ -4438,7 +4438,7 @@
                 <value>true</value>
               </enabled>
               <frequency>
-                <value>10000</value>
+                <value>5000</value>
               </frequency>
               <callback>
                 <value>PIT0_ISR</value>
