@@ -94,7 +94,7 @@ typedef struct{
 
 // Public API
 void MEAS_Init(void);
-MeasSystem_TypeDef MEAS_UpdateValue(MeasType_TypeDef meas_type);
+void MEAS_UpdateValue(MeasSystem_TypeDef *pMeas, MeasType_TypeDef meas_type);
 
 // Uncomment extern variables for debugging
 extern MeasAll_TypeDef thisMeas;

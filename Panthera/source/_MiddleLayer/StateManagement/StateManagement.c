@@ -394,15 +394,15 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			} else if (pState->button.save.action == ACTION_PRESSED ||pState->button.save.action == ACTION_HOLD) {
 				pState->state = STATE_SAVE;
 			} else if (pState->button.recall_1.action == ACTION_PRESSED || pState->button.recall_1.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(1);
+				MEM_GetSeatAxis(&pState->seat_memory_axis, 1);
 				pState->state = STATE_AUTO;
 				pState->state_home.cnt_use_recall++;
 			} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(2);
+				MEM_GetSeatAxis(&pState->seat_memory_axis, 2);
 				pState->state = STATE_AUTO;
 				pState->state_home.cnt_use_recall++;
 			} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(3);
+				MEM_GetSeatAxis(&pState->seat_memory_axis, 3);
 				pState->state = STATE_AUTO;
 				pState->state_home.cnt_use_recall++;
 			}

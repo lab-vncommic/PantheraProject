@@ -56,7 +56,7 @@ typedef struct {
 	Btn_Action_TypeDef	action;
 
 	uint16_t			value;
-	uint16_t			cnt_debounce;
+	uint32_t			cnt_debounce;
 } Btn_Object_TypeDef;
 
 typedef struct {
@@ -107,8 +107,8 @@ typedef struct{
  * Public API
  *===========================================================================*/
 void BTN_Init(void);
-ButtonSystem_TypeDef BTN_Update(void);
-ButtonComm_TypeDef BTN_UpdateToComm(void);
+void BTN_Update(ButtonSystem_TypeDef *pButton);
+void BTN_UpdateToComm(ButtonComm_TypeDef *pButton);
 
 extern Button_TypeDef		thisButton;
 extern Btn_All_TypeDef		thisButtonAll;

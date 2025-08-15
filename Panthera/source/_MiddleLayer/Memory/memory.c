@@ -175,14 +175,12 @@ void MEM_Read(uint16_t id_recall){
  * @param[in] id_recall The recall position ID (1-3) to retrieve
  * @return SeatAxis_TypeDef Structure containing the height, recliner, and slider positions
  */
-SeatAxis_TypeDef MEM_GetSeatAxis(uint16_t id_recall)
+void MEM_GetSeatAxis(SeatAxis_TypeDef *pSeat, uint16_t id_recall)
 {
 	MEM_Read(id_recall);
-	SeatAxis_TypeDef temp_memory_axis;
-	temp_memory_axis.height   = thisMemory.x;
-	temp_memory_axis.recliner = thisMemory.y;
-	temp_memory_axis.slider   = thisMemory.z;
-	return temp_memory_axis;
+	pSeat->height   = thisMemory.x;
+	pSeat->recliner = thisMemory.y;
+	pSeat->slider   = thisMemory.z;
 }
 
 

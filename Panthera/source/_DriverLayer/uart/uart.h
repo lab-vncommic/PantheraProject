@@ -13,9 +13,6 @@
 #include <stdio.h>
 #include <stddef.h>
 #include "string.h"
-//#include "StateManagement.h"
-
-#include "Measurement.h"
 
 #define UART_TX_DEBUG_LENGTH 		100
 #define UART_TX_LENGTH				3
