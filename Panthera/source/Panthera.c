@@ -30,6 +30,7 @@ void PTR_system_initialization(void)
  */
 void PTR_main_interrupt_service(void)
 {
+	// FIXME: Blink led for debug, comment code blink led and uncomment MD_UpdateDriver()
 	if (cnt_50ms++ >= 500) {
 		cnt_50ms = 0;
 		GPIO_TogglePin(&PIN_SEL0_2);
@@ -49,16 +50,16 @@ void PTR_inf_loop_system(void)
 	COMM_TransmitReceiveHandle();
 
 	// UART for debugging
-	if (flag_debug_tx_completed == 1){
-		flag_debug_tx_completed = 0;
-		sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
-	}
-	snprintf(BufTXDebug, sizeof(BufTXDebug), "elapsed = %d, %d, state = %d, cur_slider = %d, cur_height = %d, cur_recliner = %d\r\n",
-			elapsed,
-			thisPTR.state,
-			thisPTR.seat_current_axis.height,
-			thisPTR.state_home.flag_height_block,
-			thisPTR.state_home.flag_slider_block,
-			thisPTR.state_home.flag_recliner_block
-	);
+//	if (flag_debug_tx_completed == 1){
+//		flag_debug_tx_completed = 0;
+//		sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
+//	}
+//	snprintf(BufTXDebug, sizeof(BufTXDebug), "elapsed = %d, state = %d, %u, cur_slider = %d, cur_height = %d, cur_recliner = %d\r\n",
+//			elapsed,
+//			thisPTR.state,
+//			thisPTR.seat_current_axis.height,
+//			thisPTR.state_home.flag_height_block,
+//			thisPTR.state_home.flag_slider_block,
+//			thisPTR.state_home.flag_recliner_block
+//	);
 }

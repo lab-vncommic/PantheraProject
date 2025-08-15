@@ -56,7 +56,7 @@ typedef struct {
 	Btn_Action_TypeDef	action;
 
 	uint16_t			value;
-	uint16_t			cnt_debounce;
+	uint32_t			cnt_debounce;
 } Btn_Object_TypeDef;
 
 typedef struct {

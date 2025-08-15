@@ -43,10 +43,7 @@ void STATE_ResetAxis(PTR_TypeDef *pState);
 void STATE_idleHandle(PTR_TypeDef *pState)
 {
 	MD_StopAll();
-//	STATE_GetSeatAxis(pState);
-	thisPTR.seat_current_axis.slider = 0;
-	thisPTR.seat_current_axis.height = 11;
-	thisPTR.seat_current_axis.recliner = 110;
+	STATE_GetSeatAxis(pState);
 }
 
 void STATE_saveHandle(PTR_TypeDef *pState)
