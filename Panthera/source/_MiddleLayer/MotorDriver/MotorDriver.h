@@ -84,8 +84,8 @@ void MD_StopAll(void);
 void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t current_value);
 
 void MD_UpdateMeas(MeasType_TypeDef meas_type);
-SeatAxis_TypeDef MD_GetSeatAxis(void);
-MotorComm_TypeDef MD_UpdateToComm(void);
+void MD_GetSeatAxis(SeatAxis_TypeDef *pSeat);
+void MD_UpdateToComm(MotorComm_TypeDef *pMotor);
 void MD_ResetAxis(void);
 
 extern Motor_TypeDef motor_height, motor_recliner, motor_slider;

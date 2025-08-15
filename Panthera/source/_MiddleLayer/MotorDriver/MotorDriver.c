@@ -453,30 +453,26 @@ void MD_UpdateMeas(MeasType_TypeDef meas_type)
  *         for height, recliner and slider axes
  * @note Currently returns the same value (height axis) for all axes
  */
-SeatAxis_TypeDef MD_GetSeatAxis(void)
+void MD_GetSeatAxis(SeatAxis_TypeDef *pSeat)
 {
-	SeatAxis_TypeDef temp_axis;
-	temp_axis.height 	= motor_height.axis;
-	temp_axis.recliner  = motor_recliner.axis;
-	temp_axis.slider 	= motor_slider.axis;
-	return temp_axis;
+	pSeat->height 	= motor_height.axis;
+	pSeat->recliner = motor_recliner.axis;
+	pSeat->slider 	= motor_slider.axis;
 }
 
-MotorComm_TypeDef MD_UpdateToComm(void)
+void MD_UpdateToComm(MotorComm_TypeDef *pMotor)
 {
-	MotorComm_TypeDef temp_motor_system;
-	temp_motor_system.motor_slider.topology   = motor_slider.topology;
-	temp_motor_system.motor_slider.ina_value  = motor_slider.driver.ina.value;
-	temp_motor_system.motor_slider.inb_value  = motor_slider.driver.inb.value;
+	pMotor->motor_slider.topology   = motor_slider.topology;
+	pMotor->motor_slider.ina_value  = motor_slider.driver.ina.value;
+	pMotor->motor_slider.inb_value  = motor_slider.driver.inb.value;
 	
-	temp_motor_system.motor_height.topology   = motor_height.topology;
-	temp_motor_system.motor_height.ina_value  = motor_height.driver.ina.value;
-	temp_motor_system.motor_height.inb_value  = motor_height.driver.inb.value;
+	pMotor->motor_height.topology   = motor_height.topology;
+	pMotor->motor_height.ina_value  = motor_height.driver.ina.value;
+	pMotor->motor_height.inb_value  = motor_height.driver.inb.value;
 	
-	temp_motor_system.motor_recliner.topology  = motor_recliner.topology;
-	temp_motor_system.motor_recliner.ina_value = motor_recliner.driver.ina.value;
-	temp_motor_system.motor_recliner.inb_value = motor_recliner.driver.inb.value;
-	return temp_motor_system;
+	pMotor->motor_recliner.topology  = motor_recliner.topology;
+	pMotor->motor_recliner.ina_value = motor_recliner.driver.ina.value;
+	pMotor->motor_recliner.inb_value = motor_recliner.driver.inb.value;
 }
 
 void MD_ResetAxis(void)

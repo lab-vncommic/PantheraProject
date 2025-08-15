@@ -66,8 +66,8 @@ void COMM_DecodeMessage(void)
 
 void COMM_UpdateStatus(void)
 {
-	thisComm.button = BTN_UpdateToComm();
-	thisComm.motor  = MD_UpdateToComm();
+	BTN_UpdateToComm(&thisComm.button);
+	MD_UpdateToComm(&thisComm.motor);
 }
 
 void COMM_Respone(void)
@@ -324,22 +324,16 @@ void COMM_HandleWriteRequest(void)
 	}
 }
 
-CommSystem_TypeDef COMM_CommToState(void)
+void COMM_CommToState(CommSystem_TypeDef *pComm)
 {
 	COMM_Handle();
-	CommSystem_TypeDef temp_comm;
-	temp_comm.button_comm = thisComm.button_comm;
-	temp_comm.motor_comm  = thisComm.motor_comm;
-	return temp_comm;
+	pComm->button_comm = thisComm.button_comm;
+	pComm->motor_comm  = thisComm.motor_comm;
 }
 
 void COMM_TransmitReceiveHandle(void)
 {
 	switch (thisComm.mode) {
-		case COMM_DEBUG:
-			UART_Monitor();
-			break;
-
 		case COMM_UART:
 			UART_HandleRequest();
 			break;

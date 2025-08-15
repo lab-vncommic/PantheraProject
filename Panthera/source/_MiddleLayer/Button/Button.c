@@ -91,10 +91,8 @@ void BTN_UpdateToState(Button_TypeDef *pButtonTemp, Btn_Object_TypeDef *pButton)
 	pButtonTemp->action = pButton->action;
 }
 
-ButtonSystem_TypeDef BTN_Update(void)
+void BTN_Update(ButtonSystem_TypeDef *pButton)
 {
-	ButtonSystem_TypeDef temp_button;
-	
 	// Update GPIO values
 	GPIO_Update();
 	BTN_GetGpioValue(&thisGPIO);
@@ -111,32 +109,28 @@ ButtonSystem_TypeDef BTN_Update(void)
 	BTN_Analyze(&thisButtonAll.recall_2);
 	BTN_Analyze(&thisButtonAll.recall_3);
 
-	BTN_UpdateToState(&temp_button.height_1, &thisButtonAll.height_1);
-	BTN_UpdateToState(&temp_button.height_2, &thisButtonAll.height_2);
-	BTN_UpdateToState(&temp_button.recliner_1, &thisButtonAll.recliner_1);
-	BTN_UpdateToState(&temp_button.recliner_2, &thisButtonAll.recliner_2);
-	BTN_UpdateToState(&temp_button.slider_1, &thisButtonAll.slider_1);
-	BTN_UpdateToState(&temp_button.slider_2, &thisButtonAll.slider_2);
-	BTN_UpdateToState(&temp_button.save, &thisButtonAll.save);
-	BTN_UpdateToState(&temp_button.recall_1, &thisButtonAll.recall_1);
-	BTN_UpdateToState(&temp_button.recall_2, &thisButtonAll.recall_2);
-	BTN_UpdateToState(&temp_button.recall_3, &thisButtonAll.recall_3);
-
-	return temp_button;
+	BTN_UpdateToState(&pButton->height_1, &thisButtonAll.height_1);
+	BTN_UpdateToState(&pButton->height_2, &thisButtonAll.height_2);
+	BTN_UpdateToState(&pButton->recliner_1, &thisButtonAll.recliner_1);
+	BTN_UpdateToState(&pButton->recliner_2, &thisButtonAll.recliner_2);
+	BTN_UpdateToState(&pButton->slider_1, &thisButtonAll.slider_1);
+	BTN_UpdateToState(&pButton->slider_2, &thisButtonAll.slider_2);
+	BTN_UpdateToState(&pButton->save, &thisButtonAll.save);
+	BTN_UpdateToState(&pButton->recall_1, &thisButtonAll.recall_1);
+	BTN_UpdateToState(&pButton->recall_2, &thisButtonAll.recall_2);
+	BTN_UpdateToState(&pButton->recall_3, &thisButtonAll.recall_3);
 }
 
-ButtonComm_TypeDef BTN_UpdateToComm(void)
+void BTN_UpdateToComm(ButtonComm_TypeDef *pButton)
 {
-	ButtonComm_TypeDef temp_button;
-	temp_button.height_1_value = thisButtonAll.height_1.value;
-	temp_button.height_2_value = thisButtonAll.height_2.value;
-	temp_button.recliner_1_value = thisButtonAll.recliner_1.value;
-	temp_button.recliner_2_value = thisButtonAll.recliner_2.value;
-	temp_button.slider_1_value = thisButtonAll.slider_1.value;
-	temp_button.slider_2_value = thisButtonAll.slider_2.value;
-	temp_button.save_value 	   = thisButtonAll.save.value;
-	temp_button.recall_1_value = thisButtonAll.recall_1.value;
-	temp_button.recall_2_value = thisButtonAll.recall_2.value;
-	temp_button.recall_3_value = thisButtonAll.recall_3.value;
-	return temp_button;
+	pButton->height_1_value = thisButtonAll.height_1.value;
+	pButton->height_2_value = thisButtonAll.height_2.value;
+	pButton->recliner_1_value = thisButtonAll.recliner_1.value;
+	pButton->recliner_2_value = thisButtonAll.recliner_2.value;
+	pButton->slider_1_value = thisButtonAll.slider_1.value;
+	pButton->slider_2_value = thisButtonAll.slider_2.value;
+	pButton->save_value 	   = thisButtonAll.save.value;
+	pButton->recall_1_value = thisButtonAll.recall_1.value;
+	pButton->recall_2_value = thisButtonAll.recall_2.value;
+	pButton->recall_3_value = thisButtonAll.recall_3.value;
 }

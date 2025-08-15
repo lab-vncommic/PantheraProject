@@ -4438,7 +4438,7 @@
                 <value>true</value>
               </enabled>
               <frequency>
-                <value>5000</value>
+                <value>10000</value>
               </frequency>
               <callback>
                 <value>PIT0_ISR</value>
