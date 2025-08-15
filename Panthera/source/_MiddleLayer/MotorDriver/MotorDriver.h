@@ -15,11 +15,12 @@
 #define TIME_DEBOUNCE_RISING_EDGE     100									// T = 100/10000 = 10ms
 #define GAIN_GEAR					  336U
 #define RESOLUTION_DISTANCE			  0.25f							 		// Unit: round, 1 axis = 0.25 round
-#define NO_PULSE_PER_AXIS			  GAIN_GEAR*RESOLUTION_DISTANCE
+#define NO_PULSE_PER_UNIT_AXIS		  GAIN_GEAR*RESOLUTION_DISTANCE
 
 // Sensorless parameters
 #define PULSE_PER_ROUND				  1000									// 1000 peak current /round
 #define WINDOW_SIZE 				  10  									// Size of the sliding window buffer
+#define NUM_DEBOUNCE_SSLESS			  8
 
 typedef enum {
 	SENSOR 		= 0,
@@ -42,6 +43,12 @@ typedef struct{
 	GPIO_TypeDef hall;
 } MotorDriver_TypeDef;
 
+typedef struct{
+	_Bool 	flag_checking_rising_edge;
+	uint8_t cnt_debounce;
+	uint8_t cnt_scale;
+} MotorSensor_TypeDef;
+
 typedef struct {
 	uint16_t values[WINDOW_SIZE];  // Buffer in Q15 format
 
@@ -52,7 +59,8 @@ typedef struct {
     uint16_t cnt_falling;
     uint16_t flag_rising;
     uint16_t flag_falling;
-} PeakDetector_TypeDef;
+    uint16_t cnt_current_ripple;
+} MotorSensorless_TypeDef;
 
 typedef struct{
 	MotorName_TypeDef			name;
@@ -62,6 +70,9 @@ typedef struct{
 	MotorStatus_TypeDef 		status;
 	MeasType_TypeDef			meas_type;
 	uint16_t					axis;
+
+	MotorSensor_TypeDef			sensor;
+	MotorSensorless_TypeDef	 	sensorless;
 } Motor_TypeDef;
 
 typedef struct{
@@ -87,6 +98,7 @@ void MD_UpdateMeas(MeasType_TypeDef meas_type);
 void MD_GetSeatAxis(SeatAxis_TypeDef *pSeat);
 void MD_UpdateToComm(MotorComm_TypeDef *pMotor);
 void MD_ResetAxis(void);
+void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value);
 
 extern Motor_TypeDef motor_height, motor_recliner, motor_slider;
 #endif /* MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_ */

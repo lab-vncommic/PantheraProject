@@ -326,6 +326,7 @@ void COMM_HandleWriteRequest(void)
 
 void COMM_CommToState(CommSystem_TypeDef *pComm)
 {
+	begin = stm_lld_getcounter(&STMD3);
 	COMM_Handle();
 	pComm->button_comm = thisComm.button_comm;
 	pComm->motor_comm  = thisComm.motor_comm;

@@ -236,42 +236,42 @@ void STATE_ProcessInputSignals(PTR_TypeDef *pState)
 
 	// Height 1 button
 	if (pState->communication.button_comm.height_1_value == 0 &&
-		pState->communication.motor_comm.motor_height.ina_value == 0 &&
+//		pState->communication.motor_comm.motor_height.ina_value == 0 &&
 		(pState->button.height_1.action == ACTION_RELEASED || pState->button.height_1.action == ACTION_PRESSED)) {
 		pState->button.height_1.action = ACTION_RELEASED;
 	} else pState->button.height_1.action = ACTION_HOLD;
 
 	// Height 2 button
 	if (pState->communication.button_comm.height_2_value == 0 &&
-		pState->communication.motor_comm.motor_height.inb_value == 0 &&
+//		pState->communication.motor_comm.motor_height.inb_value == 0 &&
 		(pState->button.height_2.action == ACTION_RELEASED || pState->button.height_2.action == ACTION_PRESSED)) {
 		pState->button.height_2.action = ACTION_RELEASED;
 	} else pState->button.height_2.action = ACTION_HOLD;
 
 	// Recliner 1 button
 	if (pState->communication.button_comm.recliner_1_value == 0 &&
-		pState->communication.motor_comm.motor_recliner.ina_value == 0 &&
+//		pState->communication.motor_comm.motor_recliner.ina_value == 0 &&
 		(pState->button.recliner_1.action == ACTION_RELEASED || pState->button.recliner_1.action == ACTION_PRESSED)) {
 		pState->button.recliner_1.action = ACTION_RELEASED;
 	} else pState->button.recliner_1.action = ACTION_HOLD;
 
 	// Recliner 2 button
 	if (pState->communication.button_comm.recliner_2_value == 0 &&
-		pState->communication.motor_comm.motor_recliner.inb_value == 0 &&
+//		pState->communication.motor_comm.motor_recliner.inb_value == 0 &&
 		(pState->button.recliner_2.action == ACTION_RELEASED || pState->button.recliner_2.action == ACTION_PRESSED)) {
 		pState->button.recliner_2.action = ACTION_RELEASED;
 	} else pState->button.recliner_2.action = ACTION_HOLD;
 
 	// Slider 1 button
 	if (pState->communication.button_comm.slider_1_value == 0 &&
-		pState->communication.motor_comm.motor_slider.ina_value == 0 &&
+//		pState->communication.motor_comm.motor_slider.ina_value == 0 &&
 		(pState->button.slider_1.action == ACTION_RELEASED || pState->button.slider_1.action == ACTION_PRESSED)) {
 		pState->button.slider_1.action = ACTION_RELEASED;
 	} else pState->button.slider_1.action = ACTION_HOLD;
 
 	// Slider 2 button
 	if (pState->communication.button_comm.slider_2_value == 0 &&
-		pState->communication.motor_comm.motor_slider.inb_value == 0 &&
+//		pState->communication.motor_comm.motor_slider.inb_value == 0 &&
 		(pState->button.slider_2.action == ACTION_RELEASED || pState->button.slider_2.action == ACTION_PRESSED)) {
 		pState->button.slider_2.action = ACTION_RELEASED;
 	} else pState->button.slider_2.action = ACTION_HOLD;
@@ -299,6 +299,7 @@ void STATE_ProcessInputSignals(PTR_TypeDef *pState)
 		(pState->button.recall_3.action == ACTION_RELEASED || pState->button.recall_3.action == ACTION_PRESSED)) {
 		pState->button.recall_3.action = ACTION_RELEASED;
 	} else pState->button.recall_3.action = ACTION_HOLD;
+
 }
 
 _Bool STATE_SystemIsNormal(PTR_TypeDef *pState)
@@ -375,6 +376,8 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 		STATE_ProcessInputSignals(pState);
 //	}
 
+
+	pState->state = temp_state;
 	switch (pState->state) {
 		case STATE_IDLE:
 			// Processing: handle IDLE state
@@ -537,7 +540,6 @@ void STATE_UpdateMeas(PTR_TypeDef *pState)
 		{
 			MD_UpdateMeas(MEAS_THERMAL);
 			MEAS_UpdateValue(&pState->measurement, MEAS_THERMAL);
-
 		}
 		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
 			cnt_meas_type = 0;

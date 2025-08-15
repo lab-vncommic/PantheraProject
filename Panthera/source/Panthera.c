@@ -18,6 +18,7 @@ void PTR_system_initialization(void)
 	MD_Init();
 	STATE_Init(&thisPTR);
 	EEPROM_Start();
+	motor_height.status = FORWARD;
 }
 /*====== Execute Time ======*/
 /*
@@ -38,12 +39,12 @@ void PTR_main_interrupt_service(void)
 		GPIO_TogglePin(&PIN_SEL0_2);
 	}
 
-
 	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
-//	STATE_UpdateFault(&thisPTR);
-	STATE_UpdateButton(&thisPTR);
-	STATE_UpdateState(&thisPTR);
-	end = stm_lld_getcounter(&STMD3);
+	MD_UpdateAxis(&motor_height, thisMeas.current_height.value_q15);
+////	STATE_UpdateFault(&thisPTR);
+//	STATE_UpdateButton(&thisPTR);
+//	STATE_UpdateState(&thisPTR);
+
     elapsed = end - begin;
 }
 
