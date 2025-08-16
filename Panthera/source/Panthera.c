@@ -6,7 +6,11 @@
  */
 #include "Panthera.h"
 uint16_t cnt_50ms;
-CommMode_Enum Comm_Mode = COMM_UART;
+CommMode_Enum Comm_Mode = COMM_DEBUG;
+
+#define NUMBER_SAMPLE_MEAS 20
+
+uint16_t bufMeas[NUMBER_SAMPLE_MEAS];
 
 void PTR_system_initialization(void)
 {
@@ -36,11 +40,13 @@ void PTR_main_interrupt_service(void)
 	// FIXME: Blink led for debug, comment code blink led and uncomment MD_UpdateDriver()
 	if (cnt_50ms++ >= 500) {
 		cnt_50ms = 0;
-		GPIO_TogglePin(&PIN_SEL0_2);
+//		GPIO_TogglePin(&PIN_SEL0_2);
 	}
 
 	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
 	MD_UpdateAxis(&motor_height, thisMeas.current_height.value_q15);
+
+
 ////	STATE_UpdateFault(&thisPTR);
 //	STATE_UpdateButton(&thisPTR);
 //	STATE_UpdateState(&thisPTR);
@@ -56,12 +62,15 @@ void PTR_inf_loop_system(void)
 			flag_debug_tx_completed = 0;
 			sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
 		}
-		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %d, %ld, %u, %u, %u\r\n",
-				thisPTR.state,
-				thisPTR.seat_current_axis.height,
-				thisPTR.state_home.flag_height_block,
-				thisPTR.state_home.flag_slider_block,
-				thisPTR.state_home.flag_recliner_block
+		snprintf(BufTXDebug, sizeof(BufTXDebug), "%u, %u, %u, %u, %u, %u, %u, %u\r\n",
+				motor_height.axis,
+				motor_height.sensorless.cnt_rising,
+				motor_height.sensorless.cnt_falling,
+				motor_height.sensorless.flag_rising,
+				motor_height.sensorless.flag_falling,
+				motor_height.sensorless.current_value,
+				motor_height.sensorless.previous_value,
+				motor_height.sensorless.cnt_current_ripple
 		);
 	} else COMM_TransmitReceiveHandle();
 }

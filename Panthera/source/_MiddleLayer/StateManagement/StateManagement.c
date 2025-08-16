@@ -371,11 +371,7 @@ void STATE_Init(PTR_TypeDef *pState)
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
 	// Update input signals include communication
-//	if (counter_comm++ >= 2) {
-//		counter_comm = 0;
-		STATE_ProcessInputSignals(pState);
-//	}
-
+	STATE_ProcessInputSignals(pState);
 
 	pState->state = temp_state;
 	switch (pState->state) {

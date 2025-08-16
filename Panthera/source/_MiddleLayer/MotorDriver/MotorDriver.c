@@ -286,7 +286,7 @@ _Bool MD_DetectPeak(Motor_TypeDef *pMotor)
 {
     int16_t diff = pMotor->sensorless.current_value - pMotor->sensorless.previous_value;
 
-    if (diff > 0) {
+    if (diff > 150) {
         if (pMotor->sensorless.flag_rising) {
         } else {
             if (pMotor->sensorless.cnt_falling > 0) {
@@ -300,7 +300,7 @@ _Bool MD_DetectPeak(Motor_TypeDef *pMotor)
             }
         }
     }
-    else if (diff < 0) {
+    else if (diff < 150) {
         if (pMotor->sensorless.flag_rising) {
             pMotor->sensorless.cnt_falling++;
 

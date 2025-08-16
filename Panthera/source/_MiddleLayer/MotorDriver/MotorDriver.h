@@ -18,9 +18,9 @@
 #define NO_PULSE_PER_UNIT_AXIS		  GAIN_GEAR*RESOLUTION_DISTANCE
 
 // Sensorless parameters
-#define PULSE_PER_ROUND				  1000									// 1000 peak current /round
+#define PULSE_PER_ROUND				  6000									// 6000 peak current /round
 #define WINDOW_SIZE 				  10  									// Size of the sliding window buffer
-#define NUM_DEBOUNCE_SSLESS			  8
+#define NUM_DEBOUNCE_SSLESS			  4
 
 typedef enum {
 	SENSOR 		= 0,

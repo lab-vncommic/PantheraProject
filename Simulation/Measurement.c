@@ -13,6 +13,7 @@ void MEAS_GetValueQ15(Meas_TypeDef *pMeas);
 void MEAS_GetValueF32(Meas_TypeDef *pMeas);
 void MEAS_GetValue(MeasType_TypeDef meas_type);
 void MEAS_GetRealValue(MeasType_TypeDef meas_type);
+uint16_t MEAS_LPF(uint16_t new_value, uint16_t prev_value, uint16_t alpha);
 
 /**
  * @brief  Configures a measurement object with specified parameters
@@ -86,9 +87,20 @@ void MEAS_GetValueQ15(Meas_TypeDef *pMeas)
 {
     if(pMeas == NULL)
     	return;
+	pMeas->prev_value = pMeas->value_q15;
     if (pMeas->calc_method == CALC_METHOD_Q15) {
         pMeas->value_q15 = _q15_mul(pMeas->raw >> 1 , pMeas->scale_factor);
 	} else pMeas->value_q15 = _q15_mul(pMeas->raw >>1 , _q15(1));
+
+	pMeas->value_q15 = MEAS_LPF(pMeas->value_q15, pMeas->prev_value, 400); // 15666
+}
+
+uint16_t MEAS_LPF(uint16_t new_value, uint16_t prev_value, uint16_t alpha)
+{
+    int32_t temp1 = ((int32_t)alpha * new_value) >> 15;
+    int16_t one_minus_alpha = 32767 - alpha;
+    int32_t temp2 = ((int32_t)one_minus_alpha * prev_value) >> 15;
+    return (uint16_t)(temp1 + temp2);
 }
 
 /**
