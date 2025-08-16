@@ -6,7 +6,7 @@
  */
 #include "Panthera.h"
 uint16_t cnt_50ms;
-CommMode_Enum Comm_Mode = COMM_DEBUG;
+CommMode_Enum Comm_Mode = COMM_UART;
 
 void PTR_system_initialization(void)
 {

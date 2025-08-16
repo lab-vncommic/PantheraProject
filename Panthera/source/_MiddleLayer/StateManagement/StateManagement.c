@@ -16,6 +16,7 @@ uint16_t cnt_schedule_motor_manual;
 uint16_t cnt_schedule_motor_home;
 
 State_TypeDef temp_state;
+uint8_t counter_comm;
 
 // List API
 void STATE_idleHandle(PTR_TypeDef *pState);
@@ -369,7 +370,10 @@ void STATE_Init(PTR_TypeDef *pState)
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
 	// Update input signals include communication
-	STATE_ProcessInputSignals(pState);
+//	if (counter_comm++ >= 2) {
+//		counter_comm = 0;
+		STATE_ProcessInputSignals(pState);
+//	}
 
 	switch (pState->state) {
 		case STATE_IDLE:
