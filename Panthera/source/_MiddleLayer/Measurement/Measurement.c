@@ -216,19 +216,16 @@ void MEAS_GetRealValue(MeasType_TypeDef meas_type)
 	}
 }
 
-MeasSystem_TypeDef MEAS_UpdateValue(MeasType_TypeDef meas_type)
+void MEAS_UpdateValue(MeasSystem_TypeDef *pMeas, MeasType_TypeDef meas_type)
 {
-	MeasSystem_TypeDef temp_meas;
-
 	MEAS_GetValue(meas_type);
 
-	temp_meas.current_slider_q15   = thisMeas.current_slider.value_q15;
-	temp_meas.current_height_q15   = thisMeas.current_height.value_q15;
-	temp_meas.current_recliner_q15 = thisMeas.current_recliner.value_q15;
-	temp_meas.thermal_slider_q15   = thisMeas.thermal_slider.value_q15;
-	temp_meas.thermal_height_q15   = thisMeas.thermal_height.value_q15;
-	temp_meas.thermal_recliner_q15 = thisMeas.thermal_recliner.value_q15;
-	return temp_meas;
+	pMeas->current_slider_q15   = thisMeas.current_slider.value_q15;
+	pMeas->current_height_q15   = thisMeas.current_height.value_q15;
+	pMeas->current_recliner_q15 = thisMeas.current_recliner.value_q15;
+	pMeas->thermal_slider_q15   = thisMeas.thermal_slider.value_q15;
+	pMeas->thermal_height_q15   = thisMeas.thermal_height.value_q15;
+	pMeas->thermal_recliner_q15 = thisMeas.thermal_recliner.value_q15;
 }
 
 

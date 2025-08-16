@@ -115,16 +115,13 @@ void FAULT_LogError(void)
 	}
 }
 
-FaultSystem_TypeDef FAULT_Handle(MeasSystem_TypeDef *pMeas)
+void FAULT_Handle(FaultSystem_TypeDef *pFault, MeasSystem_TypeDef *pMeas)
 {
-	FaultSystem_TypeDef temp_fault;
 	FAULT_UpdateMode(&thisFault, pMeas);
 
-	temp_fault.mode    = thisFault.fault_mode;
-	temp_fault.counter = thisFault.counter;
-	temp_fault.limit   = thisFault.limit;
-
-	return temp_fault;
+	pFault->mode    = thisFault.fault_mode;
+	pFault->counter = thisFault.counter;
+	pFault->limit   = thisFault.limit;
 }
 
 void FAULT_Reset(void)

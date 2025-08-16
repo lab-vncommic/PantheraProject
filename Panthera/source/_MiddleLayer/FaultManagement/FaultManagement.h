@@ -78,7 +78,7 @@ typedef struct{
 
 // Public API
 void FAULT_Init(void);
-FaultSystem_TypeDef FAULT_Handle(MeasSystem_TypeDef *pMeas);
+void FAULT_Handle(FaultSystem_TypeDef *pFault, MeasSystem_TypeDef *pMeas);
 void FAULT_LogError(void);
 void FAULT_Reset(void);
 

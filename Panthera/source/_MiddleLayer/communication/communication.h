@@ -47,7 +47,7 @@ typedef struct{
 } CommSystem_TypeDef;
 
 void COMM_Init(void);
-CommSystem_TypeDef COMM_CommToState(void);
+void COMM_CommToState(CommSystem_TypeDef *pComm);
 void COMM_TransmitReceiveHandle(void);
 
 extern CommMessage_TypeDef thisMessage;

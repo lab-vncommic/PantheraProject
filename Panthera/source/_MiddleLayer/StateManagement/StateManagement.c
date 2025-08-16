@@ -16,6 +16,7 @@ uint16_t cnt_schedule_motor_manual;
 uint16_t cnt_schedule_motor_home;
 
 State_TypeDef temp_state;
+uint8_t counter_comm;
 
 // List API
 void STATE_idleHandle(PTR_TypeDef *pState);
@@ -231,7 +232,7 @@ void STATE_homingHandle(PTR_TypeDef *pState)
 
 void STATE_ProcessInputSignals(PTR_TypeDef *pState)
 {
-	pState->communication = COMM_CommToState();
+	COMM_CommToState(&pState->communication);
 
 	// Height 1 button
 	if (pState->communication.button_comm.height_1_value == 0 &&
@@ -322,7 +323,7 @@ _Bool STATE_SystemIsNormal(PTR_TypeDef *pState)
  */
 void STATE_GetSeatAxis(PTR_TypeDef *pState)
 {
-	pState->seat_current_axis = MD_GetSeatAxis();
+	MD_GetSeatAxis(&pState->seat_current_axis);
 }
 
 _Bool STATE_CheckEndPosition(uint32_t *pCurrent_value, uint32_t *pPrev_value)
@@ -369,7 +370,10 @@ void STATE_Init(PTR_TypeDef *pState)
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
 	// Update input signals include communication
-	STATE_ProcessInputSignals(pState);
+//	if (counter_comm++ >= 2) {
+//		counter_comm = 0;
+		STATE_ProcessInputSignals(pState);
+//	}
 
 	switch (pState->state) {
 		case STATE_IDLE:
@@ -532,7 +536,7 @@ void STATE_UpdateMeas(PTR_TypeDef *pState)
 		if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 2))
 		{
 			MD_UpdateMeas(MEAS_THERMAL);
-			pState->measurement = MEAS_UpdateValue(MEAS_THERMAL);
+			MEAS_UpdateValue(&pState->measurement, MEAS_THERMAL);
 
 		}
 		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
@@ -540,7 +544,7 @@ void STATE_UpdateMeas(PTR_TypeDef *pState)
 		}
 	} else {
 		MD_UpdateMeas(MEAS_CURRENT);
-		pState->measurement = MEAS_UpdateValue(MEAS_CURRENT);
+		MEAS_UpdateValue(&pState->measurement, MEAS_CURRENT);
 	}
 }
 
@@ -549,13 +553,13 @@ void STATE_UpdateFault(PTR_TypeDef *pState)
 	if ((pState->state != STATE_FAULT) &&
 		(pState->state != STATE_SHUTDOWN) &&
 		(pState->state != STATE_AUTORECOVERY)) {
-		pState->fault = FAULT_Handle(&pState->measurement);
+		FAULT_Handle(&pState->fault, &pState->measurement);
 	}
 }
 
 void STATE_UpdateButton(PTR_TypeDef *pState)
 {
-	pState->button = BTN_Update();
+	BTN_Update(&pState->button);
 }
 
 
