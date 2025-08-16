@@ -11,16 +11,20 @@
 #include "GlobalDefine.h"
 #include "Measurement.h"
 
+#define RESOLUTION_DISTANCE			  0.25f							 		// Unit: round, 1 axis = 0.25 round
+
 // Sensor parameteres
 #define TIME_DEBOUNCE_RISING_EDGE     100									// T = 100/10000 = 10ms
-#define GAIN_GEAR					  336U
-#define RESOLUTION_DISTANCE			  0.25f							 		// Unit: round, 1 axis = 0.25 round
-#define NO_PULSE_PER_UNIT_AXIS		  GAIN_GEAR*RESOLUTION_DISTANCE
+#define NO_PULSE_PER_ROUND			  336U
+#define NO_PULSE_PER_UNIT_AXIS		  RESOLUTION_DISTANCE * NO_PULSE_PER_ROUND
 
 // Sensorless parameters
-#define PULSE_PER_ROUND				  6000									// 6000 peak current /round
 #define WINDOW_SIZE 				  10  									// Size of the sliding window buffer
-#define NUM_DEBOUNCE_SSLESS			  4
+#define NUM_DEBOUNCE_SSLESS			  2
+#define EPSILON						  29									// Equivalent to 2 uint ADC in 12 bit
+#define NO_PEAK_PER_ROUND			  6600									// 6600 peak current /round
+#define NO_PEAK_PER_UNIT_AXIS	      RESOLUTION_DISTANCE * NO_PEAK_PER_ROUND
+
 
 typedef enum {
 	SENSOR 		= 0,
@@ -44,9 +48,9 @@ typedef struct{
 } MotorDriver_TypeDef;
 
 typedef struct{
-	_Bool 	flag_checking_rising_edge;
-	uint8_t cnt_debounce;
-	uint8_t cnt_scale;
+	_Bool 	 flag_checking_rising_edge;
+	uint8_t  cnt_debounce;
+	uint8_t  cnt_pulse;
 } MotorSensor_TypeDef;
 
 typedef struct {
@@ -59,7 +63,8 @@ typedef struct {
     uint16_t cnt_falling;
     uint16_t flag_rising;
     uint16_t flag_falling;
-    uint16_t cnt_current_ripple;
+
+    uint16_t cnt_peak;
 } MotorSensorless_TypeDef;
 
 typedef struct{

@@ -19,9 +19,7 @@
 #define UART_RX_LENGTH 				6
 
 void UART_Init(void);
-void UART_Monitor(void);
 void UART_HandleRequest(void);
-
 void UART_TX_Callback(SerialDriver *sdp);
 
 extern char BufTXDebug[UART_TX_DEBUG_LENGTH];

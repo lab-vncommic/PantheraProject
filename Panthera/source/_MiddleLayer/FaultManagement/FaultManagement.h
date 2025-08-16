@@ -53,11 +53,11 @@ typedef struct{
 /*===========================================================================
  * PTR CODE SECTION
  *===========================================================================*/
-#define CURRENT_MT1_OCP					18.0f		// Unit: A
+#define CURRENT_MT1_OCP					17.5f		// Unit: A
 #define THERMAL_MT1_OTP					100.0f		// Unit: oC
-#define CURRENT_MT2_OCP					18.0f		// Unit: A
+#define CURRENT_MT2_OCP					17.5f		// Unit: A
 #define THERMAL_MT2_OTP					100.0f		// Unit: oC
-#define CURRENT_MT3_OCP					18.0f		// Unit: A
+#define CURRENT_MT3_OCP					17.5f		// Unit: A
 #define THERMAL_MT3_OTP					100.0f		// Unit: oC
 
 /* ====== Fault Protection Thresholds in Q15 format ====== */

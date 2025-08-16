@@ -7,7 +7,6 @@
 
 #ifndef EEPROM_MY_EEPROM_H_
 #define EEPROM_MY_EEPROM_H_
-
 #include <stdint.h>
 #include "components.h"
 

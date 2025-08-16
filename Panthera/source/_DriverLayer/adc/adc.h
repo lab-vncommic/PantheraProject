@@ -7,7 +7,6 @@
 
 #ifndef SOURCE_ADC_ADC_H_
 #define SOURCE_ADC_ADC_H_
-
 #include "saradc_lld_cfg.h"
 
 #define NUMOFCHANNELS 4U

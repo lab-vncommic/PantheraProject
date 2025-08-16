@@ -17,6 +17,8 @@
 #define CALC_METHOD_F32				0
 #define CALC_METHOD_Q15				1
 
+#define PI							3.14159f
+
 typedef struct{
 	// Parameters for Q15 concepts
 	uq15_t 	raw;               // Raw ADC value, use this variable for debugging
@@ -43,18 +45,24 @@ typedef struct{
 #define CURRENT_MT1_HIGH_LIMIT_HARD  22.75f
 #define CURRENT_MT1_HIGH_LIMIT_SOFT  20.0f
 #define CURRENT_MT1_SCALE_FACTOR     (uq31_t)(CURRENT_MT1_HIGH_LIMIT_HARD/CURRENT_MT1_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
+#define CURRENT_MT1_FREQ_CUTOFF		 550U			// Uint: Hz
+#define CURRENT_MT1_ALPHA			 _q15((2*PI*CURRENT_MT1_FREQ_CUTOFF) / ((2*PI*CURRENT_MT1_FREQ_CUTOFF) + F_SAMPLE))
 #define CURRENT_MT1_OFFSET           (0U)
 
 // Motor 2: Current parameters for Q15 concept (Motor Height)
 #define CURRENT_MT2_HIGH_LIMIT_HARD  22.75f
 #define CURRENT_MT2_HIGH_LIMIT_SOFT  20.0f
 #define CURRENT_MT2_SCALE_FACTOR     (uq31_t)(CURRENT_MT2_HIGH_LIMIT_HARD/CURRENT_MT2_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
+#define CURRENT_MT2_FREQ_CUTOFF		 550U			// Uint: Hz
+#define CURRENT_MT2_ALPHA			 _q15((2*PI*CURRENT_MT2_FREQ_CUTOFF) / ((2*PI*CURRENT_MT2_FREQ_CUTOFF) + F_SAMPLE))
 #define CURRENT_MT2_OFFSET           (0U)
 
 // Motor 3: Current parameters for Q15 concept (Motor Recliner)
 #define CURRENT_MT3_HIGH_LIMIT_HARD  22.75f
 #define CURRENT_MT3_HIGH_LIMIT_SOFT  20.0f
 #define CURRENT_MT3_SCALE_FACTOR     (uq31_t)(CURRENT_MT3_HIGH_LIMIT_HARD/CURRENT_MT3_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
+#define CURRENT_MT3_FREQ_CUTOFF		 550U			// Uint: Hz
+#define CURRENT_MT3_ALPHA			 _q15((2*PI*CURRENT_MT3_FREQ_CUTOFF) / ((2*PI*CURRENT_MT3_FREQ_CUTOFF) + F_SAMPLE))
 #define CURRENT_MT3_OFFSET           (0U)
 
 // Motor 1: Temperature parameters for F32 concept (Motor Slider)

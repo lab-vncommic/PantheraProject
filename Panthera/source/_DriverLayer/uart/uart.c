@@ -28,19 +28,6 @@ void UART_Init(void)
 	flag_enable_rx 		 	 = true;
 }
 
-void UART_Monitor(void)
-{
-	if (flag_debug_tx_completed == 1){
-		flag_debug_tx_completed = 0;
-		sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
-	}
-//	snprintf(BufTXDebug, sizeof(BufTXDebug), "cur_slider = %d, cur_height = %d, cur_recliner = %d\r\n",
-//			thisPTR.seat_memory_axis.slider,
-//			thisPTR.seat_memory_axis.height,
-//			thisPTR.seat_memory_axis.recliner
-//	);
-}
-
 void UART_HandleRequest(void)
 {
 	if (flag_enable_rx) {
