@@ -31,7 +31,8 @@
 | 27  | 14/08/2025    | v1.1.13             | Bổ sung tính năng auto-recovery                                            | Nguyễn Quốc Uy    | Obsoleted|
 | 28  | 14/08/2025    | v1.1.14             | Bổ sung tính năng homming sau 10 lần dùng chức năng recall                 | Nguyễn Quốc Uy    | Obsoleted|
 | 29  | 15/08/2025    | v1.1.15             | Sửa lỗi khi đọc ghi giá trị 0 vào EEPROM, chỉnh sửa lỗi bị kẹt tại state HOME  | Toàn & Uy     | Obsoleted|
-| 30  | 16/08/2025    | v1.1.16             | Chỉnh sửa pattern hàm truy xuất giá trị các module                         | Nguyễn Quốc Uy    | Active   |
+| 30  | 16/08/2025    | v1.1.16             | Chỉnh sửa pattern hàm truy xuất giá trị các module                         | Nguyễn Quốc Uy    | Obsoleted|
+| 31  | 18/08/2025    | v1.1.17             | Bổ sung thuật toán phát hiện vị trí với sensorless                         | Nguyễn Quốc Uy    | Active   |
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
