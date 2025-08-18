@@ -31,6 +31,9 @@ typedef struct{
     float 	gain_f32;		   // Gain value to convert ADC to real value
     float 	offset_f32;		   // Offset value to convert ADC to real value
     uint8_t calc_method;	   // Calculate real value with direct method or Q15 method
+
+	// Low pass filter
+	uq15_t prev_value;	   	   // Previous value for low pass filter
 } Meas_TypeDef;
 
 /*===========================================================================
@@ -94,7 +97,7 @@ typedef struct{
 
 // Public API
 void MEAS_Init(void);
-MeasSystem_TypeDef MEAS_UpdateValue(MeasType_TypeDef meas_type);
+void MEAS_UpdateValue(MeasSystem_TypeDef *pMeas, MeasType_TypeDef meas_type);
 
 // Uncomment extern variables for debugging
 extern MeasAll_TypeDef thisMeas;

@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "../../_DriverLayer/eeprom/eeprom_user.h"
+#include "eeprom_user.h"
 #include "GlobalDefine.h"
 
 //Address EEPROM 0x00800000
@@ -24,8 +24,7 @@ typedef struct{
 
 void MEM_Read(uint16_t id_recall);
 void MEM_Write(uint32_t x,uint32_t y, uint32_t z, uint16_t id_recall);
-
-SeatAxis_TypeDef MEM_GetSeatAxis(uint16_t id_recall);
+void MEM_GetSeatAxis(SeatAxis_TypeDef *pSeat, uint16_t id_recall);
 
 //extern Memory_TypeDef thisMemory;
 #endif /* MEMORY_MEMORY_H_ */

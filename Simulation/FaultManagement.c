@@ -28,9 +28,9 @@ void FAULT_Init(void)
 	thisFault.fault_status = FAULT_STT_INIT_VALUE;
 	thisFault.limit		   = FAULT_SAVE_MEMORY;
 	thisFault.counter	   = 0;
-	// for (uint8_t i = 0; i < FAULT_SAVE_MEMORY; i++) {
-	// 	thisFault.fault_save[i] = FAULT_STT_INIT_VALUE;
-	// }
+	//  for (uint8_t i = 0; i < FAULT_SAVE_MEMORY; i++) {
+	//  	thisFault.fault_save[i] = FAULT_STT_INIT_VALUE;
+	//  }
 }
 
 /**
@@ -54,29 +54,29 @@ void FAULT_Init(void)
  */
 void FAULT_UpdateStatus(MeasSystem_TypeDef *pMeas)
 {
-//    if (FAULT_IS_MT1_OCP(pMeas->current_slider_q15)) {
-//    	temp_fault_status |= FAULT_STT_0;
-//    }
+    if (FAULT_IS_MT1_OCP(pMeas->current_slider_q15)) {
+    	temp_fault_status |= FAULT_STT_0;
+    }
 
    if (FAULT_IS_MT2_OCP(pMeas->current_height_q15)) {
    	temp_fault_status |= FAULT_STT_1;
    }
 
-//    if (FAULT_IS_MT3_OCP(pMeas->current_recliner_q15)) {
-//    	temp_fault_status |= FAULT_STT_2;
-//    }
+    if (FAULT_IS_MT3_OCP(pMeas->current_recliner_q15)) {
+    	temp_fault_status |= FAULT_STT_2;
+    }
 
-//    if (FAULT_IS_MT1_OTP(pMeas->thermal_slider_q15)) {
-//    	temp_fault_status |= FAULT_STT_3;
-//    }
+    if (FAULT_IS_MT1_OTP(pMeas->thermal_slider_q15)) {
+    	temp_fault_status |= FAULT_STT_3;
+    }
 
-//    if (FAULT_IS_MT2_OTP(pMeas->thermal_height_q15)) {
-//    	temp_fault_status |= FAULT_STT_4;
-//    }
+    if (FAULT_IS_MT2_OTP(pMeas->thermal_height_q15)) {
+    	temp_fault_status |= FAULT_STT_4;
+    }
 
-//    if (FAULT_IS_MT3_OTP(pMeas->thermal_recliner_q15)) {
-//    	temp_fault_status |= FAULT_STT_5;
-//    }
+    if (FAULT_IS_MT3_OTP(pMeas->thermal_recliner_q15)) {
+    	temp_fault_status |= FAULT_STT_5;
+    }
    thisFault.fault_status = temp_fault_status;
 }
 
@@ -115,16 +115,13 @@ void FAULT_LogError(void)
 	}
 }
 
-FaultSystem_TypeDef FAULT_Handle(MeasSystem_TypeDef *pMeas)
+void FAULT_Handle(FaultSystem_TypeDef *pFault, MeasSystem_TypeDef *pMeas)
 {
-	FaultSystem_TypeDef temp_fault;
 	FAULT_UpdateMode(&thisFault, pMeas);
 
-	temp_fault.mode    = thisFault.fault_mode;
-	temp_fault.counter = thisFault.counter;
-	temp_fault.limit   = thisFault.limit;
-
-	return temp_fault;
+	pFault->mode    = thisFault.fault_mode;
+	pFault->counter = thisFault.counter;
+	pFault->limit   = thisFault.limit;
 }
 
 void FAULT_Reset(void)

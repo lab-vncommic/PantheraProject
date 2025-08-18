@@ -5,17 +5,32 @@
 	<ProdInfo type="bin" size="52">vQTv/gAAAQAMAAMA6iAAAAUA5QcAAAAAPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAA==</ProdInfo>
 	<ProdInfoString type="string">2021</ProdInfoString>
 	<CreationDate type="string">14.08.2025 18:12:39:000</CreationDate>
-	<LastWriteDate type="string">16.08.2025 09:55:36:000</LastWriteDate>
+	<LastWriteDate type="string">16.08.2025 20:11:57:000</LastWriteDate>
 	<UseWspCnt type="int">1</UseWspCnt>
 	<MainFrame type="key">
 		<NETPlacementRoot type="key">
+			<FormsData type="innerxml">
+				<FormsData>
+					<Bounds>
+						<X>26</X>
+						<Y>158</Y>
+						<Width>1490</Width>
+						<Height>900</Height>
+					</Bounds>
+					<ClientSize>
+						<Width>1472</Width>
+						<Height>853</Height>
+					</ClientSize>
+					<State>Normal</State>
+				</FormsData>
+			</FormsData>
 			<UniqueControlIdDockingManagerControlData type="innerxml">
 				<UniqueControlIdDockingManagerControlData>
 					<MDIActive>false</MDIActive>
 					<DocumentDockStyle>Top</DocumentDockStyle>
 					<DockingControls>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>884</DockedDimension>
+							<DockedDimension>886</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Bottom</DockingType>
 							<FloatingBounds>
@@ -33,7 +48,7 @@
 							<UniqueIdentifier>MainFrame.StdUDEMessageWin.OPEN_VIEW</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>972</DockedDimension>
+							<DockedDimension>584</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Bottom</DockingType>
 							<FloatingBounds>
@@ -62,7 +77,7 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>4</DockingIndex>
+							<DockingIndex>6</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
@@ -80,10 +95,10 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>3</DockingIndex>
+							<DockingIndex>5</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
-							<Selected>false</Selected>
+							<Selected>true</Selected>
 							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW01</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
@@ -98,7 +113,7 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>2</DockingIndex>
+							<DockingIndex>4</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
@@ -116,14 +131,68 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>1</DockingIndex>
+							<DockingIndex>3</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
 							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW03</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>729</DockedDimension>
+							<DockedDimension>0</DockedDimension>
+							<Cancelled>false</Cancelled>
+							<DockingType>Top</DockingType>
+							<FloatingBounds>
+								<X>0</X>
+								<Y>0</Y>
+								<Width>0</Width>
+								<Height>0</Height>
+							</FloatingBounds>
+							<AutoHide>false</AutoHide>
+							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
+							<DockingIndex>2</DockingIndex>
+							<PanelIndex>-1</PanelIndex>
+							<ContainerType>TabbedDocument</ContainerType>
+							<Selected>false</Selected>
+							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW04</UniqueIdentifier>
+						</UniqueControlIdDockingControlData>
+						<UniqueControlIdDockingControlData>
+							<DockedDimension>0</DockedDimension>
+							<Cancelled>false</Cancelled>
+							<DockingType>Top</DockingType>
+							<FloatingBounds>
+								<X>0</X>
+								<Y>0</Y>
+								<Width>0</Width>
+								<Height>0</Height>
+							</FloatingBounds>
+							<AutoHide>false</AutoHide>
+							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
+							<DockingIndex>1</DockingIndex>
+							<PanelIndex>-1</PanelIndex>
+							<ContainerType>TabbedDocument</ContainerType>
+							<Selected>false</Selected>
+							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW05</UniqueIdentifier>
+						</UniqueControlIdDockingControlData>
+						<UniqueControlIdDockingControlData>
+							<DockedDimension>0</DockedDimension>
+							<Cancelled>false</Cancelled>
+							<DockingType>Top</DockingType>
+							<FloatingBounds>
+								<X>0</X>
+								<Y>0</Y>
+								<Width>0</Width>
+								<Height>0</Height>
+							</FloatingBounds>
+							<AutoHide>false</AutoHide>
+							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
+							<DockingIndex>0</DockingIndex>
+							<PanelIndex>-1</PanelIndex>
+							<ContainerType>TabbedDocument</ContainerType>
+							<Selected>false</Selected>
+							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW06</UniqueIdentifier>
+						</UniqueControlIdDockingControlData>
+						<UniqueControlIdDockingControlData>
+							<DockedDimension>518</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Left</DockingType>
 							<FloatingBounds>
@@ -141,7 +210,7 @@
 							<UniqueIdentifier>Core2.ViewSrv.StdUDESymbolExplWin.OPEN_VIEW</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
-							<DockedDimension>755</DockedDimension>
+							<DockedDimension>547</DockedDimension>
 							<Cancelled>false</Cancelled>
 							<DockingType>Right</DockingType>
 							<FloatingBounds>
@@ -157,24 +226,6 @@
 							<ContainerType>DockPanel</ContainerType>
 							<Selected>false</Selected>
 							<UniqueIdentifier>Core2.ViewSrv.StdUDEWatchWin.OPEN_VIEW00</UniqueIdentifier>
-						</UniqueControlIdDockingControlData>
-						<UniqueControlIdDockingControlData>
-							<DockedDimension>0</DockedDimension>
-							<Cancelled>false</Cancelled>
-							<DockingType>Top</DockingType>
-							<FloatingBounds>
-								<X>0</X>
-								<Y>0</Y>
-								<Width>0</Width>
-								<Height>0</Height>
-							</FloatingBounds>
-							<AutoHide>false</AutoHide>
-							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>0</DockingIndex>
-							<PanelIndex>-1</PanelIndex>
-							<ContainerType>TabbedDocument</ContainerType>
-							<Selected>true</Selected>
-							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW04</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 					</DockingControls>
 					<LeftDockingContainerControlData>
@@ -231,8 +282,8 @@
 						<PanelBounds>
 							<X>0</X>
 							<Y>0</Y>
-							<Width>1858</Width>
-							<Height>74</Height>
+							<Width>1472</Width>
+							<Height>78</Height>
 						</PanelBounds>
 						<ToolBars>
 							<ToolbarPersistData>
@@ -242,144 +293,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Workspace Toolbar</Name>
-								<AlwaysUnvisible>false</AlwaysUnvisible>
-								<Visible>false</Visible>
-								<ToolItemData>
-									<ToolItemPersistData>
-										<Name>toolStripDropDownButton1</Name>
-										<Visible>false</Visible>
-										<Text>Show or Hide Items</Text>
-										<DisplayStyle>Text</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-								</ToolItemData>
-							</ToolbarPersistData>
-							<ToolbarPersistData>
-								<Bounds>
-									<X>0</X>
-									<Y>0</Y>
-									<Width>111</Width>
-									<Height>25</Height>
-								</Bounds>
 								<Name>Show Toolbar</Name>
-								<AlwaysUnvisible>false</AlwaysUnvisible>
-								<Visible>false</Visible>
-								<ToolItemData>
-									<ToolItemPersistData>
-										<Name>toolStripDropDownButton1</Name>
-										<Visible>false</Visible>
-										<Text>Show or Hide Items</Text>
-										<DisplayStyle>Text</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-								</ToolItemData>
-							</ToolbarPersistData>
-							<ToolbarPersistData>
-								<Bounds>
-									<X>0</X>
-									<Y>0</Y>
-									<Width>1858</Width>
-									<Height>24</Height>
-								</Bounds>
-								<Name>Platform Main Menu</Name>
-								<AlwaysUnvisible>false</AlwaysUnvisible>
-								<Visible>true</Visible>
-								<ToolItemData>
-									<ToolItemPersistData>
-										<Name>Main Menu</Name>
-										<Visible>false</Visible>
-										<Text>&amp;Main</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>File Menu</Name>
-										<Visible>true</Visible>
-										<Text>&amp;File</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>Edit Menu</Name>
-										<Visible>true</Visible>
-										<Text>&amp;Edit</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>Debug Menu</Name>
-										<Visible>true</Visible>
-										<Text>&amp;Debug</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>Show Menu</Name>
-										<Visible>true</Visible>
-										<Text>&amp;Show</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>Views Menu</Name>
-										<Visible>true</Visible>
-										<Text>&amp;Views</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>Tools Menu</Name>
-										<Visible>true</Visible>
-										<Text>&amp;Tools</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>Config Menu</Name>
-										<Visible>true</Visible>
-										<Text>&amp;Config</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>Window Menu</Name>
-										<Visible>true</Visible>
-										<Text>&amp;Window</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>Workspace Menu</Name>
-										<Visible>false</Visible>
-										<Text>&amp;Workspace</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>Macro Menu</Name>
-										<Visible>true</Visible>
-										<Text>&amp;Macro</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>Help Menu</Name>
-										<Visible>true</Visible>
-										<Text>&amp;Help</Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-								</ToolItemData>
-							</ToolbarPersistData>
-							<ToolbarPersistData>
-								<Bounds>
-									<X>0</X>
-									<Y>0</Y>
-									<Width>111</Width>
-									<Height>25</Height>
-								</Bounds>
-								<Name>Window Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -414,8 +328,48 @@
 							</ToolbarPersistData>
 							<ToolbarPersistData>
 								<Bounds>
+									<X>0</X>
+									<Y>0</Y>
+									<Width>111</Width>
+									<Height>25</Height>
+								</Bounds>
+								<Name>Window Toolbar</Name>
+								<AlwaysUnvisible>false</AlwaysUnvisible>
+								<Visible>false</Visible>
+								<ToolItemData>
+									<ToolItemPersistData>
+										<Name>toolStripDropDownButton1</Name>
+										<Visible>false</Visible>
+										<Text>Show or Hide Items</Text>
+										<DisplayStyle>Text</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+								</ToolItemData>
+							</ToolbarPersistData>
+							<ToolbarPersistData>
+								<Bounds>
+									<X>0</X>
+									<Y>0</Y>
+									<Width>111</Width>
+									<Height>25</Height>
+								</Bounds>
+								<Name>Workspace Toolbar</Name>
+								<AlwaysUnvisible>false</AlwaysUnvisible>
+								<Visible>false</Visible>
+								<ToolItemData>
+									<ToolItemPersistData>
+										<Name>toolStripDropDownButton1</Name>
+										<Visible>false</Visible>
+										<Text>Show or Hide Items</Text>
+										<DisplayStyle>Text</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+								</ToolItemData>
+							</ToolbarPersistData>
+							<ToolbarPersistData>
+								<Bounds>
 									<X>3</X>
-									<Y>24</Y>
+									<Y>0</Y>
 									<Width>210</Width>
 									<Height>25</Height>
 								</Bounds>
@@ -491,7 +445,7 @@
 							<ToolbarPersistData>
 								<Bounds>
 									<X>213</X>
-									<Y>24</Y>
+									<Y>0</Y>
 									<Width>95</Width>
 									<Height>25</Height>
 								</Bounds>
@@ -532,7 +486,7 @@
 							<ToolbarPersistData>
 								<Bounds>
 									<X>308</X>
-									<Y>24</Y>
+									<Y>0</Y>
 									<Width>457</Width>
 									<Height>25</Height>
 								</Bounds>
@@ -643,7 +597,7 @@
 							<ToolbarPersistData>
 								<Bounds>
 									<X>765</X>
-									<Y>24</Y>
+									<Y>0</Y>
 									<Width>486</Width>
 									<Height>25</Height>
 								</Bounds>
@@ -803,76 +757,7 @@
 							<ToolbarPersistData>
 								<Bounds>
 									<X>1251</X>
-									<Y>24</Y>
-									<Width>249</Width>
-									<Height>25</Height>
-								</Bounds>
-								<Name>Tools Toolbar</Name>
-								<AlwaysUnvisible>false</AlwaysUnvisible>
-								<Visible>true</Visible>
-								<ToolItemData>
-									<ToolItemPersistData>
-										<Name>toolStripDropDownButton1</Name>
-										<Visible>true</Visible>
-										<Text>Show or Hide Items</Text>
-										<DisplayStyle>Text</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>UDE_0x2_{5BB818C0-3B63-4A4E-AF6C-4C4C95B45447}</Name>
-										<Visible>true</Visible>
-										<Text>Save Trace Stream ...</Text>
-										<DisplayStyle>Image</DisplayStyle>
-										<AppendAccelerator>true</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>UDE_0x3_{5BB818C0-3B63-4A4E-AF6C-4C4C95B45447}</Name>
-										<Visible>true</Visible>
-										<Text>Load Trace Stream ...</Text>
-										<DisplayStyle>Image</DisplayStyle>
-										<AppendAccelerator>true</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>UDE_0x5_{5BB818C0-3B63-4A4E-AF6C-4C4C95B45447}</Name>
-										<Visible>true</Visible>
-										<Text>Save Trace Stream As...</Text>
-										<DisplayStyle>Image</DisplayStyle>
-										<AppendAccelerator>true</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>UDE_0x9_{5BB818C0-3B63-4A4E-AF6C-4C4C95B45447}</Name>
-										<Visible>true</Visible>
-										<Text>Analyze Execution Sequence</Text>
-										<DisplayStyle>Image</DisplayStyle>
-										<AppendAccelerator>true</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name></Name>
-										<Visible>true</Visible>
-										<Text></Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>UDE_Ctrl_{85A18427-7349-463D-AD51-BF9C5E643643}_Core2</Name>
-										<Visible>true</Visible>
-										<Text></Text>
-										<DisplayStyle>ImageAndText</DisplayStyle>
-										<AppendAccelerator>false</AppendAccelerator>
-									</ToolItemPersistData>
-									<ToolItemPersistData>
-										<Name>UDE_0xE1_{D76DE436-4F94-483C-940B-19FE5E0CEDB1}</Name>
-										<Visible>true</Visible>
-										<Text>Execution Time Setup</Text>
-										<DisplayStyle>Image</DisplayStyle>
-										<AppendAccelerator>true</AppendAccelerator>
-									</ToolItemPersistData>
-								</ToolItemData>
-							</ToolbarPersistData>
-							<ToolbarPersistData>
-								<Bounds>
-									<X>1500</X>
-									<Y>24</Y>
+									<Y>0</Y>
 									<Width>141</Width>
 									<Height>25</Height>
 								</Bounds>
@@ -926,8 +811,77 @@
 							</ToolbarPersistData>
 							<ToolbarPersistData>
 								<Bounds>
+									<X>1392</X>
+									<Y>0</Y>
+									<Width>80</Width>
+									<Height>25</Height>
+								</Bounds>
+								<Name>Tools Toolbar</Name>
+								<AlwaysUnvisible>false</AlwaysUnvisible>
+								<Visible>true</Visible>
+								<ToolItemData>
+									<ToolItemPersistData>
+										<Name>toolStripDropDownButton1</Name>
+										<Visible>true</Visible>
+										<Text>Show or Hide Items</Text>
+										<DisplayStyle>Text</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>UDE_0x2_{5BB818C0-3B63-4A4E-AF6C-4C4C95B45447}</Name>
+										<Visible>true</Visible>
+										<Text>Save Trace Stream ...</Text>
+										<DisplayStyle>Image</DisplayStyle>
+										<AppendAccelerator>true</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>UDE_0x3_{5BB818C0-3B63-4A4E-AF6C-4C4C95B45447}</Name>
+										<Visible>true</Visible>
+										<Text>Load Trace Stream ...</Text>
+										<DisplayStyle>Image</DisplayStyle>
+										<AppendAccelerator>true</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>UDE_0x5_{5BB818C0-3B63-4A4E-AF6C-4C4C95B45447}</Name>
+										<Visible>true</Visible>
+										<Text>Save Trace Stream As...</Text>
+										<DisplayStyle>Image</DisplayStyle>
+										<AppendAccelerator>true</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>UDE_0x9_{5BB818C0-3B63-4A4E-AF6C-4C4C95B45447}</Name>
+										<Visible>true</Visible>
+										<Text>Analyze Execution Sequence</Text>
+										<DisplayStyle>Image</DisplayStyle>
+										<AppendAccelerator>true</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name></Name>
+										<Visible>false</Visible>
+										<Text></Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>UDE_Ctrl_{85A18427-7349-463D-AD51-BF9C5E643643}_Core2</Name>
+										<Visible>true</Visible>
+										<Text></Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>UDE_0xE1_{D76DE436-4F94-483C-940B-19FE5E0CEDB1}</Name>
+										<Visible>true</Visible>
+										<Text>Execution Time Setup</Text>
+										<DisplayStyle>Image</DisplayStyle>
+										<AppendAccelerator>true</AppendAccelerator>
+									</ToolItemPersistData>
+								</ToolItemData>
+							</ToolbarPersistData>
+							<ToolbarPersistData>
+								<Bounds>
 									<X>3</X>
-									<Y>49</Y>
+									<Y>25</Y>
 									<Width>276</Width>
 									<Height>25</Height>
 								</Bounds>
@@ -986,13 +940,110 @@
 									</ToolItemPersistData>
 								</ToolItemData>
 							</ToolbarPersistData>
+							<ToolbarPersistData>
+								<Bounds>
+									<X>0</X>
+									<Y>50</Y>
+									<Width>1472</Width>
+									<Height>28</Height>
+								</Bounds>
+								<Name>Platform Main Menu</Name>
+								<AlwaysUnvisible>false</AlwaysUnvisible>
+								<Visible>true</Visible>
+								<ToolItemData>
+									<ToolItemPersistData>
+										<Name>Main Menu</Name>
+										<Visible>false</Visible>
+										<Text>&amp;Main</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>File Menu</Name>
+										<Visible>true</Visible>
+										<Text>&amp;File</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>Edit Menu</Name>
+										<Visible>true</Visible>
+										<Text>&amp;Edit</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>Debug Menu</Name>
+										<Visible>true</Visible>
+										<Text>&amp;Debug</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>Show Menu</Name>
+										<Visible>true</Visible>
+										<Text>&amp;Show</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>Views Menu</Name>
+										<Visible>true</Visible>
+										<Text>&amp;Views</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>Tools Menu</Name>
+										<Visible>true</Visible>
+										<Text>&amp;Tools</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>Config Menu</Name>
+										<Visible>true</Visible>
+										<Text>&amp;Config</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>Window Menu</Name>
+										<Visible>true</Visible>
+										<Text>&amp;Window</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>Workspace Menu</Name>
+										<Visible>false</Visible>
+										<Text>&amp;Workspace</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>Macro Menu</Name>
+										<Visible>true</Visible>
+										<Text>&amp;Macro</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+									<ToolItemPersistData>
+										<Name>Help Menu</Name>
+										<Visible>true</Visible>
+										<Text>&amp;Help</Text>
+										<DisplayStyle>ImageAndText</DisplayStyle>
+										<AppendAccelerator>false</AppendAccelerator>
+									</ToolItemPersistData>
+								</ToolItemData>
+							</ToolbarPersistData>
 						</ToolBars>
 					</TopContainer>
 					<BottomContainer>
 						<PanelBounds>
 							<X>0</X>
-							<Y>1029</Y>
-							<Width>1858</Width>
+							<Y>825</Y>
+							<Width>1472</Width>
 							<Height>28</Height>
 						</PanelBounds>
 						<ToolBars>
@@ -1000,7 +1051,7 @@
 								<Bounds>
 									<X>0</X>
 									<Y>0</Y>
-									<Width>1858</Width>
+									<Width>1472</Width>
 									<Height>28</Height>
 								</Bounds>
 								<Name>Platform Status Bar</Name>
@@ -1010,7 +1061,7 @@
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text>Ready</Text>
+										<Text>WARNING: Process Debug Manager not installed - script debugger is not available</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
@@ -1024,7 +1075,7 @@
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text>stm_spc582b60_chorus_discovery_starterkit_debug_jtag.cfg</Text>
+										<Text>stm_spc582b60_premiumkit_debug_jtag.cfg</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
@@ -1049,18 +1100,18 @@
 					<LeftContainer>
 						<PanelBounds>
 							<X>0</X>
-							<Y>74</Y>
+							<Y>78</Y>
 							<Width>0</Width>
-							<Height>955</Height>
+							<Height>747</Height>
 						</PanelBounds>
 						<ToolBars></ToolBars>
 					</LeftContainer>
 					<RightContainer>
 						<PanelBounds>
-							<X>1858</X>
-							<Y>74</Y>
+							<X>1472</X>
+							<Y>78</Y>
 							<Width>0</Width>
-							<Height>955</Height>
+							<Height>747</Height>
 						</PanelBounds>
 						<ToolBars></ToolBars>
 					</RightContainer>
@@ -1071,35 +1122,19 @@
 					<Screens>
 						<ScreenControlData>
 							<Bounds>
-								<X>1920</X>
-								<Y>0</Y>
-								<Width>1920</Width>
-								<Height>1080</Height>
-							</Bounds>
-							<WorkingArea>
-								<X>1982</X>
-								<Y>0</Y>
-								<Width>1858</Width>
-								<Height>1080</Height>
-							</WorkingArea>
-							<Primary>false</Primary>
-							<DeviceName>\\.\DISPLAY1</DeviceName>
-						</ScreenControlData>
-						<ScreenControlData>
-							<Bounds>
 								<X>0</X>
 								<Y>0</Y>
 								<Width>1920</Width>
 								<Height>1080</Height>
 							</Bounds>
 							<WorkingArea>
-								<X>62</X>
+								<X>78</X>
 								<Y>0</Y>
-								<Width>1858</Width>
+								<Width>1842</Width>
 								<Height>1080</Height>
 							</WorkingArea>
 							<Primary>true</Primary>
-							<DeviceName>\\.\DISPLAY2</DeviceName>
+							<DeviceName>\\.\DISPLAY1</DeviceName>
 						</ScreenControlData>
 					</Screens>
 				</ScreensControlData>
@@ -1158,8 +1193,8 @@
 			<OPEN_VIEW type="key">
 				<FrameCreated type="string">16.08.2025 09:36:10:756</FrameCreated>
 				<ViewSrv type="key">
-					<_ExtentX type="bin" size="8">DGQAAA==</_ExtentX>
-					<_ExtentY type="bin" size="8">SxIAAA==</_ExtentY>
+					<_ExtentX type="bin" size="8">9S8AAA==</_ExtentX>
+					<_ExtentY type="bin" size="8">Tg4AAA==</_ExtentY>
 					<_StockProps type="bin" size="8">AAAAAA==</_StockProps>
 					<Columns type="bin" size="8">CAAAAA==</Columns>
 					<ColName00 type="bin" size="16">VABhAHMAawAAAA==</ColName00>
@@ -1210,7 +1245,7 @@
 		<UDEUECUseCaseParameterView type="key">
 			<SAVED_VIEW_OBJS type="int">0</SAVED_VIEW_OBJS>
 		</UDEUECUseCaseParameterView>
-		<SelectedPrinter type="string">PDFCreator</SelectedPrinter>
+		<SelectedPrinter type="string">Microsoft Print to PDF</SelectedPrinter>
 		<perspective type="key">
 			<autoSwitchOnDebuggerChange type="flag">0</autoSwitchOnDebuggerChange>
 			<autoSwitchMap type="key">
@@ -1224,7 +1259,7 @@
 			<MacroLib type="string">C:\Program Files\pls\UDE Starterkit 2021\StdLibrary.mso</MacroLib>
 		</Macro>
 		<PLACEMENT type="key">
-			<MULTICORELOADERDLG type="string">2571,3252,417,664</MULTICORELOADERDLG>
+			<MULTICORELOADERDLG type="string">397,1301,457,760</MULTICORELOADERDLG>
 		</PLACEMENT>
 		<EXTRAVALUE type="key">
 			<MULTICORELOADERDLG type="int">0</MULTICORELOADERDLG>
@@ -1233,18 +1268,18 @@
 			<LOADER_REGKEY_WSP type="string">{4f82d1c4-6098-4830-89ba-ffdf1ea78f49}</LOADER_REGKEY_WSP>
 		</Loader>
 		<UDESTK.ProgressWin type="key">
-			<Normal type="string">;Courier;9.75;0;0;0;0;400;0;000000;FFFFFF</Normal>
-			<Selected type="string">;Courier;9.75;0;0;0;0;400;0;FFFFFF;FF0000</Selected>
-			<ProgressBar type="string">;Courier;9.75;0;0;0;0;400;0;000000;66846C</ProgressBar>
-			<SelectedBar type="string">;Courier;9.75;0;0;0;0;400;0;FFFFFF;808080</SelectedBar>
-			<Warning type="string">;Courier;9.75;0;0;0;0;400;0;000000;0000FF</Warning>
+			<Normal type="string">;Courier;9.6;0;0;0;0;400;0;000000;FFFFFF</Normal>
+			<Selected type="string">;Courier;9.6;0;0;0;0;400;0;FFFFFF;FF0000</Selected>
+			<ProgressBar type="string">;Courier;9.6;0;0;0;0;400;0;000000;66846C</ProgressBar>
+			<SelectedBar type="string">;Courier;9.6;0;0;0;0;400;0;FFFFFF;808080</SelectedBar>
+			<Warning type="string">;Courier;9.6;0;0;0;0;400;0;000000;0000FF</Warning>
 		</UDESTK.ProgressWin>
 	</INI_SECTION>
 	<AddOns type="key">
 		<UDESTK.Script type="key">
 			<MacroGuiEntries type="key">
-				<LastScriptFilePath type="string">C:\Users\ADMIN\Documents\pls\UDESTK 2021</LastScriptFilePath>
-				<Macro_16_08_25_09_54_19_0 type="key">
+				<LastScriptFilePath type="string">..\..\..\..\..\..\..\ADMIN\Documents\pls\UDESTK 2021</LastScriptFilePath>
+				<Macro_16_08_25_20_08_58_0 type="key">
 					<ScriptDescription type="string">The script contains a collection of macros to save memory content into different file formats 
 and fill target memory ranges</ScriptDescription>
 					<ScriptPath type="string">V:\UDE\AddOns\Macro\MacroLibrary\StdMacros1.dsm</ScriptPath>
@@ -1524,7 +1559,7 @@ End Sub</ScriptSource>
 					<ScriptFromStg type="flag">1</ScriptFromStg>
 					<LocalComputerName type="string">WS_CORE_DUO</LocalComputerName>
 					<ExternalScriptPath type="string"></ExternalScriptPath>
-					<NextNodeName type="string">Macro_16_08_25_09_55_33_0</NextNodeName>
+					<NextNodeName type="string">Macro_16_08_25_20_11_55_0</NextNodeName>
 					<UnAss type="key">
 						<GUIEntry type="key">
 							<MenuID type="int">10</MenuID>
@@ -1581,7 +1616,7 @@ End Sub</ScriptSource>
 						<GUIEntryDescription type="string"></GUIEntryDescription>
 					</FillDWord>
 					<NoOfFunctions type="int">5</NoOfFunctions>
-				</Macro_16_08_25_09_54_19_0>
+				</Macro_16_08_25_20_08_58_0>
 			</MacroGuiEntries>
 			<LastSelectedMacro type="string"></LastSelectedMacro>
 		</UDESTK.Script>
@@ -1602,13 +1637,13 @@ End Sub</ScriptSource>
 					<FrameCreated type="string">16.08.2025 09:36:19:920</FrameCreated>
 					<ViewSrv type="key"></ViewSrv>
 					<NETFrameMode type="int">77824</NETFrameMode>
-					<NETFrameSaveIndex type="int">6</NETFrameSaveIndex>
+					<NETFrameSaveIndex type="int">9</NETFrameSaveIndex>
 					<FrameUserTitle type="string"></FrameUserTitle>
 				</OPEN_VIEW>
 				<SAVED_VIEW type="int">0</SAVED_VIEW>
 			</StdUDESymbolExplWin>
 			<StdUDEProgWin type="key">
-				<SAVED_VIEW_OBJS type="int">5</SAVED_VIEW_OBJS>
+				<SAVED_VIEW_OBJS type="int">7</SAVED_VIEW_OBJS>
 				<OPEN_VIEW00 type="key">
 					<FrameCreated type="string">16.08.2025 09:43:45:030</FrameCreated>
 					<ViewSrv type="key">
@@ -1631,7 +1666,7 @@ End Sub</ScriptSource>
 							<HoldedPeriod type="int">0</HoldedPeriod>
 						</AnimateQueue>
 					</ViewSrv>
-					<SourceFile type="string">code &lt;0xFC676C-0xFC6B6B&gt;</SourceFile>
+					<SourceFile type="string">code &lt;0xFCA8C0-0xFCACBF&gt;</SourceFile>
 					<SourceFileInstFlag type="int">4</SourceFileInstFlag>
 					<NETFrameMode type="int">73728</NETFrameMode>
 					<NETFrameSaveIndex type="int">3</NETFrameSaveIndex>
@@ -1678,12 +1713,42 @@ End Sub</ScriptSource>
 						</AnimateQueue>
 					</ViewSrv>
 					<SourceFile type="string">..\source\Panthera.c</SourceFile>
-					<SourceFileInstFlag type="int">2</SourceFileInstFlag>
+					<SourceFileInstFlag type="int">1</SourceFileInstFlag>
 					<NETFrameMode type="int">73728</NETFrameMode>
-					<NETFrameSaveIndex type="int">8</NETFrameSaveIndex>
+					<NETFrameSaveIndex type="int">6</NETFrameSaveIndex>
 					<FrameUserTitle type="string"></FrameUserTitle>
 				</OPEN_VIEW04>
 				<SAVED_VIEW04 type="int">4</SAVED_VIEW04>
+				<OPEN_VIEW05 type="key">
+					<FrameCreated type="string">16.08.2025 18:02:14:432</FrameCreated>
+					<ViewSrv type="key">
+						<AnimateQueue type="key">
+							<RunningPeriod type="int">0</RunningPeriod>
+							<HoldedPeriod type="int">0</HoldedPeriod>
+						</AnimateQueue>
+					</ViewSrv>
+					<SourceFile type="string">..\components\spc582bxx_low_level_drivers_component_rla\lib\src\pit_lld.c</SourceFile>
+					<SourceFileInstFlag type="int">1</SourceFileInstFlag>
+					<NETFrameMode type="int">73728</NETFrameMode>
+					<NETFrameSaveIndex type="int">7</NETFrameSaveIndex>
+					<FrameUserTitle type="string"></FrameUserTitle>
+				</OPEN_VIEW05>
+				<SAVED_VIEW05 type="int">5</SAVED_VIEW05>
+				<OPEN_VIEW06 type="key">
+					<FrameCreated type="string">16.08.2025 18:25:54:257</FrameCreated>
+					<ViewSrv type="key">
+						<AnimateQueue type="key">
+							<RunningPeriod type="int">0</RunningPeriod>
+							<HoldedPeriod type="int">0</HoldedPeriod>
+						</AnimateQueue>
+					</ViewSrv>
+					<SourceFile type="string">..\components\spc582bxx_low_level_drivers_component_rla\lib\src\serial_lld.c</SourceFile>
+					<SourceFileInstFlag type="int">1</SourceFileInstFlag>
+					<NETFrameMode type="int">73728</NETFrameMode>
+					<NETFrameSaveIndex type="int">8</NETFrameSaveIndex>
+					<FrameUserTitle type="string"></FrameUserTitle>
+				</OPEN_VIEW06>
+				<SAVED_VIEW06 type="int">6</SAVED_VIEW06>
 			</StdUDEProgWin>
 			<StdUDESFRView type="key">
 				<SAVED_VIEW_OBJS type="int">0</SAVED_VIEW_OBJS>
@@ -1697,10 +1762,10 @@ End Sub</ScriptSource>
 					<FrameCreated type="string">16.08.2025 09:36:01:876</FrameCreated>
 					<ViewSrv type="key">
 						<TopIndex type="int">0</TopIndex>
-						<CaretIndex type="int">19</CaretIndex>
-						<NameWidth type="int">247</NameWidth>
+						<CaretIndex type="int">13</CaretIndex>
+						<NameWidth type="int">236</NameWidth>
 						<AddressWidth type="int">0</AddressWidth>
-						<ValueWidth type="int">166</ValueWidth>
+						<ValueWidth type="int">161</ValueWidth>
 						<Value2Width type="int">0</Value2Width>
 						<MinMaxWidth type="int">0</MinMaxWidth>
 						<Watches type="key">
@@ -1712,27 +1777,42 @@ End Sub</ScriptSource>
 							<FloatFormatForValue2 type="int">3</FloatFormatForValue2>
 							<RefreshPeriodGlobalEnable type="int">1</RefreshPeriodGlobalEnable>
 							<Watch1 type="key">
-								<Name type="string">thisMessage (global) @1</Name>
-								<Status type="string">#0#0,0$0,2$#0,1$0,2$#0,2$0,2$</Status>
+								<Name type="string">elapsed (global) @1</Name>
 								<RunningPeriod1 type="int">500</RunningPeriod1>
 								<HoldedPeriod1 type="int">0</HoldedPeriod1>
 							</Watch1>
 							<Watch2 type="key">
-								<Name type="string">SD2 (global) @1</Name>
+								<Name type="string">thisMeas (global) @1</Name>
 								<Status type="string">#0#</Status>
-								<RunningPeriod2 type="int">500</RunningPeriod2>
-								<HoldedPeriod2 type="int">0</HoldedPeriod2>
 							</Watch2>
 							<Watch3 type="key">
-								<Name type="string">BufRX (global) @1</Name>
-								<Status type="string">#0#0?13762661?#0,0$1,2$#0,1$1,2$#0,2$1,2$#0,3$1,2$#0,4$1,2$#0,5$1,2$</Status>
+								<Name type="string">SD2 (global) @1</Name>
+								<Status type="string">#0#</Status>
 								<RunningPeriod3 type="int">500</RunningPeriod3>
 								<HoldedPeriod3 type="int">0</HoldedPeriod3>
 							</Watch3>
+							<Watch4 type="key">
+								<Name type="string">BufRX (global) @1</Name>
+								<Status type="string">#0#0?13762661?#0,0$1,2$#0,1$1,2$#0,2$1,2$#0,3$1,2$#0,4$1,2$#0,5$1,2$</Status>
+								<RunningPeriod4 type="int">500</RunningPeriod4>
+								<HoldedPeriod4 type="int">0</HoldedPeriod4>
+							</Watch4>
+							<Watch5 type="key">
+								<Name type="string">motor_height (global) @1</Name>
+								<Status type="string">#0#0,0$-1,0$#0,2$-1,0$#0,3$-1,0$#0,4$-1,0$</Status>
+								<RunningPeriod5 type="int">500</RunningPeriod5>
+								<HoldedPeriod5 type="int">0</HoldedPeriod5>
+							</Watch5>
+							<Watch6 type="key">
+								<Name type="string">motor_slider (global) @1</Name>
+								<Status type="string">#0#0,0$0,0$#0,2$0,0$#0,3$0,0$#0,4$0,0$</Status>
+								<RunningPeriod6 type="int">500</RunningPeriod6>
+								<HoldedPeriod6 type="int">0</HoldedPeriod6>
+							</Watch6>
 						</Watches>
 					</ViewSrv>
 					<NETFrameMode type="int">81920</NETFrameMode>
-					<NETFrameSaveIndex type="int">7</NETFrameSaveIndex>
+					<NETFrameSaveIndex type="int">10</NETFrameSaveIndex>
 					<FrameUserTitle type="string"></FrameUserTitle>
 				</OPEN_VIEW00>
 				<SAVED_VIEW00 type="int">0</SAVED_VIEW00>
@@ -1841,7 +1921,7 @@ End Sub</ScriptSource>
 		<UdeApiLogging type="flag">0</UdeApiLogging>
 		<SaveAndCopyWithoutTimeStamps type="flag">0</SaveAndCopyWithoutTimeStamps>
 	</Logging>
-	<TargetInfoFile type="string">C:\Users\ADMIN\Documents\pls\UDESTK 2021\Targets\stm_spc582b60_chorus_discovery_starterkit_debug_jtag.cfg</TargetInfoFile>
+	<TargetInfoFile type="string">..\..\..\..\..\..\Documents\pls\UDESTK 2021\Targets\stm_spc582b60_premiumkit_debug_jtag.cfg</TargetInfoFile>
 	<TargInfoFlags type="key">
 		<Controller0 type="key">
 			<Core2 type="key">

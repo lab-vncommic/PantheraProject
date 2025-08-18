@@ -13,18 +13,13 @@
 #include <stdio.h>
 #include <stddef.h>
 #include "string.h"
-//#include "StateManagement.h"
-
-#include "Measurement.h"
 
 #define UART_TX_DEBUG_LENGTH 		100
 #define UART_TX_LENGTH				3
 #define UART_RX_LENGTH 				6
 
 void UART_Init(void);
-void UART_Monitor(void);
 void UART_HandleRequest(void);
-
 void UART_TX_Callback(SerialDriver *sdp);
 
 extern char BufTXDebug[UART_TX_DEBUG_LENGTH];

@@ -6,7 +6,7 @@
  */
 #include "MotorDriver.h"
 Motor_TypeDef motor_height, motor_recliner, motor_slider;
-PeakDetector_TypeDef thisDetetor;
+MotorSensorless_TypeDef thisDetetor;
 int i = 0;
 
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
@@ -15,11 +15,11 @@ void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology);
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
 void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
 void MD_UpdateMeasType(Motor_TypeDef *pMotor, MeasType_TypeDef meas_type);
-_Bool MD_CheckRisingEdge(uint8_t current_value);
-_Bool MD_ScaleResolution(uint8_t current_value);
-_Bool MD_CurrentRippleCounting(uint16_t current_value);
-_Bool MD_DetectPeak(uint16_t current_value);
-void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value);
+_Bool MD_CheckRisingEdge(Motor_TypeDef *pMotor);
+_Bool MD_ScaleResolution(Motor_TypeDef *pMotor);
+_Bool MD_CurrentRippleCounting(Motor_TypeDef *pMotor, uint16_t current_value);
+_Bool MD_DetectPeak(Motor_TypeDef *pMotor);
+//void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value);
 
 /**
  * @brief Configures the motor driver GPIO pins
@@ -70,29 +70,29 @@ void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology)
  */
 void MD_UpdateDriver(Motor_TypeDef *pMotor)
 {
-    if (pMotor->driver.ina.value == 1) {
-        GPIO_SetPin(&pMotor->driver.ina);
-    } else GPIO_ClearPin(&pMotor->driver.ina);
-
-    if (pMotor->driver.inb.value == 1) {
-        GPIO_SetPin(&pMotor->driver.inb);
-    } else GPIO_ClearPin(&pMotor->driver.inb);
-
-    if (pMotor->driver.sel0.value == 1) {
-        GPIO_SetPin(&pMotor->driver.sel0);
-    } else GPIO_ClearPin(&pMotor->driver.sel0);
-
-    if (pMotor->driver.sel1.value == 1) {
-        GPIO_SetPin(&pMotor->driver.sel1);
-    } else GPIO_ClearPin(&pMotor->driver.sel1);
-
-    if (pMotor->driver.mul_en.value == 1) {
-        GPIO_SetPin(&pMotor->driver.mul_en);
-    } else GPIO_ClearPin(&pMotor->driver.mul_en);
-
-    if (pMotor->driver.pwm.value == 1) {
-        GPIO_SetPin(&pMotor->driver.pwm);
-    } else GPIO_ClearPin(&pMotor->driver.pwm);
+//    if (pMotor->driver.ina.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.ina);
+//    } else GPIO_ClearPin(&pMotor->driver.ina);
+//
+//    if (pMotor->driver.inb.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.inb);
+//    } else GPIO_ClearPin(&pMotor->driver.inb);
+//
+//    if (pMotor->driver.sel0.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.sel0);
+//    } else GPIO_ClearPin(&pMotor->driver.sel0);
+//
+//    if (pMotor->driver.sel1.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.sel1);
+//    } else GPIO_ClearPin(&pMotor->driver.sel1);
+//
+//    if (pMotor->driver.mul_en.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.mul_en);
+//    } else GPIO_ClearPin(&pMotor->driver.mul_en);
+//
+//    if (pMotor->driver.pwm.value == 1) {
+//        GPIO_SetPin(&pMotor->driver.pwm);
+//    } else GPIO_ClearPin(&pMotor->driver.pwm);
 }
 
 /**
@@ -198,7 +198,7 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value)
 {
 	if (pMotor->topology == SENSOR) {
 		pMotor->driver.hall.value = GPIO_ReadPin(&pMotor->driver.hall);
-	    if (MD_ScaleResolution(pMotor->driver.hall.value)) {
+	    if (MD_ScaleResolution(pMotor)) {
 	        if (pMotor->status == FORWARD) {
 	            pMotor->axis += 1;
 	        } else if (pMotor->status == BACKWARD) {
@@ -206,7 +206,7 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value)
 	        }
 	    }
 	} else {
-		if (MD_CurrentRippleCounting(current_value)) {
+		if (MD_CurrentRippleCounting(pMotor, current_value)) {
 	        if (pMotor->status == FORWARD) {
 		        pMotor->axis += 1;
 		    } else if (pMotor->status == BACKWARD) {
@@ -232,94 +232,98 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value)
  *
  * @note This function maintains state between calls using static variables
  */
-_Bool MD_CheckRisingEdge(uint8_t current_value)
+_Bool MD_CheckRisingEdge(Motor_TypeDef *pMotor)
 {
-	static _Bool is_edge_detection_enabled = true;
-	static uint8_t counter = 0;
-
-	if (is_edge_detection_enabled == true) {
-		if (current_value == 1)
+	if (pMotor->sensor.flag_checking_rising_edge == true) {
+		if (pMotor->driver.hall.value == 1)
 		{
-			if (counter++ >= TIME_DEBOUNCE_RISING_EDGE)
+			if (pMotor->sensor.cnt_debounce++ >= TIME_DEBOUNCE_RISING_EDGE)
 			{
-				counter = 0;
-				is_edge_detection_enabled = false;
+				pMotor->sensor.cnt_debounce = 0;
+				pMotor->sensor.flag_checking_rising_edge = false;
 				return true;
 			}
 
-		} else counter = 0;
+		} else pMotor->sensor.cnt_debounce = 0;
 	}
 
-	if (current_value == 0)
+	if (pMotor->driver.hall.value == 0)
 	{
-		is_edge_detection_enabled = true;
+		pMotor->sensor.flag_checking_rising_edge = true;
 	}
 	return false;
 }
 
-_Bool MD_ScaleResolution(uint8_t current_value)
+_Bool MD_ScaleResolution(Motor_TypeDef *pMotor)
 {
-	static uint16_t counter_pulse = 0;
+	if (MD_CheckRisingEdge(pMotor)) {
+		pMotor->sensor.cnt_scale++;
 
-	if (MD_CheckRisingEdge(current_value)) {
-		counter_pulse++;
+		if (pMotor->sensor.cnt_scale >= NO_PULSE_PER_UNIT_AXIS) {
+			pMotor->sensor.cnt_scale = 0;
+			return true;
+		}
+	} else pMotor->sensor.cnt_scale = 0;
+	return false;
+}
 
-		if (counter_pulse >= NO_PULSE_PER_AXIS) {
-			counter_pulse = 0;
+_Bool MD_CurrentRippleCounting(Motor_TypeDef *pMotor, uint16_t current_value)
+{
+	pMotor->sensorless.previous_value = pMotor->sensorless.current_value;
+	pMotor->sensorless.current_value  = current_value;
+	if (MD_DetectPeak(pMotor)) {
+		pMotor->sensorless.cnt_current_ripple++;
+
+		if (pMotor->sensorless.cnt_current_ripple >= PULSE_PER_ROUND) {
+			pMotor->sensorless.cnt_current_ripple = 0;
 			return true;
 		}
 	}
 	return false;
 }
 
-_Bool MD_CurrentRippleCounting(uint16_t current_value)
+_Bool MD_DetectPeak(Motor_TypeDef *pMotor)
 {
-	static uint16_t cnt_current_ripple;
+    int16_t diff = pMotor->sensorless.current_value - pMotor->sensorless.previous_value;
 
-	if (MD_DetectPeak(current_value)) {
-		cnt_current_ripple++;
+    if (diff > 0) {
+        if (pMotor->sensorless.flag_rising) {
+        } else {
+            if (pMotor->sensorless.cnt_falling > 0) {
+                pMotor->sensorless.cnt_falling = 0;
+            }
 
-		if (cnt_current_ripple >= PULSE_PER_ROUND) {
-			cnt_current_ripple = 0;
-			return true;
-		}
-	}
-	return false;
-}
+            pMotor->sensorless.cnt_rising++;
 
-_Bool MD_DetectPeak(uint16_t current_value)
-{
-	// Update new value to buffer
-//	for (i = 0; i < WINDOW_SIZE - 1; i++) {
-//		thisDetetor.values[i] = thisDetetor.values[i + 1];
-//	}
-//	thisDetetor.values[WINDOW_SIZE-1] = current_value;
+            if (pMotor->sensorless.cnt_rising >= NUM_DEBOUNCE_SSLESS) {
+                pMotor->sensorless.flag_rising = 1;
+            }
+        }
+    }
+    else if (diff < 0) {
+        if (pMotor->sensorless.flag_rising) {
+            pMotor->sensorless.cnt_falling++;
 
-	thisDetetor.previous_value = thisDetetor.current_value;
-	thisDetetor.current_value  = current_value;
+            if (pMotor->sensorless.cnt_falling >= NUM_DEBOUNCE_SSLESS) {
+                pMotor->sensorless.flag_falling = 1;
+            }
+        }
+        else {
+            pMotor->sensorless.cnt_rising = 0;
+            pMotor->sensorless.cnt_falling = 0;
+        }
+    }
 
-	if (thisDetetor.current_value - thisDetetor.previous_value > 0) {
-		thisDetetor.cnt_rising++;
-	} else thisDetetor.cnt_rising = 0;
+    if (pMotor->sensorless.flag_rising && pMotor->sensorless.flag_falling) {
+        pMotor->sensorless.flag_rising = 0;
+        pMotor->sensorless.flag_falling = 0;
+        pMotor->sensorless.cnt_rising = 0;
+        pMotor->sensorless.cnt_falling = 0;
 
-	if (thisDetetor.current_value - thisDetetor.previous_value < 0) {
-		thisDetetor.cnt_falling++;
-	} else thisDetetor.cnt_falling = 0;
+        return true;
+    }
 
-	if (thisDetetor.cnt_rising >= 3) {
-		thisDetetor.flag_rising = 1;
-	}
-
-	if (thisDetetor.cnt_falling >= 3) {
-		thisDetetor.flag_falling = 1;
-	}
-
-	if ((thisDetetor.flag_rising) && (thisDetetor.flag_falling)) {
-		thisDetetor.flag_falling = 0;
-		thisDetetor.flag_rising  = 0;
-		return true;
-	}
-	return false;
+    return false;
 }
 
 /**
@@ -340,11 +344,11 @@ _Bool MD_DetectPeak(uint16_t current_value)
  */
 void MD_Init(void)
 {
-	// MD_ConfigDriver(&motor_slider, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1);
-	// MD_ConfigDriver(&motor_height, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2);
-	// MD_ConfigDriver(&motor_recliner, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
+// 	MD_ConfigDriver(&motor_slider, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1);
+// 	MD_ConfigDriver(&motor_height, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2);
+// 	MD_ConfigDriver(&motor_recliner, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
 
-	MD_ConfigTopology(&motor_height, SENSOR);
+	MD_ConfigTopology(&motor_height, SENSORLESS);
 	MD_ConfigTopology(&motor_recliner, SENSORLESS);
 	MD_ConfigTopology(&motor_slider, SENSOR);
 
@@ -453,30 +457,33 @@ void MD_UpdateMeas(MeasType_TypeDef meas_type)
  *         for height, recliner and slider axes
  * @note Currently returns the same value (height axis) for all axes
  */
-SeatAxis_TypeDef MD_GetSeatAxis(void)
+void MD_GetSeatAxis(SeatAxis_TypeDef *pSeat)
 {
-	SeatAxis_TypeDef temp_axis;
-	temp_axis.height 	= motor_height.axis;
-	temp_axis.recliner  = motor_recliner.axis;
-	temp_axis.slider 	= motor_slider.axis;
-	return temp_axis;
+	pSeat->height 	= motor_height.axis;
+	pSeat->recliner = motor_recliner.axis;
+	pSeat->slider 	= motor_slider.axis;
 }
 
-MotorComm_TypeDef MD_UpdateToComm(void)
+void MD_UpdateToComm(MotorComm_TypeDef *pMotor)
 {
-	MotorComm_TypeDef temp_motor_system;
-	temp_motor_system.motor_slider.topology   = motor_slider.topology;
-	temp_motor_system.motor_slider.ina_value  = motor_slider.driver.ina.value;
-	temp_motor_system.motor_slider.inb_value  = motor_slider.driver.inb.value;
+	pMotor->motor_slider.topology   = motor_slider.topology;
+	pMotor->motor_slider.ina_value  = motor_slider.driver.ina.value;
+	pMotor->motor_slider.inb_value  = motor_slider.driver.inb.value;
 	
-	temp_motor_system.motor_height.topology   = motor_height.topology;
-	temp_motor_system.motor_height.ina_value  = motor_height.driver.ina.value;
-	temp_motor_system.motor_height.inb_value  = motor_height.driver.inb.value;
+	pMotor->motor_height.topology   = motor_height.topology;
+	pMotor->motor_height.ina_value  = motor_height.driver.ina.value;
+	pMotor->motor_height.inb_value  = motor_height.driver.inb.value;
 	
-	temp_motor_system.motor_recliner.topology  = motor_recliner.topology;
-	temp_motor_system.motor_recliner.ina_value = motor_recliner.driver.ina.value;
-	temp_motor_system.motor_recliner.inb_value = motor_recliner.driver.inb.value;
-	return temp_motor_system;
+	pMotor->motor_recliner.topology  = motor_recliner.topology;
+	pMotor->motor_recliner.ina_value = motor_recliner.driver.ina.value;
+	pMotor->motor_recliner.inb_value = motor_recliner.driver.inb.value;
+}
+
+void MD_ResetAxis(void)
+{
+	motor_slider.axis   = 0;
+	motor_height.axis	= 0;
+	motor_recliner.axis = 0;
 }
 
 

@@ -16,23 +16,23 @@ Memory_TypeDef thisMemory;
  */
 const char* convert_Dec_to_Hex(uint32_t a) {
     static char hex_output[9];
-    const char hex_digits[] = "0123456789ABCDEF";
+    // const char hex_digits[] = "0123456789ABCDEF";
 
-    if (a == 0) {
-        return "00";
-    }
+    // hex_output[0] = '0'; // Initialize first digit
+    // hex_output[1] = '0'; // Initialize second digit
+    // hex_output[2] = '\0'; // Null-terminate
 
-    int index = 8;
-    hex_output[index] = '\0';
+    // if (a == 0) {
+    //     return hex_output; // Return "00" for input 0
+    // }
 
-    while (a > 0) {
-        hex_output[--index] = hex_digits[a % 16];
-        a /= 16;
-    }
-    if (index == 7) {
-        hex_output[--index] = '0';
-    }
-    return &hex_output[index];
+    // int index = 2;
+    // while (a > 0 && index > 0) {
+    //     hex_output[--index] = hex_digits[a % 16];
+    //     a /= 16;
+    // }
+
+    return hex_output;
 }
 
 /**
@@ -46,14 +46,14 @@ const char* convert_Dec_to_Hex(uint32_t a) {
  * @retval None
  */
 void merge_char(const char* a, const char* b, const char* c, char* output, size_t output_size) {
-    uint32_t len_a = strlen(a), len_b = strlen(b), len_c = strlen(c);
-    if (output_size < len_a + len_b + len_c + 1) {
-        if (output_size >= 1) output[0] = '\0';
-        return;
-    }
-    strcpy(output, a);
-    strcat(output, b);
-    strcat(output, c);
+    // uint32_t len_a = strlen(a), len_b = strlen(b), len_c = strlen(c);
+    // if (output_size < len_a + len_b + len_c + 1) {
+    //     if (output_size >= 1) output[0] = '\0';
+    //     return;
+    // }
+    // strcpy(output, a);
+    // strcat(output, b);
+    // strcat(output, c);
 }
 
 /**
@@ -98,10 +98,10 @@ uint32_t convert_charHex_to_uint32_t(const char* hex_str) {
  */
 uint32_t convert_coordinates_into_single_value(uint32_t x,uint32_t y, uint32_t z){
     char result[10],a[3],b[3],c[3];
-    strcpy(a,convert_Dec_to_Hex(x));
-    strcpy(b,convert_Dec_to_Hex(y));
-    strcpy(c,convert_Dec_to_Hex(z));
-    merge_char(a, b,c, result, sizeof(result));
+    // strcpy(a,convert_Dec_to_Hex(x));
+    // strcpy(b,convert_Dec_to_Hex(y));
+    // strcpy(c,convert_Dec_to_Hex(z));
+    // merge_char(a, b,c, result, sizeof(result));
     uint32_t d = convert_charHex_to_uint32_t(result);
     return d;
 }
@@ -124,32 +124,26 @@ void MEM_Write(uint32_t x,uint32_t y, uint32_t z, uint16_t id_recall){
  * @param  input:  Input hex string of at least 6 characters (e.g. "0A1B2C").
  * @retval None
  */
-void seperate_char( char* a,  char* b,  char* c, char* input) {
-    if(strlen(input)==5){
-        a[0] = '0';
-        a[1] = input[0];
-        a[2] = '\0';
+void seperate_char(char* a, char* b, char* c, const char* input) {
+    // size_t len = strlen(input);
+    // if (len != 6) {
+    //     a[0] = b[0] = c[0] = '0';
+    //     a[1] = b[1] = c[1] = '0';
+    //     a[2] = b[2] = c[2] = '\0';
+    //     return;
+    // }
 
-        b[0] = input[1];
-        b[1] = input[2];
-        b[2] = '\0';
+    // a[0] = input[0];
+    // a[1] = input[1];
+    // a[2] = '\0';
 
-        c[0] = input[3];
-        c[1] = input[4];
-        c[2] = '\0';
-    }else{
-        a[0] = input[0];
-        a[1] = input[1];
-        a[2] = '\0';
+    // b[0] = input[2];
+    // b[1] = input[3];
+    // b[2] = '\0';
 
-        b[0] = input[2];
-        b[1] = input[3];
-        b[2] = '\0';
-
-        c[0] = input[4];
-        c[1] = input[5];
-        c[2] = '\0';
-    }
+    // c[0] = input[4];
+    // c[1] = input[5];
+    // c[2] = '\0';
 }
 
 /**
@@ -160,17 +154,15 @@ void seperate_char( char* a,  char* b,  char* c, char* input) {
  * @note   Decoded values are stored in global variable `thisMemory`.
  */
 void MEM_Read(uint16_t id_recall){
-	uint32_t output_EEPROM = EEPROM_Read(id_recall);
+// 	uint32_t output_EEPROM = EEPROM_Read(id_recall);
 
-    char str_source[10], x_axis_str[3],y_axis_str[3],z_axis_str[3];
-    strcpy(str_source,convert_Dec_to_Hex(output_EEPROM));
-    seperate_char(x_axis_str,y_axis_str,z_axis_str,str_source);
-    thisMemory.x = convert_charHex_to_uint32_t(x_axis_str);
-    thisMemory.y = convert_charHex_to_uint32_t(y_axis_str);
-    thisMemory.z = convert_charHex_to_uint32_t(z_axis_str);
-//    thisMemory.x = (uint16_t) convert_charHex_to_uint32_t(x_axis_str);
-//    thisMemory.y = (uint16_t) convert_charHex_to_uint32_t(y_axis_str);
-//    thisMemory.z = (uint16_t) convert_charHex_to_uint32_t(z_axis_str);
+//     char str_source[10], x_axis_str[3],y_axis_str[3],z_axis_str[3];
+// //    strcpy(str_source,convert_Dec_to_Hex(output_EEPROM));
+//     snprintf(str_source, sizeof(str_source), "%06X", (unsigned int)output_EEPROM);
+//     seperate_char(x_axis_str,y_axis_str,z_axis_str,str_source);
+//     thisMemory.x = convert_charHex_to_uint32_t(x_axis_str);
+//     thisMemory.y = convert_charHex_to_uint32_t(y_axis_str);
+//     thisMemory.z = convert_charHex_to_uint32_t(z_axis_str);
 }
 
 /**
@@ -180,14 +172,12 @@ void MEM_Read(uint16_t id_recall){
  * @param[in] id_recall The recall position ID (1-3) to retrieve
  * @return SeatAxis_TypeDef Structure containing the height, recliner, and slider positions
  */
-SeatAxis_TypeDef MEM_GetSeatAxis(uint16_t id_recall)
+void MEM_GetSeatAxis(SeatAxis_TypeDef *pSeat, uint16_t id_recall)
 {
-	MEM_Read(id_recall);
-	SeatAxis_TypeDef temp_memory_axis;
-	temp_memory_axis.height   = thisMemory.x;
-	temp_memory_axis.recliner = thisMemory.y;
-	temp_memory_axis.slider   = thisMemory.z;
-	return temp_memory_axis;
+	// MEM_Read(id_recall);
+	// pSeat->height   = thisMemory.x;
+	// pSeat->recliner = thisMemory.y;
+	// pSeat->slider   = thisMemory.z;
 }
 
 

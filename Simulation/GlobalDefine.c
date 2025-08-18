@@ -21,7 +21,7 @@ uint32_t begin, end, elapsed;
  */
 void GDE_Config(void)
 {
-	// // Config timer to measure execute time
+	// Config timer to measure execute time
 	// stm_lld_start(&STMD3,stm2_config);
 	// stm_lld_enable(&STMD3);
 

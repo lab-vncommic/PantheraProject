@@ -13,6 +13,7 @@ void MEAS_GetValueQ15(Meas_TypeDef *pMeas);
 void MEAS_GetValueF32(Meas_TypeDef *pMeas);
 void MEAS_GetValue(MeasType_TypeDef meas_type);
 void MEAS_GetRealValue(MeasType_TypeDef meas_type);
+uint16_t MEAS_LPF(uint16_t new_value, uint16_t prev_value, uint16_t alpha);
 
 /**
  * @brief  Configures a measurement object with specified parameters
@@ -86,9 +87,20 @@ void MEAS_GetValueQ15(Meas_TypeDef *pMeas)
 {
     if(pMeas == NULL)
     	return;
+    pMeas->prev_value = pMeas->value_q15;
     if (pMeas->calc_method == CALC_METHOD_Q15) {
         pMeas->value_q15 = _q15_mul(pMeas->raw >> 1 , pMeas->scale_factor);
 	} else pMeas->value_q15 = _q15_mul(pMeas->raw >>1 , _q15(1));
+
+    pMeas->value_q15 = MEAS_LPF(pMeas->value_q15, pMeas->prev_value, pMeas->alpha);
+}
+
+uint16_t MEAS_LPF(uint16_t new_value, uint16_t prev_value, uint16_t alpha)
+{
+    int32_t temp1 = ((int32_t)alpha * new_value) >> 15;
+    int16_t one_minus_alpha = 32767 - alpha;
+    int32_t temp2 = ((int32_t)one_minus_alpha * prev_value) >> 15;
+    return (uint16_t)(temp1 + temp2);
 }
 
 /**
@@ -137,9 +149,9 @@ void MEAS_Init(void)
 	ADC_Init(&thatADC);
 
 	// Config parameters for measurement objects
-    MEAS_Config(&thisMeas.current_slider, CURRENT_MT1_OFFSET, CURRENT_MT1_SCALE_FACTOR, 0U, CURRENT_MT1_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
-    MEAS_Config(&thisMeas.current_height, CURRENT_MT2_OFFSET, CURRENT_MT2_SCALE_FACTOR, 0U, CURRENT_MT2_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
-    MEAS_Config(&thisMeas.current_recliner, CURRENT_MT3_OFFSET, CURRENT_MT3_SCALE_FACTOR, 0U, CURRENT_MT3_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
+    MEAS_Config(&thisMeas.current_slider, CURRENT_MT1_OFFSET, CURRENT_MT1_SCALE_FACTOR, CURRENT_MT1_ALPHA, CURRENT_MT1_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
+    MEAS_Config(&thisMeas.current_height, CURRENT_MT2_OFFSET, CURRENT_MT2_SCALE_FACTOR, CURRENT_MT2_ALPHA, CURRENT_MT2_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
+    MEAS_Config(&thisMeas.current_recliner, CURRENT_MT3_OFFSET, CURRENT_MT3_SCALE_FACTOR, CURRENT_MT3_ALPHA, CURRENT_MT3_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
     MEAS_Config(&thisMeas.thermal_slider, 0U, 0U, 0U, 0U, THERMAL_MT1_GAIN_F32, THERMAL_MT1_OFFSET_F32, CALC_METHOD_F32);
     MEAS_Config(&thisMeas.thermal_height, 0U, 0U, 0U, 0U, THERMAL_MT2_GAIN_F32, THERMAL_MT2_OFFSET_F32, CALC_METHOD_F32);
     MEAS_Config(&thisMeas.thermal_recliner, 0U, 0U, 0U, 0U, THERMAL_MT3_GAIN_F32, THERMAL_MT3_OFFSET_F32, CALC_METHOD_F32);
@@ -187,7 +199,7 @@ void MEAS_GetValue(MeasType_TypeDef meas_type)
 	}
 
 	// FIXME: Only use for debugging
-	MEAS_GetRealValue(meas_type);
+//	MEAS_GetRealValue(meas_type);
 }
 
 /**

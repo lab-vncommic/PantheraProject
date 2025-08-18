@@ -30,15 +30,15 @@ void UART_Init(void)
 
 void UART_Monitor(void)
 {
-	if (flag_debug_tx_completed == 1){
-		flag_debug_tx_completed = 0;
-		// sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
-	}
-	snprintf(BufTXDebug, sizeof(BufTXDebug), "cur_slider = %f, cur_height = %f, cur_recliner = %f\r\n",
-			thisMeas.current_slider.value_f32,
-			thisMeas.current_height.value_f32,
-			thisMeas.current_recliner.value_f32
-	);
+	// if (flag_debug_tx_completed == 1){
+	// 	flag_debug_tx_completed = 0;
+	// 	// sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
+	// }
+	// snprintf(BufTXDebug, sizeof(BufTXDebug), "cur_slider = %f, cur_height = %f, cur_recliner = %f\r\n",
+	// 		thisMeas.current_slider.value_f32,
+	// 		thisMeas.current_height.value_f32,
+	// 		thisMeas.current_recliner.value_f32
+	// );
 }
 
 void UART_HandleRequest(void)

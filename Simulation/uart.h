@@ -14,8 +14,6 @@
 #include <stddef.h>
 #include "string.h"
 
-#include "Measurement.h"
-
 #define UART_TX_DEBUG_LENGTH 		100
 #define UART_TX_LENGTH				3
 #define UART_RX_LENGTH 				6

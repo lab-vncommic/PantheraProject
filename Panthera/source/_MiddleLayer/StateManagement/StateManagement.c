@@ -299,6 +299,7 @@ void STATE_ProcessInputSignals(PTR_TypeDef *pState)
 		(pState->button.recall_3.action == ACTION_RELEASED || pState->button.recall_3.action == ACTION_PRESSED)) {
 		pState->button.recall_3.action = ACTION_RELEASED;
 	} else pState->button.recall_3.action = ACTION_HOLD;
+
 }
 
 _Bool STATE_SystemIsNormal(PTR_TypeDef *pState)
@@ -370,11 +371,9 @@ void STATE_Init(PTR_TypeDef *pState)
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
 	// Update input signals include communication
-//	if (counter_comm++ >= 2) {
-//		counter_comm = 0;
-		STATE_ProcessInputSignals(pState);
-//	}
+	STATE_ProcessInputSignals(pState);
 
+	pState->state = temp_state;
 	switch (pState->state) {
 		case STATE_IDLE:
 			// Processing: handle IDLE state
@@ -391,15 +390,15 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			} else if (pState->button.save.action == ACTION_PRESSED ||pState->button.save.action == ACTION_HOLD) {
 				pState->state = STATE_SAVE;
 			} else if (pState->button.recall_1.action == ACTION_PRESSED || pState->button.recall_1.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(1);
+				MEM_GetSeatAxis(&pState->seat_memory_axis, 1);
 				pState->state = STATE_AUTO;
 				pState->state_home.cnt_use_recall++;
 			} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(2);
+				MEM_GetSeatAxis(&pState->seat_memory_axis, 2);
 				pState->state = STATE_AUTO;
 				pState->state_home.cnt_use_recall++;
 			} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
-				pState->seat_memory_axis = MEM_GetSeatAxis(3);
+				MEM_GetSeatAxis(&pState->seat_memory_axis, 3);
 				pState->state = STATE_AUTO;
 				pState->state_home.cnt_use_recall++;
 			}
@@ -537,7 +536,6 @@ void STATE_UpdateMeas(PTR_TypeDef *pState)
 		{
 			MD_UpdateMeas(MEAS_THERMAL);
 			MEAS_UpdateValue(&pState->measurement, MEAS_THERMAL);
-
 		}
 		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
 			cnt_meas_type = 0;
