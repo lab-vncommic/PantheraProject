@@ -39,7 +39,7 @@ void PTR_main_interrupt_service(void)
 //	}
 
 	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
-//	STATE_UpdateFault(&thisPTR);
+	STATE_UpdateFault(&thisPTR);
 	STATE_UpdateButton(&thisPTR);
 	STATE_UpdateState(&thisPTR);
 
