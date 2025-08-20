@@ -12,30 +12,26 @@ sequenceDiagram
     Main->>App: PIT0_ISR()
     App->>State: PTR_main_interrupt_service()
     State->>Meas: STATE_UpdateMeas()
-    Meas-->>State: Measurement values
-
+    Meas-->>State: Update measurement values
     State->>Fault: STATE_UpdateFault()
-    Fault-->>State: Fault status
-
+    Fault-->>State: Update fault status
     State->>Btn: STATE_UpdateButton()
-    Btn-->>State: Button states
-
+    Btn-->>State: Update button states
     State->>Comm: STATE_ProcessInputSignals()
     Comm-->>State: Communication status
-
     State->>State: STATE_UpdateState()
 
     %% HOMING state logic
-    State->>Motor: MD_RunHoming()
+    State->>State: STATE_homingHandle()
+    State->>Motor: MD_Run() (homing each axis)
     Motor-->>State:
-
-    alt Homing completed
-        State-->>State: Change to IDLE state
-    else Fault detected (fault.mode != FAULT_NONE)
+    alt Fault detected (fault.mode != FAULT_NONE)
         State-->>State: Change to FAULT state
+    else All axes homed (all block flags true)
+        State->>State: STATE_ResetAxis()
+        State-->>State: Change to AUTO state
     else Remain in HOMING
     end
-
     State-->>App: PTR_main_interrupt_service() completed
     App-->>Main: Interrupt service completed
 ```

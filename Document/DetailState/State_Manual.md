@@ -25,17 +25,20 @@ sequenceDiagram
 
     State->>State: STATE_UpdateState()
 
-    %% MANUAL state logic
+    State->>State: STATE_manualHandle()
+
     alt Any manual button is held
         State->>Motor: MD_Run() (run motor according to button and measurement)
-        Motor-->>State:
+    end
+
+    %% MANUAL state logic
+    alt Fault detected (fault.mode != FAULT_NONE)
+        State-->>State: Change to FAULT state
     else All manual buttons released
         State->>Motor: MD_Run(STOP)
         Motor-->>State:
         State-->>State: Change to IDLE state
-    else Fault detected (fault.mode != FAULT_NONE)
-        State-->>State: Change to FAULT state
-    else Remain in MANUAL    
+    else Remain in MANUAL
     end
 
     State-->>App: PTR_main_interrupt_service() completed

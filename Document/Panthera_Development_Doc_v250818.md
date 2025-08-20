@@ -308,61 +308,53 @@ System is waiting for user input or events. All motors are stopped, seat axis is
 
 ```mermaid
 sequenceDiagram
-  participant Main as Main
-  participant App as Panthera
-  participant State as StateManagement
-  participant Meas as Measurement
-  participant Fault as FaultManagement
-  participant Btn as Button
-  participant Comm as Communication
-  participant Mem as Memory
-  participant Motor as MotorDriver
+    participant Main as Main
+    participant App as Panthera
+    participant State as StateManagement
+    participant Meas as Measurement
+    participant Fault as FaultManagement
+    participant Btn as Button
+    participant Comm as Communication
+    participant Mem as Memory
+    participant Motor as MotorDriver
 
-  Main->>App: PIT0_ISR()
-  App->>State: PTR_main_interrupt_service()
-  State->>Meas: STATE_UpdateMeas()
-  Meas-->>State: Measurement values
-
-  State->>Fault: STATE_UpdateFault()
-  Fault-->>State: Fault status
-
-  State->>Btn: STATE_UpdateButton()
-  Btn-->>State: Button states
-  
-  State->>State: STATE_UpdateState()
-
-  State->>Comm: STATE_ProcessInputSignals()
-  Comm-->>State: Communication status
-
-  State->>Motor: MD_StopAll() (ensure motors are stopped)
-  Motor-->>State:
-
-  State->>Motor: STATE_GetSeatAxis() (update seat axis)
-  Motor-->>State: Axis value of seat
-
-  %% Điều kiện chuyển state từ IDLE (xét ở cuối)
-  alt Any manual button is held (height_1, height_2, recliner_1, recliner_2, slider_1, slider_2)
-    State-->>State: Change to MANUAL state
-  else Save button pressed/held
-    State-->>State: Change to SAVE state
-  else Recall 1 pressed/held
-    State->>Mem: MEM_GetSeatAxis(axis, 1)
-    Mem-->>State: Memory axis 1
-    State-->>State: Change to AUTO state, cnt_use_recall++
-  else Recall 2 pressed/held
-    State->>Mem: MEM_GetSeatAxis(axis, 2)
-    Mem-->>State: Memory axis 2
-    State-->>State: Change to AUTO state, cnt_use_recall++
-  else Recall 3 pressed/held
-    State->>Mem: MEM_GetSeatAxis(axis, 3)
-    Mem-->>State: Memory axis 3
-    State-->>State: Change to AUTO state, cnt_use_recall++
-  else Fault detected (fault.mode != FAULT_NONE)
-    State-->>State: Change to FAULT state
-  else Remain in IDLE
-  end
-  State-->>App: PTR_main_interrupt_service() completed
-  App-->>Main: Interrupt service completed
+    Main->>App: PIT0_ISR()
+    App->>State: PTR_main_interrupt_service()
+    State->>Meas: STATE_UpdateMeas()
+    Meas-->>State: Update measurement values
+    State->>Fault: STATE_UpdateFault()
+    Fault-->>State: Update fault status
+    State->>Btn: STATE_UpdateButton()
+    Btn-->>State: Update button states
+    State->>Comm: STATE_ProcessInputSignals()
+    Comm-->>State: Communication status
+    State->>State: STATE_UpdateState()
+    State->>State: STATE_idleHandle()
+    State->>Motor: MD_StopAll() (stop all motors)
+    State->>Motor: STATE_GetSeatAxis() (update seat axis position)
+    alt Fault detected (fault.mode != FAULT_NONE)
+        State-->>State: Change to FAULT
+    else Any manual button is held (height_1, height_2, recliner_1, recliner_2, slider_1, slider_2)
+        State-->>State: Change to MANUAL
+    else Save button pressed/held
+        State-->>State: Change to SAVE
+    else Recall 1 pressed/held
+        State->>Mem: MEM_GetSeatAxis(axis, 1)
+        Mem-->>State: Get memory value 1
+        State-->>State: Change to AUTO, cnt_use_recall++
+    else Recall 2 pressed/held
+        State->>Mem: MEM_GetSeatAxis(axis, 2)
+        Mem-->>State: Get memory value 2
+        State-->>State: Change to AUTO, cnt_use_recall++
+    else Recall 3 pressed/held
+        State->>Mem: MEM_GetSeatAxis(axis, 3)
+        Mem-->>State: Get memory value 3
+        State-->>State: Change to AUTO, cnt_use_recall++
+    else No special condition
+        State-->>State: Remain in IDLE
+    end
+    State-->>App: PTR_main_interrupt_service() completed
+    App-->>Main: Interrupt service completed
 ```
 <div align="center">
   <b>Figure 5.2 IDLE State Sequence Diagram</b>
@@ -391,47 +383,51 @@ User is manually controlling seat movement (height, recliner, slider) by holding
 
 ```mermaid
 sequenceDiagram
-  participant Main as Main
-  participant App as Panthera
-  participant State as StateManagement
-  participant Meas as Measurement
-  participant Fault as FaultManagement
-  participant Btn as Button
-  participant Comm as Communication
-  participant Motor as MotorDriver
+    participant Main as Main
+    participant App as Panthera
+    participant State as StateManagement
+    participant Meas as Measurement
+    participant Fault as FaultManagement
+    participant Btn as Button
+    participant Comm as Communication
+    participant Motor as MotorDriver
 
-  Main->>App: PIT0_ISR()
-  App->>State: PTR_main_interrupt_service()
-  State->>Meas: STATE_UpdateMeas()
-  Meas-->>State: Measurement values
+    Main->>App: PIT0_ISR()
+    App->>State: PTR_main_interrupt_service()
+    State->>Meas: STATE_UpdateMeas()
+    Meas-->>State: Measurement values
 
-  State->>Fault: STATE_UpdateFault()
-  Fault-->>State: Fault status
+    State->>Fault: STATE_UpdateFault()
+    Fault-->>State: Fault status
 
-  State->>Btn: STATE_UpdateButton()
-  Btn-->>State: Button states
+    State->>Btn: STATE_UpdateButton()
+    Btn-->>State: Button states
 
-  State->>Comm: STATE_ProcessInputSignals()
-  Comm-->>State: Communication status
+    State->>Comm: STATE_ProcessInputSignals()
+    Comm-->>State: Communication status
 
-  State->>State: STATE_UpdateState()
+    State->>State: STATE_UpdateState()
 
-  %% MANUAL state logic
-  alt Any manual button is held
-    State->>Motor: MD_Run() (run motor according to button and measurement)
-    Motor-->>State:
-  else All manual buttons released
-    State->>Motor: MD_Run(STOP)
-    Motor-->>State:
-    State-->>State: Change to IDLE state
-  else Fault detected (fault.mode != FAULT_NONE)
-    State-->>State: Change to FAULT state
-  else Remain in MANUAL    
-  end
+    State->>State: STATE_manualHandle()
 
-  State-->>App: PTR_main_interrupt_service() completed
-  App-->>Main: Interrupt service completed
+    alt Any manual button is held
+        State->>Motor: MD_Run() (run motor according to button and measurement)
+    end
+
+    %% MANUAL state logic
+    alt Fault detected (fault.mode != FAULT_NONE)
+        State-->>State: Change to FAULT state
+    else All manual buttons released
+        State->>Motor: MD_Run(STOP)
+        Motor-->>State:
+        State-->>State: Change to IDLE state
+    else Remain in MANUAL
+    end
+
+    State-->>App: PTR_main_interrupt_service() completed
+    App-->>Main: Interrupt service completed
 ```
+
 <div align="center">
   <b>Figure 5.4 MANUAL State Sequence Diagram</b>
 </div>
@@ -459,52 +455,44 @@ System automatically moves seat to a saved position (recall 1/2/3). Motors are c
 
 ```mermaid
 sequenceDiagram
-  participant Main as Main
-  participant App as Panthera
-  participant State as StateManagement
-  participant Meas as Measurement
-  participant Fault as FaultManagement
-  participant Btn as Button
-  participant Comm as Communication
-  participant Mem as Memory
-  participant Motor as MotorDriver
+    participant Main as Main
+    participant App as Panthera
+    participant State as StateManagement
+    participant Meas as Measurement
+    participant Fault as FaultManagement
+    participant Btn as Button
+    participant Comm as Communication
+    participant Mem as Memory
+    participant Motor as MotorDriver
 
-  Main->>App: PIT0_ISR()
-  App->>State: PTR_main_interrupt_service()
-  State->>Meas: STATE_UpdateMeas()
-  Meas-->>State: Measurement values
+    Main->>App: PIT0_ISR()
+    App->>State: PTR_main_interrupt_service()
+    State->>Meas: STATE_UpdateMeas()
+    Meas-->>State: Update measurement values
+    State->>Fault: STATE_UpdateFault()
+    Fault-->>State: Update fault status
+    State->>Btn: STATE_UpdateButton()
+    Btn-->>State: Update button states
+    State->>Comm: STATE_ProcessInputSignals()
+    Comm-->>State: Communication status
+    State->>State: STATE_UpdateState()
 
-  State->>Fault: STATE_UpdateFault()
-  Fault-->>State: Fault status
-
-  State->>Btn: STATE_UpdateButton()
-  Btn-->>State: Button states
-
-  State->>Comm: STATE_ProcessInputSignals()
-  Comm-->>State: Communication status
-
-  State->>State: STATE_UpdateState()
-
-  %% AUTO state logic
-  State->>Mem: MEM_GetSeatAxis(axis, n)
-  Mem-->>State: Memory axis n
-
-  State->>Motor: MD_Run() (move to target axis)
-  Motor-->>State:
-
-  alt cnt_use_recall >= 10
-    State-->>State: Change to HOMING state
-  else All axes reached target (flag_auto_completed == true)
-    State->>Motor: MD_Run(STOP)
+    %% AUTO state logic
+    State->>State: STATE_autoHandle()
+    State->>Motor: MD_Run() (move each axis toward memory target)
     Motor-->>State:
-    State-->>State: Change to IDLE state
-  else Fault detected (fault.mode != FAULT_NONE)
-    State-->>State: Change to FAULT state
-  else Remain in AUTO
-  end
-
-  State-->>App: PTR_main_interrupt_service() completed
-  App-->>Main: Interrupt service completed
+    alt Fault detected (fault.mode != FAULT_NONE)
+        State-->>State: Change to FAULT state
+    else cnt_use_recall >= 10
+        State-->>State: Change to HOMING state
+    else All axes reached target (flag_auto_completed == true)
+        State->>Motor: MD_Run(STOP)
+        Motor-->>State:
+        State-->>State: Change to IDLE state
+    else Remain in AUTO
+    end
+    State-->>App: PTR_main_interrupt_service() completed
+    App-->>Main: Interrupt service completed
 ```
 <div align="center">
   <b>Figure 5.6 AUTO State Sequence Diagram</b>
@@ -520,12 +508,11 @@ sequenceDiagram
 User requests to save current seat position. System writes current axis values to memory. After save and a delay, returns to IDLE.
 
 **Flowchart:**
-```mermaid
-flowchart TD
-  Save([SAVE]) -->|Save Done| Idle([IDLE])
-  Save -->|Fault| Fault([FAULT])
-  Save --> Save
-```
+<div align="center">
+  <img src="Image\State_SAVE.PNG" alt="SAVE State Flowchart" style="max-width: 450px; width: 100%;">
+  <br>
+  <b>Figure 5.7 SAVE State Flowchart</b>
+</div>
 
 **Sequence Diagram:**
 ```mermaid
@@ -538,82 +525,110 @@ sequenceDiagram
     participant Btn as Button
     participant Comm as Communication
     participant Mem as Memory
-    participant Motor as MotorDriver
 
     Main->>App: PIT0_ISR()
     App->>State: PTR_main_interrupt_service()
     State->>Meas: STATE_UpdateMeas()
-    Meas-->>State: Measurement values
-
+    Meas-->>State: Update measurement values
     State->>Fault: STATE_UpdateFault()
-    Fault-->>State: Fault status
-
+    Fault-->>State: Update fault status
     State->>Btn: STATE_UpdateButton()
-    Btn-->>State: Button states
-
+    Btn-->>State: Update button states
     State->>Comm: STATE_ProcessInputSignals()
     Comm-->>State: Communication status
 
     State->>State: STATE_UpdateState()
+    State->>State: STATE_saveHandle()
 
     %% SAVE state logic
     alt Recall 1 pressed/held
-        State->>Mem: MEM_SaveSeatAxis(axis, 1)
-        Mem-->>State:
+        State->>Mem: MEM_Write(current axis, 1)
+        Mem-->>State: Save result
     else Recall 2 pressed/held
-        State->>Mem: MEM_SaveSeatAxis(axis, 2)
-        Mem-->>State:
+        State->>Mem: MEM_Write(current axis, 2)
+        Mem-->>State: Save result
     else Recall 3 pressed/held
-        State->>Mem: MEM_SaveSeatAxis(axis, 3)
-        Mem-->>State:
-    else No recall button pressed
-        %% Không lưu vị trí
+        State->>Mem: MEM_Write(current axis, 3)
+        Mem-->>State: Save result
     end
 
-    alt Save completed and timeout
-        State-->>State: Change to IDLE state
-    else Fault detected (fault.mode != FAULT_NONE)
+    alt Fault detected (fault.mode != FAULT_NONE)
         State-->>State: Change to FAULT state
+    else Save completed and timeout
+        State-->>State: Change to IDLE state
     else Remain in SAVE
     end
 
     State-->>App: PTR_main_interrupt_service() completed
     App-->>Main: Interrupt service completed
 ```
+<div align="center">
+  <b>Figure 5.8 SAVE State Sequence Diagram</b>
+</div>
 
-### **5.5 HOMING State**
+<div align = "left">
+<h3><b>5.5 HOMING State</b></h3>
+<div>
+
 **Description:**
 System moves seat axes to their home (reference) positions for calibration or after multiple recalls. When all axes reach home, returns to AUTO and resets axis tracking.
 
 **Flowchart:**
-```mermaid
-flowchart TD
-  Homing([HOMING]) -->|All Axis Homed| Auto([AUTO])
-  Homing -->|Fault| Fault([FAULT])
-  Homing --> Homing
-```
+<div align="center">
+  <img src="Image\State_HOMING.PNG" alt="HOMING State Flowchart" style="max-width: 450px; width: 100%;">
+  <br>
+  <b>Figure 5.9 HOMING State Flowchart</b>
+</div>
 
 **Sequence Diagram:**
 ```mermaid
 sequenceDiagram
-  participant State as StateManagement
-  participant Motor as MotorDriver
-  State->>Motor: MD_Run() (move to home)
-  Motor-->>State:
+    participant Main as Main
+    participant App as Panthera
+    participant State as StateManagement
+    participant Meas as Measurement
+    participant Fault as FaultManagement
+    participant Btn as Button
+    participant Comm as Communication
+    participant Motor as MotorDriver
+
+    Main->>App: PIT0_ISR()
+    App->>State: PTR_main_interrupt_service()
+    State->>Meas: STATE_UpdateMeas()
+    Meas-->>State: Update measurement values
+    State->>Fault: STATE_UpdateFault()
+    Fault-->>State: Update fault status
+    State->>Btn: STATE_UpdateButton()
+    Btn-->>State: Update button states
+    State->>Comm: STATE_ProcessInputSignals()
+    Comm-->>State: Communication status
+    State->>State: STATE_UpdateState()
+
+    %% HOMING state logic
+    State->>State: STATE_homingHandle()
+    State->>Motor: MD_Run() (homing each axis)
+    Motor-->>State:
+    alt Fault detected (fault.mode != FAULT_NONE)
+        State-->>State: Change to FAULT state
+    else All axes homed (all block flags true)
+        State->>State: STATE_ResetAxis()
+        State-->>State: Change to AUTO state
+    else Remain in HOMING
+    end
+    State-->>App: PTR_main_interrupt_service() completed
+    App-->>Main: Interrupt service completed
 ```
+<div align="center">
+  <b>Figure 5.10 HOMING State Sequence Diagram</b>
+</div>
 
+<h3><b>5.6 FAULT State</b></h3>
 
-### **5.6 FAULT State**
 **Description:**
 A fault is detected (overcurrent, thermal, etc.). All motors are stopped for safety. System waits for fault to clear or transitions to SHUTDOWN/AUTORECOVERY depending on fault type.
 
 **Flowchart:**
-```mermaid
-flowchart TD
-  Fault([FAULT]) -->|Latched| Shutdown([SHUTDOWN])
-  Fault -->|Auto Recover| Autorecovery([AUTORECOVERY])
-  Fault --> Fault
-```
+
 
 **Low-Level Sequence Diagram for FAULT State**
 ```mermaid
@@ -642,6 +657,7 @@ sequenceDiagram
     Comm-->>State: Communication status
 
     State->>State: STATE_UpdateState()
+    State->>State: STATE_homingHandle()
 
     %% FAULT state logic
     State->>Motor: MD_StopAll()
@@ -658,8 +674,8 @@ sequenceDiagram
     App-->>Main: Interrupt service completed
 ```
 
+<h3><b>5.7 AUTORECOVERY State</b></h3>
 
-### **5.7 AUTORECOVERY State**
 **Description:**
 System attempts to recover from a recoverable fault. If system returns to normal, transitions back to IDLE and resets fault mode.
 
@@ -679,8 +695,8 @@ sequenceDiagram
   Fault-->>State:
 ```
 
+<h3><b>5.8 SHUTDOWN State</b></h3>
 
-### **5.8 SHUTDOWN State**
 **Description:**
 System enters safe shutdown due to a critical or latched fault. Motors remain stopped and system awaits reset or power cycle.
 

@@ -24,6 +24,7 @@ sequenceDiagram
     Comm-->>State: Communication status
 
     State->>State: STATE_UpdateState()
+    State->>State: STATE_homingHandle()
 
     %% FAULT state logic
     State->>Motor: MD_StopAll()
