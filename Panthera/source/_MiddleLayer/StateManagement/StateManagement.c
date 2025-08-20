@@ -373,14 +373,15 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 	// Update input signals include communication
 	STATE_ProcessInputSignals(pState);
 
-	pState->state = temp_state;
 	switch (pState->state) {
 		case STATE_IDLE:
 			// Processing: handle IDLE state
 			STATE_idleHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (pState->button.height_1.action == ACTION_HOLD ||
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			} else if (pState->button.height_1.action == ACTION_HOLD ||
 				pState->button.height_2.action == ACTION_HOLD ||
 				pState->button.recliner_1.action == ACTION_HOLD ||
 				pState->button.recliner_2.action == ACTION_HOLD ||
@@ -402,11 +403,6 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 				pState->state = STATE_AUTO;
 				pState->state_home.cnt_use_recall++;
 			}
-
-			if (pState->fault.mode != FAULT_NONE) {
-				pState->state = STATE_FAULT;
-			}
-
 			break;
 
 		case STATE_SAVE:
@@ -442,17 +438,15 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_manualHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (pState->button.height_1.action == ACTION_RELEASED &&
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			} else if (pState->button.height_1.action == ACTION_RELEASED &&
 				pState->button.height_2.action == ACTION_RELEASED &&
 				pState->button.recliner_1.action == ACTION_RELEASED &&
 				pState->button.recliner_2.action == ACTION_RELEASED &&
 				pState->button.slider_1.action == ACTION_RELEASED &&
 				pState->button.slider_2.action == ACTION_RELEASED) {
 				pState->state = STATE_IDLE;
-			}
-
-			if (pState->fault.mode != FAULT_NONE) {
-				pState->state = STATE_FAULT;
 			}
 
 			break;
@@ -462,7 +456,9 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_autoHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (pState->state_home.cnt_use_recall >= 10) {
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			} else if (pState->state_home.cnt_use_recall >= 10) {
 				pState->state = STATE_HOMING;
 			} else if (flag_auto_completed == true) {
 						cnt_schedule_motor_auto = 0;
@@ -470,9 +466,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 						pState->state 		   = STATE_IDLE;
 					}
 
-			if (pState->fault.mode != FAULT_NONE) {
-				pState->state = STATE_FAULT;
-			}
+
 
 			break;
 
@@ -481,16 +475,16 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_homingHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (pState->state_home.flag_slider_block &&
-				pState->state_home.flag_height_block &&
-				pState->state_home.flag_recliner_block) {
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			} else if (pState->state_home.flag_slider_block &&
+					   pState->state_home.flag_height_block &&
+					   pState->state_home.flag_recliner_block) {
 					pState->state = STATE_AUTO;
 					STATE_ResetAxis(pState);
 			}
 
-			if (pState->fault.mode != FAULT_NONE) {
-				pState->state = STATE_FAULT;
-			}
+
 			break;
 
 		case STATE_FAULT:

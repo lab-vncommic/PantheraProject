@@ -59,7 +59,7 @@ void FAULT_UpdateStatus(MeasSystem_TypeDef *pMeas)
     }
 
    if (FAULT_IS_MT2_OCP(pMeas->current_height_q15)) {
-   	temp_fault_status |= FAULT_STT_1;
+	   temp_fault_status |= FAULT_STT_1;
    }
 
     if (FAULT_IS_MT3_OCP(pMeas->current_recliner_q15)) {

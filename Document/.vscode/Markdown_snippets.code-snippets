@@ -1,0 +1,9 @@
+{
+  "Page Break (HTML)": {
+    "prefix": "pagebreak",
+    "body": [
+      "<div style=\"page-break-after: always;\"></div>"
+    ],
+    "description": "Chèn ngắt trang PDF bằng HTML div với page-break-after: always;"
+  }
+}
