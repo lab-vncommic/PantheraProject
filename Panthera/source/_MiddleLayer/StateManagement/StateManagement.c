@@ -403,6 +403,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 				pState->state = STATE_AUTO;
 				pState->state_home.cnt_use_recall++;
 			}
+
 			break;
 
 		case STATE_SAVE:
@@ -410,7 +411,9 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			STATE_saveHandle(pState);
 
 			// Post-processing: check for faults and state transitions
-			if (pState->button.recall_1.action == ACTION_PRESSED ||
+			if (pState->fault.mode != FAULT_NONE) {
+				pState->state = STATE_FAULT;
+			} else if (pState->button.recall_1.action == ACTION_PRESSED ||
 				pState->button.recall_1.action == ACTION_HOLD ||
 				pState->button.recall_2.action == ACTION_PRESSED ||
 				pState->button.recall_2.action == ACTION_HOLD ||
@@ -425,10 +428,6 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 					pState->state = STATE_IDLE;
 					flag_save_to_idle = false;
 				}
-			}
-
-			if (pState->fault.mode != FAULT_NONE) {
-				pState->state = STATE_FAULT;
 			}
 
 			break;
@@ -466,8 +465,6 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 						pState->state 		   = STATE_IDLE;
 					}
 
-
-
 			break;
 
 		case STATE_HOMING:
@@ -483,7 +480,6 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 					pState->state = STATE_AUTO;
 					STATE_ResetAxis(pState);
 			}
-
 
 			break;
 
