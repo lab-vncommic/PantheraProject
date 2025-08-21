@@ -18,10 +18,11 @@ This document provides comprehensive technical documentation for the Panthera fi
 
 - [**1. Overview**](#1-overview)
 - [**2. Hardware-software Interface**](#2-hardware-software-interface)
-    - [**2.1 Power Pins**](#21-power-pins)
-    - [**2.2 Gpio Pins**](#22-gpio-pins)
-    - [**2.3 Adc Pins**](#23-adc-pins)
-    - [**Pin Mapping Table**](#pin-mapping-table)
+  - [**2.2 MCU Pin config**](#22-mcu-pin-config)
+    - [**2.2.1 Power Pins**](#221-power-pins)
+    - [**2.2.2 Gpio Pins**](#222-gpio-pins)
+    - [**2.2.3 Adc Pins**](#223-adc-pins)
+    - [**2.2.4 Pin Mapping Table**](#224-pin-mapping-table)
 - [**3. System Architecture**](#3-system-architecture)
   - [**3.1 System Diagram**](#31-system-diagram)
 - [**4. Protection**](#4-protection)
@@ -49,6 +50,8 @@ _Describe the general purpose, scope, and goals of the firmware._
 <div style="page-break-after: always;"></div>
 
 ## **2. Hardware-software Interface**
+
+### 2.1 MCU 
 
 <style>
 .hw-table, .hw-table th, .hw-table td {
@@ -78,7 +81,9 @@ _Describe the general purpose, scope, and goals of the firmware._
 .hw-table th:nth-child(7), .hw-table td:nth-child(7) { width: 20%; }
 </style>
 
-#### **2.1 Power Pins**
+### 2.2 MCU Pin config
+
+#### 2.2.1 Power Pins
 <table class="hw-table">
 <thead>
 <tr>
@@ -113,7 +118,7 @@ _Describe the general purpose, scope, and goals of the firmware._
 
 <div style="page-break-after: always;"></div>
 
-#### **2.2 Gpio Pins**
+#### 2.2.2 Gpio Pins
 <table class="hw-table">
 <thead>
 <tr>
@@ -164,7 +169,7 @@ _Describe the general purpose, scope, and goals of the firmware._
 
 <div style="page-break-after: always;"></div>
 
-#### **2.3 Adc Pins**
+#### 2.2.3 Adc Pins
 <table class="hw-table">
 <thead>
 <tr>
@@ -185,7 +190,7 @@ _Describe the general purpose, scope, and goals of the firmware._
 </tbody>
 </table>
 
-#### **Pin Mapping Table**
+#### 2.2.4 Pin Mapping Table
 <table class="hw-table">
 <thead>
 <tr>
