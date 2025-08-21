@@ -87,12 +87,12 @@ void MEAS_GetValueQ15(Meas_TypeDef *pMeas)
 {
     if(pMeas == NULL)
     	return;
-    pMeas->prev_value = pMeas->value_q15;
-    if (pMeas->calc_method == CALC_METHOD_Q15) {
-        pMeas->value_q15 = _q15_mul(pMeas->raw >> 1 , pMeas->scale_factor);
-	} else pMeas->value_q15 = _q15_mul(pMeas->raw >>1 , _q15(1));
 
-    pMeas->value_q15 = MEAS_LPF(pMeas->value_q15, pMeas->prev_value, pMeas->alpha);
+    if (pMeas->calc_method == CALC_METHOD_Q15) {
+        pMeas->prev_value = pMeas->value_q15;
+        pMeas->value_q15 = _q15_mul(pMeas->raw >> 1 , pMeas->scale_factor);
+        pMeas->value_q15 = MEAS_LPF(pMeas->value_q15, pMeas->prev_value, pMeas->alpha);
+	} else pMeas->value_q15 = _q15_mul(pMeas->raw >>1 , _q15(1));
 }
 
 uint16_t MEAS_LPF(uint16_t new_value, uint16_t prev_value, uint16_t alpha)
@@ -178,9 +178,9 @@ void MEAS_GetValue(MeasType_TypeDef meas_type)
 
 	if (meas_type) {
 		// Get raw value from adc driver
-	    MEAS_GetRawValue(&thisMeas.thermal_slider, thatADC.ADC_MulSens_1);
-	    MEAS_GetRawValue(&thisMeas.thermal_height, thatADC.ADC_MulSens_2);
-	    MEAS_GetRawValue(&thisMeas.thermal_recliner, thatADC.ADC_MulSens_3);
+	    MEAS_GetRawValue(&thisMeas.thermal_recliner, thatADC.ADC_MulSens_1);
+	    MEAS_GetRawValue(&thisMeas.thermal_slider, thatADC.ADC_MulSens_2);
+	    MEAS_GetRawValue(&thisMeas.thermal_height, thatADC.ADC_MulSens_3);
 
 		// Get value in Q15 concept
 	    MEAS_GetValueQ15(&thisMeas.thermal_slider);
@@ -188,9 +188,9 @@ void MEAS_GetValue(MeasType_TypeDef meas_type)
 	    MEAS_GetValueQ15(&thisMeas.thermal_recliner);
 	} else {
 		// Get raw value from adc driver
-	    MEAS_GetRawValue(&thisMeas.current_slider, thatADC.ADC_MulSens_1);
-	    MEAS_GetRawValue(&thisMeas.current_height, thatADC.ADC_MulSens_2);
-	    MEAS_GetRawValue(&thisMeas.current_recliner, thatADC.ADC_MulSens_3);
+	    MEAS_GetRawValue(&thisMeas.current_recliner, thatADC.ADC_MulSens_1);
+	    MEAS_GetRawValue(&thisMeas.current_slider, thatADC.ADC_MulSens_2);
+	    MEAS_GetRawValue(&thisMeas.current_height, thatADC.ADC_MulSens_3);
 
 		// Get value in Q15 concept
 		MEAS_GetValueQ15(&thisMeas.current_slider);
@@ -199,7 +199,7 @@ void MEAS_GetValue(MeasType_TypeDef meas_type)
 	}
 
 	// FIXME: Only use for debugging
-//	MEAS_GetRealValue(meas_type);
+	MEAS_GetRealValue(meas_type);
 }
 
 /**

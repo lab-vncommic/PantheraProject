@@ -6,9 +6,12 @@
  */
 #include "MotorDriver.h"
 Motor_TypeDef motor_height, motor_recliner, motor_slider;
+uint16_t cnt_mt_recliner_softstart;
+uint16_t cnt_mt_recliner_available;
+_Bool flag_mt_recliner_available;
 
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
-					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm);
+					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm, GPIO_TypeDef pin_hall);
 void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology);
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
 void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
@@ -18,6 +21,7 @@ _Bool MD_DetectPeak(Motor_TypeDef *pMotor);
 _Bool MD_ScaleResolutionSensor(Motor_TypeDef *pMotor);
 _Bool MD_ScaleResolutionSensorless(Motor_TypeDef *pMotor);
 uint16_t MD_RoundAxis(Motor_TypeDef *pMotor);
+void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status, uint16_t current_value, uint16_t current_limit_softstart, uint16_t current_limit_locked);
 
 /**
  * @brief Configures the motor driver GPIO pins
@@ -34,7 +38,7 @@ uint16_t MD_RoundAxis(Motor_TypeDef *pMotor);
  *       in the provided motor structure.
  */
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
-					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm)
+					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm, GPIO_TypeDef pin_hall)
 {
     pMotor->driver.ina       = pin_ina;
     pMotor->driver.inb       = pin_inb;
@@ -42,6 +46,7 @@ void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef p
     pMotor->driver.sel1      = pin_sel1;
     pMotor->driver.mul_en    = pin_mul_en;
     pMotor->driver.pwm       = pin_pwm;
+    pMotor->driver.hall		 = pin_hall;
 }
 
 void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology)
@@ -317,7 +322,7 @@ _Bool MD_ScaleResolutionSensorless(Motor_TypeDef *pMotor)
 		pMotor->sensorless.cnt_peak++;
 
 		if (pMotor->sensorless.cnt_peak >= NO_PEAK_PER_UNIT_AXIS) {
-			pMotor->sensorless.cnt_peak = 0;
+//			pMotor->sensorless.cnt_peak = 0;
 			return true;
 		}
 	}
@@ -357,13 +362,13 @@ uint16_t MD_RoundAxis(Motor_TypeDef *pMotor)
  */
 void MD_Init(void)
 {
-	MD_ConfigDriver(&motor_slider, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1);
-	MD_ConfigDriver(&motor_height, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2);
-	MD_ConfigDriver(&motor_recliner, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3);
+	MD_ConfigDriver(&motor_recliner, PIN_INA_1, PIN_INB_1, PIN_SEL0_1, PIN_SEL1_1, PIN_MulEN_1, PIN_PWM_1, PIN_HALL_1);
+	MD_ConfigDriver(&motor_slider, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2, PIN_HALL_2);
+	MD_ConfigDriver(&motor_height, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3, PIN_HALL_3);
 
-	MD_ConfigTopology(&motor_height, SENSORLESS);
 	MD_ConfigTopology(&motor_recliner, SENSORLESS);
-	MD_ConfigTopology(&motor_slider, SENSOR);
+	MD_ConfigTopology(&motor_height, SENSORLESS);
+	MD_ConfigTopology(&motor_slider, SENSORLESS);
 
 	motor_height.name   = MOTOR_HEIGHT;
 	motor_recliner.name = MOTOR_RECLINER;
@@ -413,26 +418,61 @@ void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t c
 {
 	switch (motor_name) {
 		case MOTOR_HEIGHT:
-			MD_UpdateStatusMotor(&motor_height, status);
-			MD_UpdateDriver(&motor_height);
-			MD_UpdateAxis(&motor_height, current_value);
-			break;
+			MD_HandlePeakCurrentMode(&motor_height, status, current_value, CURRENT_LIMIT_SOFTSTART_MT_HEIGHT_Q15, CURRENT_LIMIT_LOCKED_MT_HEIGHT_Q15);
 
+			break;
 		case MOTOR_RECLINER:
-			MD_UpdateStatusMotor(&motor_recliner, status);
-			MD_UpdateDriver(&motor_recliner);
-			MD_UpdateAxis(&motor_recliner, current_value);
-			break;
+			MD_HandlePeakCurrentMode(&motor_recliner, status, current_value, CURRENT_LIMIT_SOFTSTART_MT_RECLINER_Q15, CURRENT_LIMIT_LOCKED_MT_RECLINER_Q15);
 
+			break;
 		case MOTOR_SLIDER:
-			MD_UpdateStatusMotor(&motor_slider, status);
-			MD_UpdateDriver(&motor_slider);
-			MD_UpdateAxis(&motor_slider, current_value);
+			MD_HandlePeakCurrentMode(&motor_slider, status, current_value, CURRENT_LIMIT_SOFTSTART_MT_SLIDER_Q15, CURRENT_LIMIT_LOCKED_MT_SLIDER_Q15);
 			break;
 
 		default:
 			MD_StopAll();
 			break;
+	}
+}
+
+void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status, uint16_t current_value, uint16_t current_limit_softstart, uint16_t current_limit_locked)
+{
+	if (status != STOP) {
+	    switch (pMotor->state) {
+	        case SOFTSTART:
+	        	pMotor->cnt_soft_start++;
+	            if (current_value <= current_limit_softstart) {
+	                MD_UpdateStatusMotor(pMotor, status);
+	            } else {
+	                MD_UpdateStatusMotor(pMotor, STOP);
+	            }
+	            if ((pMotor->cnt_soft_start) >= 1000) {
+	            	pMotor->cnt_soft_start = 0;
+	            	pMotor->flag_available = true;
+	                pMotor->state = STEADY;
+	            }
+	            break;
+	        case STEADY:
+	            if (current_value <= current_limit_locked && pMotor->flag_available) {
+	                MD_UpdateStatusMotor(pMotor, status);
+	            } else {
+	                MD_UpdateStatusMotor(pMotor, STOP);
+	                pMotor->cnt_available++;
+	                if (pMotor->cnt_available >= 10) {
+	                	pMotor->cnt_available  = 0;
+	                	pMotor->flag_available = false;
+	                }
+	            }
+	            break;
+	        default:
+	            MD_UpdateStatusMotor(pMotor, STOP);
+	            break;
+	    }
+	    MD_UpdateDriver(pMotor);
+	    MD_UpdateAxis(pMotor, current_value);
+	} else {
+        MD_UpdateStatusMotor(pMotor, STOP);
+	    MD_UpdateDriver(pMotor);
 	}
 }
 
