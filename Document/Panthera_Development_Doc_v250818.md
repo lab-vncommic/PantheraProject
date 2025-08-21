@@ -289,14 +289,17 @@ _Describe the general purpose, scope, and goals of the firmware._
 
 ## **5. Detail State Machine**
 
-### **5.1 IDLE State**
+<div align = "left">
+<h3><b>5.1 IDLE State</b></h3>
+<div>
+
 **Description:**
 System is waiting for user input or events. All motors are stopped, seat axis is updated, and the system monitors for button actions or faults to transition to other states.
 
 
 **Flowchart:**
 <div align="center">
-  <img src="Image\State_IDLE.PNG" alt="IDLE State Flowchart" style="max-width: 450px; width: 100%;">
+  <img src="Image\State_IDLE.PNG" alt="IDLE State Flowchart" style="max-width: 430px; width: 100%;">
   <br>
   <b>Figure 5.1 IDLE State Flowchart</b>
 </div>
@@ -372,7 +375,7 @@ User is manually controlling seat movement (height, recliner, slider) by holding
 **Flowchart:**
 
 <div align="center">
-  <img src="Image\State_MANUAL.PNG" alt="MANUAL State Flowchart" style="max-width: 450px; width: 100%;">
+  <img src="Image\State_MANUAL.PNG" alt="MANUAL State Flowchart" style="max-width: 350px; width: 100%;">
   <br>
   <b>Figure 5.3 MANUAL State Flowchart</b>
 </div>
@@ -444,7 +447,7 @@ System automatically moves seat to a saved position (recall 1/2/3). Motors are c
 **Flowchart:**
 
 <div align="center">
-  <img src="Image\State_AUTO.PNG" alt="AUTO State Flowchart" style="max-width: 450px; width: 100%;">
+  <img src="Image\State_AUTO.PNG" alt="AUTO State Flowchart" style="max-width: 350px; width: 100%;">
   <br>
   <b>Figure 5.5 AUTO State Flowchart</b>
 </div>
@@ -509,10 +512,12 @@ User requests to save current seat position. System writes current axis values t
 
 **Flowchart:**
 <div align="center">
-  <img src="Image\State_SAVE.PNG" alt="SAVE State Flowchart" style="max-width: 450px; width: 100%;">
+  <img src="Image\State_SAVE.PNG" alt="SAVE State Flowchart" style="max-width: 350px; width: 100%;">
   <br>
   <b>Figure 5.7 SAVE State Flowchart</b>
 </div>
+
+<div style="page-break-after: always;"></div>
 
 **Sequence Diagram:**
 ```mermaid
@@ -566,6 +571,8 @@ sequenceDiagram
   <b>Figure 5.8 SAVE State Sequence Diagram</b>
 </div>
 
+<div style="page-break-after: always;"></div>
+
 <div align = "left">
 <h3><b>5.5 HOMING State</b></h3>
 <div>
@@ -575,10 +582,12 @@ System moves seat axes to their home (reference) positions for calibration or af
 
 **Flowchart:**
 <div align="center">
-  <img src="Image\State_HOMING.PNG" alt="HOMING State Flowchart" style="max-width: 450px; width: 100%;">
+  <img src="Image\State_HOMING.PNG" alt="HOMING State Flowchart" style="max-width: 350px; width: 100%;">
   <br>
   <b>Figure 5.9 HOMING State Flowchart</b>
 </div>
+
+<div style="page-break-after: always;"></div>
 
 **Sequence Diagram:**
 ```mermaid
@@ -622,13 +631,21 @@ sequenceDiagram
   <b>Figure 5.10 HOMING State Sequence Diagram</b>
 </div>
 
+<div style="page-break-after: always;"></div>
+
 <h3><b>5.6 FAULT State</b></h3>
 
 **Description:**
 A fault is detected (overcurrent, thermal, etc.). All motors are stopped for safety. System waits for fault to clear or transitions to SHUTDOWN/AUTORECOVERY depending on fault type.
 
 **Flowchart:**
+<div align="center">
+  <img src="Image\State_FAULT.PNG" alt="FAULT State Flowchart" style="max-width: 350px; width: 100%;">
+  <br>
+  <b>Figure 5.11 FAULT State Flowchart</b>
+</div>
 
+<div style="page-break-after: always;"></div>
 
 **Low-Level Sequence Diagram for FAULT State**
 ```mermaid
@@ -637,7 +654,6 @@ sequenceDiagram
     participant App as Panthera
     participant State as StateManagement
     participant Meas as Measurement
-    participant Fault as FaultManagement
     participant Btn as Button
     participant Comm as Communication
     participant Motor as MotorDriver
@@ -647,9 +663,6 @@ sequenceDiagram
     State->>Meas: STATE_UpdateMeas()
     Meas-->>State: Measurement values
 
-    State->>Fault: STATE_UpdateFault()
-    Fault-->>State: Fault status
-
     State->>Btn: STATE_UpdateButton()
     Btn-->>State: Button states
 
@@ -657,7 +670,7 @@ sequenceDiagram
     Comm-->>State: Communication status
 
     State->>State: STATE_UpdateState()
-    State->>State: STATE_homingHandle()
+    State->>State: STATE_faultHandle()
 
     %% FAULT state logic
     State->>Motor: MD_StopAll()
@@ -674,26 +687,66 @@ sequenceDiagram
     App-->>Main: Interrupt service completed
 ```
 
+<div align="center">
+  <b>Figure 5.12 HOMING State Sequence Diagram</b>
+</div>
+
+<div style="page-break-after: always;"></div>
+
 <h3><b>5.7 AUTORECOVERY State</b></h3>
 
 **Description:**
 System attempts to recover from a recoverable fault. If system returns to normal, transitions back to IDLE and resets fault mode.
 
 **Flowchart:**
-```mermaid
-flowchart TD
-  Autorecovery([AUTORECOVERY]) -->|Recovered| Idle([IDLE])
-  Autorecovery --> Autorecovery
-```
+<div align="center">
+  <img src="Image\State_AUTORECOVERY.PNG" alt="AUTORECOVERY State Flowchart" style="max-width: 350px; width: 100%;">
+  <br>
+  <b>Figure 5.13 AUTORECOVERY State Flowchart</b>
+</div>
+
+<div style="page-break-after: always;"></div>
 
 **Sequence Diagram:**
 ```mermaid
 sequenceDiagram
-  participant State as StateManagement
-  participant Fault as FaultManagement
-  State->>Fault: FAULT_LogError()
-  Fault-->>State:
+    participant Main as Main
+    participant App as Panthera
+    participant State as StateManagement
+    participant Meas as Measurement
+    participant Btn as Button
+    participant Comm as Communication
+    participant Motor as MotorDriver
+
+    Main->>App: PIT0_ISR()
+    App->>State: PTR_main_interrupt_service()
+    State->>Meas: STATE_UpdateMeas()
+    Meas-->>State: Update measurement values
+
+    State->>Btn: STATE_UpdateButton()
+    Btn-->>State: Update button states
+    State->>Comm: STATE_ProcessInputSignals()
+    Comm-->>State: Communication status
+    State->>State: STATE_UpdateState()
+
+    %% AUTORECOVERY state logic
+    State->>State: STATE_autorecoveryHandle()
+    State->>Fault: FAULT_LogError()
+    Fault-->>State:
+    alt System normal for debounce time
+        State->>Fault: FAULT_Reset()
+        State-->>State: Change to IDLE state
+    else Remain in AUTORECOVERY
+    end
+    State-->>App: PTR_main_interrupt_service() completed
+    App-->>Main: Interrupt service completed
 ```
+
+<div align="center">
+  <b>Figure 5.14 AUTORECOVERY State Sequence Diagram</b>
+</div>
+
+<div style="page-break-after: always;"></div>
 
 <h3><b>5.8 SHUTDOWN State</b></h3>
 
@@ -701,21 +754,45 @@ sequenceDiagram
 System enters safe shutdown due to a critical or latched fault. Motors remain stopped and system awaits reset or power cycle.
 
 **Flowchart:**
-```mermaid
-flowchart TD
-  Shutdown([SHUTDOWN]) --> Shutdown
-```
+<div align="center">
+  <img src="Image\State_SHUTDOWN.PNG" alt="SHUTDOWN State Flowchart" style="max-width: 350px; width: 100%;">
+  <br>
+  <b>Figure 5.15 SHUTDOWN State Flowchart</b>
+</div>
+
+<div style="page-break-after: always;"></div>
 
 **Sequence Diagram:**
 ```mermaid
 sequenceDiagram
-  participant State as StateManagement
-  participant Motor as MotorDriver
-  State->>Motor: MD_StopAll()
-  Motor-->>State:
+    participant Main as Main
+    participant App as Panthera
+    participant State as StateManagement
+    participant Meas as Measurement
+    participant Btn as Button
+    participant Comm as Communication
+
+
+    Main->>App: PIT0_ISR()
+    App->>State: PTR_main_interrupt_service()
+    State->>Meas: STATE_UpdateMeas()
+    Meas-->>State: Update measurement values
+    State->>Btn: STATE_UpdateButton()
+    Btn-->>State: Update button states
+    State->>Comm: STATE_ProcessInputSignals()
+    Comm-->>State: Communication status
+    State->>State: STATE_UpdateState()
+
+    %% SHUTDOWN state logic
+    State->>State: STATE_shutdownHandle()
+    Note right of State: System does nothing in SHUTDOWN state
+    State-->>App: PTR_main_interrupt_service() completed
+    App-->>Main: Interrupt service completed
 ```
 
-
+<div align="center">
+  <b>Figure 5.16 SHUTDOWN State Sequence Diagram</b>
+</div>
 
 <div style="page-break-after: always;"></div>
 
