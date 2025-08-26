@@ -384,19 +384,28 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 				pState->state = STATE_SAVE;
 			} else if (pState->button.recall_1.action == ACTION_PRESSED || pState->button.recall_1.action == ACTION_HOLD) {
 				MEM_GetSeatAxis(&pState->seat_memory_axis, 1);
-				pState->state = STATE_AUTO;
-				pState->state_home.cnt_use_recall++;
-				MD_EnableAll();
+				if (pState->seat_current_axis.recliner != pState->seat_memory_axis.recliner ||
+					pState->seat_current_axis.height != pState->seat_memory_axis.height ||
+					pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
+						pState->state = STATE_AUTO;
+						pState->state_home.cnt_use_recall++;
+				}
 			} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
 				MEM_GetSeatAxis(&pState->seat_memory_axis, 2);
-				pState->state = STATE_AUTO;
-				MD_EnableAll();
-				pState->state_home.cnt_use_recall++;
+				if (pState->seat_current_axis.recliner != pState->seat_memory_axis.recliner ||
+					pState->seat_current_axis.height != pState->seat_memory_axis.height ||
+					pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
+						pState->state = STATE_AUTO;
+						pState->state_home.cnt_use_recall++;
+				}
 			} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
 				MEM_GetSeatAxis(&pState->seat_memory_axis, 3);
-				pState->state = STATE_AUTO;
-				MD_EnableAll();
-				pState->state_home.cnt_use_recall++;
+				if (pState->seat_current_axis.recliner != pState->seat_memory_axis.recliner ||
+					pState->seat_current_axis.height != pState->seat_memory_axis.height ||
+					pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
+						pState->state = STATE_AUTO;
+						pState->state_home.cnt_use_recall++;
+				}
 			}
 
 			break;
