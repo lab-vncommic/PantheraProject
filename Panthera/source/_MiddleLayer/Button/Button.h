@@ -10,8 +10,8 @@
 #include "gpio.h"
 #include "stdbool.h"
 
-#define TIMEOUT_DEBOUNCE_BTN   5000    // 0.5s
-#define TIMEOUT_PRESSED_BTN	   7500   // 1s
+#define TIMEOUT_DEBOUNCE_BTN    500    // 0.5s
+#define TIMEOUT_PRESSED_BTN	   2000   // 1s
 
 // Button status bit definitions (16-bit)
 #define BTN_STT_0     ((uint16_t) 1U<<0)  // BT_HEIGHT_1 - Height up button

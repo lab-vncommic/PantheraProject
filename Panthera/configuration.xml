@@ -510,7 +510,7 @@
             <pin_settings>
               <pin_identification>
                 <identifier>
-                  <value>INB_2</value>
+                  <value>INB_3</value>
                 </identifier>
                 <port index="1">
                   <value>PORT_B</value>
@@ -1270,7 +1270,7 @@
             <pin_settings>
               <pin_identification>
                 <identifier>
-                  <value>INB_3</value>
+                  <value>INB_2</value>
                 </identifier>
                 <port index="2">
                   <value>PORT_C</value>
@@ -2969,12 +2969,12 @@
           </clock_failure_hook>
           <oscillator_settings>
             <oscillator_disabled>
-              <value>false</value>
+              <value>true</value>
             </oscillator_disabled>
-            <xosc_clock>
-              <value>40000000</value>
+            <xosc_clock disabled="true">
+              <value>12000000</value>
             </xosc_clock>
-            <oscillator_bypass>
+            <oscillator_bypass disabled="true">
               <value>false</value>
             </oscillator_bypass>
           </oscillator_settings>
@@ -2983,7 +2983,7 @@
               <value>2</value>
             </prediv_value>
             <mfd_value>
-              <value>32</value>
+              <value>80</value>
             </mfd_value>
             <rfdphi_value>
               <value>2</value>
@@ -3025,8 +3025,8 @@
             <ac0_dc1_divider>
               <value>8</value>
             </ac0_dc1_divider>
-            <ac3_clock_source index="1">
-              <value>XOSC</value>
+            <ac3_clock_source index="0">
+              <value>IRC</value>
             </ac3_clock_source>
             <ac4_clock_source index="1">
               <value>PLL0PHI1</value>
@@ -3040,23 +3040,23 @@
             <ac6_dc0_divider>
               <value>4</value>
             </ac6_dc0_divider>
-            <ac8_clock_source index="0">
-              <value>XOSC</value>
+            <ac8_clock_source index="1">
+              <value>PLL0PHI</value>
             </ac8_clock_source>
             <ac8_dc0_divider>
-              <value>1</value>
+              <value>8</value>
             </ac8_dc0_divider>
-            <ac9_clock_source index="1">
-              <value>XOSC</value>
+            <ac9_clock_source index="0">
+              <value>IRC</value>
             </ac9_clock_source>
             <ac9_dc0_divider>
               <value>1</value>
             </ac9_dc0_divider>
-            <ac11_clock_source index="0">
-              <value>XOSC</value>
+            <ac11_clock_source index="1">
+              <value>PLL0PHI</value>
             </ac11_clock_source>
             <ac11_dc0_divider>
-              <value>1</value>
+              <value>8</value>
             </ac11_dc0_divider>
             <ac12_clock_source index="2">
               <value>PLL0PHI</value>
@@ -3076,13 +3076,13 @@
           </cgm_settings>
           <clock_points>
             <xosc disabled="true">
-              <value>40000000</value>
+              <value>12000000</value>
             </xosc>
             <irc disabled="true">
               <value>16000000</value>
             </irc>
             <pll0_in disabled="true">
-              <value>40000000</value>
+              <value>16000000</value>
             </pll0_in>
             <pll0_vco disabled="true">
               <value>1280000000</value>
@@ -3139,7 +3139,7 @@
               <value>40000000</value>
             </canclk0_clk>
             <rti_clk disabled="true">
-              <value>40000000</value>
+              <value>16000000</value>
             </rti_clk>
             <canclk1_clk disabled="true">
               <value>40000000</value>
