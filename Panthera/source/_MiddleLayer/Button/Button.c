@@ -74,11 +74,13 @@ void BTN_Analyze(Btn_Object_TypeDef *pButton)
 {
 	if(pButton->value == 1){
 		pButton->cnt_debounce++;
-		if (pButton->cnt_debounce < TIMEOUT_DEBOUNCE_BTN ) {
+		if (pButton->cnt_debounce < TIMEOUT_RELEASE_BTN ) {
 			pButton->action = ACTION_RELEASED;
-		} else if ((pButton->cnt_debounce >= TIMEOUT_DEBOUNCE_BTN) && (pButton->cnt_debounce < TIMEOUT_PRESSED_BTN)) {
+		} else if ((pButton->cnt_debounce >= TIMEOUT_RELEASE_BTN) && (pButton->cnt_debounce < TIMEOUT_PRESSED_BTN)) {
 			pButton->action = ACTION_PRESSED;
-		} else pButton->action = ACTION_HOLD;
+		} else if ((pButton->cnt_debounce >= TIMEOUT_PRESSED_BTN) && (pButton->cnt_debounce < TIMEOUT_HOLD_BTN)) {
+			pButton->action = ACTION_HOLD;
+		} else pButton->action = ACTION_HOLD_LONG;
 	} else {
 		pButton->action 	  = ACTION_RELEASED;
 		pButton->cnt_debounce = 0;

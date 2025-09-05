@@ -56,7 +56,7 @@ typedef enum{
 typedef enum{
 	SOFTSTART  		= 0,
 	STEADY 			= 1,
-	BLOCK
+	BLOCK			= 2
 } MotorState_TypeDef;
 
 typedef enum{
