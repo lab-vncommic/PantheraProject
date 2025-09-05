@@ -43,25 +43,25 @@ typedef struct{
  *===========================================================================*/
 // Motor 1: Current parameters for Q15 concept (Motor Slider)
 #define CURRENT_MT1_HIGH_LIMIT_HARD  22.75f
-#define CURRENT_MT1_HIGH_LIMIT_SOFT  20.0f
+#define CURRENT_MT1_HIGH_LIMIT_SOFT  22.0f
 #define CURRENT_MT1_SCALE_FACTOR     (uq31_t)(CURRENT_MT1_HIGH_LIMIT_HARD/CURRENT_MT1_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
-#define CURRENT_MT1_FREQ_CUTOFF		 550U			// Uint: Hz
+#define CURRENT_MT1_FREQ_CUTOFF		 3000U			// Uint: Hz
 #define CURRENT_MT1_ALPHA			 _q15((2*PI*CURRENT_MT1_FREQ_CUTOFF) / ((2*PI*CURRENT_MT1_FREQ_CUTOFF) + F_SAMPLE))
 #define CURRENT_MT1_OFFSET           (0U)
 
 // Motor 2: Current parameters for Q15 concept (Motor Height)
 #define CURRENT_MT2_HIGH_LIMIT_HARD  22.75f
-#define CURRENT_MT2_HIGH_LIMIT_SOFT  20.0f
+#define CURRENT_MT2_HIGH_LIMIT_SOFT  22.0f
 #define CURRENT_MT2_SCALE_FACTOR     (uq31_t)(CURRENT_MT2_HIGH_LIMIT_HARD/CURRENT_MT2_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
-#define CURRENT_MT2_FREQ_CUTOFF		 550U			// Uint: Hz
+#define CURRENT_MT2_FREQ_CUTOFF		 3000U			// Uint: Hz
 #define CURRENT_MT2_ALPHA			 _q15((2*PI*CURRENT_MT2_FREQ_CUTOFF) / ((2*PI*CURRENT_MT2_FREQ_CUTOFF) + F_SAMPLE))
 #define CURRENT_MT2_OFFSET           (0U)
 
 // Motor 3: Current parameters for Q15 concept (Motor Recliner)
 #define CURRENT_MT3_HIGH_LIMIT_HARD  22.75f
-#define CURRENT_MT3_HIGH_LIMIT_SOFT  20.0f
+#define CURRENT_MT3_HIGH_LIMIT_SOFT  22.0f
 #define CURRENT_MT3_SCALE_FACTOR     (uq31_t)(CURRENT_MT3_HIGH_LIMIT_HARD/CURRENT_MT3_HIGH_LIMIT_SOFT*32768.0f + 0.5f)
-#define CURRENT_MT3_FREQ_CUTOFF		 550U			// Uint: Hz
+#define CURRENT_MT3_FREQ_CUTOFF		 3000U			// Uint: Hz
 #define CURRENT_MT3_ALPHA			 _q15((2*PI*CURRENT_MT3_FREQ_CUTOFF) / ((2*PI*CURRENT_MT3_FREQ_CUTOFF) + F_SAMPLE))
 #define CURRENT_MT3_OFFSET           (0U)
 
@@ -82,7 +82,8 @@ typedef struct{
 typedef enum{
 	MEAS_CURRENT 	= 0,
 	MEAS_THERMAL	= 1,
-	MEAS_VCC		= 2
+	MEAS_VCC		= 2,
+	MEAS_NONE		= 3
 } MeasType_TypeDef;
 
 typedef struct{

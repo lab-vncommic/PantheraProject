@@ -77,7 +77,8 @@ void COMM_Respone(void)
 
 	switch (thisMessage.id) {
 		case 0: // Power ON
-
+			BufTX[0] = '1';
+			flag_enable_tx = true;
 			break;
 			
 		case 1: // Positioning KEY: Seat Forward
@@ -88,7 +89,7 @@ void COMM_Respone(void)
 			break;
 			
 		case 2: // Positioning KEY: Seat Backward
-			if (thisComm.button_comm.slider_2_value) {
+			if (thisComm.button_comm.slider_2_value || thisComm.button.slider_2_value) {
 				BufTX[0] = '1';
 			} else BufTX[0] = '0';
 			flag_enable_tx = 1;
@@ -102,21 +103,21 @@ void COMM_Respone(void)
 			break;
 			
 		case 4: // Positioning KEY: Seat Downward
-			if (thisComm.button_comm.height_2_value) {
+			if (thisComm.button_comm.height_2_value || thisComm.button.height_2_value) {
 				BufTX[0] = '1';
 			} else BufTX[0] = '0';
 			flag_enable_tx = 1;
 			break;
 			
 		case 5: // Positioning KEY: Seat Recliner Forward
-			if (thisComm.button_comm.recliner_1_value) {
+			if (thisComm.button_comm.recliner_1_value || thisComm.button.recliner_1_value) {
 				BufTX[0] = '1';
 			} else BufTX[0] = '0';
 			flag_enable_tx = 1;
 			break;
 			
 		case 7: // Positioning KEY: Seat Recliner Backward
-			if (thisComm.button_comm.recliner_2_value) {
+			if (thisComm.button_comm.recliner_2_value || thisComm.button.recliner_2_value) {
 				BufTX[0] = '1';
 			} else BufTX[0] = '0';
 			flag_enable_tx = 1;
@@ -213,7 +214,7 @@ void COMM_Respone(void)
 			flag_enable_tx = 1;
 			break;
 			
-		case 25: // Motor HALL_3
+		case 25:
 
 			break;
 		default:
@@ -326,7 +327,6 @@ void COMM_HandleWriteRequest(void)
 
 void COMM_CommToState(CommSystem_TypeDef *pComm)
 {
-	begin = stm_lld_getcounter(&STMD3);
 	COMM_Handle();
 	pComm->button_comm = thisComm.button_comm;
 	pComm->motor_comm  = thisComm.motor_comm;
