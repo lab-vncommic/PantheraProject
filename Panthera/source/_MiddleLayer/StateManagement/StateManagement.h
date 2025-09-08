@@ -8,6 +8,7 @@
 #ifndef SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_
 #define SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_
 #include "Communication.h"
+#include "Can_communication.h"
 #include "MotorDriver.h"
 #include "Measurement.h"
 #include "FaultManagement.h"

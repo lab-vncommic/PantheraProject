@@ -14,9 +14,7 @@ uint8_t TwoBytetoUint8(const char *buffer, uint16_t offset);
 uint8_t ByteToUint8(const char *buffer, uint16_t offset);
 void COMM_Handle(void);
 void COMM_DecodeMessage(void);
-void COMM_UpdateStatus(void);
-void COMM_Respone(void);
-void COMM_HandleWriteRequest(void);
+
 
 uint8_t TwoBytetoUint8(const char *buffer, uint16_t offset)
 {
@@ -77,141 +75,121 @@ void COMM_Respone(void)
 
 	switch (thisMessage.id) {
 		case 0: // Power ON
-			BufTX[0] = '1';
-			flag_enable_tx = true;
+			thisMessage.data_tx = 1;
 			break;
 			
 		case 1: // Positioning KEY: Seat Forward
 			if (thisComm.button_comm.slider_1_value || thisComm.button.slider_1_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = true;
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 2: // Positioning KEY: Seat Backward
 			if (thisComm.button_comm.slider_2_value || thisComm.button.slider_2_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 3: // Positioning KEY: Seat Upward
 			if (thisComm.button_comm.height_1_value || thisComm.button.height_1_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 4: // Positioning KEY: Seat Downward
 			if (thisComm.button_comm.height_2_value || thisComm.button.height_2_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 5: // Positioning KEY: Seat Recliner Forward
 			if (thisComm.button_comm.recliner_1_value || thisComm.button.recliner_1_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 7: // Positioning KEY: Seat Recliner Backward
 			if (thisComm.button_comm.recliner_2_value || thisComm.button.recliner_2_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 10: // Seat Forward: IN1_1
-			if (thisComm.motor_comm.motor_slider.ina_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+			if (thisComm.motor_comm.motor_slider.ina_value || thisComm.motor.motor_slider.ina_value) {
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 11: // Seat Backward: IN2_1
-			if (thisComm.motor_comm.motor_slider.inb_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+			if (thisComm.motor_comm.motor_slider.inb_value || thisComm.motor.motor_slider.inb_value) {
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 12: // Seat Upward: IN1_2
-			if (thisComm.motor_comm.motor_height.ina_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+			if (thisComm.motor_comm.motor_height.ina_value || thisComm.motor.motor_height.ina_value) {
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 13: // Seat Downward: IN2_2
-			if (thisComm.motor_comm.motor_height.inb_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+			if (thisComm.motor_comm.motor_height.inb_value || thisComm.motor.motor_height.inb_value) {
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 14: // Seat Recliner Forward: IN1_3
-			if (thisComm.motor_comm.motor_recliner.ina_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+			if (thisComm.motor_comm.motor_recliner.ina_value || thisComm.motor.motor_recliner.ina_value) {
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 15: // Seat Recliner Backward: IN2_3
-			if (thisComm.motor_comm.motor_recliner.inb_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+			if (thisComm.motor_comm.motor_recliner.inb_value || thisComm.motor.motor_recliner.inb_value) {
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 16: // Memory
-			if (thisComm.button_comm.save_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+			if (thisComm.button_comm.save_value || thisComm.button.save_value) {
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 17: // Key A
-			if (thisComm.button_comm.recall_1_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+			if (thisComm.button_comm.recall_1_value || thisComm.button.recall_1_value) {
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 20: // Key B
-			if (thisComm.button_comm.recall_2_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+			if (thisComm.button_comm.recall_2_value || thisComm.button.recall_2_value) {
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 21: // Key C
-			if (thisComm.button_comm.recall_3_value) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+			if (thisComm.button_comm.recall_3_value || thisComm.button.recall_3_value) {
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 22: // Motor HALL_1
 			if (thisComm.motor_comm.motor_slider.topology == SENSOR) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 23: // Motor HALL_2
 			if (thisComm.motor_comm.motor_height.topology == SENSOR) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
-			
+
 		case 24: // Motor HALL_3
 			if (thisComm.motor_comm.motor_recliner.topology == SENSOR) {
-				BufTX[0] = '1';
-			} else BufTX[0] = '0';
-			flag_enable_tx = 1;
+				thisMessage.data_tx = 1;
+			} else thisMessage.data_tx = 0;
 			break;
 			
 		case 25:
@@ -327,7 +305,6 @@ void COMM_HandleWriteRequest(void)
 
 void COMM_CommToState(CommSystem_TypeDef *pComm)
 {
-	COMM_Handle();
 	pComm->button_comm = thisComm.button_comm;
 	pComm->motor_comm  = thisComm.motor_comm;
 }
@@ -336,7 +313,7 @@ void COMM_TransmitReceiveHandle(void)
 {
 	switch (thisComm.mode) {
 		case COMM_UART:
-			UART_HandleRequest();
+//			UART_HandleRequest();
 			break;
 
 		case COMM_CAN:

@@ -50,12 +50,14 @@
 /*===========================================================================*/
 
 /* List of the CANConfig structures defined in can_lld_cfg.c.*/
+extern CANConfig can_config_mcanconf;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
   /* List of the callback functions referenced from the CANConfig
      structures in can_lld_cfg.c.*/
+void mcanconf_panthera_rx_can(uint32_t msgbuf, CANRxFrame crfp);
 #ifdef __cplusplus
 }
 #endif

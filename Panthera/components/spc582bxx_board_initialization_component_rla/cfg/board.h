@@ -156,7 +156,7 @@
 /*
  * MSCR_MUX definitions.
  */
-#define MSCR_MUX_CAN_RX             337U
+#define MSCR_MUX_CAN_RX             247U
 
 #if !defined(_FROM_ASM_)
 #ifdef __cplusplus

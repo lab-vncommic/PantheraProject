@@ -34,7 +34,7 @@
 #define LLD_USE_SERIAL              TRUE
 #define LLD_USE_PWM                 FALSE
 #define LLD_USE_ICU                 FALSE
-#define LLD_USE_CAN                 FALSE
+#define LLD_USE_CAN                 TRUE
 #define LLD_USE_SPI                 FALSE
 #define LLD_USE_ADC                 FALSE
 #define LLD_USE_CTU                 FALSE
@@ -349,13 +349,13 @@
 #define SPC5_CAN_SUB_0_M_CAN_1_RAM_START	SPC5_CAN_SUB_0_M_CAN_0_RAM_START + SPC5_CAN_SUB_0_M_CAN_0_RAM_SIZE
 #define SPC5_CAN_SUB_0_M_CAN_1_RAM_SIZE     0UL
 	
-#define SPC5_USE_CAN_SUB_0_M_CAN_2          FALSE
+#define SPC5_USE_CAN_SUB_0_M_CAN_2          TRUE
 #define SPC5_CAN_SUB_0_M_CAN_2_START_PTCL   (SPC5_ME_PCTL_RUN(2) | SPC5_ME_PCTL_LP(2))
 #define SPC5_CAN_SUB_0_M_CAN_2_STOP_PTCL    (SPC5_ME_PCTL_RUN(0) | SPC5_ME_PCTL_LP(0))
 #define SPC5_CAN_SUB_0_M_CAN_2_L0_PRIORITY  INTC_PSR_ENABLE(INTC_PSR_MAINCORE,10)
 #define SPC5_CAN_SUB_0_M_CAN_2_L1_PRIORITY  INTC_PSR_ENABLE(INTC_PSR_MAINCORE,10)	  
 #define SPC5_CAN_SUB_0_M_CAN_2_RAM_START	SPC5_CAN_SUB_0_M_CAN_1_RAM_START + SPC5_CAN_SUB_0_M_CAN_1_RAM_SIZE
-#define SPC5_CAN_SUB_0_M_CAN_2_RAM_SIZE     0UL
+#define SPC5_CAN_SUB_0_M_CAN_2_RAM_SIZE     1984UL	   
 	
 #define SPC5_USE_CAN_SUB_0_M_CAN_3          FALSE
 #define SPC5_CAN_SUB_0_M_CAN_3_START_PTCL   (SPC5_ME_PCTL_RUN(2) | SPC5_ME_PCTL_LP(2))
@@ -400,7 +400,7 @@
  * CAN SUBSYSTEM driver filter settings.
 */
 /* MCAN filter configuration */
-#define SPC5_CAN_SUB_MAX_STD_FILTERS          2
+#define SPC5_CAN_SUB_MAX_STD_FILTERS          28
 #define SPC5_CAN_SUB_MAX_XTD_FILTERS          2
 #define SPC5_CAN_MAX_DATA_LENGHT			  8U	
 

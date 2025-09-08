@@ -25,6 +25,7 @@ typedef struct{
 	uint8_t id;
 	uint8_t request;		// request value: 1 = write, 0 = read
 	uint8_t value;
+	uint8_t data_tx;
 } CommMessage_TypeDef;
 
 typedef enum{
@@ -49,6 +50,9 @@ typedef struct{
 void COMM_Init(void);
 void COMM_CommToState(CommSystem_TypeDef *pComm);
 void COMM_TransmitReceiveHandle(void);
+void COMM_Respone(void);
+void COMM_HandleWriteRequest(void);
+void COMM_UpdateStatus(void);
 
 extern CommMessage_TypeDef thisMessage;
 #endif /* SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_ */
