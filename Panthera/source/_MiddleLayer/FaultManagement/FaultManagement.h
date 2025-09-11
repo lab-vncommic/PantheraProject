@@ -83,5 +83,5 @@ void FAULT_LogError(void);
 void FAULT_Reset(void);
 
 // FIXME: Only use extern in dev
-//extern Fault_TypeDef 	thisFault;
+extern Fault_TypeDef 	thisFault;
 #endif /* MIDDLELAYER_FAULTMANAGEMENT_FAULTMANAGEMENT_H_ */

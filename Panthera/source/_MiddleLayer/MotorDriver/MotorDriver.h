@@ -11,17 +11,18 @@
 #include "GlobalDefine.h"
 #include "Measurement.h"
 
-#define RESOLUTION_DISTANCE			  0.25f							 		// Unit: round, 1 axis = 0.25 round
+#define RESOLUTION_DISTANCE			  0.05f							 		// Unit: round, 1 axis = 0.25 round
 
 // Sensor parameteres
-#define TIME_DEBOUNCE_RISING_EDGE     100									// T = 100/10000 = 10ms
+#define TIME_DEBOUNCE_RISING_EDGE     3									// T = 100/10000 = 10ms
+#define TIME_DEBOUNCE_FALLING_EDGE    3									// T = 100/10000 = 10ms
 #define NO_PULSE_PER_ROUND			  336U
 #define NO_PULSE_PER_UNIT_AXIS		  RESOLUTION_DISTANCE * NO_PULSE_PER_ROUND
 
 // Sensorless parameters
 #define WINDOW_SIZE 				  10  									// Size of the sliding window buffer
-#define NUM_DEBOUNCE_SSLESS			  2
-#define EPSILON						  29									// Equivalent to 2 uint ADC in 12 bit
+#define NUM_DEBOUNCE_SSLESS			  1
+#define EPSILON						  0								// Equivalent to 2 uint ADC in 12 bit
 #define NO_PEAK_PER_ROUND			  6600									// 6600 peak current /round
 #define NO_PEAK_PER_UNIT_AXIS	      RESOLUTION_DISTANCE * NO_PEAK_PER_ROUND
 
@@ -31,7 +32,7 @@
 
 #define CURRENT_LIMIT_LOCKED_MT_SLIDER			5.0f
 #define CURRENT_LIMIT_LOCKED_MT_HEIGHT			5.0f
-#define CURRENT_LIMIT_LOCKED_MT_RECLINER		5.0f
+#define CURRENT_LIMIT_LOCKED_MT_RECLINER		10.0f
 
 #define CURRENT_LIMIT_SOFTSTART_MT_SLIDER_Q15		_q15(CURRENT_LIMIT_SOFTSTART_MT_SLIDER / CURRENT_MT1_HIGH_LIMIT_SOFT)
 #define CURRENT_LIMIT_SOFTSTART_MT_HEIGHT_Q15		_q15(CURRENT_LIMIT_SOFTSTART_MT_HEIGHT / CURRENT_MT2_HIGH_LIMIT_SOFT)
@@ -53,9 +54,16 @@ typedef enum{
 } MotorStatus_TypeDef;
 
 typedef enum{
-	SOFTSTART,
-	STEADY
+	SOFTSTART  		= 0,
+	STEADY 			= 1,
+	BLOCK
 } MotorState_TypeDef;
+
+typedef enum{
+	BLOCK_NOT		= 0,
+	BLOCK_FORWARD 	= 1,
+	BLOCK_BACKWARD
+} MotorBlock_TypeDef;
 
 typedef struct{
 	GPIO_TypeDef ina;
@@ -68,23 +76,23 @@ typedef struct{
 } MotorDriver_TypeDef;
 
 typedef struct{
-	_Bool 	 flag_checking_rising_edge;
-	uint8_t  cnt_debounce;
-	uint8_t  cnt_pulse;
+	_Bool 	 flag_checking_rising;
+	uint8_t  cnt_debounce_rising;
+
+	_Bool 	 flag_checking_falling;
+	uint8_t  cnt_debounce_falling;
 } MotorSensor_TypeDef;
 
 typedef struct {
 	uint16_t values[WINDOW_SIZE];  // Buffer in Q15 format
 
-    uint16_t current_value;
-    uint16_t previous_value;
+    int32_t  current_value;
+    int32_t  previous_value;
 
     uint16_t cnt_rising;
     uint16_t cnt_falling;
     uint16_t flag_rising;
     uint16_t flag_falling;
-
-    uint16_t cnt_peak;
 } MotorSensorless_TypeDef;
 
 typedef struct{
@@ -93,12 +101,13 @@ typedef struct{
 	MotorTopology_TypeDef		topology;
 
 	MotorState_TypeDef			state;
+	MotorBlock_TypeDef		block_status;
 	uint16_t					cnt_soft_start;
 	uint16_t					cnt_available;
 	_Bool						flag_available;
 	MotorStatus_TypeDef 		status;
 	MeasType_TypeDef			meas_type;
-	uint16_t					axis;
+	int32_t						axis;
 
 	MotorSensor_TypeDef			sensor;
 	MotorSensorless_TypeDef	 	sensorless;
@@ -121,7 +130,11 @@ typedef struct{
 void MD_Init(void);
 
 void MD_StopAll(void);
+void MD_EnableAll(void);
 void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t current_value);
+
+void MD_UpdateDriver(Motor_TypeDef *pMotor);
+
 
 void MD_UpdateMeas(MeasType_TypeDef meas_type);
 void MD_GetSeatAxis(SeatAxis_TypeDef *pSeat);
@@ -130,4 +143,5 @@ void MD_ResetAxis(void);
 void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value);
 
 extern Motor_TypeDef motor_height, motor_recliner, motor_slider;
+extern int32_t debug_variable;
 #endif /* MIDDLELAYER_MOTORDRIVER_MOTORDRIVER_H_ */

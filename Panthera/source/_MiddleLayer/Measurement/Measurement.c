@@ -89,9 +89,9 @@ void MEAS_GetValueQ15(Meas_TypeDef *pMeas)
     	return;
 
     if (pMeas->calc_method == CALC_METHOD_Q15) {
-        pMeas->prev_value = pMeas->value_q15;
+//        pMeas->prev_value = pMeas->value_q15;
         pMeas->value_q15 = _q15_mul(pMeas->raw >> 1 , pMeas->scale_factor);
-        pMeas->value_q15 = MEAS_LPF(pMeas->value_q15, pMeas->prev_value, pMeas->alpha);
+//        pMeas->value_q15 = MEAS_LPF(pMeas->value_q15, pMeas->prev_value, pMeas->alpha);
 	} else pMeas->value_q15 = _q15_mul(pMeas->raw >>1 , _q15(1));
 }
 
@@ -199,7 +199,7 @@ void MEAS_GetValue(MeasType_TypeDef meas_type)
 	}
 
 	// FIXME: Only use for debugging
-	MEAS_GetRealValue(meas_type);
+//	MEAS_GetRealValue(meas_type);
 }
 
 /**

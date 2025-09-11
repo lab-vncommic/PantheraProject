@@ -17,9 +17,9 @@
 //Address EEPROM 0x00800000
 
 typedef struct{
-	uint16_t x;
-	uint16_t y;
-	uint16_t z;
+	uint32_t x;
+	uint32_t y;
+	uint32_t z;
 } Memory_TypeDef;
 
 void MEM_Read(uint16_t id_recall);

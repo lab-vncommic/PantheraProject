@@ -10,6 +10,12 @@ uint16_t cnt_mt_recliner_softstart;
 uint16_t cnt_mt_recliner_available;
 _Bool flag_mt_recliner_available;
 
+// FIXME: Variable for testing sensorless
+int32_t cnt_old_axis;
+int32_t cnt_compensation;
+_Bool flag_compensation;
+int32_t debug_variable;
+
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
 					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm, GPIO_TypeDef pin_hall);
 void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology);
@@ -17,10 +23,10 @@ void MD_UpdateDriver(Motor_TypeDef *pMotor);
 void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
 void MD_UpdateMeasType(Motor_TypeDef *pMotor, MeasType_TypeDef meas_type);
 _Bool MD_DetectHallSignalRising(Motor_TypeDef *pMotor);
+_Bool MD_DetectHallSignalFalling(Motor_TypeDef *pMotor);
 _Bool MD_DetectPeak(Motor_TypeDef *pMotor);
-_Bool MD_ScaleResolutionSensor(Motor_TypeDef *pMotor);
-_Bool MD_ScaleResolutionSensorless(Motor_TypeDef *pMotor);
-uint16_t MD_RoundAxis(Motor_TypeDef *pMotor);
+void MD_UpdateAxisSensor(Motor_TypeDef *pMotor);
+void MD_UpdateAxisSensorless(Motor_TypeDef *pMotor);
 void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status, uint16_t current_value, uint16_t current_limit_softstart, uint16_t current_limit_locked);
 
 /**
@@ -129,8 +135,6 @@ void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
 			break;
 
 		case STOP:
-            pMotor->driver.ina.value       = 0;
-            pMotor->driver.inb.value       = 0;
             pMotor->driver.pwm.value       = 0;
 			break;
 
@@ -157,24 +161,30 @@ void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
  */
 void MD_UpdateMeasType(Motor_TypeDef *pMotor, MeasType_TypeDef meas_type)
 {
-	// Enable multi sens pin
-	pMotor->driver.mul_en.value = 1;
-
 	pMotor->meas_type = meas_type;
 	switch (pMotor->meas_type) {
 		case MEAS_CURRENT:
+			pMotor->driver.mul_en.value = 1;
 			pMotor->driver.sel0.value  = pMotor->driver.ina.value ;
 			pMotor->driver.sel1.value  = 0;
 			break;
 
 		case MEAS_THERMAL:
+			pMotor->driver.mul_en.value = 1;
 			pMotor->driver.sel0.value  = 0;
 			pMotor->driver.sel1.value  = 1;
 			break;
 
 		case MEAS_VCC:
+			pMotor->driver.mul_en.value = 1;
 			pMotor->driver.sel0.value  = 1;
 			pMotor->driver.sel1.value  = 1;
+			break;
+
+		case MEAS_NONE:
+			pMotor->driver.mul_en.value = 0;
+			pMotor->driver.sel0.value  = 0;
+			pMotor->driver.sel1.value  = 0;
 			break;
 
 		// motor sensor type = current
@@ -201,25 +211,12 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value)
 {
 	if (pMotor->topology == SENSOR) {
 		pMotor->driver.hall.value = GPIO_ReadPin(&pMotor->driver.hall);
-	    if (MD_ScaleResolutionSensor(pMotor)) {
-	        if (pMotor->status == FORWARD) {
-	            pMotor->axis += 1;
-	        } else if (pMotor->status == BACKWARD) {
-	            pMotor->axis -= 1;
-	        }
-	    }
+		MD_UpdateAxisSensor(pMotor);
 	} else {
 		pMotor->sensorless.previous_value = pMotor->sensorless.current_value;
 		pMotor->sensorless.current_value  = current_value;
-		if (MD_ScaleResolutionSensorless(pMotor)) {
-	        if (pMotor->status == FORWARD) {
-		        pMotor->axis += 1;
-		    } else if (pMotor->status == BACKWARD) {
-		    	pMotor->axis -= 1;
-		    }
-		}
+		MD_UpdateAxisSensorless(pMotor);
 	}
-
 }
 
 /**
@@ -239,22 +236,44 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value)
  */
 _Bool MD_DetectHallSignalRising(Motor_TypeDef *pMotor)
 {
-	if (pMotor->sensor.flag_checking_rising_edge == true) {
+	if (pMotor->sensor.flag_checking_rising == true) {
 		if (pMotor->driver.hall.value == 1)
 		{
-			if (pMotor->sensor.cnt_debounce++ >= TIME_DEBOUNCE_RISING_EDGE)
+			if (pMotor->sensor.cnt_debounce_rising++ >= TIME_DEBOUNCE_RISING_EDGE)
 			{
-				pMotor->sensor.cnt_debounce = 0;
-				pMotor->sensor.flag_checking_rising_edge = false;
+				pMotor->sensor.cnt_debounce_rising = 0;
+				pMotor->sensor.flag_checking_rising = false;
 				return true;
 			}
 
-		} else pMotor->sensor.cnt_debounce = 0;
+		} else pMotor->sensor.cnt_debounce_rising = 0;
 	}
 
 	if (pMotor->driver.hall.value == 0)
 	{
-		pMotor->sensor.flag_checking_rising_edge = true;
+		pMotor->sensor.flag_checking_rising = true;
+	}
+	return false;
+}
+
+_Bool MD_DetectHallSignalFalling(Motor_TypeDef *pMotor)
+{
+	if (pMotor->sensor.flag_checking_falling == true) {
+		if (pMotor->driver.hall.value == 0)
+		{
+			if (pMotor->sensor.cnt_debounce_falling++ >= TIME_DEBOUNCE_FALLING_EDGE)
+			{
+				pMotor->sensor.cnt_debounce_falling = 0;
+				pMotor->sensor.flag_checking_falling = false;
+				return true;
+			}
+
+		} else pMotor->sensor.cnt_debounce_falling = 0;
+	}
+
+	if (pMotor->driver.hall.value == 1)
+	{
+		pMotor->sensor.flag_checking_falling = true;
 	}
 	return false;
 }
@@ -277,7 +296,7 @@ _Bool MD_DetectPeak(Motor_TypeDef *pMotor)
             }
         }
     }
-    else if (diff < EPSILON) {
+    else if (diff < -EPSILON) {
         if (pMotor->sensorless.flag_rising) {
             pMotor->sensorless.cnt_falling++;
 
@@ -303,45 +322,82 @@ _Bool MD_DetectPeak(Motor_TypeDef *pMotor)
     return false;
 }
 
-_Bool MD_ScaleResolutionSensor(Motor_TypeDef *pMotor)
+_Bool MD_DetectBottom(Motor_TypeDef *pMotor)
 {
-	if (MD_DetectHallSignalRising(pMotor)) {
-		pMotor->sensor.cnt_pulse++;
+    int16_t diff = pMotor->sensorless.current_value - pMotor->sensorless.previous_value;
 
-		if (pMotor->sensor.cnt_pulse >= NO_PULSE_PER_UNIT_AXIS) {
-			pMotor->sensor.cnt_pulse = 0;
-			return true;
-		}
-	}
-	return false;
+    if (diff < -EPSILON) {
+        if (pMotor->sensorless.flag_falling) {
+        } else {
+            if (pMotor->sensorless.cnt_rising > 0) {
+                pMotor->sensorless.cnt_rising = 0;
+            }
+            pMotor->sensorless.cnt_falling++;
+            if (pMotor->sensorless.cnt_falling >= NUM_DEBOUNCE_SSLESS) {
+                pMotor->sensorless.flag_falling = 1;
+            }
+        }
+    }
+    else if (diff > EPSILON) {
+        if (pMotor->sensorless.flag_falling) {
+            pMotor->sensorless.cnt_rising++;
+            if (pMotor->sensorless.cnt_rising >= NUM_DEBOUNCE_SSLESS) {
+                pMotor->sensorless.flag_rising = 1;
+            }
+        }
+        else {
+            pMotor->sensorless.cnt_falling = 0;
+            pMotor->sensorless.cnt_rising = 0;
+        }
+    }
+
+    if (pMotor->sensorless.flag_falling && pMotor->sensorless.flag_rising) {
+        pMotor->sensorless.flag_falling = 0;
+        pMotor->sensorless.flag_rising = 0;
+        pMotor->sensorless.cnt_rising = 0;
+        pMotor->sensorless.cnt_falling = 0;
+        return true;
+    }
+
+    return false;
 }
 
-_Bool MD_ScaleResolutionSensorless(Motor_TypeDef *pMotor)
+void MD_UpdateAxisSensor(Motor_TypeDef *pMotor)
 {
-	if (MD_DetectPeak(pMotor)) {
-		pMotor->sensorless.cnt_peak++;
+	switch (pMotor->status) {
+		case FORWARD:
+			if (MD_DetectHallSignalRising(pMotor))	pMotor->axis++;
+			break;
 
-		if (pMotor->sensorless.cnt_peak >= NO_PEAK_PER_UNIT_AXIS) {
-//			pMotor->sensorless.cnt_peak = 0;
-			return true;
-		}
+		case BACKWARD:
+			if (MD_DetectHallSignalFalling(pMotor))	pMotor->axis--;
+			break;
+		default:
+			break;
 	}
-	return false;
+
+//	if (pMotor->axis <= 0) {
+//		pMotor->axis = 0;
+//	}
 }
 
-uint16_t MD_RoundAxis(Motor_TypeDef *pMotor)
+void MD_UpdateAxisSensorless(Motor_TypeDef *pMotor)
 {
-	uint16_t temp_axis = 0;
-	if (pMotor->topology == SENSOR) {
-		if (pMotor->sensor.cnt_pulse >= (NO_PULSE_PER_UNIT_AXIS / 2)) {
-			temp_axis = pMotor->axis + 1;
-		} else temp_axis = pMotor->axis;
-	} else if (pMotor->topology == SENSORLESS) {
-		if (pMotor->sensorless.cnt_peak >= (NO_PEAK_PER_UNIT_AXIS / 2)) {
-			temp_axis = pMotor->axis + 1;
-		} else temp_axis = pMotor->axis;
+	switch (pMotor->status) {
+		case FORWARD:
+			if (MD_DetectBottom(pMotor))	pMotor->axis++;
+			break;
+
+		case BACKWARD:
+			if (MD_DetectBottom(pMotor))	pMotor->axis--;
+			break;
+		default:
+			break;
 	}
-	return temp_axis;
+
+//	if (pMotor->axis <= 0) {
+//		pMotor->axis = 0;
+//	}
 }
 
 /**
@@ -366,9 +422,9 @@ void MD_Init(void)
 	MD_ConfigDriver(&motor_slider, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2, PIN_HALL_2);
 	MD_ConfigDriver(&motor_height, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3, PIN_HALL_3);
 
-	MD_ConfigTopology(&motor_recliner, SENSORLESS);
-	MD_ConfigTopology(&motor_height, SENSORLESS);
-	MD_ConfigTopology(&motor_slider, SENSORLESS);
+	MD_ConfigTopology(&motor_recliner, SENSOR);
+	MD_ConfigTopology(&motor_height, SENSOR);
+	MD_ConfigTopology(&motor_slider, SENSOR);
 
 	motor_height.name   = MOTOR_HEIGHT;
 	motor_recliner.name = MOTOR_RECLINER;
@@ -398,11 +454,13 @@ void MD_StopAll(void)
 	MD_UpdateStatusMotor(&motor_height, STOP);
 	MD_UpdateStatusMotor(&motor_recliner, STOP);
 	MD_UpdateStatusMotor(&motor_slider, STOP);
+}
 
-	// Update driver for all motors
-	MD_UpdateDriver(&motor_height);
-	MD_UpdateDriver(&motor_recliner);
-	MD_UpdateDriver(&motor_slider);
+void MD_EnableAll(void)
+{
+	motor_recliner.state = SOFTSTART;
+	motor_height.state = SOFTSTART;
+	motor_slider.state = SOFTSTART;
 }
 
 /**
@@ -440,18 +498,34 @@ void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status,
 	if (status != STOP) {
 	    switch (pMotor->state) {
 	        case SOFTSTART:
+	        	if ((status == FORWARD) && (pMotor->block_status == BLOCK_FORWARD)) {
+	                pMotor->state = BLOCK;
+	                break;
+				} else if ((status == BACKWARD) && (pMotor->block_status == BLOCK_BACKWARD)) {
+	                pMotor->state = BLOCK;
+	                break;
+				}
+
+	        	pMotor->block_status = BLOCK_NOT;
 	        	pMotor->cnt_soft_start++;
 	            if (current_value <= current_limit_softstart) {
 	                MD_UpdateStatusMotor(pMotor, status);
 	            } else {
 	                MD_UpdateStatusMotor(pMotor, STOP);
 	            }
-	            if ((pMotor->cnt_soft_start) >= 1000) {
+	            if ((pMotor->cnt_soft_start) >= 2000) {
 	            	pMotor->cnt_soft_start = 0;
 	            	pMotor->flag_available = true;
 	                pMotor->state = STEADY;
+
+		        	if (pMotor->topology == SENSOR) {
+		        		if (pMotor->status == FORWARD) {
+			        		pMotor->axis++;
+						} else pMotor->axis--;
+					}
 	            }
 	            break;
+
 	        case STEADY:
 	            if (current_value <= current_limit_locked && pMotor->flag_available) {
 	                MD_UpdateStatusMotor(pMotor, status);
@@ -459,20 +533,28 @@ void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status,
 	                MD_UpdateStatusMotor(pMotor, STOP);
 	                pMotor->cnt_available++;
 	                if (pMotor->cnt_available >= 10) {
-	                	pMotor->cnt_available  = 0;
 	                	pMotor->flag_available = false;
+	                	pMotor->cnt_available  = 0;
+	                	if (status == FORWARD) {
+	                		pMotor->block_status = BLOCK_FORWARD;
+						} else if (status == BACKWARD) {
+							pMotor->block_status = BLOCK_BACKWARD;
+						}
 	                }
 	            }
+
 	            break;
+
+	        case BLOCK:
+	            MD_UpdateStatusMotor(pMotor, STOP);
+	            break;
+
 	        default:
 	            MD_UpdateStatusMotor(pMotor, STOP);
 	            break;
 	    }
-	    MD_UpdateDriver(pMotor);
-	    MD_UpdateAxis(pMotor, current_value);
 	} else {
         MD_UpdateStatusMotor(pMotor, STOP);
-	    MD_UpdateDriver(pMotor);
 	}
 }
 
@@ -497,24 +579,6 @@ void MD_UpdateMeas(MeasType_TypeDef meas_type)
 	MD_UpdateMeasType(&motor_height, meas_type);
 	MD_UpdateMeasType(&motor_recliner, meas_type);
 	MD_UpdateMeasType(&motor_slider, meas_type);
-	MD_UpdateDriver(&motor_height);
-	MD_UpdateDriver(&motor_recliner);
-	MD_UpdateDriver(&motor_slider);
-}
-
-/**
- * @brief Retrieves the current position of all seat axes
- * @details Reads the current axis position values from all motors and
- *          returns them in a unified SeatAxis structure
- * @return SeatAxis_TypeDef Structure containing the current position values
- *         for height, recliner and slider axes
- * @note Currently returns the same value (height axis) for all axes
- */
-void MD_GetSeatAxis(SeatAxis_TypeDef *pSeat)
-{
-	pSeat->slider 	= MD_RoundAxis(&motor_slider);
-	pSeat->height 	= MD_RoundAxis(&motor_height);
-	pSeat->recliner = MD_RoundAxis(&motor_recliner);
 }
 
 void MD_UpdateToComm(MotorComm_TypeDef *pMotor)
@@ -530,6 +594,21 @@ void MD_UpdateToComm(MotorComm_TypeDef *pMotor)
 	pMotor->motor_recliner.topology  = motor_recliner.topology;
 	pMotor->motor_recliner.ina_value = motor_recliner.driver.ina.value;
 	pMotor->motor_recliner.inb_value = motor_recliner.driver.inb.value;
+}
+
+/**
+ * @brief Retrieves the current position of all seat axes
+ * @details Reads the current axis position values from all motors and
+ *          returns them in a unified SeatAxis structure
+ * @return SeatAxis_TypeDef Structure containing the current position values
+ *         for height, recliner and slider axes
+ * @note Currently returns the same value (height axis) for all axes
+ */
+void MD_GetSeatAxis(SeatAxis_TypeDef *pSeat)
+{
+	pSeat->slider 	= motor_slider.axis;
+	pSeat->height 	= motor_height.axis;
+	pSeat->recliner = motor_recliner.axis;
 }
 
 void MD_ResetAxis(void)

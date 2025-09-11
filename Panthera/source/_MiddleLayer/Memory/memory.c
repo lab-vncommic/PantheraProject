@@ -113,8 +113,14 @@ uint32_t convert_coordinates_into_single_value(uint32_t x,uint32_t y, uint32_t z
  * @param  id_recall: EEPROM storage index/ID.
  */
 void MEM_Write(uint32_t x,uint32_t y, uint32_t z, uint16_t id_recall){
-	uint32_t coordinates = convert_coordinates_into_single_value(x,y,z);
-	EEPROM_Write(coordinates, id_recall);
+//	uint32_t coordinates = convert_coordinates_into_single_value(x,y,z);
+//	EEPROM_Write(coordinates, id_recall);
+
+	// FIXME: Code test save data position in uint32t
+	uint16_t temp_id = 3*(id_recall-1);
+	EEPROM_Write(x, temp_id + 1);
+	EEPROM_Write(y, temp_id + 2);
+	EEPROM_Write(z, temp_id + 3);
 }
 
 /**
@@ -154,18 +160,23 @@ void seperate_char(char* a, char* b, char* c, const char* input) {
  * @note   Decoded values are stored in global variable `thisMemory`.
  */
 void MEM_Read(uint16_t id_recall){
-	uint32_t output_EEPROM = EEPROM_Read(id_recall);
-
-    char str_source[10], x_axis_str[3],y_axis_str[3],z_axis_str[3];
-//    strcpy(str_source,convert_Dec_to_Hex(output_EEPROM));
-    snprintf(str_source, sizeof(str_source), "%06X", (unsigned int)output_EEPROM);
-    seperate_char(x_axis_str,y_axis_str,z_axis_str,str_source);
-    thisMemory.x = convert_charHex_to_uint32_t(x_axis_str);
-    thisMemory.y = convert_charHex_to_uint32_t(y_axis_str);
-    thisMemory.z = convert_charHex_to_uint32_t(z_axis_str);
+//	uint32_t output_EEPROM = EEPROM_Read(id_recall);
+//
+//    char str_source[10], x_axis_str[3],y_axis_str[3],z_axis_str[3];
+////    strcpy(str_source,convert_Dec_to_Hex(output_EEPROM));
+//    snprintf(str_source, sizeof(str_source), "%06X", (unsigned int)output_EEPROM);
+//    seperate_char(x_axis_str,y_axis_str,z_axis_str,str_source);
+//    thisMemory.x = convert_charHex_to_uint32_t(x_axis_str);
+//    thisMemory.y = convert_charHex_to_uint32_t(y_axis_str);
+//    thisMemory.z = convert_charHex_to_uint32_t(z_axis_str);
 //    thisMemory.x = (uint16_t) convert_charHex_to_uint32_t(x_axis_str);
 //    thisMemory.y = (uint16_t) convert_charHex_to_uint32_t(y_axis_str);
 //    thisMemory.z = (uint16_t) convert_charHex_to_uint32_t(z_axis_str);
+
+	uint16_t temp_id = 3*(id_recall-1);
+    thisMemory.x = EEPROM_Read(temp_id + 1);
+	thisMemory.y = EEPROM_Read(temp_id + 2);
+	thisMemory.z = EEPROM_Read(temp_id + 3);
 }
 
 /**
