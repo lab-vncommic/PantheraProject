@@ -130,7 +130,7 @@
             <pin_settings>
               <pin_identification>
                 <identifier>
-                  <value>CAN_RX</value>
+                  <value>COMM_RX</value>
                 </identifier>
                 <port index="0">
                   <value>PORT_A</value>
@@ -358,7 +358,7 @@
             <pin_settings>
               <pin_identification>
                 <identifier>
-                  <value>CAN_TX</value>
+                  <value>COMM_TX</value>
                 </identifier>
                 <port index="0">
                   <value>PORT_A</value>
@@ -3733,7 +3733,7 @@
             <value>true</value>
           </saradc>
           <can>
-            <value>false</value>
+            <value>true</value>
           </can>
           <serial>
             <value>true</value>
@@ -4332,34 +4332,34 @@
             <configs disabled="true" />
           </lin_filters>
         </linflex_settings>
-        <mcan_settings disabled="true">
-          <mcan_subsytem_0 disabled="true">
-            <mcan_0 disabled="true">
-              <mcan_0 disabled="true">
+        <mcan_settings>
+          <mcan_subsytem_0>
+            <mcan_0>
+              <mcan_0>
                 <value>false</value>
               </mcan_0>
               <shared_ram_size disabled="true">
                 <value>1984</value>
               </shared_ram_size>
             </mcan_0>
-            <mcan_1 disabled="true">
-              <mcan_1 disabled="true">
+            <mcan_1>
+              <mcan_1>
                 <value>false</value>
               </mcan_1>
               <shared_ram_size disabled="true">
                 <value>1984</value>
               </shared_ram_size>
             </mcan_1>
-            <mcan_2 disabled="true">
-              <mcan_2 disabled="true">
-                <value>false</value>
+            <mcan_2>
+              <mcan_2>
+                <value>true</value>
               </mcan_2>
-              <shared_ram_size disabled="true">
+              <shared_ram_size>
                 <value>1984</value>
               </shared_ram_size>
             </mcan_2>
-            <mcan_3 disabled="true">
-              <mcan_3 disabled="true">
+            <mcan_3>
+              <mcan_3>
                 <value>false</value>
               </mcan_3>
               <shared_ram_size disabled="true">
@@ -4367,31 +4367,31 @@
               </shared_ram_size>
             </mcan_3>
             <total_memory_used disabled="true">
-              <value>0</value>
+              <value>1984</value>
             </total_memory_used>
             <total_memory_available disabled="true">
               <value>7936</value>
             </total_memory_available>
           </mcan_subsytem_0>
-          <mcan_subsytem_1 disabled="true">
-            <mcan_1 disabled="true">
-              <mcan_1 disabled="true">
+          <mcan_subsytem_1>
+            <mcan_1>
+              <mcan_1>
                 <value>false</value>
               </mcan_1>
               <shared_ram_size disabled="true">
                 <value>2645</value>
               </shared_ram_size>
             </mcan_1>
-            <mcan_2 disabled="true">
-              <mcan_2 disabled="true">
+            <mcan_2>
+              <mcan_2>
                 <value>false</value>
               </mcan_2>
               <shared_ram_size disabled="true">
                 <value>2645</value>
               </shared_ram_size>
             </mcan_2>
-            <mcan_3 disabled="true">
-              <mcan_3 disabled="true">
+            <mcan_3>
+              <mcan_3>
                 <value>false</value>
               </mcan_3>
               <shared_ram_size disabled="true">
@@ -4405,14 +4405,473 @@
               <value>7936</value>
             </total_memory_available>
           </mcan_subsytem_1>
-          <can_configurations disabled="true">
-            <configs disabled="true" />
+          <can_configurations>
+            <configs>
+              <can_configuration_settings>
+                <symbolic_name>
+                  <value>mcanconf</value>
+                </symbolic_name>
+                <general_configuration>
+                  <loopback index="0">
+                    <value>No_Loopback</value>
+                  </loopback>
+                  <endianness index="1">
+                    <value>Big Endian</value>
+                  </endianness>
+                </general_configuration>
+                <timings>
+                  <clock_prescaler>
+                    <value>50</value>
+                  </clock_prescaler>
+                  <nsjw>
+                    <value>3</value>
+                  </nsjw>
+                  <ntseg1>
+                    <value>2</value>
+                  </ntseg1>
+                  <ntseg2>
+                    <value>3</value>
+                  </ntseg2>
+                  <can_subsytem_0_protocol_clock disabled="true">
+                    <value>40000000</value>
+                  </can_subsytem_0_protocol_clock>
+                  <can_subsytem_1_protocol_clock disabled="true">
+                    <value>40000000</value>
+                  </can_subsytem_1_protocol_clock>
+                  <can_subsytem_0_calculated_bit_rate disabled="true">
+                    <value>100000</value>
+                  </can_subsytem_0_calculated_bit_rate>
+                  <can_subsytem_1_calculated_bit_rate disabled="true">
+                    <value>100000</value>
+                  </can_subsytem_1_calculated_bit_rate>
+                </timings>
+                <canfd_operation>
+                  <enable_canfd>
+                    <value>false</value>
+                  </enable_canfd>
+                  <bit_rate_switching disabled="true">
+                    <value>false</value>
+                  </bit_rate_switching>
+                  <clock_prescaler disabled="true">
+                    <value>10</value>
+                  </clock_prescaler>
+                  <dsjw disabled="true">
+                    <value>1</value>
+                  </dsjw>
+                  <dtseg1 disabled="true">
+                    <value>1</value>
+                  </dtseg1>
+                  <dtseg2 disabled="true">
+                    <value>0</value>
+                  </dtseg2>
+                  <transceiver_delay_compensation disabled="true">
+                    <value>false</value>
+                  </transceiver_delay_compensation>
+                  <tdc_value disabled="true">
+                    <value>0</value>
+                  </tdc_value>
+                  <tdc_offset disabled="true">
+                    <value>0</value>
+                  </tdc_offset>
+                  <tdc_filter_window_length disabled="true">
+                    <value>0</value>
+                  </tdc_filter_window_length>
+                  <can_subsytem_0_canfd_bit_rate disabled="true">
+                    <value>1000000</value>
+                  </can_subsytem_0_canfd_bit_rate>
+                  <can_subsytem_1_canfd_bit_rate disabled="true">
+                    <value>1000000</value>
+                  </can_subsytem_1_canfd_bit_rate>
+                </canfd_operation>
+                <rx_buffer_configuration>
+                  <interrupt index="2">
+                    <value>LINE1</value>
+                  </interrupt>
+                  <callback>
+                    <value>panthera_rx_can</value>
+                  </callback>
+                  <number_of_rx_buffers index="51">
+                    <value>51</value>
+                  </number_of_rx_buffers>
+                  <rx_buffer_filters>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x0</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x1</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x2</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x3</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x4</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x5</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x6</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x7</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x8</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x9</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0xa</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0xb</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0xc</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0xd</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0xe</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0xf</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x10</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x11</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x12</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x13</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x14</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x15</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x16</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x17</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x18</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                    <filter>
+                      <filter_type index="0">
+                        <value>Standard</value>
+                      </filter_type>
+                      <filter_value>
+                        <value>0x19</value>
+                      </filter_value>
+                      <rx_buffer_number>
+                        <value>50</value>
+                      </rx_buffer_number>
+                    </filter>
+                  </rx_buffer_filters>
+                </rx_buffer_configuration>
+                <fifo_0_configuration>
+                  <interrupt_line index="0">
+                    <value>DISABLED</value>
+                  </interrupt_line>
+                  <number_of_fifo_buffers index="0">
+                    <value>0</value>
+                  </number_of_fifo_buffers>
+                  <new_message_interrupt disabled="true" index="0">
+                    <value>DISABLED</value>
+                  </new_message_interrupt>
+                  <new_message_callback disabled="true">
+                    <value />
+                  </new_message_callback>
+                  <watermark_interrupt disabled="true" index="0">
+                    <value>DISABLED</value>
+                  </watermark_interrupt>
+                  <watermark_reached_callback disabled="true">
+                    <value />
+                  </watermark_reached_callback>
+                  <fifo_full_interrupt disabled="true" index="0">
+                    <value>DISABLED</value>
+                  </fifo_full_interrupt>
+                  <fifo_full_callback disabled="true">
+                    <value />
+                  </fifo_full_callback>
+                  <fifo_message_lost_interrupt disabled="true" index="0">
+                    <value>DISABLED</value>
+                  </fifo_message_lost_interrupt>
+                  <fifo_message_lost_callback disabled="true">
+                    <value />
+                  </fifo_message_lost_callback>
+                  <fifo_buffer_filters />
+                </fifo_0_configuration>
+                <fifo_1_configuration>
+                  <interrupt_line index="0">
+                    <value>DISABLED</value>
+                  </interrupt_line>
+                  <number_of_fifo_buffers index="0">
+                    <value>0</value>
+                  </number_of_fifo_buffers>
+                  <new_message_interrupt disabled="true" index="0">
+                    <value>DISABLED</value>
+                  </new_message_interrupt>
+                  <new_message_callback disabled="true">
+                    <value />
+                  </new_message_callback>
+                  <watermark_interrupt disabled="true" index="0">
+                    <value>DISABLED</value>
+                  </watermark_interrupt>
+                  <watermark_reached_callback disabled="true">
+                    <value />
+                  </watermark_reached_callback>
+                  <fifo_full_interrupt disabled="true" index="0">
+                    <value>DISABLED</value>
+                  </fifo_full_interrupt>
+                  <fifo_full_callback disabled="true">
+                    <value />
+                  </fifo_full_callback>
+                  <fifo_message_lost_interrupt disabled="true" index="0">
+                    <value>DISABLED</value>
+                  </fifo_message_lost_interrupt>
+                  <fifo_message_lost_callback disabled="true">
+                    <value />
+                  </fifo_message_lost_callback>
+                  <fifo_buffer_filters />
+                </fifo_1_configuration>
+                <tx_configuration>
+                  <tx_mode index="0">
+                    <value>DEDICATED</value>
+                  </tx_mode>
+                  <number_of_tx_buffers index="16">
+                    <value>16</value>
+                  </number_of_tx_buffers>
+                  <number_of_fifo_or_queue_tx_buffers disabled="true" index="8">
+                    <value>8</value>
+                  </number_of_fifo_or_queue_tx_buffers>
+                </tx_configuration>
+                <error_management>
+                  <error_callback>
+                    <value />
+                  </error_callback>
+                </error_management>
+              </can_configuration_settings>
+            </configs>
           </can_configurations>
-          <debug_options disabled="true">
-            <global_rx_counter disabled="true" index="0">
+          <debug_options>
+            <global_rx_counter index="0">
               <value>DISABLED</value>
             </global_rx_counter>
-            <global_tx_counter disabled="true" index="0">
+            <global_tx_counter index="0">
               <value>DISABLED</value>
             </global_tx_counter>
           </debug_options>

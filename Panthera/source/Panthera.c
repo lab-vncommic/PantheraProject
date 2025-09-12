@@ -6,14 +6,12 @@
  */
 #include "Panthera.h"
 uint16_t cnt_blink_led;
-CommMode_Enum Comm_Mode = COMM_DEBUG;
-uint16_t temp;
-int16_t debug_var;
+CommMode_Enum Comm_Mode = COMM_UART;
 
 void PTR_system_initialization(void)
 {
 	GDE_Config();
-	COMM_Init();
+	COMM_Init(Comm_Mode);
 	BTN_Init();
 	MEAS_Init();
 	FAULT_Init();
@@ -41,7 +39,7 @@ void PTR_main_interrupt_service(void)
 		MD_UpdateMeas(MEAS_CURRENT);
 		MEAS_UpdateValue(&thisPTR.measurement, MEAS_CURRENT);
 	}
-	end = stm_lld_getcounter(&STMD3);
+
 
 //	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
 	STATE_UpdateFault(&thisPTR);
@@ -57,7 +55,7 @@ void PTR_main_interrupt_service(void)
 	MD_UpdateDriver(&motor_recliner);
 	MD_UpdateDriver(&motor_slider);
 
-
+	end = stm_lld_getcounter(&STMD3);
     elapsed = end - begin;
 }
 
@@ -69,13 +67,15 @@ void PTR_inf_loop_system(void)
 			flag_debug_tx_completed = 0;
 			sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
 		}
-		snprintf(BufTXDebug, sizeof(BufTXDebug), "elapsed = %lu, state = %u, axis_motor = %ld, flag_rising = %u, debug = %d, axit_mem = %ld\r\n",
-				elapsed,
+		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %u, state_motor = %u, flag = %u \r\n",
 				thisPTR.state,
-				motor_recliner.axis,
-				motor_recliner.sensor.flag_checking_rising,
-				debug_var,
-				thisPTR.seat_memory_axis.recliner
+				motor_recliner.state,
+				motor_recliner.flag_available
 		);
-	} else COMM_TransmitReceiveHandle();
+	} else {
+		COMM_DecodeMessage();
+		COMM_HandleRequest();
+		COMM_CommToState(&thisPTR.communication);
+	}
 }
+

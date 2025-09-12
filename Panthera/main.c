@@ -18,13 +18,11 @@
 // User's library
 #include "Panthera.h"
 
-uint16_t cnt;
-
 void PIT0_ISR(void)
 {
 	PTR_main_interrupt_service();
 }
-
+uint32_t result_can;
 /*
  * Application entry point.
  */

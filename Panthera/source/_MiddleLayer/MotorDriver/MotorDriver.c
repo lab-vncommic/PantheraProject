@@ -140,8 +140,6 @@ void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status)
 
 		// Stop motor
 		default:
-            pMotor->driver.ina.value       = 0;
-            pMotor->driver.inb.value       = 0;
             pMotor->driver.pwm.value       = 0;
 			break;
 	}

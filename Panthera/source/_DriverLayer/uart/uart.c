@@ -32,7 +32,6 @@ void UART_HandleRequest(void)
 {
 	if (flag_enable_rx) {
 		sd_lld_read(&SD2, (uint8_t*) BufRX, UART_RX_LENGTH);
-//		osalThreadDelayMilliseconds(300);
 		flag_enable_rx = 0;
 	}
 

@@ -33,10 +33,10 @@
 /*
  * I/O definitions.
  */
-#define CAN_RX                      1U
+#define COMM_RX                     1U
 #define MulEN_2                     10U
 #define SEL0_2                      11U
-#define CAN_TX                      2U
+#define COMM_TX                     2U
 #define MulSens_2                   10U
 #define INB_3                       11U
 #define MulSens_1                   8U
@@ -74,10 +74,10 @@
 /*
  * PORT definitions.
  */
-#define PORT_CAN_RX                 PORT_A
+#define PORT_COMM_RX                PORT_A
 #define PORT_MulEN_2                PORT_A
 #define PORT_SEL0_2                 PORT_A
-#define PORT_CAN_TX                 PORT_A
+#define PORT_COMM_TX                PORT_A
 #define PORT_MulSens_2              PORT_B
 #define PORT_INB_3                  PORT_B
 #define PORT_MulSens_1              PORT_B
@@ -115,10 +115,10 @@
 /*
  * MSCR_IO definitions.
  */
-#define MSCR_IO_CAN_RX              MSCR_IO_INDEX(PORT_CAN_RX, CAN_RX)
+#define MSCR_IO_COMM_RX             MSCR_IO_INDEX(PORT_COMM_RX, COMM_RX)
 #define MSCR_IO_MulEN_2             MSCR_IO_INDEX(PORT_MulEN_2, MulEN_2)
 #define MSCR_IO_SEL0_2              MSCR_IO_INDEX(PORT_SEL0_2, SEL0_2)
-#define MSCR_IO_CAN_TX              MSCR_IO_INDEX(PORT_CAN_TX, CAN_TX)
+#define MSCR_IO_COMM_TX             MSCR_IO_INDEX(PORT_COMM_TX, COMM_TX)
 #define MSCR_IO_MulSens_2           MSCR_IO_INDEX(PORT_MulSens_2, MulSens_2)
 #define MSCR_IO_INB_3               MSCR_IO_INDEX(PORT_INB_3, INB_3)
 #define MSCR_IO_MulSens_1           MSCR_IO_INDEX(PORT_MulSens_1, MulSens_1)
@@ -156,7 +156,7 @@
 /*
  * MSCR_MUX definitions.
  */
-#define MSCR_MUX_CAN_RX             337U
+#define MSCR_MUX_COMM_RX            337U
 
 #if !defined(_FROM_ASM_)
 #ifdef __cplusplus
