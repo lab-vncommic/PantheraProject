@@ -34,7 +34,9 @@
 | 30  | 16/08/2025    | v1.1.16             | Chỉnh sửa pattern hàm truy xuất giá trị các module                         | Nguyễn Quốc Uy    | Obsoleted|
 | 31  | 18/08/2025    | v1.1.17             | Bổ sung thuật toán phát hiện vị trí với sensorless                         | Nguyễn Quốc Uy    | Obsoleted|
 | 32  | 26/08/2025    | v1.2.0              | Chỉnh sửa code state manual: bổ sung limit dòng khởi động                  | Nguyễn Quốc Uy    | Obsoleted|
-| 33  | 11/09/2025    | v1.2.1              | Release bản code cho Hall sensor                                           | Nguyễn Quốc Uy    | Active   |
+| 33  | 11/09/2025    | v1.2.1              | Release bản code cho Hall sensor                                           | Nguyễn Quốc Uy    | Obsoleted|
+| 34  | 11/09/2025    | v1.2.2              | Cập nhật tính năng truyền thông (UART & CAN) cho hệ thống                  | Nguyễn Quốc Uy    | Active   |
+
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
