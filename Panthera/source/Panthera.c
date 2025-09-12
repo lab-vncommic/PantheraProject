@@ -6,13 +6,12 @@
  */
 #include "Panthera.h"
 uint16_t cnt_blink_led;
-CommMode_Enum Comm_Mode = COMM_DEBUG;
-uint16_t temp;
+CommMode_Enum Comm_Mode = COMM_UART;
+
 void PTR_system_initialization(void)
 {
 	GDE_Config();
-//	COMM_Init();
-	CAN_Init();
+	COMM_Init(Comm_Mode);
 	BTN_Init();
 	MEAS_Init();
 	FAULT_Init();
@@ -62,23 +61,21 @@ void PTR_main_interrupt_service(void)
 
 void PTR_inf_loop_system(void)
 {
-//	if (Comm_Mode == COMM_DEBUG) {
-//		// UART for debugging
-//		if (flag_debug_tx_completed == 1){
-//			flag_debug_tx_completed = 0;
-//			sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
-//		}
-//		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %u, state_motor = %u, flag = %u \r\n",
-//				thisPTR.state,
-//				motor_recliner.state,
-//				motor_recliner.flag_available
-//		);
-//	} else COMM_TransmitReceiveHandle();
-
-	// Update input signals include communication
-//	STATE_ProcessInputSignals(&thisPTR);
-	CAN_Decode_Mess();
-	CAN_Handle();
-	COMM_CommToState(&thisPTR.communication);
+	if (Comm_Mode == COMM_DEBUG) {
+		// UART for debugging
+		if (flag_debug_tx_completed == 1){
+			flag_debug_tx_completed = 0;
+			sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
+		}
+		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %u, state_motor = %u, flag = %u \r\n",
+				thisPTR.state,
+				motor_recliner.state,
+				motor_recliner.flag_available
+		);
+	} else {
+		COMM_DecodeMessage();
+		COMM_HandleRequest();
+		COMM_CommToState(&thisPTR.communication);
+	}
 }
 

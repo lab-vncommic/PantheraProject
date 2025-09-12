@@ -11,12 +11,14 @@
 #include "stdint.h"
 #include "string.h"
 #include "uart.h"
+#include "can.h"
 #include "Button.h"
 #include "MotorDriver.h"
 
 #define READ_MODE 	0
 #define WRITE_MODE 	1
 
+// UART parameters
 #define OFFSET_ID		2
 #define OFFSET_REQUEST	4
 #define OFFSET_DATA		5
@@ -47,12 +49,11 @@ typedef struct{
 	MotorComm_TypeDef		motor_comm;
 } CommSystem_TypeDef;
 
-void COMM_Init(void);
+void COMM_Init(CommMode_Enum Comm);
+void COMM_DecodeMessage(void);
+void COMM_HandleRequest(void);
 void COMM_CommToState(CommSystem_TypeDef *pComm);
-void COMM_TransmitReceiveHandle(void);
-void COMM_Respone(void);
-void COMM_HandleWriteRequest(void);
-void COMM_UpdateStatus(void);
 
+extern _Bool flag_update_ic;
 extern CommMessage_TypeDef thisMessage;
 #endif /* SOURCE__MIDDLELAYER_COMMUNICATION_COMMUNICATION_H_ */

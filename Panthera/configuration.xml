@@ -130,7 +130,7 @@
             <pin_settings>
               <pin_identification>
                 <identifier>
-                  <value>CAN_RX</value>
+                  <value>COMM_RX</value>
                 </identifier>
                 <port index="0">
                   <value>PORT_A</value>
@@ -152,7 +152,7 @@
                       <value>I</value>
                     </metadata>
                     <metadata name="functionRef" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
-                      <value>RX_2_0</value>
+                      <value>RXD_1</value>
                     </metadata>
                   </metadatas>
                 </pin_mode>
@@ -195,10 +195,10 @@
                 </mscr_io_settings>
                 <mscr_mux_settings>
                   <mscr_index>
-                    <value>759</value>
+                    <value>849</value>
                   </mscr_index>
                   <sss>
-                    <value>3</value>
+                    <value>1</value>
                   </sss>
                 </mscr_mux_settings>
               </settings>
@@ -358,7 +358,7 @@
             <pin_settings>
               <pin_identification>
                 <identifier>
-                  <value>CAN_TX</value>
+                  <value>COMM_TX</value>
                 </identifier>
                 <port index="0">
                   <value>PORT_A</value>
@@ -380,7 +380,7 @@
                       <value>O</value>
                     </metadata>
                     <metadata name="functionRef" class="com.st.tools.spc5.extensions.GenericMetadataHandler" source="com.st.tools.spc5.wizard.pinmap">
-                      <value>TX_2_0</value>
+                      <value>TXD_1</value>
                     </metadata>
                   </metadatas>
                 </pin_mode>
@@ -392,7 +392,7 @@
                     <value>2</value>
                   </mscr_index>
                   <sss>
-                    <value>3</value>
+                    <value>1</value>
                   </sss>
                   <control_bits>
                     <oerc index="0">

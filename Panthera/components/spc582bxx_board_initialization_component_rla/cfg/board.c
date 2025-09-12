@@ -18,10 +18,10 @@
  * by a {-1, 0, 0}.
  */
 static spc_mscr_io_init_t spc_mscr_io_init[] = {
-  {(int16_t)MSCR_IO_CAN_RX, (iomode_t)(PAL_SPC5_SSS(0) | PAL_SPC5_OERC(0) | PAL_SPC5_ODC(0) | PAL_SPC5_SMC | PAL_SPC5_ILS(0) | PAL_SPC5_IBE | PAL_SPC5_WPUE), PAL_LOW},
+  {(int16_t)MSCR_IO_COMM_RX, (iomode_t)(PAL_SPC5_SSS(0) | PAL_SPC5_OERC(0) | PAL_SPC5_ODC(0) | PAL_SPC5_SMC | PAL_SPC5_ILS(0) | PAL_SPC5_IBE | PAL_SPC5_WPUE), PAL_LOW},
   {(int16_t)MSCR_IO_MulEN_2, (iomode_t)(PAL_SPC5_SSS(0) | PAL_SPC5_OERC(0) | PAL_SPC5_ODC(2) | PAL_SPC5_SMC | PAL_SPC5_ILS(0) | PAL_SPC5_IBE), PAL_LOW},
   {(int16_t)MSCR_IO_SEL0_2, (iomode_t)(PAL_SPC5_SSS(0) | PAL_SPC5_OERC(0) | PAL_SPC5_ODC(2) | PAL_SPC5_SMC | PAL_SPC5_ILS(0) | PAL_SPC5_IBE), PAL_LOW},
-  {(int16_t)MSCR_IO_CAN_TX, (iomode_t)(PAL_SPC5_SSS(3) | PAL_SPC5_OERC(0) | PAL_SPC5_ODC(2) | PAL_SPC5_SMC | PAL_SPC5_ILS(0) | PAL_SPC5_IBE), PAL_LOW},
+  {(int16_t)MSCR_IO_COMM_TX, (iomode_t)(PAL_SPC5_SSS(1) | PAL_SPC5_OERC(0) | PAL_SPC5_ODC(2) | PAL_SPC5_SMC | PAL_SPC5_ILS(0) | PAL_SPC5_IBE), PAL_LOW},
   {(int16_t)MSCR_IO_INB_3, (iomode_t)(PAL_SPC5_SSS(0) | PAL_SPC5_OERC(0) | PAL_SPC5_ODC(2) | PAL_SPC5_SMC | PAL_SPC5_ILS(0) | PAL_SPC5_IBE), PAL_LOW},
   {(int16_t)MSCR_IO_INA_2, (iomode_t)(PAL_SPC5_SSS(0) | PAL_SPC5_OERC(0) | PAL_SPC5_ODC(2) | PAL_SPC5_SMC | PAL_SPC5_ILS(0) | PAL_SPC5_IBE), PAL_LOW},
   {(int16_t)MSCR_IO_MulEN_3, (iomode_t)(PAL_SPC5_SSS(0) | PAL_SPC5_OERC(0) | PAL_SPC5_ODC(2) | PAL_SPC5_SMC | PAL_SPC5_ILS(0) | PAL_SPC5_IBE), PAL_LOW},
@@ -59,7 +59,7 @@ static spc_mscr_io_init_t spc_mscr_io_init[] = {
  * by a {-1, 0}.
  */
 static spc_mscr_mux_init_t spc_mscr_mux_init[] = {
-  {(int16_t)(MSCR_MUX_CAN_RX), 3U},
+  {(int16_t)(MSCR_MUX_COMM_RX), 1U},
   {-1, 0}
 };
 

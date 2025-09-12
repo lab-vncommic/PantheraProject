@@ -10,11 +10,48 @@ CommMessage_TypeDef 	thisMessage;
 Communication_TypeDef	thisComm;
 uint16_t counter;
 
+CAN_RxData_t CAN_Receive_M;
+_Bool flag_can_tx;
+_Bool flag_update_ic = false;
+
+void UART_DecodeMessage(void);
 uint8_t TwoBytetoUint8(const char *buffer, uint16_t offset);
 uint8_t ByteToUint8(const char *buffer, uint16_t offset);
-void COMM_Handle(void);
-void COMM_DecodeMessage(void);
+void CAN_GetRequest(void);
+void CAN_DecodeMessage(void);
+void COMM_HandleRead(void);
+void UART_Handle(void);
+void UART_HandleRead(void);
+void COMM_HandleWrite(void);
+void CAN_Handle(void);
+void CAN_HandleRead(void);
+void CAN_HandleWrite(void);
+void COMM_UpdateStatus(void);
 
+
+void COMM_Init(CommMode_Enum Comm)
+{
+	thisComm.mode = Comm;
+	if (thisComm.mode == COMM_CAN) {
+		CAN_Init();
+	} else UART_Init();
+}
+
+void COMM_DecodeMessage(void)
+{
+	if (thisComm.mode == COMM_CAN) {
+		CAN_DecodeMessage();
+	} else UART_DecodeMessage();
+}
+
+void UART_DecodeMessage(void)
+{
+	if (SD2.rx_busy == 0) {
+		thisMessage.id	  	= TwoBytetoUint8(BufRX, OFFSET_ID);
+		thisMessage.request = ByteToUint8(BufRX, OFFSET_REQUEST);
+		thisMessage.value	= ByteToUint8(BufRX, OFFSET_DATA);
+	}
+}
 
 uint8_t TwoBytetoUint8(const char *buffer, uint16_t offset)
 {
@@ -28,47 +65,151 @@ uint8_t ByteToUint8(const char *buffer, uint16_t offset)
 	return (uint8_t)(buffer[offset] - '0');
 }
 
-void COMM_Init(void)
+void CAN_GetRequest(void)
 {
-	UART_Init();
-	thisComm.mode = COMM_UART;
+	if (CAN_Receive_M.frame.data8[0] == 0) {
+		thisMessage.request = 0;
+	} else if (CAN_Receive_M.frame.data8[0] == 1) {
+		thisMessage.request = 1;
+	}
+
+	if (CAN_Receive_M.frame.data8[1] == 0) {
+		thisMessage.value = 0;
+	} else if (CAN_Receive_M.frame.data8[1] == 1) {
+		thisMessage.value = 1;
+	}
 }
 
-void COMM_Handle(void)
+void CAN_DecodeMessage(void)
+{
+	if(CAN_Receive_Data(&CAN_Receive_M.frame) == true){
+    // data_byte[0] = 0 ===> read write
+    // data_byte[1] = 0 ===> data
+        if(CAN_Receive_M.frame.DLC == 2){
+        	flag_can_tx = true;
+			CAN_GetRequest();
+			switch (CAN_Receive_M.frame.ID) {
+				case 0x00: // Power ON
+					thisMessage.id = 0;
+					break;
+
+				case 0x01: // Positioning KEY: Seat Backward
+					thisMessage.id = 1;
+					break;
+
+				case 0x02: // Positioning KEY: Seat Backward
+					thisMessage.id = 2;
+					break;
+
+				case 0x03: // Positioning KEY: Seat Upward
+					thisMessage.id = 3;
+					break;
+
+				case 0x04: // Positioning KEY: Seat Downward
+					thisMessage.id = 4;
+					break;
+
+				case 0x05: // Positioning KEY: Seat Recliner Forward
+					thisMessage.id = 5;
+					break;
+
+				case 0x07: // Positioning KEY: Seat Recliner Backward
+					thisMessage.id = 7;
+					break;
+
+				case 0x0A: // Seat Forward: IN1_1
+					thisMessage.id = 10;
+					break;
+
+				case 0x0B: // Seat Backward: IN2_1
+					thisMessage.id = 11;
+					break;
+
+				case 0x0C: // Seat Upward: IN1_2
+					thisMessage.id = 12;
+					break;
+
+				case 0x0D: // Seat Downward: IN2_2
+					thisMessage.id = 13;
+					break;
+
+				case 0x0E: // Seat Recliner Forward: IN1_3
+					thisMessage.id = 14;
+					break;
+
+				case 0x0F: // Seat Recliner Backward: IN2_3
+					thisMessage.id = 15;
+					break;
+
+				case 0x10: // Memory
+					thisMessage.id = 16;
+					break;
+
+				case 0x11: // Key A
+					thisMessage.id = 17;
+					break;
+
+				case 0x14: // Key B
+					thisMessage.id = 20;
+					break;
+
+				case 0x15: // Key C
+					thisMessage.id = 21;
+					break;
+
+				case 0x16: // Motor HALL_1
+					thisMessage.id = 22;
+					break;
+
+				case 0x17: // Motor HALL_2
+					thisMessage.id = 23;
+					break;
+
+				case 0x18: // Motor HALL_3
+					thisMessage.id = 24;
+					break;
+
+				default:
+					break;
+			}
+        }
+	}
+}
+
+void COMM_HandleRequest(void)
+{
+	if (thisComm.mode == COMM_CAN) {
+		CAN_Handle();
+	} else UART_Handle();
+}
+
+void UART_Handle(void)
 {
 	if (SD2.rx_busy == 0) {
-		COMM_DecodeMessage();
 		if (thisMessage.request == 0) {
-			COMM_Respone();
+			COMM_UpdateStatus();
+			UART_HandleRead();
 		} else if (thisMessage.request == 1) {
-			COMM_HandleWriteRequest();
+			COMM_HandleWrite();
+			flag_update_ic = true;
 			flag_rx_success = true;
 		}
 		counter = 0;
 		flag_enable_rx = 1;
-	} else if (SD2.rx_len == 5) {
-		if (counter++ >= 10) {
-			flag_enable_rx = 1;
-			flag_rx_fail = true;
-			counter = 0;
-		}
 	}
+	UART_HandleRequest();
 }
 
-void COMM_DecodeMessage(void)
+void UART_HandleRead(void)
 {
-	thisMessage.id	  	= TwoBytetoUint8(BufRX, OFFSET_ID);
-	thisMessage.request = ByteToUint8(BufRX, OFFSET_REQUEST);
-	thisMessage.value	= ByteToUint8(BufRX, OFFSET_DATA);
+	COMM_HandleRead();
+	if (thisMessage.data_tx == 1) {
+		BufTX[0] = '1';
+	} else BufTX[0] = '0';
+	flag_enable_tx = 1;
 }
 
-void COMM_UpdateStatus(void)
-{
-	BTN_UpdateToComm(&thisComm.button);
-	MD_UpdateToComm(&thisComm.motor);
-}
-
-void COMM_Respone(void)
+void COMM_HandleRead(void)
 {
 	// Update status from System to Communication
 	COMM_UpdateStatus();
@@ -200,7 +341,7 @@ void COMM_Respone(void)
 	}
 }
 
-void COMM_HandleWriteRequest(void)
+void COMM_HandleWrite(void)
 {
 	switch (thisMessage.id) {
 		case 1: // Positioning KEY: Seat Forward
@@ -303,26 +444,58 @@ void COMM_HandleWriteRequest(void)
 	}
 }
 
+
+
+void CAN_Handle(void)
+{
+	if (flag_can_tx == true) {
+		if (thisMessage.request == 0) {
+			COMM_UpdateStatus();
+			CAN_HandleRead();
+			flag_can_tx = false;
+		} else if (thisMessage.request == 1) {
+			CAN_HandleWrite();
+			flag_update_ic = true;
+			flag_can_tx = false;
+		}
+	}
+}
+
+void CAN_HandleRead(void)
+{
+	COMM_HandleRead();
+	CAN_TX_Set_ID(thisMessage.id);
+	if (thisMessage.data_tx == 0) {
+		CAN_TX_Set_byte_DATA(0x00);
+	} else if (thisMessage.data_tx == 1) {
+		CAN_TX_Set_byte_DATA(0x01);
+	}
+	CAN_Transmit_Data();
+}
+
+void CAN_HandleWrite(void)
+{
+	COMM_HandleWrite();
+	CAN_TX_Set_ID(thisMessage.id);
+	CAN_TX_Set_byte_DATA(0xFF);
+	CAN_Transmit_Data();
+}
+
+void COMM_UpdateStatus(void)
+{
+	BTN_UpdateToComm(&thisComm.button);
+	MD_UpdateToComm(&thisComm.motor);
+}
+
 void COMM_CommToState(CommSystem_TypeDef *pComm)
 {
 	pComm->button_comm = thisComm.button_comm;
 	pComm->motor_comm  = thisComm.motor_comm;
 }
 
-void COMM_TransmitReceiveHandle(void)
-{
-	switch (thisComm.mode) {
-		case COMM_UART:
-//			UART_HandleRequest();
-			break;
 
-		case COMM_CAN:
 
-			break;
-		default:
-			break;
-	}
-}
+
 
 
 
