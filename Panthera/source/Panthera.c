@@ -6,7 +6,7 @@
  */
 #include "Panthera.h"
 uint16_t cnt_blink_led;
-CommMode_Enum Comm_Mode = COMM_UART;
+CommMode_Enum Comm_Mode = COMM_DEBUG;
 
 void PTR_system_initialization(void)
 {
@@ -40,7 +40,6 @@ void PTR_main_interrupt_service(void)
 		MEAS_UpdateValue(&thisPTR.measurement, MEAS_CURRENT);
 	}
 
-
 //	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
 	STATE_UpdateButton(&thisPTR);
 	STATE_UpdateFault(&thisPTR);
@@ -66,10 +65,12 @@ void PTR_inf_loop_system(void)
 			flag_debug_tx_completed = 0;
 			sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
 		}
-		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %u, state_motor = %u, flag = %u \r\n",
+		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %u, fault = %u, hei_axis = %ld, hei_block_stt = %u, hei_state = %u \r\n",
 				thisPTR.state,
-				motor_recliner.state,
-				motor_recliner.flag_available
+				thisFault.fault_status,
+				motor_height.axis,
+				motor_height.block_status,
+				motor_height.state
 		);
 	} else {
 		COMM_DecodeMessage();

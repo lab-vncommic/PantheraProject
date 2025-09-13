@@ -10,8 +10,9 @@
 #include "gpio.h"
 #include "stdbool.h"
 
-#define TIMEOUT_DEBOUNCE_BTN    500    // 0.5s
+#define TIMEOUT_RELEASE_BTN    1000    //
 #define TIMEOUT_PRESSED_BTN	   2000   // 1s
+#define TIMEOUT_HOLD_BTN	   3000   // 1s
 
 // Button status bit definitions (16-bit)
 #define BTN_STT_0     ((uint16_t) 1U<<0)  // BT_HEIGHT_1 - Height up button
@@ -32,9 +33,10 @@
 #define BTN_STT_15    ((uint16_t) 1U<<15) // Reserved for future use
 
 typedef enum{
-	ACTION_RELEASED	= 0,
-	ACTION_PRESSED	= 1,
-	ACTION_HOLD		= 2
+	ACTION_RELEASED	   = 0,
+	ACTION_PRESSED	   = 1,
+	ACTION_HOLD		   = 2,
+	ACTION_HOLD_LONG   = 3
 } Btn_Action_TypeDef;
 
 typedef enum{

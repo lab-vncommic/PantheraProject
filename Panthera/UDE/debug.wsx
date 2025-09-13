@@ -5,7 +5,7 @@
 	<ProdInfo type="bin" size="52">vQTv/gAAAQAMAAMA6iAAAAUA5QcAAAAAPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAA==</ProdInfo>
 	<ProdInfoString type="string">2021</ProdInfoString>
 	<CreationDate type="string">29.08.2025 16:46:56:000</CreationDate>
-	<LastWriteDate type="string">12.09.2025 10:57:31:000</LastWriteDate>
+	<LastWriteDate type="string">13.09.2025 15:20:38:000</LastWriteDate>
 	<UseWspCnt type="int">0</UseWspCnt>
 	<MainFrame type="key">
 		<NETPlacementRoot type="key">
@@ -311,7 +311,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Help Toolbar</Name>
+								<Name>Show Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -331,7 +331,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Workspace Toolbar</Name>
+								<Name>Help Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -371,7 +371,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Show Toolbar</Name>
+								<Name>Workspace Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -1079,7 +1079,7 @@
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text>WARNING: Failed to determine user application running state ! Assume still running.</Text>
+										<Text>WARNING: could not read memory at 0x000000000000400A</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
@@ -1100,7 +1100,7 @@
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text>Core2 inactive</Text>
+										<Text>Core2 running</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
@@ -1261,7 +1261,7 @@
 		<UDESTK.Script type="key">
 			<MacroGuiEntries type="key">
 				<LastScriptFilePath type="string">..\..\..\..\..\..\..\ADMIN\Documents\pls\UDESTK 2021</LastScriptFilePath>
-				<Macro_12_09_25_10_56_14_0 type="key">
+				<Macro_13_09_25_15_19_22_0 type="key">
 					<ScriptDescription type="string">The script contains a collection of macros to save memory content into different file formats 
 and fill target memory ranges</ScriptDescription>
 					<ScriptPath type="string">V:\UDE\AddOns\Macro\MacroLibrary\StdMacros1.dsm</ScriptPath>
@@ -1541,7 +1541,7 @@ End Sub</ScriptSource>
 					<ScriptFromStg type="flag">1</ScriptFromStg>
 					<LocalComputerName type="string">WS_CORE_DUO</LocalComputerName>
 					<ExternalScriptPath type="string"></ExternalScriptPath>
-					<NextNodeName type="string">Macro_12_09_25_10_57_31_0</NextNodeName>
+					<NextNodeName type="string">Macro_13_09_25_15_19_48_0</NextNodeName>
 					<UnAss type="key">
 						<GUIEntry type="key">
 							<MenuID type="int">10</MenuID>
@@ -1598,7 +1598,7 @@ End Sub</ScriptSource>
 						<GUIEntryDescription type="string"></GUIEntryDescription>
 					</FillDWord>
 					<NoOfFunctions type="int">5</NoOfFunctions>
-				</Macro_12_09_25_10_56_14_0>
+				</Macro_13_09_25_15_19_22_0>
 			</MacroGuiEntries>
 			<LastSelectedMacro type="string"></LastSelectedMacro>
 		</UDESTK.Script>
@@ -1773,10 +1773,10 @@ End Sub</ScriptSource>
 					<FrameCreated type="string">05.09.2025 19:54:21:371</FrameCreated>
 					<ViewSrv type="key">
 						<TopIndex type="int">0</TopIndex>
-						<CaretIndex type="int">24</CaretIndex>
-						<NameWidth type="int">236</NameWidth>
+						<CaretIndex type="int">13</CaretIndex>
+						<NameWidth type="int">227</NameWidth>
 						<AddressWidth type="int">0</AddressWidth>
-						<ValueWidth type="int">232</ValueWidth>
+						<ValueWidth type="int">241</ValueWidth>
 						<Value2Width type="int">0</Value2Width>
 						<MinMaxWidth type="int">0</MinMaxWidth>
 						<Watches type="key">
@@ -1798,24 +1798,6 @@ End Sub</ScriptSource>
 								<RunningPeriod2 type="int">500</RunningPeriod2>
 								<HoldedPeriod2 type="int">0</HoldedPeriod2>
 							</Watch2>
-							<Watch3 type="key">
-								<Name type="string">thisMessage (global) @1</Name>
-								<Status type="string">#0#</Status>
-								<RunningPeriod3 type="int">500</RunningPeriod3>
-								<HoldedPeriod3 type="int">0</HoldedPeriod3>
-							</Watch3>
-							<Watch4 type="key">
-								<Name type="string">BufRX (global) @1</Name>
-								<Status type="string">#0#0?13762661?#0,0$1,2$#0,1$1,2$#0,2$1,2$#0,3$1,2$#0,4$1,2$#0,5$1,2$</Status>
-								<RunningPeriod4 type="int">500</RunningPeriod4>
-								<HoldedPeriod4 type="int">0</HoldedPeriod4>
-							</Watch4>
-							<Watch5 type="key">
-								<Name type="string">thisComm (global) @1</Name>
-								<Status type="string">#0#0,0$1,0$</Status>
-								<RunningPeriod5 type="int">500</RunningPeriod5>
-								<HoldedPeriod5 type="int">0</HoldedPeriod5>
-							</Watch5>
 						</Watches>
 					</ViewSrv>
 					<NETFrameMode type="int">81920</NETFrameMode>

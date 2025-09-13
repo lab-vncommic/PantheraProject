@@ -473,16 +473,14 @@ void MD_EnableAll(void)
 void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t current_value)
 {
 	switch (motor_name) {
-		case MOTOR_HEIGHT:
-			MD_HandlePeakCurrentMode(&motor_height, status, current_value, CURRENT_LIMIT_SOFTSTART_MT_HEIGHT_Q15, CURRENT_LIMIT_LOCKED_MT_HEIGHT_Q15);
-
-			break;
 		case MOTOR_RECLINER:
 			MD_HandlePeakCurrentMode(&motor_recliner, status, current_value, CURRENT_LIMIT_SOFTSTART_MT_RECLINER_Q15, CURRENT_LIMIT_LOCKED_MT_RECLINER_Q15);
-
 			break;
 		case MOTOR_SLIDER:
 			MD_HandlePeakCurrentMode(&motor_slider, status, current_value, CURRENT_LIMIT_SOFTSTART_MT_SLIDER_Q15, CURRENT_LIMIT_LOCKED_MT_SLIDER_Q15);
+			break;
+		case MOTOR_HEIGHT:
+			MD_HandlePeakCurrentMode(&motor_height, status, current_value, CURRENT_LIMIT_SOFTSTART_MT_HEIGHT_Q15, CURRENT_LIMIT_LOCKED_MT_HEIGHT_Q15);
 			break;
 
 		default:
@@ -531,14 +529,18 @@ void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status,
 	                MD_UpdateStatusMotor(pMotor, STOP);
 	                pMotor->cnt_available++;
 	                if (pMotor->cnt_available >= 10) {
+    	                pMotor->state = BLOCK;
 	                	pMotor->flag_available = false;
 	                	pMotor->cnt_available  = 0;
 	                	if (status == FORWARD) {
 	                		pMotor->block_status = BLOCK_FORWARD;
+
 						} else if (status == BACKWARD) {
 							pMotor->block_status = BLOCK_BACKWARD;
+							pMotor->axis = 0;
 						}
 	                }
+
 	            }
 
 	            break;

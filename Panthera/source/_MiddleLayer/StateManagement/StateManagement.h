@@ -15,6 +15,8 @@
 #include "GlobalDefine.h"
 #include "memory.h"
 
+#define HOME_HOLD_BTN_TIME			60000
+
 #define MANUAL_ENABLE_MT			1000						// Delay cycle between 2 motor startup, approximately 100ms
 #define MANUAL_ENABLE_MT1			1
 #define MANUAL_ENABLE_MT2			MANUAL_ENABLE_MT
@@ -63,6 +65,7 @@ typedef struct{
 
 typedef struct{
 	State_TypeDef 			state;
+	State_TypeDef 			state_prev;
 	SeatAxis_TypeDef		seat_current_axis;
 	SeatAxis_TypeDef		seat_previous_axis;
 	SeatAxis_TypeDef		seat_memory_axis;
