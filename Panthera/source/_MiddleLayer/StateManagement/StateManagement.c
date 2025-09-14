@@ -11,6 +11,7 @@ _Bool flag_auto_completed = false;
 _Bool flag_save_to_idle   = false;
 _Bool flag_power_on_first_time = false;
 _Bool flag_change_to_state_home;
+_Bool flag_save_current_position;
 
 uint16_t cnt_delay_500ms;
 uint16_t cnt_schedule_motor_auto;
@@ -48,7 +49,19 @@ void STATE_ResetAxis(PTR_TypeDef *pState);
 void STATE_idleHandle(PTR_TypeDef *pState)
 {
 	MD_StopAll();
-	STATE_GetSeatAxis(pState);
+//	STATE_GetSeatAxis(pState);
+	if (flag_power_on_first_time == true) {
+		MEM_GetSeatAxis(&pState->seat_current_axis, 4);
+		motor_recliner.axis = pState->seat_current_axis.recliner;
+		motor_slider.axis   = pState->seat_current_axis.slider;
+		motor_height.axis   = pState->seat_current_axis.height;
+		flag_power_on_first_time = false;
+	}
+
+	if (flag_save_current_position == true) {
+		MEM_Write(pState->seat_current_axis.height, pState->seat_current_axis.recliner, pState->seat_current_axis.slider, 4);
+		flag_save_current_position = false;
+	}
 }
 
 void STATE_saveHandle(PTR_TypeDef *pState)
@@ -297,7 +310,7 @@ void STATE_ResetAxis(PTR_TypeDef *pState)
 void STATE_Init(PTR_TypeDef *pState)
 {
 	pState->state = STATE_IDLE;
-	flag_power_on_first_time = false;
+	flag_power_on_first_time = true;
 }
 
 /**
@@ -310,6 +323,8 @@ void STATE_Init(PTR_TypeDef *pState)
 void STATE_UpdateState(PTR_TypeDef *pState)
 {
 	STATE_ProcessInputSignals(pState);
+	STATE_GetSeatAxis(pState);
+
 	switch (pState->state) {
 		case STATE_IDLE:
 			// Processing: handle IDLE state
@@ -382,6 +397,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 				if (cnt_delay_500ms++ >= 2500) {
 					cnt_delay_500ms = 0;
 					pState->state = STATE_IDLE;
+					flag_save_current_position = true;
 					flag_save_to_idle = false;
 				}
 			}
@@ -402,6 +418,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 				pState->button.slider_1.action == ACTION_RELEASED &&
 				pState->button.slider_2.action == ACTION_RELEASED) {
 					pState->state = STATE_IDLE;
+					flag_save_current_position = true;
 					cnt_schedule_motor_manual = 0;
 			}
 
@@ -418,6 +435,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 						cnt_schedule_motor_auto = 0;
 						flag_auto_completed    = false;
 						pState->state 		   = STATE_IDLE;
+						flag_save_current_position = true;
 					}
 
 			break;
@@ -433,6 +451,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 					   pState->state_home.flag_slider_block &&
 					   pState->state_home.flag_height_block) {
 					   pState->state = STATE_IDLE;
+					   flag_save_current_position = true;
 					}
 
 			break;
@@ -456,6 +475,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			// Post-processing: check for faults and state transitions
 			if (GDE_DebounceConditon(STATE_SystemIsNormal(pState), TIME_WAIT_FOR_AUTO_RECOVERY_CYCLES, &pState->fault.cnt_debounce_auto_recovery)) {
 				pState->state = STATE_IDLE;
+				flag_save_current_position = true;
 				pState->fault.mode = FAULT_NONE;
 				FAULT_Reset();
 			}

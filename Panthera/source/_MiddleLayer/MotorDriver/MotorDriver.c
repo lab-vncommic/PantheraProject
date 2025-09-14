@@ -420,9 +420,9 @@ void MD_Init(void)
 	MD_ConfigDriver(&motor_slider, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2, PIN_HALL_2);
 	MD_ConfigDriver(&motor_height, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3, PIN_HALL_3);
 
-	MD_ConfigTopology(&motor_recliner, SENSOR);
-	MD_ConfigTopology(&motor_height, SENSOR);
-	MD_ConfigTopology(&motor_slider, SENSOR);
+	MD_ConfigTopology(&motor_recliner, SENSORLESS);
+	MD_ConfigTopology(&motor_height, SENSORLESS);
+	MD_ConfigTopology(&motor_slider, SENSORLESS);
 
 	motor_height.name   = MOTOR_HEIGHT;
 	motor_recliner.name = MOTOR_RECLINER;
