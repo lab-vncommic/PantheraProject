@@ -53,11 +53,11 @@ typedef struct{
 /*===========================================================================
  * PTR CODE SECTION
  *===========================================================================*/
-#define CURRENT_MT1_OCP					17.5f		// Unit: A
+#define CURRENT_MT1_OCP					 17.5f		// Unit: A
 #define THERMAL_MT1_OTP					100.0f		// Unit: oC
-#define CURRENT_MT2_OCP					17.5f		// Unit: A
+#define CURRENT_MT2_OCP					 17.5f		// Unit: A
 #define THERMAL_MT2_OTP					100.0f		// Unit: oC
-#define CURRENT_MT3_OCP					17.5f		// Unit: A
+#define CURRENT_MT3_OCP					 17.5f		// Unit: A
 #define THERMAL_MT3_OTP					100.0f		// Unit: oC
 
 /* ====== Fault Protection Thresholds in Q15 format ====== */
@@ -70,11 +70,11 @@ typedef struct{
 
 /* ====== Macros for Fault Protection in Q15 format ====== */
 #define FAULT_IS_MT1_OCP(value)       	(value > FAULT_MT1_OCP_THRESH_Q15)
-#define FAULT_IS_MT1_OTP(value)       	(value < FAULT_MT1_OTP_THRESH_Q15)
+#define FAULT_IS_MT1_OTP(value)       	(value < 10901U)
 #define FAULT_IS_MT2_OCP(value)       	(value > FAULT_MT2_OCP_THRESH_Q15)
-#define FAULT_IS_MT2_OTP(value)       	(value < FAULT_MT2_OTP_THRESH_Q15)
+#define FAULT_IS_MT2_OTP(value)       	(value < 10901U)
 #define FAULT_IS_MT3_OCP(value)       	(value > FAULT_MT3_OCP_THRESH_Q15)
-#define FAULT_IS_MT3_OTP(value)       	(value < FAULT_MT3_OTP_THRESH_Q15)
+#define FAULT_IS_MT3_OTP(value)       	(value < 10901U)
 
 // Public API
 void FAULT_Init(void);

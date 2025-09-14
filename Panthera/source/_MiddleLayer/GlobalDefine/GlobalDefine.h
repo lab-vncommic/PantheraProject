@@ -11,8 +11,8 @@
 #include "stm_lld_cfg.h"
 #include "pit_lld_cfg.h"
 
-#define F_SAMPLE	10000.0f
-#define T_SAMPLE	1/10000.0f
+#define F_SAMPLE	20000.0f
+#define T_SAMPLE	1/20000.0f
 
 typedef enum{
 	MOTOR_NONE		= 0,

@@ -7,6 +7,7 @@
 #include "Panthera.h"
 uint16_t cnt_blink_led;
 CommMode_Enum Comm_Mode = COMM_DEBUG;
+uint32_t cnt_start_check_fault;
 
 void PTR_system_initialization(void)
 {
@@ -32,17 +33,25 @@ void PTR_system_initialization(void)
 void PTR_main_interrupt_service(void)
 {
 	begin = stm_lld_getcounter(&STMD3);
-	if (thisPTR.state == STATE_IDLE) {
-		// Turn off mulsense
-		MD_UpdateMeas(MEAS_NONE);
-	} else {
-		MD_UpdateMeas(MEAS_CURRENT);
-		MEAS_UpdateValue(&thisPTR.measurement, MEAS_CURRENT);
+//	if (thisPTR.state == STATE_IDLE) {
+//		// Turn off mulsense
+//		MD_UpdateMeas(MEAS_NONE);
+//	} else {
+//		MD_UpdateMeas(MEAS_CURRENT);
+//		MEAS_UpdateValue(&thisPTR.measurement, MEAS_CURRENT);
+//	}
+
+	//FIXME: code test measure temperature
+//	MD_UpdateMeas(MEAS_THERMAL);
+//	MEAS_UpdateValue(&thisPTR.measurement, MEAS_THERMAL);
+
+	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
+	STATE_UpdateButton(&thisPTR);
+
+	if (flag_enable_check_fault == true) {
+		STATE_UpdateFault(&thisPTR);
 	}
 
-//	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
-	STATE_UpdateButton(&thisPTR);
-	STATE_UpdateFault(&thisPTR);
 	STATE_UpdateState(&thisPTR);
 
 	MD_UpdateAxis(&motor_recliner, thisPTR.measurement.current_recliner_q15);
@@ -65,12 +74,12 @@ void PTR_inf_loop_system(void)
 			flag_debug_tx_completed = 0;
 			sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
 		}
-		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %u, fault = %u, hei_axis = %ld, hei_block_stt = %u, hei_state = %u \r\n",
+		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %u, fault = %u, hei_ther = %f, hei_ther = %u, hei_axis = %ld \r\n",
 				thisPTR.state,
 				thisFault.fault_status,
-				motor_height.axis,
-				motor_height.block_status,
-				motor_height.state
+				thisMeas.thermal_height.value_f32,
+				thisMeas.thermal_height.value_q15,
+				motor_height.axis
 		);
 	} else {
 		COMM_DecodeMessage();

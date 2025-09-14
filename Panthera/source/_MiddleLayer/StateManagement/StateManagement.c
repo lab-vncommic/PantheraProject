@@ -6,7 +6,7 @@
  */
 #include "StateManagement.h"
 PTR_TypeDef thisPTR;
-uint16_t cnt_meas_type;
+uint32_t cnt_meas_type;
 _Bool flag_auto_completed = false;
 _Bool flag_save_to_idle   = false;
 _Bool flag_power_on_first_time = false;
@@ -21,6 +21,11 @@ uint32_t cnt_debounce_home;
 
 State_TypeDef temp_state;
 uint8_t counter_comm;
+
+uint16_t debug_var[30];
+uint16_t debug_var_cur[10];
+uint16_t i, j;
+uint16_t temp;
 
 // List API
 void STATE_idleHandle(PTR_TypeDef *pState);
@@ -266,12 +271,12 @@ void STATE_UpdateICasComm(Motor_TypeDef *pMotor, MotorObject_TypeDef *pMotorObj)
 
 _Bool STATE_SystemIsNormal(PTR_TypeDef *pState)
 {
-	if ((pState->measurement.current_slider_q15 <= CURRENT_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
-	 	(pState->measurement.current_height_q15 <= CURRENT_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
-	 	(pState->measurement.current_recliner_q15 <= CURRENT_AUTO_RECOVERY_MT3_THRESHOLD_Q15) &&
+	if ((pState->measurement.current_slider_q15 <= CURRENT_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
+	 	(pState->measurement.current_height_q15 <= CURRENT_AUTO_RECOVERY_MT3_THRESHOLD_Q15) &&
+	 	(pState->measurement.current_recliner_q15 <= CURRENT_AUTO_RECOVERY_MT1_THRESHOLD_Q15)/* &&
 	 	(pState->measurement.thermal_slider_q15 >= THERMAL_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
 	 	(pState->measurement.thermal_height_q15 >= THERMAL_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
-	 	(pState->measurement.thermal_recliner_q15 >= THERMAL_AUTO_RECOVERY_MT3_THRESHOLD_Q15)) {
+	 	(pState->measurement.thermal_recliner_q15 >= THERMAL_AUTO_RECOVERY_MT3_THRESHOLD_Q15)*/) {
 			return true;
 	}
 	return false;
@@ -464,7 +469,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			if (pState->fault.mode == FAULT_LATCH) {
 				pState->state = STATE_SHUTDOWN;
 			} else if (pState->fault.mode == FAULT_AUTO_RECOVER) {
-//				pState->state = STATE_AUTORECOVERY;
+				pState->state = STATE_AUTORECOVERY;
 			}
 			break;
 
@@ -494,19 +499,30 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 
 void STATE_UpdateMeas(PTR_TypeDef *pState)
 {
-	cnt_meas_type++;
-	if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 5)) {
-		if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 2))
-		{
-//			MD_UpdateMeas(MEAS_THERMAL);
+	ADC_startOfConversion();
+	if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
+		cnt_meas_type = 0;
+	} else cnt_meas_type++;
+
+	if (cnt_meas_type >= (SAMPLE_TIME_MEAS_THERMAL - 2)) {
+		MD_UpdateMeas(MEAS_THERMAL);
+		if (cnt_meas_type == SAMPLE_TIME_MEAS_THERMAL) {
 			MEAS_UpdateValue(&pState->measurement, MEAS_THERMAL);
+			flag_enable_check_fault = true;
 		}
-		if (cnt_meas_type >= SAMPLE_TIME_MEAS_THERMAL) {
-			cnt_meas_type = 0;
-		}
+//		debug_var[i] = thatADC.ADC_MulSens_1;
+//		if (i <= 30) {
+//			i++;
+//		} else i = 30;
 	} else {
-//		MD_UpdateMeas(MEAS_CURRENT);
-		MEAS_UpdateValue(&pState->measurement, MEAS_CURRENT);
+		MD_UpdateMeas(MEAS_CURRENT);
+		if (cnt_meas_type >= 2) {
+			MEAS_UpdateValue(&pState->measurement, MEAS_CURRENT);
+		}
+//		debug_var_cur[j] = thatADC.ADC_MulSens_3;
+//		if (j <= 10) {
+//			j++;
+//		} else j = 10;
 	}
 }
 

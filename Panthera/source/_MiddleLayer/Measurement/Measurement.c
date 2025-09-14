@@ -174,7 +174,7 @@ void MEAS_Init(void)
 void MEAS_GetValue(MeasType_TypeDef meas_type)
 {
 	// Get adc value
-	ADC_startOfConversion();
+//	ADC_startOfConversion();
 
 	if (meas_type) {
 		// Get raw value from adc driver

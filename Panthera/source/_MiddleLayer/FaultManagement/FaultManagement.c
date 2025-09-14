@@ -66,17 +66,17 @@ void FAULT_UpdateStatus(MeasSystem_TypeDef *pMeas)
 		temp_fault_status |= FAULT_STT_2;
 	}
 
-//    if (FAULT_IS_MT1_OTP(pMeas->thermal_slider_q15)) {
-//    	temp_fault_status |= FAULT_STT_3;
-//    }
-//
-//    if (FAULT_IS_MT2_OTP(pMeas->thermal_height_q15)) {
-//    	temp_fault_status |= FAULT_STT_4;
-//    }
-//
-//    if (FAULT_IS_MT3_OTP(pMeas->thermal_recliner_q15)) {
-//    	temp_fault_status |= FAULT_STT_5;
-//    }
+    if (FAULT_IS_MT1_OTP(pMeas->thermal_recliner_q15)) {
+    	temp_fault_status |= FAULT_STT_3;
+    }
+
+    if (FAULT_IS_MT2_OTP(pMeas->thermal_slider_q15)) {
+    	temp_fault_status |= FAULT_STT_4;
+    }
+
+    if (FAULT_IS_MT3_OTP(pMeas->thermal_height_q15)) {
+    	temp_fault_status |= FAULT_STT_5;
+    }
    thisFault.fault_status = temp_fault_status;
 }
 
