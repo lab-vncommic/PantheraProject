@@ -21,7 +21,7 @@
 
 // Sensorless parameters
 #define WINDOW_SIZE 				  10  									// Size of the sliding window buffer
-#define NUM_DEBOUNCE_SSLESS			  1
+#define NUM_DEBOUNCE_SSLESS			  3
 #define EPSILON						  0								// Equivalent to 2 uint ADC in 12 bit
 #define NO_PEAK_PER_ROUND			  6600									// 6600 peak current /round
 #define NO_PEAK_PER_UNIT_AXIS	      RESOLUTION_DISTANCE * NO_PEAK_PER_ROUND
@@ -30,8 +30,8 @@
 #define CURRENT_LIMIT_SOFTSTART_MT_HEIGHT		10.0f
 #define CURRENT_LIMIT_SOFTSTART_MT_RECLINER		10.0f
 
-#define CURRENT_LIMIT_LOCKED_MT_SLIDER			5.0f
-#define CURRENT_LIMIT_LOCKED_MT_HEIGHT			5.0f
+#define CURRENT_LIMIT_LOCKED_MT_SLIDER			10.0f
+#define CURRENT_LIMIT_LOCKED_MT_HEIGHT			10.0f
 #define CURRENT_LIMIT_LOCKED_MT_RECLINER		10.0f
 
 #define CURRENT_LIMIT_SOFTSTART_MT_SLIDER_Q15		_q15(CURRENT_LIMIT_SOFTSTART_MT_SLIDER / CURRENT_MT1_HIGH_LIMIT_SOFT)
