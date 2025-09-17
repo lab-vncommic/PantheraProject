@@ -12,6 +12,7 @@ _Bool flag_save_to_idle   = false;
 _Bool flag_power_on_first_time = false;
 _Bool flag_change_to_state_home;
 _Bool flag_save_current_position;
+_Bool flag_enable_check_fault;
 
 uint16_t cnt_delay_500ms;
 uint16_t cnt_schedule_motor_auto;
@@ -316,6 +317,7 @@ void STATE_Init(PTR_TypeDef *pState)
 {
 	pState->state = STATE_IDLE;
 	flag_power_on_first_time = true;
+	flag_enable_check_fault = false;
 }
 
 /**
