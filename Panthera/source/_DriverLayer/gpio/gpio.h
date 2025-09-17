@@ -16,6 +16,7 @@ typedef struct {
 	uint16_t port;
     uint16_t pin;
     uint8_t  value;
+    uint8_t  last_value;
 } GPIO_TypeDef;
 
 /*===========================================================================
