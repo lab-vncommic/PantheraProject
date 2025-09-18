@@ -13,7 +13,7 @@
 /*===========================================================================
  * REUSABLE CODE SECTION
  *===========================================================================*/
-#define FAULT_SAVE_MEMORY			 	3U
+#define FAULT_SAVE_MEMORY			 	10U
 #define FAULT_STT_INIT_VALUE			0x00
 
 #define FAULT_STT_0   ((uint8_t) 1U<<0)  // Over current motor Hieght

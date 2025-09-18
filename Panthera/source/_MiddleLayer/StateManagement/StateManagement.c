@@ -235,12 +235,12 @@ void STATE_ProcessInputSignals(PTR_TypeDef *pState)
 	STATE_HandleRecallButton(&pState->button.recall_2, pState->communication.button_comm.recall_2_value);
 	STATE_HandleRecallButton(&pState->button.recall_3, pState->communication.button_comm.recall_3_value);
 
-	if (flag_update_ic == true) {
-		flag_update_ic = false;
-		STATE_UpdateICasComm(&motor_height, &pState->communication.motor_comm.motor_height);
-		STATE_UpdateICasComm(&motor_recliner, &pState->communication.motor_comm.motor_recliner);
-		STATE_UpdateICasComm(&motor_slider, &pState->communication.motor_comm.motor_slider);
-	}
+//	if (flag_update_ic == true) {
+//		flag_update_ic = false;
+//		STATE_UpdateICasComm(&motor_height, &pState->communication.motor_comm.motor_height);
+//		STATE_UpdateICasComm(&motor_recliner, &pState->communication.motor_comm.motor_recliner);
+//		STATE_UpdateICasComm(&motor_slider, &pState->communication.motor_comm.motor_slider);
+//	}
 }
 
 void STATE_HandleManualButton(Button_TypeDef *pButton, uint16_t comm_value)
