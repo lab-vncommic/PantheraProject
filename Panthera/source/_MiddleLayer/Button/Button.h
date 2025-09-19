@@ -10,27 +10,9 @@
 #include "gpio.h"
 #include "stdbool.h"
 
-#define TIMEOUT_RELEASE_BTN    1000    //
-#define TIMEOUT_PRESSED_BTN	   2000   // 1s
-#define TIMEOUT_HOLD_BTN	   3000   // 1s
-
-// Button status bit definitions (16-bit)
-#define BTN_STT_0     ((uint16_t) 1U<<0)  // BT_HEIGHT_1 - Height up button
-#define BTN_STT_1     ((uint16_t) 1U<<1)  // BT_HEIGHT_2 - Height down button
-#define BTN_STT_2     ((uint16_t) 1U<<2)  // BT_RECLINER_1 - Recliner forward button
-#define BTN_STT_3     ((uint16_t) 1U<<3)  // BT_RECLINER_2 - Recliner backward button
-#define BTN_STT_4     ((uint16_t) 1U<<4)  // BT_SLIDER_1 - Slider forward button
-#define BTN_STT_5     ((uint16_t) 1U<<5)  // BT_SLIDER_2 - Slider backward button
-#define BTN_STT_6     ((uint16_t) 1U<<6)  // BT_SAVE - Save position button
-#define BTN_STT_7     ((uint16_t) 1U<<7)  // BT_RECALL_1 - Recall position 1 button
-#define BTN_STT_8     ((uint16_t) 1U<<8)  // BT_RECALL_2 - Recall position 2 button
-#define BTN_STT_9     ((uint16_t) 1U<<9)  // BT_RECALL_3 - Recall position 3 button
-#define BTN_STT_10    ((uint16_t) 1U<<10) // Reserved for future use
-#define BTN_STT_11    ((uint16_t) 1U<<11) // Reserved for future use
-#define BTN_STT_12    ((uint16_t) 1U<<12) // Reserved for future use
-#define BTN_STT_13    ((uint16_t) 1U<<13) // Reserved for future use
-#define BTN_STT_14    ((uint16_t) 1U<<14) // Reserved for future use
-#define BTN_STT_15    ((uint16_t) 1U<<15) // Reserved for future use
+#define TIMEOUT_RELEASE_BTN    1000
+#define TIMEOUT_PRESSED_BTN	   2000
+#define TIMEOUT_HOLD_BTN	   3000
 
 typedef enum{
 	ACTION_RELEASED	   = 0,

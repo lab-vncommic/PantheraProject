@@ -28,7 +28,6 @@ void CAN_HandleRead(void);
 void CAN_HandleWrite(void);
 void COMM_UpdateStatus(void);
 
-
 void COMM_Init(CommMode_Enum Comm)
 {
 	thisComm.mode = Comm;
@@ -376,42 +375,6 @@ void COMM_HandleWrite(void)
 			} else thisComm.button_comm.recliner_2_value = 0;
 			break;
 
-//		case 10: // Seat Forward: IN1_1
-//			if (thisMessage.value == 1) {
-//				thisComm.motor_comm.motor_slider.ina_value = 1;
-//			} else thisComm.motor_comm.motor_slider.ina_value = 0;
-//			break;
-//
-//		case 11: // Seat Backward: IN2_1
-//			if (thisMessage.value == 1) {
-//				thisComm.motor_comm.motor_slider.inb_value = 1;
-//			} else thisComm.motor_comm.motor_slider.inb_value = 0;
-//			break;
-//
-//		case 12: // Seat Upward: IN1_2
-//			if (thisMessage.value == 1) {
-//				thisComm.motor_comm.motor_height.ina_value = 1;
-//			} else thisComm.motor_comm.motor_height.ina_value = 0;
-//			break;
-//
-//		case 13: // Seat Downward: IN2_2
-//			if (thisMessage.value == 1) {
-//				thisComm.motor_comm.motor_height.inb_value = 1;
-//			} else thisComm.motor_comm.motor_height.inb_value = 0;
-//			break;
-//
-//		case 14: // Seat Recliner Forward: IN1_3
-//			if (thisMessage.value == 1) {
-//				thisComm.motor_comm.motor_recliner.ina_value = 1;
-//			} else thisComm.motor_comm.motor_recliner.ina_value = 0;
-//			break;
-//
-//		case 15: // Seat Recliner Backward: IN2_3
-//			if (thisMessage.value == 1) {
-//				thisComm.motor_comm.motor_recliner.inb_value = 1;
-//			} else thisComm.motor_comm.motor_recliner.inb_value = 0;
-//			break;
-
 		case 16: // Memory
 			if (thisMessage.value == 1) {
 				thisComm.button_comm.save_value = 1;
@@ -439,8 +402,6 @@ void COMM_HandleWrite(void)
 			break;
 	}
 }
-
-
 
 void CAN_Handle(void)
 {

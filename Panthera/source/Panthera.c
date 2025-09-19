@@ -6,7 +6,7 @@
  */
 #include "Panthera.h"
 uint16_t cnt_blink_led;
-CommMode_Enum Comm_Mode = COMM_UART;
+CommMode_Enum Comm_Mode = COMM_DEBUG;
 uint32_t cnt_start_check_fault;
 
 void PTR_system_initialization(void)
@@ -33,18 +33,6 @@ void PTR_system_initialization(void)
 void PTR_main_interrupt_service(void)
 {
 	begin = stm_lld_getcounter(&STMD3);
-//	if (thisPTR.state == STATE_IDLE) {
-//		// Turn off mulsense
-//		MD_UpdateMeas(MEAS_NONE);
-//	} else {
-//		MD_UpdateMeas(MEAS_CURRENT);
-//		MEAS_UpdateValue(&thisPTR.measurement, MEAS_CURRENT);
-//	}
-
-	//FIXME: code test measure temperature
-//	MD_UpdateMeas(MEAS_THERMAL);
-//	MEAS_UpdateValue(&thisPTR.measurement, MEAS_THERMAL);
-
 	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
 	STATE_UpdateButton(&thisPTR);
 
@@ -54,6 +42,7 @@ void PTR_main_interrupt_service(void)
 
 	STATE_UpdateState(&thisPTR);
 
+	// Comment these code if run sensorless
 	MD_UpdateAxis(&motor_recliner, thisPTR.measurement.current_recliner_q15);
 	MD_UpdateAxis(&motor_height, thisPTR.measurement.current_height_q15);
 	MD_UpdateAxis(&motor_slider, thisPTR.measurement.current_slider_q15);
@@ -62,8 +51,10 @@ void PTR_main_interrupt_service(void)
 	MD_UpdateDriver(&motor_recliner);
 	MD_UpdateDriver(&motor_slider);
 
+	// FIXME: Code to measure execute time
+
 	end = stm_lld_getcounter(&STMD3);
-    elapsed = end - begin;
+	elapsed = end - begin;
 }
 
 void PTR_inf_loop_system(void)

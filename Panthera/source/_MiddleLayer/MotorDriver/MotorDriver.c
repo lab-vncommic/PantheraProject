@@ -102,42 +102,6 @@ void MD_UpdateDriver(Motor_TypeDef *pMotor)
     if (pMotor->driver.pwm.value == 1) {
         GPIO_SetPin(&pMotor->driver.pwm);
     } else GPIO_ClearPin(&pMotor->driver.pwm);
-
-//	if (pMotor->driver.ina.value != pMotor->driver.ina.last_value) {
-//		if (pMotor->driver.ina.value == 1) GPIO_SetPin(&pMotor->driver.ina);
-//		else GPIO_ClearPin(&pMotor->driver.ina);
-//		pMotor->driver.ina.last_value = pMotor->driver.ina.value;
-//	}
-//
-//	if (pMotor->driver.inb.value != pMotor->driver.inb.last_value) {
-//		if (pMotor->driver.inb.value == 1) GPIO_SetPin(&pMotor->driver.inb);
-//		else GPIO_ClearPin(&pMotor->driver.inb);
-//		pMotor->driver.inb.last_value = pMotor->driver.inb.value;
-//	}
-//
-//	if (pMotor->driver.sel0.value != pMotor->driver.sel0.last_value) {
-//		if (pMotor->driver.sel0.value == 1) GPIO_SetPin(&pMotor->driver.sel0);
-//		else GPIO_ClearPin(&pMotor->driver.sel0);
-//		pMotor->driver.sel0.last_value = pMotor->driver.sel0.value;
-//	}
-//
-//	if (pMotor->driver.sel1.value != pMotor->driver.sel1.last_value) {
-//		if (pMotor->driver.sel1.value == 1) GPIO_SetPin(&pMotor->driver.sel1);
-//		else GPIO_ClearPin(&pMotor->driver.sel1);
-//		pMotor->driver.sel1.last_value = pMotor->driver.sel1.value;
-//	}
-//
-//	if (pMotor->driver.mul_en.value != pMotor->driver.mul_en.last_value) {
-//		if (pMotor->driver.mul_en.value == 1) GPIO_SetPin(&pMotor->driver.mul_en);
-//		else GPIO_ClearPin(&pMotor->driver.mul_en);
-//		pMotor->driver.mul_en.last_value = pMotor->driver.mul_en.value;
-//	}
-//
-//	if (pMotor->driver.pwm.value != pMotor->driver.pwm.last_value) {
-//		if (pMotor->driver.pwm.value == 1) GPIO_SetPin(&pMotor->driver.pwm);
-//		else GPIO_ClearPin(&pMotor->driver.pwm);
-//		pMotor->driver.pwm.last_value = pMotor->driver.pwm.value;
-//	}
 }
 
 /**
@@ -427,9 +391,9 @@ void MD_UpdateAxisSensorless(Motor_TypeDef *pMotor)
 			break;
 	}
 
-//	if (pMotor->axis <= 0) {
-//		pMotor->axis = 0;
-//	}
+	if (pMotor->axis <= 0) {
+		pMotor->axis = 0;
+	}
 }
 
 /**
@@ -587,7 +551,11 @@ void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status,
 	            MD_UpdateStatusMotor(pMotor, STOP);
 	            break;
 	    }
-//	    MD_UpdateAxis(pMotor, current_value);
+
+	    // Only check current ripple if motor run
+	    if (pMotor->topology == SENSORLESS) {
+		    MD_UpdateAxis(pMotor, current_value);
+		}
 	} else {
         MD_UpdateStatusMotor(pMotor, STOP);
 	}

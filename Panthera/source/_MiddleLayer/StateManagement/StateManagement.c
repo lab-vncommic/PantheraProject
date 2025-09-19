@@ -512,19 +512,11 @@ void STATE_UpdateMeas(PTR_TypeDef *pState)
 			MEAS_UpdateValue(&pState->measurement, MEAS_THERMAL);
 			flag_enable_check_fault = true;
 		}
-//		debug_var[i] = thatADC.ADC_MulSens_1;
-//		if (i <= 30) {
-//			i++;
-//		} else i = 30;
 	} else {
 		MD_UpdateMeas(MEAS_CURRENT);
 		if (cnt_meas_type >= 2) {
 			MEAS_UpdateValue(&pState->measurement, MEAS_CURRENT);
 		}
-//		debug_var_cur[j] = thatADC.ADC_MulSens_3;
-//		if (j <= 10) {
-//			j++;
-//		} else j = 10;
 	}
 }
 
