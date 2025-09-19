@@ -9,7 +9,7 @@
 #define SOURCE_ADC_ADC_H_
 #include "saradc_lld_cfg.h"
 
-#define NUMOFCHANNELS 4U
+#define NUMOFCHANNELS 			4U
 #define CHANNEL_MULSENS_1 		90U
 #define CHANNEL_MULSENS_2 		82U
 #define CHANNEL_MULSENS_3 		63U

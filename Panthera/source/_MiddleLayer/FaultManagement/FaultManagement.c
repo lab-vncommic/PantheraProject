@@ -28,9 +28,9 @@ void FAULT_Init(void)
 	thisFault.fault_status = FAULT_STT_INIT_VALUE;
 	thisFault.limit		   = FAULT_SAVE_MEMORY;
 	thisFault.counter	   = 0;
-	 for (uint8_t i = 0; i < FAULT_SAVE_MEMORY; i++) {
-	 	thisFault.fault_save[i] = FAULT_STT_INIT_VALUE;
-	 }
+//	 for (uint8_t i = 0; i < FAULT_SAVE_MEMORY; i++) {
+//	 	thisFault.fault_save[i] = FAULT_STT_INIT_VALUE;
+//	 }
 }
 
 /**
