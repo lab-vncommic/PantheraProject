@@ -117,10 +117,35 @@ void MEM_Write(uint32_t x,uint32_t y, uint32_t z, uint16_t id_recall){
 //	EEPROM_Write(coordinates, id_recall);
 
 	// FIXME: Code test save data position in uint32t
-	uint16_t temp_id = 3*(id_recall-1);
-	EEPROM_Write(x, temp_id + 1);
-	EEPROM_Write(y, temp_id + 2);
-	EEPROM_Write(z, temp_id + 3);
+//	uint16_t temp_id = 3*(id_recall-1);
+//	EEPROM_Write(x, temp_id + 1);
+//	EEPROM_Write(y, temp_id + 2);
+//	EEPROM_Write(z, temp_id + 3);
+
+	switch (id_recall) {
+		case 1:
+			EEPROM_Write(x, 1);
+			EEPROM_Write(y, 2);
+			EEPROM_Write(z, 3);
+			break;
+		case 2:
+			EEPROM_Write(x, 4);
+			EEPROM_Write(y, 5);
+			EEPROM_Write(z, 6);
+			break;
+		case 3:
+			EEPROM_Write(x, 7);
+			EEPROM_Write(y, 8);
+			EEPROM_Write(z, 9);
+			break;
+		case 4:
+			EEPROM_Write(x, 10);
+			EEPROM_Write(y, 11);
+			EEPROM_Write(z, 12);
+			break;
+		default:
+			break;
+	}
 }
 
 /**
@@ -173,10 +198,34 @@ void MEM_Read(uint16_t id_recall){
 //    thisMemory.y = (uint16_t) convert_charHex_to_uint32_t(y_axis_str);
 //    thisMemory.z = (uint16_t) convert_charHex_to_uint32_t(z_axis_str);
 
-	uint16_t temp_id = 3*(id_recall-1);
-    thisMemory.x = EEPROM_Read(temp_id + 1);
-	thisMemory.y = EEPROM_Read(temp_id + 2);
-	thisMemory.z = EEPROM_Read(temp_id + 3);
+//	uint16_t temp_id = 3*(id_recall-1);
+//    thisMemory.x = EEPROM_Read(temp_id + 1);
+//	thisMemory.y = EEPROM_Read(temp_id + 2);
+//	thisMemory.z = EEPROM_Read(temp_id + 3);
+	switch (id_recall) {
+		case 1:
+		    thisMemory.x = EEPROM_Read(1);
+			thisMemory.y = EEPROM_Read(2);
+			thisMemory.z = EEPROM_Read(3);
+			break;
+		case 2:
+		    thisMemory.x = EEPROM_Read(4);
+			thisMemory.y = EEPROM_Read(5);
+			thisMemory.z = EEPROM_Read(6);
+			break;
+		case 3:
+		    thisMemory.x = EEPROM_Read(7);
+			thisMemory.y = EEPROM_Read(8);
+			thisMemory.z = EEPROM_Read(9);
+			break;
+		case 4:
+		    thisMemory.x = EEPROM_Read(10);
+			thisMemory.y = EEPROM_Read(11);
+			thisMemory.z = EEPROM_Read(12);
+			break;
+		default:
+			break;
+	}
 }
 
 /**

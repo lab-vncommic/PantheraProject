@@ -6,7 +6,7 @@
  */
 #include "Panthera.h"
 uint16_t cnt_blink_led;
-CommMode_Enum Comm_Mode = COMM_DEBUG;
+CommMode_Enum Comm_Mode = COMM_UART;
 uint32_t cnt_start_check_fault;
 
 void PTR_system_initialization(void)
