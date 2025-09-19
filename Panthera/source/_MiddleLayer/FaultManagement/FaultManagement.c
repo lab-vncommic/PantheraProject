@@ -102,9 +102,9 @@ void FAULT_UpdateMode(Fault_TypeDef *pFault, MeasSystem_TypeDef *pMeas)
 		pFault->fault_mode = FAULT_LATCH;
 	} else if ((pFault->fault_status) & FAULT_AUTO_RECOVERY_BITS) {
 		pFault->fault_mode = FAULT_AUTO_RECOVER;
-		if (thisFault.counter >= thisFault.limit) {
-			thisFault.fault_mode = FAULT_LATCH;
-		}
+//		if (thisFault.counter >= thisFault.limit) {
+//			thisFault.fault_mode = FAULT_LATCH;
+//		}
 	} else pFault->fault_mode = FAULT_NONE;
 }
 
