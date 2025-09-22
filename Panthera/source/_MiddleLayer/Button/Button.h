@@ -12,7 +12,7 @@
 
 #define TIMEOUT_RELEASE_BTN    1000
 #define TIMEOUT_PRESSED_BTN	   2000
-#define TIMEOUT_HOLD_BTN	   3000
+#define TIMEOUT_HOLD_BTN	  10000
 
 typedef enum{
 	ACTION_RELEASED	   = 0,

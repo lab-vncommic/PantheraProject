@@ -299,7 +299,6 @@ void STATE_GetSeatAxis(PTR_TypeDef *pState)
 void STATE_ResetAxis(PTR_TypeDef *pState)
 {
 	// Reset parameters for detecting end of travel
-	pState->state_home.cnt_use_recall       = 0;
 	pState->state_home.flag_slider_block    = false;
 	pState->state_home.flag_height_block    = false;
 	pState->state_home.flag_recliner_block  = false;
@@ -363,23 +362,20 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 					pState->seat_current_axis.height != pState->seat_memory_axis.height ||
 					pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
 						pState->state = STATE_AUTO;
-						pState->state_home.cnt_use_recall++;
 				}
-			} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
+			} else if (pState->button.recall_2.action == ACTION_HOLD_LONG) {
 				MEM_GetSeatAxis(&pState->seat_memory_axis, 2);
 				if (pState->seat_current_axis.recliner != pState->seat_memory_axis.recliner ||
 					pState->seat_current_axis.height != pState->seat_memory_axis.height ||
 					pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
 						pState->state = STATE_AUTO;
-						pState->state_home.cnt_use_recall++;
 				}
-			} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
+			} else if (pState->button.recall_3.action == ACTION_HOLD_LONG) {
 				MEM_GetSeatAxis(&pState->seat_memory_axis, 3);
 				if (pState->seat_current_axis.recliner != pState->seat_memory_axis.recliner ||
 					pState->seat_current_axis.height != pState->seat_memory_axis.height ||
 					pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
 						pState->state = STATE_AUTO;
-						pState->state_home.cnt_use_recall++;
 				}
 			}
 

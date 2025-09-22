@@ -57,7 +57,6 @@ typedef enum{
 } State_TypeDef;
 
 typedef struct{
-	uint8_t		cnt_use_recall;
 	_Bool		flag_slider_block;
 	_Bool		flag_height_block;
 	_Bool		flag_recliner_block;
@@ -67,7 +66,6 @@ typedef struct{
 	State_TypeDef 			state;
 	State_TypeDef 			state_prev;
 	SeatAxis_TypeDef		seat_current_axis;
-	SeatAxis_TypeDef		seat_previous_axis;
 	SeatAxis_TypeDef		seat_memory_axis;
 	SeatAxis_TypeDef		cnt_check_end_position;
 
