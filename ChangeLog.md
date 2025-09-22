@@ -39,7 +39,8 @@
 | 35  | 13/09/2025    | v1.2.3              | Bổ sung tính năng di chuyển về vị trí HOME khi nhấn cả 3 nút recall        | Nguyễn Quốc Uy    | Obsoleted|
 | 36  | 15/09/2025    | v1.2.4              | Bổ sung chức năng cập nhật vị trí hiện tại của ghế vào EEPROM              | Nguyễn Quốc Uy    | Obsoleted|
 | 37  | 17/09/2025    | v1.2.5              | Bổ sung chức năng bảo vệ quá nhiệt                                         | Nguyễn Quốc Uy    | Obsoleted|
-| 38  | 19/09/2025    | v1.3.0              | Release bản code có thể bàn giao cho khách hàng                            | Nguyễn Quốc Uy    | Active   |
+| 38  | 19/09/2025    | v1.3.0              | Release bản code có thể bàn giao cho khách hàng                            | Nguyễn Quốc Uy    | Obsoleted|
+| 39  | 22/09/2025    | v1.3.1              | Bổ sung chức năng installation Mode khi cài đặt ghế mới                    | Nguyễn Quốc Uy    | Active   |
 
 > Ghi chú: Cập nhật bảng này mỗi khi có thay đổi liên quan đến firmware.
 > Thay đổi nhỏ: v1.0.1, v1.0.2,... thay đổi chỉ số thứ ba
