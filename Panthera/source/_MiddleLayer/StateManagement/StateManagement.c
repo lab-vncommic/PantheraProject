@@ -275,10 +275,10 @@ _Bool STATE_SystemIsNormal(PTR_TypeDef *pState)
 {
 	if ((pState->measurement.current_slider_q15 <= CURRENT_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
 	 	(pState->measurement.current_height_q15 <= CURRENT_AUTO_RECOVERY_MT3_THRESHOLD_Q15) &&
-	 	(pState->measurement.current_recliner_q15 <= CURRENT_AUTO_RECOVERY_MT1_THRESHOLD_Q15)/* &&
+	 	(pState->measurement.current_recliner_q15 <= CURRENT_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
 	 	(pState->measurement.thermal_slider_q15 >= THERMAL_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
 	 	(pState->measurement.thermal_height_q15 >= THERMAL_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
-	 	(pState->measurement.thermal_recliner_q15 >= THERMAL_AUTO_RECOVERY_MT3_THRESHOLD_Q15)*/) {
+	 	(pState->measurement.thermal_recliner_q15 >= THERMAL_AUTO_RECOVERY_MT3_THRESHOLD_Q15)) {
 			return true;
 	}
 	return false;
