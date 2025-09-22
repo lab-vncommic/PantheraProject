@@ -44,6 +44,7 @@ void STATE_UpdateICasComm(Motor_TypeDef *pMotor, MotorObject_TypeDef *pMotorObj)
 _Bool STATE_SystemIsNormal(PTR_TypeDef *pState);
 void STATE_GetSeatAxis(PTR_TypeDef *pState);
 void STATE_ResetAxis(PTR_TypeDef *pState);
+void STATE_ClearMemoryData(void);
 
 /**
  * @brief Handles the system behavior in IDLE state
@@ -274,10 +275,10 @@ _Bool STATE_SystemIsNormal(PTR_TypeDef *pState)
 {
 	if ((pState->measurement.current_slider_q15 <= CURRENT_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
 	 	(pState->measurement.current_height_q15 <= CURRENT_AUTO_RECOVERY_MT3_THRESHOLD_Q15) &&
-	 	(pState->measurement.current_recliner_q15 <= CURRENT_AUTO_RECOVERY_MT1_THRESHOLD_Q15)/* &&
+	 	(pState->measurement.current_recliner_q15 <= CURRENT_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
 	 	(pState->measurement.thermal_slider_q15 >= THERMAL_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
 	 	(pState->measurement.thermal_height_q15 >= THERMAL_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
-	 	(pState->measurement.thermal_recliner_q15 >= THERMAL_AUTO_RECOVERY_MT3_THRESHOLD_Q15)*/) {
+	 	(pState->measurement.thermal_recliner_q15 >= THERMAL_AUTO_RECOVERY_MT3_THRESHOLD_Q15)) {
 			return true;
 	}
 	return false;
@@ -298,7 +299,6 @@ void STATE_GetSeatAxis(PTR_TypeDef *pState)
 void STATE_ResetAxis(PTR_TypeDef *pState)
 {
 	// Reset parameters for detecting end of travel
-	pState->state_home.cnt_use_recall       = 0;
 	pState->state_home.flag_slider_block    = false;
 	pState->state_home.flag_height_block    = false;
 	pState->state_home.flag_recliner_block  = false;
@@ -362,23 +362,20 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 					pState->seat_current_axis.height != pState->seat_memory_axis.height ||
 					pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
 						pState->state = STATE_AUTO;
-						pState->state_home.cnt_use_recall++;
 				}
-			} else if (pState->button.recall_2.action == ACTION_PRESSED || pState->button.recall_2.action == ACTION_HOLD) {
+			} else if (pState->button.recall_2.action == ACTION_HOLD_LONG) {
 				MEM_GetSeatAxis(&pState->seat_memory_axis, 2);
 				if (pState->seat_current_axis.recliner != pState->seat_memory_axis.recliner ||
 					pState->seat_current_axis.height != pState->seat_memory_axis.height ||
 					pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
 						pState->state = STATE_AUTO;
-						pState->state_home.cnt_use_recall++;
 				}
-			} else if (pState->button.recall_3.action == ACTION_PRESSED || pState->button.recall_3.action == ACTION_HOLD) {
+			} else if (pState->button.recall_3.action == ACTION_HOLD_LONG) {
 				MEM_GetSeatAxis(&pState->seat_memory_axis, 3);
 				if (pState->seat_current_axis.recliner != pState->seat_memory_axis.recliner ||
 					pState->seat_current_axis.height != pState->seat_memory_axis.height ||
 					pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
 						pState->state = STATE_AUTO;
-						pState->state_home.cnt_use_recall++;
 				}
 			}
 
@@ -457,6 +454,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			} else if (pState->state_home.flag_recliner_block &&
 					   pState->state_home.flag_slider_block &&
 					   pState->state_home.flag_height_block) {
+					   STATE_ClearMemoryData();
 					   pState->state = STATE_IDLE;
 					   flag_save_current_position = true;
 					}
@@ -534,5 +532,11 @@ void STATE_UpdateButton(PTR_TypeDef *pState)
 	BTN_Update(&pState->button);
 }
 
+void STATE_ClearMemoryData(void)
+{
+	MEM_Write(0, 0, 0, 1);
+	MEM_Write(0, 0, 0, 2);
+	MEM_Write(0, 0, 0, 3);
+}
 
 
