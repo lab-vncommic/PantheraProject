@@ -44,6 +44,7 @@ void STATE_UpdateICasComm(Motor_TypeDef *pMotor, MotorObject_TypeDef *pMotorObj)
 _Bool STATE_SystemIsNormal(PTR_TypeDef *pState);
 void STATE_GetSeatAxis(PTR_TypeDef *pState);
 void STATE_ResetAxis(PTR_TypeDef *pState);
+void STATE_ClearMemoryData(void);
 
 /**
  * @brief Handles the system behavior in IDLE state
@@ -457,6 +458,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 			} else if (pState->state_home.flag_recliner_block &&
 					   pState->state_home.flag_slider_block &&
 					   pState->state_home.flag_height_block) {
+					   STATE_ClearMemoryData();
 					   pState->state = STATE_IDLE;
 					   flag_save_current_position = true;
 					}
@@ -534,5 +536,11 @@ void STATE_UpdateButton(PTR_TypeDef *pState)
 	BTN_Update(&pState->button);
 }
 
+void STATE_ClearMemoryData(void)
+{
+	MEM_Write(0, 0, 0, 1);
+	MEM_Write(0, 0, 0, 2);
+	MEM_Write(0, 0, 0, 3);
+}
 
 
