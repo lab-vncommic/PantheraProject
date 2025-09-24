@@ -47,12 +47,12 @@ typedef struct{
 typedef struct{
 	ButtonComm_TypeDef   	button_comm;
 	MotorComm_TypeDef		motor_comm;
-} CommSystem_TypeDef;
+} comm_system_t;
 
 void COMM_Init(CommMode_Enum Comm);
 void COMM_DecodeMessage(void);
 void COMM_HandleRequest(void);
-void COMM_CommToState(CommSystem_TypeDef *pComm);
+void COMM_CommToState(comm_system_t *pComm);
 
 extern _Bool flag_update_ic;
 extern CommMessage_TypeDef thisMessage;

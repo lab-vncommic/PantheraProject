@@ -444,7 +444,7 @@ void COMM_UpdateStatus(void)
 	MD_UpdateToComm(&thisComm.motor);
 }
 
-void COMM_CommToState(CommSystem_TypeDef *pComm)
+void COMM_CommToState(comm_system_t *pComm)
 {
 	pComm->button_comm = thisComm.button_comm;
 	pComm->motor_comm  = thisComm.motor_comm;

@@ -32,20 +32,28 @@ void PTR_system_initialization(void)
  */
 void PTR_main_interrupt_service(void)
 {
+
+//	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
+
+//	STATE_UpdateButton(&thisPTR);
+	BTN_Update(&state_machine.data.button);
+//
+//	if (flag_enable_check_fault == true) {
+//		STATE_UpdateFault(&thisPTR);
+//	}
+
+
 	begin = stm_lld_getcounter(&STMD3);
-	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
-	STATE_UpdateButton(&thisPTR);
-
-	if (flag_enable_check_fault == true) {
-		STATE_UpdateFault(&thisPTR);
-	}
-
-	STATE_UpdateState(&thisPTR);
+//	STATE_UpdateState(&thisPTR);
+	state_update_comm(&state_machine);
+	state_get_seat_axis(&state_machine);
+	state_update(&state_machine);
+	end = stm_lld_getcounter(&STMD3);
 
 	// Comment these code if run sensorless
-	MD_UpdateAxis(&motor_recliner, thisPTR.measurement.current_recliner_q15);
-	MD_UpdateAxis(&motor_height, thisPTR.measurement.current_height_q15);
-	MD_UpdateAxis(&motor_slider, thisPTR.measurement.current_slider_q15);
+//	MD_UpdateAxis(&motor_recliner, thisPTR.measurement.current_recliner_q15);
+//	MD_UpdateAxis(&motor_height, thisPTR.measurement.current_height_q15);
+//	MD_UpdateAxis(&motor_slider, thisPTR.measurement.current_slider_q15);
 
 	MD_UpdateDriver(&motor_height);
 	MD_UpdateDriver(&motor_recliner);
@@ -53,7 +61,6 @@ void PTR_main_interrupt_service(void)
 
 	// FIXME: Code to measure execute time
 
-	end = stm_lld_getcounter(&STMD3);
 	elapsed = end - begin;
 }
 

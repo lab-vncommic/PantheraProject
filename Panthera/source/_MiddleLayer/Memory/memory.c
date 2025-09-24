@@ -84,9 +84,9 @@ void MEM_Read(uint16_t id_recall){
 void MEM_GetSeatAxis(SeatAxis_TypeDef *pSeat, uint16_t id_recall)
 {
 	MEM_Read(id_recall);
-	pSeat->height   = thisMemory.x;
-	pSeat->recliner = thisMemory.y;
-	pSeat->slider   = thisMemory.z;
+	pSeat->recliner = thisMemory.x;
+	pSeat->slider   = thisMemory.y;
+	pSeat->height   = thisMemory.z;
 }
 
 

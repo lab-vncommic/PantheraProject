@@ -93,7 +93,7 @@ void BTN_UpdateToState(Button_TypeDef *pButtonTemp, Btn_Object_TypeDef *pButton)
 	pButtonTemp->action = pButton->action;
 }
 
-void BTN_Update(ButtonSystem_TypeDef *pButton)
+void BTN_Update(button_system_t *pButton)
 {
 	// Update GPIO values
 	GPIO_Update();

@@ -9,8 +9,8 @@ Fault_TypeDef 	thisFault;
 uint8_t 		temp_fault_status;
 
 
-void FAULT_UpdateStatus(MeasSystem_TypeDef *pMeas);
-void FAULT_UpdateMode(Fault_TypeDef *pFault, MeasSystem_TypeDef *pMeas);
+void FAULT_UpdateStatus(meas_system_t *pMeas);
+void FAULT_UpdateMode(Fault_TypeDef *pFault, meas_system_t *pMeas);
 
 /**
  * @brief Initializes the fault management system
@@ -52,7 +52,7 @@ void FAULT_Init(void)
  * 
  * @note This function must be called periodically to keep fault status up-to-date
  */
-void FAULT_UpdateStatus(MeasSystem_TypeDef *pMeas)
+void FAULT_UpdateStatus(meas_system_t *pMeas)
 {
     if (FAULT_IS_MT1_OCP(pMeas->current_recliner_q15)) {
     	temp_fault_status |= FAULT_STT_0;
@@ -70,9 +70,9 @@ void FAULT_UpdateStatus(MeasSystem_TypeDef *pMeas)
     	temp_fault_status |= FAULT_STT_3;
     }
 
-//    if (FAULT_IS_MT2_OTP(pMeas->thermal_slider_q15)) {
-//    	temp_fault_status |= FAULT_STT_4;
-//    }
+    if (FAULT_IS_MT2_OTP(pMeas->thermal_slider_q15)) {
+    	temp_fault_status |= FAULT_STT_4;
+    }
 
     if (FAULT_IS_MT3_OTP(pMeas->thermal_height_q15)) {
     	temp_fault_status |= FAULT_STT_5;
@@ -94,7 +94,7 @@ void FAULT_UpdateStatus(MeasSystem_TypeDef *pMeas)
  *
  * @note The fault mode priority is: FAULT_LATCH > FAULT_AUTO_RECOVER > FAULT_NONE
  */
-void FAULT_UpdateMode(Fault_TypeDef *pFault, MeasSystem_TypeDef *pMeas)
+void FAULT_UpdateMode(Fault_TypeDef *pFault, meas_system_t *pMeas)
 {
 	FAULT_UpdateStatus(pMeas);
 
@@ -115,7 +115,7 @@ void FAULT_LogError(void)
 	}
 }
 
-void FAULT_Handle(FaultSystem_TypeDef *pFault, MeasSystem_TypeDef *pMeas)
+void FAULT_Handle(fault_system_t *pFault, meas_system_t *pMeas)
 {
 	FAULT_UpdateMode(&thisFault, pMeas);
 

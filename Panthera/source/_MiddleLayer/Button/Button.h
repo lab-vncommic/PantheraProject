@@ -72,7 +72,7 @@ typedef struct{
     Button_TypeDef recall_1;
     Button_TypeDef recall_2;
     Button_TypeDef recall_3;
-} ButtonSystem_TypeDef;
+} button_system_t;
 
 typedef struct{
 	uint16_t recliner_1_value;
@@ -91,7 +91,7 @@ typedef struct{
  * Public API
  *===========================================================================*/
 void BTN_Init(void);
-void BTN_Update(ButtonSystem_TypeDef *pButton);
+void BTN_Update(button_system_t *pButton);
 void BTN_UpdateToComm(ButtonComm_TypeDef *pButton);
 
 extern Button_TypeDef		thisButton;

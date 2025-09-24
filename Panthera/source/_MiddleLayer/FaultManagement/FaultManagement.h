@@ -48,7 +48,7 @@ typedef struct{
 	uint8_t					counter;
 
 	uint32_t				cnt_debounce_auto_recovery;
-} FaultSystem_TypeDef;
+} fault_system_t;
 
 /*===========================================================================
  * PTR CODE SECTION
@@ -78,7 +78,7 @@ typedef struct{
 
 // Public API
 void FAULT_Init(void);
-void FAULT_Handle(FaultSystem_TypeDef *pFault, MeasSystem_TypeDef *pMeas);
+void FAULT_Handle(fault_system_t *pFault, meas_system_t *pMeas);
 void FAULT_LogError(void);
 void FAULT_Reset(void);
 

@@ -71,11 +71,55 @@ typedef struct{
 
 	StateHomeObject_TypeDef state_home;
 
-	CommSystem_TypeDef	    communication;
-	MeasSystem_TypeDef		measurement;
-	FaultSystem_TypeDef		fault;
-	ButtonSystem_TypeDef 	button;
+	comm_system_t	    communication;
+	meas_system_t		measurement;
+	fault_system_t		fault;
+	button_system_t 	button;
 } PTR_TypeDef;
+
+// FIXME: New implementation
+#define TIME_ENABLE_MT1		1
+#define TIME_ENABLE_MT2		1000
+#define TIME_ENABLE_MT3		2000
+
+typedef struct state_machine_s state_machine_t;
+
+typedef struct{
+	SeatAxis_TypeDef	seat_current_axis;
+	SeatAxis_TypeDef	seat_memory_axis;
+	State_TypeDef 		current;
+	State_TypeDef 		previous;
+} state_system_t;
+
+typedef struct{
+	state_system_t		state;
+	comm_system_t	    communication;
+	meas_system_t		measurement;
+	fault_system_t		fault;
+	button_system_t 	button;
+
+	uint16_t			cnt_delay_startup_motor;
+
+	_Bool				flag_power_on_mcu;
+	_Bool				flag_save_current_position;
+} state_data_t;
+
+typedef struct{
+	State_TypeDef	type;
+
+	void (*entry)(state_machine_t *p_sm);
+	void (*process)(state_machine_t *p_sm);
+	void (*exit)(state_machine_t *p_sm);
+} state_t;
+
+struct state_machine_s {
+    state_t      	*current;
+    state_t      	*previous;
+    state_t      	*next;
+	uint32_t		cnt_time_on_state;
+    _Bool		 	flag_change_state;
+    state_data_t 	data;
+};
 
 /*===========================================================================
  * Public API
@@ -89,6 +133,12 @@ void STATE_UpdateButton(PTR_TypeDef *pState);
 
 void STATE_ProcessInputSignals(PTR_TypeDef *pState);
 
+void state_update_comm(state_machine_t *p_sm);
+void state_get_seat_axis(state_machine_t *p_sm);
+void state_update(state_machine_t *p_state);
+
 extern PTR_TypeDef thisPTR;
 extern _Bool flag_enable_check_fault;
+
+extern state_machine_t state_machine;
 #endif /* SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_ */

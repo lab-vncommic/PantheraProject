@@ -228,7 +228,7 @@ void MEAS_GetRealValue(MeasType_TypeDef meas_type)
 	}
 }
 
-void MEAS_UpdateValue(MeasSystem_TypeDef *pMeas, MeasType_TypeDef meas_type)
+void MEAS_UpdateValue(meas_system_t *pMeas, MeasType_TypeDef meas_type)
 {
 	MEAS_GetValue(meas_type);
 

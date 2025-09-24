@@ -102,11 +102,11 @@ typedef struct{
 	uq15_t thermal_slider_q15;
 	uq15_t thermal_height_q15;
 	uq15_t thermal_recliner_q15;
-} MeasSystem_TypeDef;
+} meas_system_t;
 
 // Public API
 void MEAS_Init(void);
-void MEAS_UpdateValue(MeasSystem_TypeDef *pMeas, MeasType_TypeDef meas_type);
+void MEAS_UpdateValue(meas_system_t *pMeas, MeasType_TypeDef meas_type);
 
 // Uncomment extern variables for debugging
 extern MeasAll_TypeDef thisMeas;
