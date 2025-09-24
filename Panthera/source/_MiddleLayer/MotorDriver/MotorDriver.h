@@ -129,15 +129,15 @@ typedef struct{
 // Public API
 void MD_Init(void);
 
-void MD_StopAll(void);
-void MD_EnableAll(void);
+void md_stop_all(void);
+void md_enable_all(void);
 void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t current_value);
 
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
 
 
 void MD_UpdateMeas(MeasType_TypeDef meas_type);
-void MD_GetSeatAxis(SeatAxis_TypeDef *pSeat);
+void md_get_seat_axis(SeatAxis_TypeDef *pSeat);
 void MD_UpdateToComm(MotorComm_TypeDef *pMotor);
 void MD_ResetAxis(void);
 void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value);

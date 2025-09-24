@@ -57,7 +57,7 @@ void STATE_ClearMemoryData(void);
  */
 void STATE_idleHandle(PTR_TypeDef *pState)
 {
-	MD_StopAll();
+	md_stop_all();
 //	STATE_GetSeatAxis(pState);
 	if (flag_power_on_first_time == true) {
 		MEM_GetSeatAxis(&pState->seat_current_axis, 4);
@@ -169,7 +169,7 @@ void STATE_autoHandle(PTR_TypeDef *pState)
 	}
 
 	// Check if all motors have reached their target positions
-	MD_GetSeatAxis(&pState->seat_current_axis);
+	md_get_seat_axis(&pState->seat_current_axis);
 	if ((pState->seat_current_axis.height == pState->seat_memory_axis.height) &&
 		(pState->seat_current_axis.recliner == pState->seat_memory_axis.recliner) &&
 		(pState->seat_current_axis.slider == pState->seat_memory_axis.slider)) {
@@ -183,7 +183,7 @@ void STATE_autoHandle(PTR_TypeDef *pState)
  */
 void STATE_faultHandle(void)
 {
-	MD_StopAll();
+	md_stop_all();
 }
 
 void STATE_autorecoveryHandle(void)
@@ -295,7 +295,7 @@ _Bool STATE_SystemIsNormal(PTR_TypeDef *pState)
  */
 void STATE_GetSeatAxis(PTR_TypeDef *pState)
 {
-	MD_GetSeatAxis(&pState->seat_current_axis);
+	md_get_seat_axis(&pState->seat_current_axis);
 }
 
 
@@ -351,7 +351,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 				pState->button.slider_1.action == ACTION_HOLD ||
 				pState->button.slider_2.action == ACTION_HOLD) {
 					pState->state = STATE_MANUAL;
-					MD_EnableAll();
+					md_enable_all();
 			} else if ((thisGPIO.recall_1.value) && (thisGPIO.recall_2.value) && (thisGPIO.recall_3.value)) {
 							cnt_debounce_home++;
 							if (cnt_debounce_home >= HOME_HOLD_BTN_TIME) {
@@ -557,9 +557,28 @@ void state_manual_process(state_machine_t *p_sm);
 void state_manual_check_transition(state_machine_t *p_sm);
 void state_manual_exit(state_machine_t *p_sm);
 
+void state_save_entry(state_machine_t *p_sm);
+void state_save_process(state_machine_t *p_sm);
+void state_save_check_transition(state_machine_t *p_sm);
+void state_save_exit(state_machine_t *p_sm);
+
+void state_auto_entry(state_machine_t *p_sm);
+void state_auto_process(state_machine_t *p_sm);
+void state_auto_check_transition(state_machine_t *p_sm);
+void state_auto_exit(state_machine_t *p_sm);
+
+void state_fault_entry(state_machine_t *p_sm);
+void state_fault_process(state_machine_t *p_sm);
+void state_fault_check_transition(state_machine_t *p_sm);
+void state_fault_exit(state_machine_t *p_sm);
+
 void state_change_state(state_machine_t *p_sm, state_t *p_state);
 void state_manual_run_motor(MotorName_TypeDef name, Button_TypeDef button_1, Button_TypeDef button_2, uint16_t current_value);
-
+void state_auto_run_motor(MotorName_TypeDef name, uint32_t axis_current, uint32_t axis_memory, uint16_t current_value);
+static inline _Bool manual_button_pressed(state_machine_t *p_sm);
+static inline _Bool all_manual_button_release(state_machine_t *p_sm);
+static inline _Bool seat_at_wrong_position(state_machine_t *p_sm);
+static inline _Bool seat_at_right_position(state_machine_t *p_sm);
 
 state_t idle = {
 		.type = STATE_IDLE,
@@ -575,6 +594,27 @@ state_t manual = {
 		.exit = state_manual_exit
 };
 
+state_t save = {
+		.type = STATE_SAVE,
+		.entry = state_save_entry,
+		.process = state_save_process,
+		.exit = state_save_exit
+};
+
+state_t auto_control = {
+		.type = STATE_AUTO,
+		.entry = state_auto_entry,
+		.process = state_auto_process,
+		.exit = state_auto_exit
+};
+
+state_t fault = {
+		.type = STATE_FAULT,
+		.entry = state_fault_entry,
+		.process = state_fault_process,
+		.exit = state_fault_exit
+};
+
 state_machine_t state_machine = {
 		.current = &idle,
 		.cnt_time_on_state = 0,
@@ -587,6 +627,47 @@ void state_int(state_machine_t *p_sm)
 	p_sm->data.flag_power_on_mcu = true;
 }
 
+void state_update_comm(state_machine_t *p_sm)
+{
+	state_handle_manual_button(&p_sm->data.button.recliner_1, p_sm->data.communication.button_comm.recliner_1_value);
+	state_handle_manual_button(&p_sm->data.button.recliner_2, p_sm->data.communication.button_comm.recliner_2_value);
+	state_handle_manual_button(&p_sm->data.button.slider_1, p_sm->data.communication.button_comm.slider_1_value);
+	state_handle_manual_button(&p_sm->data.button.slider_2, p_sm->data.communication.button_comm.slider_2_value);
+	state_handle_manual_button(&p_sm->data.button.height_1, p_sm->data.communication.button_comm.height_1_value);
+	state_handle_manual_button(&p_sm->data.button.height_2, p_sm->data.communication.button_comm.height_2_value);
+	state_handle_manual_button(&p_sm->data.button.save, p_sm->data.communication.button_comm.save_value);
+	state_handle_recall_button(&p_sm->data.button.recall_1, p_sm->data.communication.button_comm.recall_1_value);
+	state_handle_recall_button(&p_sm->data.button.recall_2, p_sm->data.communication.button_comm.recall_2_value);
+	state_handle_recall_button(&p_sm->data.button.recall_3, p_sm->data.communication.button_comm.recall_3_value);
+}
+
+void state_get_seat_axis(state_machine_t *p_sm)
+{
+	md_get_seat_axis(&p_sm->data.state.seat_current_axis);
+}
+
+void state_update(state_machine_t *p_sm)
+{
+	if (p_sm->flag_change_state) {
+		// Run exit function of old state
+		p_sm->current->exit(p_sm);
+
+		p_sm->data.state.previous = p_sm->current->type;
+		p_sm->data.state.current  = p_sm->next->type;
+
+		p_sm->current = p_sm->next;
+		p_sm->cnt_time_on_state = 0;
+
+		// Run entry function of new state
+		p_sm->current->entry(p_sm);
+		p_sm->flag_change_state = false;
+	} else {
+		// Run process function
+		p_sm->cnt_time_on_state++;
+		p_sm->current->process(p_sm);
+	}
+}
+
 void state_idle_entry(state_machine_t *p_sm)
 {
 	if (p_sm->data.flag_save_current_position == true) {
@@ -597,7 +678,7 @@ void state_idle_entry(state_machine_t *p_sm)
 
 void state_idle_process(state_machine_t *p_sm)
 {
-	MD_StopAll();
+	md_stop_all();
 	if (p_sm->data.flag_power_on_mcu == true) {
 		MEM_GetSeatAxis(&p_sm->data.state.seat_current_axis, 4);
 		motor_recliner.axis = p_sm->data.state.seat_current_axis.recliner;
@@ -611,45 +692,51 @@ void state_idle_process(state_machine_t *p_sm)
 
 void state_idle_check_transition(state_machine_t *p_sm)
 {
+	// Check for fault condition first (highest priority)
 	if (p_sm->data.fault.mode != FAULT_NONE) {
-//		state_change_state(p_sm, &fault);
-	} else if (p_sm->data.button.height_1.action == ACTION_HOLD ||
-		p_sm->data.button.height_2.action == ACTION_HOLD ||
-		p_sm->data.button.recliner_1.action == ACTION_HOLD ||
-		p_sm->data.button.recliner_2.action == ACTION_HOLD ||
-		p_sm->data.button.slider_1.action == ACTION_HOLD ||
-		p_sm->data.button.slider_2.action == ACTION_HOLD) {
-			state_change_state(p_sm, &manual);
-	}/* else if ((thisGPIO.recall_1.value) && (thisGPIO.recall_2.value) && (thisGPIO.recall_3.value)) {
-					cnt_debounce_home++;
-					if (cnt_debounce_home >= HOME_HOLD_BTN_TIME) {
-						cnt_debounce_home = 0;
-						pState->state = STATE_HOMING;
-					}
-	} else if (pState->button.save.action == ACTION_HOLD) {
-		pState->state = STATE_SAVE;
-	} else if (pState->button.recall_1.action == ACTION_HOLD_LONG) {
-		MEM_GetSeatAxis(&pState->seat_memory_axis, 1);
-		if (pState->seat_current_axis.recliner != pState->seat_memory_axis.recliner ||
-			pState->seat_current_axis.height != pState->seat_memory_axis.height ||
-			pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
-				pState->state = STATE_AUTO;
+		state_change_state(p_sm, &fault);
+		return;
+	}
+	
+	// Check for manual control buttons
+	if (manual_button_pressed(p_sm)) {
+		state_change_state(p_sm, &manual);
+		return;
+	}
+	
+	// Check for homing request (all recall buttons held)
+	if ((thisGPIO.recall_1.value) && (thisGPIO.recall_2.value) && (thisGPIO.recall_3.value)) {
+		cnt_debounce_home++;
+		if (cnt_debounce_home >= HOME_HOLD_BTN_TIME) {
+			cnt_debounce_home = 0;
+			// pState->state = STATE_HOMING;
+			return;
 		}
-	} else if (pState->button.recall_2.action == ACTION_HOLD_LONG) {
-		MEM_GetSeatAxis(&pState->seat_memory_axis, 2);
-		if (pState->seat_current_axis.recliner != pState->seat_memory_axis.recliner ||
-			pState->seat_current_axis.height != pState->seat_memory_axis.height ||
-			pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
-				pState->state = STATE_AUTO;
+	}
+	
+	// Check for save button
+	if (p_sm->data.button.save.action == ACTION_HOLD) {
+		state_change_state(p_sm, &save);
+		return;
+	}
+	
+	// Check for memory recall requests
+	p_sm->data.state.memory_number = 0;
+	
+	if (p_sm->data.button.recall_1.action == ACTION_HOLD_LONG)
+		p_sm->data.state.memory_number = 1;
+	else if (p_sm->data.button.recall_2.action == ACTION_HOLD_LONG)
+		p_sm->data.state.memory_number = 2;
+	else if (p_sm->data.button.recall_3.action == ACTION_HOLD_LONG)
+		p_sm->data.state.memory_number = 3;
+	
+	if (p_sm->data.state.memory_number > 0) {
+		MEM_GetSeatAxis(&p_sm->data.state.seat_memory_axis, p_sm->data.state.memory_number);
+		if (seat_at_wrong_position(p_sm)) {
+			state_change_state(p_sm, &auto_control);
+			return;
 		}
-	} else if (pState->button.recall_3.action == ACTION_HOLD_LONG) {
-		MEM_GetSeatAxis(&pState->seat_memory_axis, 3);
-		if (pState->seat_current_axis.recliner != pState->seat_memory_axis.recliner ||
-			pState->seat_current_axis.height != pState->seat_memory_axis.height ||
-			pState->seat_current_axis.slider != pState->seat_memory_axis.slider) {
-				pState->state = STATE_AUTO;
-		}
-	} */
+	}
 }
 
 void state_idle_exit(state_machine_t *p_sm)
@@ -660,7 +747,7 @@ void state_idle_exit(state_machine_t *p_sm)
 void state_manual_entry(state_machine_t *p_sm)
 {
 	(void)p_sm;
-	MD_EnableAll();
+	md_enable_all();
 }
 
 void state_manual_process(state_machine_t *p_sm)
@@ -689,13 +776,8 @@ void state_manual_process(state_machine_t *p_sm)
 void state_manual_check_transition(state_machine_t *p_sm)
 {
 	if (p_sm->data.fault.mode != FAULT_NONE) {
-//		state_change_state(p_sm, &fault);
-	} else if (p_sm->data.button.height_1.action == ACTION_RELEASED &&
-		p_sm->data.button.height_2.action == ACTION_RELEASED &&
-		p_sm->data.button.recliner_1.action == ACTION_RELEASED &&
-		p_sm->data.button.recliner_2.action == ACTION_RELEASED &&
-		p_sm->data.button.slider_1.action == ACTION_RELEASED &&
-		p_sm->data.button.slider_2.action == ACTION_RELEASED) {
+		state_change_state(p_sm, &fault);
+	} else if (all_manual_button_release(p_sm)) {
 			state_change_state(p_sm, &idle);
 	}
 }
@@ -707,49 +789,127 @@ void state_manual_exit(state_machine_t *p_sm)
 	p_sm->data.cnt_delay_startup_motor    = 0;
 }
 
-void state_update_comm(state_machine_t *p_sm)
+void state_save_entry(state_machine_t *p_sm)
 {
-	state_handle_manual_button(&p_sm->data.button.recliner_1, p_sm->data.communication.button_comm.recliner_1_value);
-	state_handle_manual_button(&p_sm->data.button.recliner_2, p_sm->data.communication.button_comm.recliner_2_value);
-	state_handle_manual_button(&p_sm->data.button.slider_1, p_sm->data.communication.button_comm.slider_1_value);
-	state_handle_manual_button(&p_sm->data.button.slider_2, p_sm->data.communication.button_comm.slider_2_value);
-	state_handle_manual_button(&p_sm->data.button.height_1, p_sm->data.communication.button_comm.height_1_value);
-	state_handle_manual_button(&p_sm->data.button.height_2, p_sm->data.communication.button_comm.height_2_value);
-	state_handle_manual_button(&p_sm->data.button.save, p_sm->data.communication.button_comm.save_value);
-	state_handle_recall_button(&p_sm->data.button.recall_1, p_sm->data.communication.button_comm.recall_1_value);
-	state_handle_recall_button(&p_sm->data.button.recall_2, p_sm->data.communication.button_comm.recall_2_value);
-	state_handle_recall_button(&p_sm->data.button.recall_3, p_sm->data.communication.button_comm.recall_3_value);
+	p_sm->data.state.memory_number = 0;
 }
 
-void state_get_seat_axis(state_machine_t *p_sm)
+void state_save_process(state_machine_t *p_sm)
 {
-	MD_GetSeatAxis(&p_sm->data.state.seat_current_axis);
+	if (p_sm->data.button.recall_1.action == ACTION_PRESSED ||
+		p_sm->data.button.recall_1.action == ACTION_HOLD ||
+		p_sm->data.button.recall_1.action == ACTION_HOLD_LONG) {
+		p_sm->data.flag_save_memory_position = true;
+		p_sm->data.state.memory_number = 1;
+	}
+
+	if (p_sm->data.button.recall_2.action == ACTION_PRESSED||
+		p_sm->data.button.recall_2.action == ACTION_HOLD ||
+		p_sm->data.button.recall_2.action == ACTION_HOLD_LONG) {
+		p_sm->data.flag_save_memory_position = true;
+		p_sm->data.state.memory_number = 2;
+	}
+
+	if (p_sm->data.button.recall_3.action == ACTION_PRESSED ||
+		p_sm->data.button.recall_3.action == ACTION_HOLD ||
+		p_sm->data.button.recall_3.action == ACTION_HOLD_LONG) {
+		p_sm->data.flag_save_memory_position = true;
+		p_sm->data.state.memory_number = 3;
+	}
+
+	if (p_sm->data.flag_save_memory_position == true) {
+		MEM_Write(p_sm->data.state.seat_current_axis.recliner,
+				  p_sm->data.state.seat_current_axis.slider,
+				  p_sm->data.state.seat_current_axis.height,
+				  p_sm->data.state.memory_number);
+	}
+
+	state_save_check_transition(p_sm);
 }
 
-void state_update(state_machine_t *p_sm)
+void state_save_check_transition(state_machine_t *p_sm)
 {
-	if (p_sm->flag_change_state) {
-		// Run exit function of old state
-		p_sm->current->exit(p_sm);
-
-		p_sm->data.state.previous = p_sm->current->type;
-		p_sm->data.state.current  = p_sm->next->type;
-
-		p_sm->current = p_sm->next;
-		p_sm->cnt_time_on_state = 0;
-
-		// Run entry function of new state
-		p_sm->current->entry(p_sm);
-		p_sm->flag_change_state = false;
-	} else {
-		// Run process function
-		p_sm->cnt_time_on_state++;
-		p_sm->current->process(p_sm);
+	if (p_sm->data.fault.mode != FAULT_NONE) {
+		state_change_state(p_sm, &fault);
+	} else if (p_sm->data.flag_save_memory_position == true) {
+			state_change_state(p_sm, &idle);
+			p_sm->data.flag_save_memory_position = false;
 	}
 }
 
+void state_save_exit(state_machine_t *p_sm)
+{
+	p_sm->data.state.memory_number = 0;
+}
+
+void state_auto_entry(state_machine_t *p_sm)
+{
+	(void)p_sm;
+}
+
+void state_auto_process(state_machine_t *p_sm)
+{
+	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT3) {
+		p_sm->data.cnt_delay_startup_motor = TIME_ENABLE_MT3;
+	} else p_sm->data.cnt_delay_startup_motor++;
+
+	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT1) {
+		state_auto_run_motor(MOTOR_RECLINER, p_sm->data.state.seat_current_axis.recliner, p_sm->data.state.seat_memory_axis.recliner, p_sm->data.measurement.current_slider_q15);
+	}
+
+	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT2) {
+		state_auto_run_motor(MOTOR_SLIDER, p_sm->data.state.seat_current_axis.slider, p_sm->data.state.seat_memory_axis.slider, p_sm->data.measurement.current_slider_q15);
+	}
+
+	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT3) {
+		state_auto_run_motor(MOTOR_HEIGHT, p_sm->data.state.seat_current_axis.height, p_sm->data.state.seat_memory_axis.height, p_sm->data.measurement.current_recliner_q15);
+	}
+
+	state_auto_check_transition(p_sm);
+}
+
+void state_auto_check_transition(state_machine_t *p_sm)
+{
+	if (p_sm->data.fault.mode != FAULT_NONE) {
+		state_change_state(p_sm, &fault);
+		return;
+	}
+
+	if (seat_at_right_position(p_sm)) {
+		state_change_state(p_sm, &idle);
+		return;
+	}
+}
+
+void state_auto_exit(state_machine_t *p_sm)
+{
+	p_sm->data.flag_save_current_position = true;
+	p_sm->data.cnt_delay_startup_motor    = 0;
+}
+
+void state_fault_entry(state_machine_t *p_sm)
+{
+	(void)p_sm;
+	md_stop_all();
+}
+
+void state_fault_process(state_machine_t *p_sm)
+{
+	state_fault_check_transition(p_sm);
+}
+
+void state_fault_check_transition(state_machine_t *p_sm)
+{
+	(void)p_sm;
+}
+
+void state_fault_exit(state_machine_t *p_sm)
+{
+	(void)p_sm;
+}
+
 /* ============================================================
- * 4. Static Helpers
+ * Sub API
  * ============================================================ */
 void state_change_state(state_machine_t *p_sm, state_t *p_state)
 {
@@ -766,4 +926,47 @@ void state_manual_run_motor(MotorName_TypeDef name, Button_TypeDef button_1, But
 			   (button_1.action == ACTION_RELEASED)){
 				MD_Run(name, BACKWARD, current_value);
 	} else MD_Run(name, STOP, current_value);
+}
+
+void state_auto_run_motor(MotorName_TypeDef name, uint32_t axis_current, uint32_t axis_memory, uint16_t current_value)
+{
+	if (axis_current > axis_memory) {
+		MD_Run(name, BACKWARD, current_value);
+	} else if (axis_current < axis_memory) {
+		MD_Run(name, FORWARD, current_value);
+	} else MD_Run(name, STOP, current_value);
+}
+
+static inline _Bool manual_button_pressed(state_machine_t *p_sm)
+{
+	return (p_sm->data.button.height_1.action == ACTION_HOLD ||
+			p_sm->data.button.height_2.action == ACTION_HOLD ||
+			p_sm->data.button.recliner_1.action == ACTION_HOLD ||
+			p_sm->data.button.recliner_2.action == ACTION_HOLD ||
+			p_sm->data.button.slider_1.action == ACTION_HOLD ||
+			p_sm->data.button.slider_2.action == ACTION_HOLD);
+}
+
+static inline _Bool all_manual_button_release(state_machine_t *p_sm)
+{
+	return (p_sm->data.button.height_1.action == ACTION_RELEASED &&
+			p_sm->data.button.height_2.action == ACTION_RELEASED &&
+			p_sm->data.button.recliner_1.action == ACTION_RELEASED &&
+			p_sm->data.button.recliner_2.action == ACTION_RELEASED &&
+			p_sm->data.button.slider_1.action == ACTION_RELEASED &&
+			p_sm->data.button.slider_2.action == ACTION_RELEASED);
+}
+
+static inline _Bool seat_at_wrong_position(state_machine_t *p_sm)
+{
+	return (p_sm->data.state.seat_current_axis.recliner != p_sm->data.state.seat_memory_axis.recliner ||
+			p_sm->data.state.seat_current_axis.height != p_sm->data.state.seat_memory_axis.height ||
+			p_sm->data.state.seat_current_axis.slider != p_sm->data.state.seat_memory_axis.slider);
+}
+
+static inline _Bool seat_at_right_position(state_machine_t *p_sm)
+{
+	return (p_sm->data.state.seat_current_axis.recliner == p_sm->data.state.seat_memory_axis.recliner &&
+			p_sm->data.state.seat_current_axis.height == p_sm->data.state.seat_memory_axis.height &&
+			p_sm->data.state.seat_current_axis.slider == p_sm->data.state.seat_memory_axis.slider);
 }

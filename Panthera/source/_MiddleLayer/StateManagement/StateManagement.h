@@ -89,6 +89,7 @@ typedef struct{
 	SeatAxis_TypeDef	seat_memory_axis;
 	State_TypeDef 		current;
 	State_TypeDef 		previous;
+	uint8_t				memory_number;
 } state_system_t;
 
 typedef struct{
@@ -102,6 +103,7 @@ typedef struct{
 
 	_Bool				flag_power_on_mcu;
 	_Bool				flag_save_current_position;
+	_Bool				flag_save_memory_position;
 } state_data_t;
 
 typedef struct{

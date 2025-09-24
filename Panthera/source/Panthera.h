@@ -16,8 +16,8 @@
 #include "uart.h"
 #include "memory.h"
 
-void PTR_system_initialization(void);
-void PTR_main_interrupt_service(void);
-void PTR_inf_loop_system(void);
+void ptr_system_initialization(void);
+void ptr_main_interrupt_service(void);
+void ptr_inf_loop_system(void);
 
 #endif /* PANTHERA_H_ */

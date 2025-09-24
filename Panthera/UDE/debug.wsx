@@ -5,7 +5,7 @@
 	<ProdInfo type="bin" size="52">vQTv/gAAAQAMAAMA6iAAAAUA5QcAAAAAPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAA==</ProdInfo>
 	<ProdInfoString type="string">2021</ProdInfoString>
 	<CreationDate type="string">29.08.2025 16:46:56:000</CreationDate>
-	<LastWriteDate type="string">24.09.2025 16:01:35:000</LastWriteDate>
+	<LastWriteDate type="string">24.09.2025 20:18:29:000</LastWriteDate>
 	<UseWspCnt type="int">0</UseWspCnt>
 	<MainFrame type="key">
 		<NETPlacementRoot type="key">
@@ -59,7 +59,7 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>8</DockingIndex>
+							<DockingIndex>9</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
@@ -77,7 +77,7 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>7</DockingIndex>
+							<DockingIndex>8</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>true</Selected>
@@ -95,7 +95,7 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>6</DockingIndex>
+							<DockingIndex>7</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
@@ -113,7 +113,7 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>5</DockingIndex>
+							<DockingIndex>6</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
@@ -131,7 +131,7 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>4</DockingIndex>
+							<DockingIndex>5</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
@@ -149,7 +149,7 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>3</DockingIndex>
+							<DockingIndex>4</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
@@ -167,7 +167,7 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>2</DockingIndex>
+							<DockingIndex>3</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
@@ -185,7 +185,7 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>1</DockingIndex>
+							<DockingIndex>2</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
@@ -203,11 +203,29 @@
 							</FloatingBounds>
 							<AutoHide>false</AutoHide>
 							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
-							<DockingIndex>0</DockingIndex>
+							<DockingIndex>1</DockingIndex>
 							<PanelIndex>-1</PanelIndex>
 							<ContainerType>TabbedDocument</ContainerType>
 							<Selected>false</Selected>
 							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW08</UniqueIdentifier>
+						</UniqueControlIdDockingControlData>
+						<UniqueControlIdDockingControlData>
+							<DockedDimension>0</DockedDimension>
+							<Cancelled>false</Cancelled>
+							<DockingType>Top</DockingType>
+							<FloatingBounds>
+								<X>0</X>
+								<Y>0</Y>
+								<Width>0</Width>
+								<Height>0</Height>
+							</FloatingBounds>
+							<AutoHide>false</AutoHide>
+							<AutoHideByContextSwitch>false</AutoHideByContextSwitch>
+							<DockingIndex>0</DockingIndex>
+							<PanelIndex>-1</PanelIndex>
+							<ContainerType>TabbedDocument</ContainerType>
+							<Selected>false</Selected>
+							<UniqueIdentifier>Core2.ViewSrv.StdUDEProgWin.OPEN_VIEW09</UniqueIdentifier>
 						</UniqueControlIdDockingControlData>
 						<UniqueControlIdDockingControlData>
 							<DockedDimension>729</DockedDimension>
@@ -311,7 +329,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Workspace Toolbar</Name>
+								<Name>Help Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -331,7 +349,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Show Toolbar</Name>
+								<Name>Workspace Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -371,7 +389,7 @@
 									<Width>111</Width>
 									<Height>25</Height>
 								</Bounds>
-								<Name>Help Toolbar</Name>
+								<Name>Show Toolbar</Name>
 								<AlwaysUnvisible>false</AlwaysUnvisible>
 								<Visible>false</Visible>
 								<ToolItemData>
@@ -1079,7 +1097,7 @@
 									<ToolItemPersistData>
 										<Name></Name>
 										<Visible>true</Visible>
-										<Text>ERROR: Flashing program sections failed.</Text>
+										<Text>ERROR: Failed to update resources to target !</Text>
 										<DisplayStyle>ImageAndText</DisplayStyle>
 										<AppendAccelerator>false</AppendAccelerator>
 									</ToolItemPersistData>
@@ -1261,7 +1279,7 @@
 		<UDESTK.Script type="key">
 			<MacroGuiEntries type="key">
 				<LastScriptFilePath type="string">..\..\..\..\..\..\..\ADMIN\Documents\pls\UDESTK 2021</LastScriptFilePath>
-				<Macro_13_09_25_15_19_48_0 type="key">
+				<Macro_24_09_25_19_38_46_0 type="key">
 					<ScriptDescription type="string">The script contains a collection of macros to save memory content into different file formats 
 and fill target memory ranges</ScriptDescription>
 					<ScriptPath type="string">V:\UDE\AddOns\Macro\MacroLibrary\StdMacros1.dsm</ScriptPath>
@@ -1541,7 +1559,7 @@ End Sub</ScriptSource>
 					<ScriptFromStg type="flag">1</ScriptFromStg>
 					<LocalComputerName type="string">WS_CORE_DUO</LocalComputerName>
 					<ExternalScriptPath type="string"></ExternalScriptPath>
-					<NextNodeName type="string">Macro_24_09_25_16_01_35_0</NextNodeName>
+					<NextNodeName type="string">Macro_24_09_25_20_18_29_0</NextNodeName>
 					<UnAss type="key">
 						<GUIEntry type="key">
 							<MenuID type="int">10</MenuID>
@@ -1598,7 +1616,7 @@ End Sub</ScriptSource>
 						<GUIEntryDescription type="string"></GUIEntryDescription>
 					</FillDWord>
 					<NoOfFunctions type="int">5</NoOfFunctions>
-				</Macro_13_09_25_15_19_48_0>
+				</Macro_24_09_25_19_38_46_0>
 			</MacroGuiEntries>
 			<LastSelectedMacro type="string"></LastSelectedMacro>
 		</UDESTK.Script>
@@ -1619,7 +1637,7 @@ End Sub</ScriptSource>
 					<FrameCreated type="string">10.09.2025 17:32:06:782</FrameCreated>
 					<ViewSrv type="key"></ViewSrv>
 					<NETFrameMode type="int">77824</NETFrameMode>
-					<NETFrameSaveIndex type="int">10</NETFrameSaveIndex>
+					<NETFrameSaveIndex type="int">11</NETFrameSaveIndex>
 					<FrameUserTitle type="string"></FrameUserTitle>
 				</OPEN_VIEW>
 				<SAVED_VIEW type="int">0</SAVED_VIEW>
@@ -1647,7 +1665,7 @@ End Sub</ScriptSource>
 							<HoldedPeriod type="int">0</HoldedPeriod>
 						</AnimateQueue>
 					</ViewSrv>
-					<SourceFile type="string">code &lt;0xFC0004-0xFC0403&gt;</SourceFile>
+					<SourceFile type="string">code &lt;0xFC0000-0xFC03FF&gt;</SourceFile>
 					<SourceFileInstFlag type="int">4</SourceFileInstFlag>
 					<NETFrameMode type="int">73728</NETFrameMode>
 					<NETFrameSaveIndex type="int">2</NETFrameSaveIndex>
@@ -1667,7 +1685,7 @@ End Sub</ScriptSource>
 					<NETFrameSaveIndex type="int">3</NETFrameSaveIndex>
 					<FrameUserTitle type="string"></FrameUserTitle>
 				</OPEN_VIEW02>
-				<SAVED_VIEW_OBJS type="int">9</SAVED_VIEW_OBJS>
+				<SAVED_VIEW_OBJS type="int">10</SAVED_VIEW_OBJS>
 				<SAVED_VIEW00 type="int">0</SAVED_VIEW00>
 				<SAVED_VIEW01 type="int">1</SAVED_VIEW01>
 				<SAVED_VIEW02 type="int">2</SAVED_VIEW02>
@@ -1761,6 +1779,21 @@ End Sub</ScriptSource>
 				<SAVED_VIEW06 type="int">6</SAVED_VIEW06>
 				<SAVED_VIEW07 type="int">7</SAVED_VIEW07>
 				<SAVED_VIEW08 type="int">8</SAVED_VIEW08>
+				<OPEN_VIEW09 type="key">
+					<FrameCreated type="string">24.09.2025 17:49:42:818</FrameCreated>
+					<ViewSrv type="key">
+						<AnimateQueue type="key">
+							<RunningPeriod type="int">0</RunningPeriod>
+							<HoldedPeriod type="int">0</HoldedPeriod>
+						</AnimateQueue>
+					</ViewSrv>
+					<SourceFile type="string">..\components\eeprom_emulation_driver\lib\src\eeprom.c</SourceFile>
+					<SourceFileInstFlag type="int">1</SourceFileInstFlag>
+					<NETFrameMode type="int">73728</NETFrameMode>
+					<NETFrameSaveIndex type="int">10</NETFrameSaveIndex>
+					<FrameUserTitle type="string"></FrameUserTitle>
+				</OPEN_VIEW09>
+				<SAVED_VIEW09 type="int">9</SAVED_VIEW09>
 			</StdUDEProgWin>
 			<StdUDESFRView type="key">
 				<SAVED_VIEW_OBJS type="int">0</SAVED_VIEW_OBJS>
@@ -1772,11 +1805,11 @@ End Sub</ScriptSource>
 				<OPEN_VIEW00 type="key">
 					<FrameCreated type="string">05.09.2025 19:54:21:371</FrameCreated>
 					<ViewSrv type="key">
-						<TopIndex type="int">0</TopIndex>
-						<CaretIndex type="int">0</CaretIndex>
-						<NameWidth type="int">227</NameWidth>
+						<TopIndex type="int">28</TopIndex>
+						<CaretIndex type="int">40</CaretIndex>
+						<NameWidth type="int">219</NameWidth>
 						<AddressWidth type="int">0</AddressWidth>
-						<ValueWidth type="int">241</ValueWidth>
+						<ValueWidth type="int">233</ValueWidth>
 						<Value2Width type="int">0</Value2Width>
 						<MinMaxWidth type="int">0</MinMaxWidth>
 						<Watches type="key">
@@ -1794,14 +1827,32 @@ End Sub</ScriptSource>
 							</Watch1>
 							<Watch2 type="key">
 								<Name type="string">thisPTR (global) @1</Name>
-								<Status type="string">#0#0,0$0,0$</Status>
+								<Status type="string">#0#0,0$-1,0$</Status>
 								<RunningPeriod2 type="int">500</RunningPeriod2>
 								<HoldedPeriod2 type="int">0</HoldedPeriod2>
 							</Watch2>
+							<Watch3 type="key">
+								<Name type="string">motor_slider (global) @1</Name>
+								<Status type="string">#0#0,0$-1,0$#0,2$-1,0$#0,3$-1,0$#0,4$-1,0$#0,7$0,2$#0,8$-1,0$#0,9$-1,0$</Status>
+								<RunningPeriod3 type="int">500</RunningPeriod3>
+								<HoldedPeriod3 type="int">0</HoldedPeriod3>
+							</Watch3>
+							<Watch4 type="key">
+								<Name type="string">state_machine (global) @1</Name>
+								<Status type="string">#0#0,4$0,2$#0,5#0,5,0#0,5,0,0#0,5,0,1#0,5,0,2$-1,0$#0,5,0,3$-1,0$#0,5,4#0,5,4,7#0,5,4,8#0,5,4,9#0,5,6$0,2$#0,5,7$0,2$</Status>
+								<RunningPeriod4 type="int">500</RunningPeriod4>
+								<HoldedPeriod4 type="int">0</HoldedPeriod4>
+							</Watch4>
+							<Watch5 type="key">
+								<Name type="string">thisButtonAll (global) @1</Name>
+								<Status type="string">#0#0,7#0,7,0$1,0$#0,7,1$1,0$</Status>
+								<RunningPeriod5 type="int">500</RunningPeriod5>
+								<HoldedPeriod5 type="int">0</HoldedPeriod5>
+							</Watch5>
 						</Watches>
 					</ViewSrv>
 					<NETFrameMode type="int">81920</NETFrameMode>
-					<NETFrameSaveIndex type="int">11</NETFrameSaveIndex>
+					<NETFrameSaveIndex type="int">12</NETFrameSaveIndex>
 					<FrameUserTitle type="string"></FrameUserTitle>
 				</OPEN_VIEW00>
 				<SAVED_VIEW_OBJS type="int">1</SAVED_VIEW_OBJS>

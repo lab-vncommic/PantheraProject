@@ -429,7 +429,7 @@ void MD_Init(void)
 	MD_UpdateMeasType(&motor_height, MEAS_THERMAL);
 	MD_UpdateMeasType(&motor_recliner, MEAS_THERMAL);
 	MD_UpdateMeasType(&motor_slider, MEAS_THERMAL);
-	MD_StopAll();
+	md_stop_all();
 }
 
 /**
@@ -444,7 +444,7 @@ void MD_Init(void)
  * @note This is a safety function that can be called to immediately halt all motor operations
  * @see MD_UpdateStatusMotor(), MD_UpdateDriver()
  */
-void MD_StopAll(void)
+void md_stop_all(void)
 {
 	// Update status to STOP for all motors
 	MD_UpdateStatusMotor(&motor_height, STOP);
@@ -452,7 +452,7 @@ void MD_StopAll(void)
 	MD_UpdateStatusMotor(&motor_slider, STOP);
 }
 
-void MD_EnableAll(void)
+void md_enable_all(void)
 {
 	motor_recliner.state = SOFTSTART;
 	motor_height.state = SOFTSTART;
@@ -482,7 +482,7 @@ void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t c
 			break;
 
 		default:
-			MD_StopAll();
+			md_stop_all();
 			break;
 	}
 }
@@ -607,7 +607,7 @@ void MD_UpdateToComm(MotorComm_TypeDef *pMotor)
  *         for height, recliner and slider axes
  * @note Currently returns the same value (height axis) for all axes
  */
-void MD_GetSeatAxis(SeatAxis_TypeDef *pSeat)
+void md_get_seat_axis(SeatAxis_TypeDef *pSeat)
 {
 	pSeat->slider 	= motor_slider.axis;
 	pSeat->height 	= motor_height.axis;

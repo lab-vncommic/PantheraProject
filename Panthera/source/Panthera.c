@@ -5,11 +5,9 @@
  *      Author: ADMIN
  */
 #include "Panthera.h"
-uint16_t cnt_blink_led;
 CommMode_Enum Comm_Mode = COMM_DEBUG;
-uint32_t cnt_start_check_fault;
 
-void PTR_system_initialization(void)
+void ptr_system_initialization(void)
 {
 	GDE_Config();
 	COMM_Init(Comm_Mode);
@@ -32,9 +30,9 @@ void PTR_system_initialization(void)
  * COMM_ReadRequest:	   498 cycles  || COMM_WriteRequest: 103 cycles
  * Sum					  1646 cycles
  */
-void PTR_main_interrupt_service(void)
+void ptr_main_interrupt_service(void)
 {
-
+	begin = stm_lld_getcounter(&STMD3);
 //	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
 
 //	STATE_UpdateButton(&thisPTR);
@@ -45,12 +43,12 @@ void PTR_main_interrupt_service(void)
 //	}
 
 
-	begin = stm_lld_getcounter(&STMD3);
+
 //	STATE_UpdateState(&thisPTR);
 	state_update_comm(&state_machine);
-	state_get_seat_axis(&state_machine);
+//	state_get_seat_axis(&state_machine);
 	state_update(&state_machine);
-	end = stm_lld_getcounter(&STMD3);
+
 
 	// Comment these code if run sensorless
 //	MD_UpdateAxis(&motor_recliner, thisPTR.measurement.current_recliner_q15);
@@ -62,11 +60,11 @@ void PTR_main_interrupt_service(void)
 	MD_UpdateDriver(&motor_slider);
 
 	// FIXME: Code to measure execute time
-
+	end = stm_lld_getcounter(&STMD3);
 	elapsed = end - begin;
 }
 
-void PTR_inf_loop_system(void)
+void ptr_inf_loop_system(void)
 {
 	if (Comm_Mode == COMM_DEBUG) {
 		// UART for debugging

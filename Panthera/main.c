@@ -18,13 +18,10 @@
 // User's library
 #include "Panthera.h"
 
-uint16_t cnt;
-
 void PIT0_ISR(void)
 {
-	PTR_main_interrupt_service();
+	ptr_main_interrupt_service();
 }
-uint32_t result_can;
 /*
  * Application entry point.
  */
@@ -32,13 +29,13 @@ int main(void) {
 	/* Initialization of all the imported components in the order specified in
 	 the application wizard. The function is generated automatically.*/
 	componentsInit();
-	PTR_system_initialization();
+	ptr_system_initialization();
 
 	/* Interrupts are enabled and the system is ready.*/
 	irqIsrEnable();
 
 	/* Application main loop.*/
 	for ( ; ; ) {
-	  PTR_inf_loop_system();
+	  ptr_inf_loop_system();
 	}
 }
