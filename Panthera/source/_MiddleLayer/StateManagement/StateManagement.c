@@ -582,9 +582,17 @@ state_machine_t state_machine = {
 };
 
 
+void state_int(state_machine_t *p_sm)
+{
+	p_sm->data.flag_power_on_mcu = true;
+}
+
 void state_idle_entry(state_machine_t *p_sm)
 {
-	(void)p_sm;
+	if (p_sm->data.flag_save_current_position == true) {
+		MEM_Write(p_sm->data.state.seat_current_axis.recliner, p_sm->data.state.seat_current_axis.slider, p_sm->data.state.seat_current_axis.height, 4);
+		p_sm->data.flag_save_current_position = false;
+	}
 }
 
 void state_idle_process(state_machine_t *p_sm)
@@ -596,11 +604,6 @@ void state_idle_process(state_machine_t *p_sm)
 		motor_slider.axis   = p_sm->data.state.seat_current_axis.slider;
 		motor_height.axis   = p_sm->data.state.seat_current_axis.height;
 		p_sm->data.flag_power_on_mcu = false;
-	}
-
-	if (p_sm->data.flag_save_current_position == true) {
-		MEM_Write(p_sm->data.state.seat_current_axis.recliner, p_sm->data.state.seat_current_axis.slider, p_sm->data.state.seat_current_axis.height, 4);
-		p_sm->data.flag_save_current_position = false;
 	}
 
 	state_idle_check_transition(p_sm);
@@ -738,11 +741,11 @@ void state_update(state_machine_t *p_sm)
 		// Run entry function of new state
 		p_sm->current->entry(p_sm);
 		p_sm->flag_change_state = false;
+	} else {
+		// Run process function
+		p_sm->cnt_time_on_state++;
+		p_sm->current->process(p_sm);
 	}
-
-	// Run process function
-	p_sm->cnt_time_on_state++;
-	p_sm->current->process(p_sm);
 }
 
 /* ============================================================

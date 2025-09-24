@@ -133,6 +133,7 @@ void STATE_UpdateButton(PTR_TypeDef *pState);
 
 void STATE_ProcessInputSignals(PTR_TypeDef *pState);
 
+void state_int(state_machine_t *p_sm);
 void state_update_comm(state_machine_t *p_sm);
 void state_get_seat_axis(state_machine_t *p_sm);
 void state_update(state_machine_t *p_state);
