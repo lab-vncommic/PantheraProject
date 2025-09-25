@@ -580,35 +580,35 @@ static inline _Bool all_manual_button_release(state_machine_t *p_sm);
 static inline _Bool seat_at_wrong_position(state_machine_t *p_sm);
 static inline _Bool seat_at_right_position(state_machine_t *p_sm);
 
-state_t idle = {
+state_t state_idle = {
 		.type = STATE_IDLE,
 		.entry = state_idle_entry,
 		.process = state_idle_process,
 		.exit = state_idle_exit
 };
 
-state_t manual = {
+state_t state_manual = {
 		.type = STATE_MANUAL,
 		.entry = state_manual_entry,
 		.process = state_manual_process,
 		.exit = state_manual_exit
 };
 
-state_t save = {
+state_t state_save = {
 		.type = STATE_SAVE,
 		.entry = state_save_entry,
 		.process = state_save_process,
 		.exit = state_save_exit
 };
 
-state_t auto_control = {
+state_t state_auto = {
 		.type = STATE_AUTO,
 		.entry = state_auto_entry,
 		.process = state_auto_process,
 		.exit = state_auto_exit
 };
 
-state_t fault = {
+state_t state_fault = {
 		.type = STATE_FAULT,
 		.entry = state_fault_entry,
 		.process = state_fault_process,
@@ -616,7 +616,7 @@ state_t fault = {
 };
 
 state_machine_t state_machine = {
-		.current = &idle,
+		.current = &state_idle,
 		.cnt_time_on_state = 0,
 	    .flag_change_state = false
 };
@@ -625,6 +625,42 @@ state_machine_t state_machine = {
 void state_int(state_machine_t *p_sm)
 {
 	p_sm->data.flag_power_on_mcu = true;
+}
+
+void state_update_meas(state_machine_t *p_sm)
+{
+	ADC_startOfConversion();
+	if (p_sm->data.cnt_change_measure_obj >= SAMPLE_TIME_MEAS_THERMAL) {
+		p_sm->data.cnt_change_measure_obj = 0;
+	} else p_sm->data.cnt_change_measure_obj++;
+
+	if (p_sm->data.cnt_change_measure_obj >= (SAMPLE_TIME_MEAS_THERMAL - 2)) {
+		MD_UpdateMeas(MEAS_THERMAL);
+		if (p_sm->data.cnt_change_measure_obj == SAMPLE_TIME_MEAS_THERMAL) {
+			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_THERMAL);
+			p_sm->data.flag_enable_check_fault = true;
+		}
+	} else {
+		MD_UpdateMeas(MEAS_CURRENT);
+		if (p_sm->data.cnt_change_measure_obj >= 2) {
+			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_CURRENT);
+		}
+	}
+}
+
+void state_update_button(state_machine_t *p_sm)
+{
+	BTN_Update(&p_sm->data.button);
+}
+
+void state_update_fault(state_machine_t *p_sm)
+{
+	if ((p_sm->current->type != STATE_FAULT) &&
+		(p_sm->current->type != STATE_SHUTDOWN) &&
+		(p_sm->current->type != STATE_AUTORECOVERY &&
+		 p_sm->data.flag_enable_check_fault)) {
+		FAULT_Handle(&p_sm->data.fault, &p_sm->data.measurement);
+	}
 }
 
 void state_update_comm(state_machine_t *p_sm)
@@ -694,13 +730,13 @@ void state_idle_check_transition(state_machine_t *p_sm)
 {
 	// Check for fault condition first (highest priority)
 	if (p_sm->data.fault.mode != FAULT_NONE) {
-		state_change_state(p_sm, &fault);
+		state_change_state(p_sm, &state_fault);
 		return;
 	}
 	
 	// Check for manual control buttons
 	if (manual_button_pressed(p_sm)) {
-		state_change_state(p_sm, &manual);
+		state_change_state(p_sm, &state_manual);
 		return;
 	}
 	
@@ -716,7 +752,7 @@ void state_idle_check_transition(state_machine_t *p_sm)
 	
 	// Check for save button
 	if (p_sm->data.button.save.action == ACTION_HOLD) {
-		state_change_state(p_sm, &save);
+		state_change_state(p_sm, &state_save);
 		return;
 	}
 	
@@ -733,7 +769,7 @@ void state_idle_check_transition(state_machine_t *p_sm)
 	if (p_sm->data.state.memory_number > 0) {
 		MEM_GetSeatAxis(&p_sm->data.state.seat_memory_axis, p_sm->data.state.memory_number);
 		if (seat_at_wrong_position(p_sm)) {
-			state_change_state(p_sm, &auto_control);
+			state_change_state(p_sm, &state_auto);
 			return;
 		}
 	}
@@ -776,9 +812,9 @@ void state_manual_process(state_machine_t *p_sm)
 void state_manual_check_transition(state_machine_t *p_sm)
 {
 	if (p_sm->data.fault.mode != FAULT_NONE) {
-		state_change_state(p_sm, &fault);
+		state_change_state(p_sm, &state_fault);
 	} else if (all_manual_button_release(p_sm)) {
-			state_change_state(p_sm, &idle);
+			state_change_state(p_sm, &state_idle);
 	}
 }
 
@@ -830,9 +866,9 @@ void state_save_process(state_machine_t *p_sm)
 void state_save_check_transition(state_machine_t *p_sm)
 {
 	if (p_sm->data.fault.mode != FAULT_NONE) {
-		state_change_state(p_sm, &fault);
+		state_change_state(p_sm, &state_fault);
 	} else if (p_sm->data.flag_save_memory_position == true) {
-			state_change_state(p_sm, &idle);
+			state_change_state(p_sm, &state_idle);
 			p_sm->data.flag_save_memory_position = false;
 	}
 }
@@ -871,12 +907,12 @@ void state_auto_process(state_machine_t *p_sm)
 void state_auto_check_transition(state_machine_t *p_sm)
 {
 	if (p_sm->data.fault.mode != FAULT_NONE) {
-		state_change_state(p_sm, &fault);
+		state_change_state(p_sm, &state_fault);
 		return;
 	}
 
 	if (seat_at_right_position(p_sm)) {
-		state_change_state(p_sm, &idle);
+		state_change_state(p_sm, &state_idle);
 		return;
 	}
 }

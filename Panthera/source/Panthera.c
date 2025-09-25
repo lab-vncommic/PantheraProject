@@ -34,19 +34,21 @@ void ptr_main_interrupt_service(void)
 {
 	begin = stm_lld_getcounter(&STMD3);
 //	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
-
 //	STATE_UpdateButton(&thisPTR);
-	BTN_Update(&state_machine.data.button);
 //
 //	if (flag_enable_check_fault == true) {
 //		STATE_UpdateFault(&thisPTR);
 //	}
-
-
-
 //	STATE_UpdateState(&thisPTR);
+
+
+
+	// FIXME: New code
+	state_update_meas(&state_machine);
+	state_update_button(&state_machine);
+	state_update_fault(&state_machine);
 	state_update_comm(&state_machine);
-//	state_get_seat_axis(&state_machine);
+	state_get_seat_axis(&state_machine);
 	state_update(&state_machine);
 
 

@@ -70,9 +70,9 @@ void FAULT_UpdateStatus(meas_system_t *pMeas)
     	temp_fault_status |= FAULT_STT_3;
     }
 
-    if (FAULT_IS_MT2_OTP(pMeas->thermal_slider_q15)) {
-    	temp_fault_status |= FAULT_STT_4;
-    }
+//    if (FAULT_IS_MT2_OTP(pMeas->thermal_slider_q15)) {
+//    	temp_fault_status |= FAULT_STT_4;
+//    }
 
     if (FAULT_IS_MT3_OTP(pMeas->thermal_height_q15)) {
     	temp_fault_status |= FAULT_STT_5;
