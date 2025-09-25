@@ -27,6 +27,23 @@ typedef struct{
 	uint32_t	slider;
 } SeatAxis_TypeDef;
 
+typedef enum{
+	SOFTSTART  		= 0,
+	STEADY 			= 1,
+	BLOCK			= 2
+} MotorState_TypeDef;
+
+typedef struct{
+	MotorState_TypeDef state;
+	int32_t			   axis_max;
+} motor_system_o;
+
+typedef struct{
+	motor_system_o recliner;
+	motor_system_o slider;
+	motor_system_o height;
+} motor_system_t;
+
 void GDE_Config(void);
 _Bool GDE_DebounceConditon(_Bool condition, uint32_t timeout_cycles, uint32_t *pCounter);
 

@@ -54,12 +54,6 @@ typedef enum{
 } MotorStatus_TypeDef;
 
 typedef enum{
-	SOFTSTART  		= 0,
-	STEADY 			= 1,
-	BLOCK			= 2
-} MotorState_TypeDef;
-
-typedef enum{
 	BLOCK_NOT		= 0,
 	BLOCK_FORWARD 	= 1,
 	BLOCK_BACKWARD
@@ -101,13 +95,14 @@ typedef struct{
 	MotorTopology_TypeDef		topology;
 
 	MotorState_TypeDef			state;
-	MotorBlock_TypeDef		block_status;
+	MotorBlock_TypeDef			block_status;
 	uint16_t					cnt_soft_start;
 	uint16_t					cnt_available;
 	_Bool						flag_available;
 	MotorStatus_TypeDef 		status;
 	MeasType_TypeDef			meas_type;
 	int32_t						axis;
+	int32_t						axis_max;
 
 	MotorSensor_TypeDef			sensor;
 	MotorSensorless_TypeDef	 	sensorless;
@@ -132,7 +127,8 @@ void MD_Init(void);
 void md_stop_all(void);
 void md_enable_all(void);
 void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t current_value);
-
+void md_update_to_system(motor_system_t *p_sm_motor);
+void md_update_axis_max(motor_system_t *p_sm_motor);
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
 
 

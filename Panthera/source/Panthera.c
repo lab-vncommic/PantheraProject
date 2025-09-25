@@ -43,12 +43,12 @@ void ptr_main_interrupt_service(void)
 
 	// FIXME: New code
 	state_update_meas(&state_machine);
+	state_update_motor(&state_machine);
 	state_update_button(&state_machine);
 	state_update_fault(&state_machine);
 	state_update_comm(&state_machine);
 	state_get_seat_axis(&state_machine);
 	state_update_state(&state_machine);
-
 
 	// Comment these code if run sensorless
 //	MD_UpdateAxis(&motor_recliner, thisPTR.measurement.current_recliner_q15);

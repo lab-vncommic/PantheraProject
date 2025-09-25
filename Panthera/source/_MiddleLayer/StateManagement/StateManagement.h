@@ -15,7 +15,7 @@
 #include "GlobalDefine.h"
 #include "memory.h"
 
-#define HOME_HOLD_BTN_TIME			60000
+#define TIME_DEBOUNCE_GOTO_INSTALL_MODE			60000
 
 #define MANUAL_ENABLE_MT			1000						// Delay cycle between 2 motor startup, approximately 100ms
 #define MANUAL_ENABLE_MT1			1
@@ -47,13 +47,14 @@
 
 typedef enum{
 	STATE_IDLE		   = 0,
-	STATE_SAVE		   = 1,
+	STATE_INSTALL	   = 1,
 	STATE_MANUAL	   = 2,
-	STATE_AUTO		   = 3,
-	STATE_HOMING	   = 4,
+	STATE_SAVE		   = 3,
+	STATE_AUTO		   = 4,
 	STATE_FAULT		   = 5,
 	STATE_AUTORECOVERY = 6,
-	STATE_SHUTDOWN	   = 7
+	STATE_SHUTDOWN	   = 7,
+	STATE_HOMING	   = 8
 } State_TypeDef;
 
 typedef struct{
@@ -98,15 +99,20 @@ typedef struct{
 	meas_system_t		measurement;
 	fault_system_t		fault;
 	button_system_t 	button;
+	motor_system_t   	motor;
 
 	uint16_t			cnt_delay_startup_motor;
 	uint32_t			cnt_change_measure_obj;
 	uint32_t			cnt_wait_for_auto_recovery;
+	uint16_t			cnt_debounce_check_install_mode;
 
+	_Bool				flag_system_homing;
 	_Bool				flag_power_on_mcu;
 	_Bool				flag_save_current_position;
 	_Bool				flag_save_memory_position;
 	_Bool				flag_enable_check_fault;
+	_Bool				flag_all_motor_blocked;
+	_Bool				flag_install_completed;
 } state_data_t;
 
 typedef struct{
@@ -141,6 +147,7 @@ void STATE_ProcessInputSignals(PTR_TypeDef *pState);
 void state_int(state_machine_t *p_sm);
 void state_update_meas(state_machine_t *p_sm);
 void state_update_button(state_machine_t *p_sm);
+void state_update_motor(state_machine_t *p_sm);
 void state_update_fault(state_machine_t *p_sm);
 void state_update_comm(state_machine_t *p_sm);
 void state_get_seat_axis(state_machine_t *p_sm);

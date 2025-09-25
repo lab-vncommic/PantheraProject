@@ -46,7 +46,7 @@ void STATE_UpdateICasComm(Motor_TypeDef *pMotor, MotorObject_TypeDef *pMotorObj)
 _Bool STATE_SystemIsNormal(PTR_TypeDef *pState);
 void STATE_GetSeatAxis(PTR_TypeDef *pState);
 void STATE_ResetAxis(PTR_TypeDef *pState);
-void STATE_ClearMemoryData(void);
+void state_clear_memory(void);
 
 /**
  * @brief Handles the system behavior in IDLE state
@@ -354,7 +354,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 					md_enable_all();
 			} else if ((thisGPIO.recall_1.value) && (thisGPIO.recall_2.value) && (thisGPIO.recall_3.value)) {
 							cnt_debounce_home++;
-							if (cnt_debounce_home >= HOME_HOLD_BTN_TIME) {
+							if (cnt_debounce_home >= TIME_DEBOUNCE_GOTO_INSTALL_MODE) {
 								cnt_debounce_home = 0;
 								pState->state = STATE_HOMING;
 							}
@@ -463,7 +463,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 					   pState->state = STATE_IDLE;
 
 					   flag_save_current_position = true;
-					   STATE_ClearMemoryData();
+					   state_clear_memory();
 					}
 
 			break;
@@ -539,11 +539,19 @@ void STATE_UpdateButton(PTR_TypeDef *pState)
 	BTN_Update(&pState->button);
 }
 
-void STATE_ClearMemoryData(void)
+void state_clear_memory(void)
 {
 	MEM_Write(0, 0, 0, 1);
 	MEM_Write(0, 0, 0, 2);
 	MEM_Write(0, 0, 0, 3);
+}
+
+void state_save_axis_max(state_machine_t *p_sm)
+{
+	md_update_axis_max(&p_sm->data.motor);
+	MEM_Write(p_sm->data.motor.recliner.axis_max,
+			  p_sm->data.motor.slider.axis_max,
+			  p_sm->data.motor.height.axis_max, ID_MEM_AXIS_MAX);
 }
 
 // FIXME: Code for testing new API update state
@@ -551,6 +559,11 @@ void state_idle_entry(state_machine_t *p_sm);
 void state_idle_process(state_machine_t *p_sm);
 void state_idle_check_transition(state_machine_t *p_sm);
 void state_idle_exit(state_machine_t *p_sm);
+
+void state_install_entry(state_machine_t *p_sm);
+void state_install_process(state_machine_t *p_sm);
+void state_install_check_transition(state_machine_t *p_sm);
+void state_install_exit(state_machine_t *p_sm);
 
 void state_manual_entry(state_machine_t *p_sm);
 void state_manual_process(state_machine_t *p_sm);
@@ -578,6 +591,7 @@ void state_auto_recovery_check_transition(state_machine_t *p_sm);
 void state_auto_recovery_exit(state_machine_t *p_sm);
 
 void state_change_state(state_machine_t *p_sm, state_t *p_state);
+void state_install_run_all_motor(state_machine_t *p_sm, MotorStatus_TypeDef status);
 void state_manual_run_motor(MotorName_TypeDef name, Button_TypeDef button_1, Button_TypeDef button_2, uint16_t current_value);
 void state_auto_run_motor(MotorName_TypeDef name, uint32_t axis_current, uint32_t axis_memory, uint16_t current_value);
 static inline _Bool manual_button_pressed(state_machine_t *p_sm);
@@ -585,12 +599,20 @@ static inline _Bool all_manual_button_release(state_machine_t *p_sm);
 static inline _Bool seat_at_wrong_position(state_machine_t *p_sm);
 static inline _Bool seat_at_right_position(state_machine_t *p_sm);
 static inline _Bool system_is_normal(state_machine_t *p_sm);
+static inline _Bool all_motor_blocked(state_machine_t *p_sm);
 
 state_t state_idle = {
 		.type = STATE_IDLE,
 		.entry = state_idle_entry,
 		.process = state_idle_process,
 		.exit = state_idle_exit
+};
+
+state_t state_install = {
+		.type = STATE_INSTALL,
+		.entry = state_install_entry,
+		.process = state_install_process,
+		.exit = state_install_exit
 };
 
 state_t state_manual = {
@@ -657,13 +679,13 @@ void state_update_meas(state_machine_t *p_sm)
 	if (p_sm->data.cnt_change_measure_obj >= (SAMPLE_TIME_MEAS_THERMAL - 2)) {
 		MD_UpdateMeas(MEAS_THERMAL);
 		if (p_sm->data.cnt_change_measure_obj == SAMPLE_TIME_MEAS_THERMAL) {
-//			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_THERMAL);
+			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_THERMAL);
 			p_sm->data.flag_enable_check_fault = true;
 		}
 	} else {
 		MD_UpdateMeas(MEAS_CURRENT);
 		if (p_sm->data.cnt_change_measure_obj >= 2) {
-//			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_CURRENT);
+			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_CURRENT);
 		}
 	}
 }
@@ -671,6 +693,11 @@ void state_update_meas(state_machine_t *p_sm)
 void state_update_button(state_machine_t *p_sm)
 {
 	BTN_Update(&p_sm->data.button);
+}
+
+void state_update_motor(state_machine_t *p_sm)
+{
+	md_update_to_system(&p_sm->data.motor);
 }
 
 void state_update_fault(state_machine_t *p_sm)
@@ -730,16 +757,22 @@ void state_idle_entry(state_machine_t *p_sm)
 		MEM_Write(p_sm->data.state.seat_current_axis.recliner, p_sm->data.state.seat_current_axis.slider, p_sm->data.state.seat_current_axis.height, 4);
 		p_sm->data.flag_save_current_position = false;
 	}
+	md_stop_all();
 }
 
 void state_idle_process(state_machine_t *p_sm)
 {
-	md_stop_all();
 	if (p_sm->data.flag_power_on_mcu == true) {
 		MEM_GetSeatAxis(&p_sm->data.state.seat_current_axis, 4);
 		motor_recliner.axis = p_sm->data.state.seat_current_axis.recliner;
 		motor_slider.axis   = p_sm->data.state.seat_current_axis.slider;
 		motor_height.axis   = p_sm->data.state.seat_current_axis.height;
+
+		mem_get_axis_max(&p_sm->data.motor);
+		motor_recliner.axis_max = p_sm->data.motor.recliner.axis_max;
+		motor_slider.axis_max   = p_sm->data.motor.slider.axis_max;
+		motor_height.axis_max   = p_sm->data.motor.height.axis_max;
+
 		p_sm->data.flag_power_on_mcu = false;
 	}
 
@@ -760,14 +793,13 @@ void state_idle_check_transition(state_machine_t *p_sm)
 		return;
 	}
 	
-	// Check for homing request (all recall buttons held)
+	// Check for install request (all recall buttons held)
 	if ((thisGPIO.recall_1.value) && (thisGPIO.recall_2.value) && (thisGPIO.recall_3.value)) {
-		cnt_debounce_home++;
-		if (cnt_debounce_home >= HOME_HOLD_BTN_TIME) {
-			cnt_debounce_home = 0;
-			// pState->state = STATE_HOMING;
-			return;
-		}
+		if (p_sm->data.cnt_debounce_check_install_mode >= TIME_DEBOUNCE_GOTO_INSTALL_MODE) {
+			p_sm->data.cnt_debounce_check_install_mode = 0;
+				state_change_state(p_sm, &state_install);
+		} else p_sm->data.cnt_debounce_check_install_mode++;
+		return;
 	}
 	
 	// Check for save button
@@ -790,14 +822,63 @@ void state_idle_check_transition(state_machine_t *p_sm)
 		MEM_GetSeatAxis(&p_sm->data.state.seat_memory_axis, p_sm->data.state.memory_number);
 		if (seat_at_wrong_position(p_sm)) {
 			state_change_state(p_sm, &state_auto);
-			return;
 		}
+		return;
 	}
 }
 
 void state_idle_exit(state_machine_t *p_sm)
 {
 	(void)p_sm;
+}
+
+void state_install_entry(state_machine_t *p_sm)
+{
+	(void)p_sm;
+	md_enable_all();
+	p_sm->data.flag_system_homing = true;
+	p_sm->data.flag_install_completed = false;
+}
+
+void state_install_process(state_machine_t *p_sm)
+{
+	if (p_sm->data.flag_system_homing) {
+		state_install_run_all_motor(p_sm, BACKWARD);
+		if (all_motor_blocked(p_sm)) {
+			p_sm->data.flag_system_homing = false;
+			p_sm->data.cnt_delay_startup_motor = 0;
+		}
+	} else {
+		state_install_run_all_motor(p_sm, FORWARD);
+		if (all_motor_blocked(p_sm)) {
+			p_sm->data.flag_install_completed = true;
+		}
+	}
+
+	state_install_check_transition(p_sm);
+}
+
+void state_install_check_transition(state_machine_t *p_sm)
+{
+	// Check for fault condition first (highest priority)
+	if (p_sm->data.fault.mode != FAULT_NONE) {
+		state_change_state(p_sm, &state_fault);
+		return;
+	}
+
+	if (p_sm->data.flag_install_completed) {
+		state_change_state(p_sm, &state_idle);
+		return;
+	}
+
+}
+
+void state_install_exit(state_machine_t *p_sm)
+{
+	p_sm->data.flag_save_current_position = true;
+	p_sm->data.cnt_delay_startup_motor    = 0;
+	state_clear_memory();
+	state_save_axis_max(p_sm);
 }
 
 void state_manual_entry(state_machine_t *p_sm)
@@ -840,7 +921,6 @@ void state_manual_check_transition(state_machine_t *p_sm)
 
 void state_manual_exit(state_machine_t *p_sm)
 {
-	(void)p_sm;
 	p_sm->data.flag_save_current_position = true;
 	p_sm->data.cnt_delay_startup_motor    = 0;
 }
@@ -901,6 +981,7 @@ void state_save_exit(state_machine_t *p_sm)
 void state_auto_entry(state_machine_t *p_sm)
 {
 	(void)p_sm;
+	md_enable_all();
 }
 
 void state_auto_process(state_machine_t *p_sm)
@@ -1005,6 +1086,31 @@ void state_change_state(state_machine_t *p_sm, state_t *p_state)
 	p_sm->next = p_state;
 }
 
+void state_install_run_all_motor(state_machine_t *p_sm, MotorStatus_TypeDef status)
+{
+	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT3) {
+		p_sm->data.cnt_delay_startup_motor = TIME_ENABLE_MT3;
+	} else p_sm->data.cnt_delay_startup_motor++;
+
+	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT1) {
+		if (p_sm->data.motor.recliner.state != BLOCK) {
+			MD_Run(MOTOR_RECLINER, status, p_sm->data.measurement.current_recliner_q15);
+		}
+	}
+
+	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT2) {
+		if (p_sm->data.motor.slider.state != BLOCK) {
+			MD_Run(MOTOR_SLIDER, status, p_sm->data.measurement.current_slider_q15);
+		}
+	}
+
+	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT3) {
+		if (p_sm->data.motor.height.state != BLOCK) {
+			MD_Run(MOTOR_HEIGHT, status, p_sm->data.measurement.current_height_q15);
+		}
+	}
+}
+
 void state_manual_run_motor(MotorName_TypeDef name, Button_TypeDef button_1, Button_TypeDef button_2, uint16_t current_value)
 {
 	if ((button_1.action == ACTION_HOLD) &&
@@ -1067,4 +1173,11 @@ static inline _Bool system_is_normal(state_machine_t *p_sm)
 			(p_sm->data.measurement.thermal_recliner_q15 >= THERMAL_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
 		 	(p_sm->data.measurement.thermal_slider_q15 >= THERMAL_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
 		 	(p_sm->data.measurement.thermal_height_q15 >= THERMAL_AUTO_RECOVERY_MT3_THRESHOLD_Q15));
+}
+
+static inline _Bool all_motor_blocked(state_machine_t *p_sm)
+{
+	return ((p_sm->data.motor.recliner.state == BLOCK) &&
+			(p_sm->data.motor.slider.state == BLOCK) &&
+			(p_sm->data.motor.height.state == BLOCK));
 }

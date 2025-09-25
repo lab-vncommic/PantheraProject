@@ -459,6 +459,20 @@ void md_enable_all(void)
 	motor_slider.state = SOFTSTART;
 }
 
+void md_update_to_system(motor_system_t *p_sm_motor)
+{
+	p_sm_motor->recliner.state = motor_recliner.state;
+	p_sm_motor->slider.state   = motor_slider.state;
+	p_sm_motor->height.state   = motor_height.state;
+}
+
+void md_update_axis_max(motor_system_t *p_sm_motor)
+{
+	p_sm_motor->recliner.axis_max = motor_recliner.axis_max;
+	p_sm_motor->slider.axis_max   = motor_slider.axis_max;
+	p_sm_motor->height.axis_max   = motor_height.axis_max;
+}
+
 /**
  * @brief Runs a specified motor with a given status
  * @details Activates the selected motor (height, recliner, or slider) with
@@ -532,7 +546,7 @@ void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status,
 	                	pMotor->cnt_available  = 0;
 	                	if (status == FORWARD) {
 	                		pMotor->block_status = BLOCK_FORWARD;
-
+							pMotor->axis_max = pMotor->axis;
 						} else if (status == BACKWARD) {
 							pMotor->block_status = BLOCK_BACKWARD;
 							pMotor->axis = 0;
