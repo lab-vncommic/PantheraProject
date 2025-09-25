@@ -489,7 +489,7 @@ void STATE_UpdateState(PTR_TypeDef *pState)
 				pState->state = STATE_IDLE;
 				flag_save_current_position = true;
 				pState->fault.mode = FAULT_NONE;
-				FAULT_Reset();
+				fault_reset();
 			}
 			break;
 
@@ -572,6 +572,11 @@ void state_fault_process(state_machine_t *p_sm);
 void state_fault_check_transition(state_machine_t *p_sm);
 void state_fault_exit(state_machine_t *p_sm);
 
+void state_auto_recovery_entry(state_machine_t *p_sm);
+void state_auto_recovery_process(state_machine_t *p_sm);
+void state_auto_recovery_check_transition(state_machine_t *p_sm);
+void state_auto_recovery_exit(state_machine_t *p_sm);
+
 void state_change_state(state_machine_t *p_sm, state_t *p_state);
 void state_manual_run_motor(MotorName_TypeDef name, Button_TypeDef button_1, Button_TypeDef button_2, uint16_t current_value);
 void state_auto_run_motor(MotorName_TypeDef name, uint32_t axis_current, uint32_t axis_memory, uint16_t current_value);
@@ -579,6 +584,7 @@ static inline _Bool manual_button_pressed(state_machine_t *p_sm);
 static inline _Bool all_manual_button_release(state_machine_t *p_sm);
 static inline _Bool seat_at_wrong_position(state_machine_t *p_sm);
 static inline _Bool seat_at_right_position(state_machine_t *p_sm);
+static inline _Bool system_is_normal(state_machine_t *p_sm);
 
 state_t state_idle = {
 		.type = STATE_IDLE,
@@ -615,6 +621,20 @@ state_t state_fault = {
 		.exit = state_fault_exit
 };
 
+state_t state_auto_recovery = {
+		.type = STATE_AUTORECOVERY,
+		.entry = state_auto_recovery_entry,
+		.process = state_auto_recovery_process,
+		.exit = state_auto_recovery_exit
+};
+
+state_t state_shut_down = {
+		.type = STATE_SHUTDOWN,
+		.entry = NULL,
+		.process = NULL,
+		.exit = NULL
+};
+
 state_machine_t state_machine = {
 		.current = &state_idle,
 		.cnt_time_on_state = 0,
@@ -637,13 +657,13 @@ void state_update_meas(state_machine_t *p_sm)
 	if (p_sm->data.cnt_change_measure_obj >= (SAMPLE_TIME_MEAS_THERMAL - 2)) {
 		MD_UpdateMeas(MEAS_THERMAL);
 		if (p_sm->data.cnt_change_measure_obj == SAMPLE_TIME_MEAS_THERMAL) {
-			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_THERMAL);
+//			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_THERMAL);
 			p_sm->data.flag_enable_check_fault = true;
 		}
 	} else {
 		MD_UpdateMeas(MEAS_CURRENT);
 		if (p_sm->data.cnt_change_measure_obj >= 2) {
-			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_CURRENT);
+//			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_CURRENT);
 		}
 	}
 }
@@ -936,12 +956,44 @@ void state_fault_process(state_machine_t *p_sm)
 
 void state_fault_check_transition(state_machine_t *p_sm)
 {
-	(void)p_sm;
+	if (p_sm->data.fault.mode == FAULT_LATCH) {
+		state_change_state(p_sm, &state_shut_down);
+		return;
+	}
+
+	if (p_sm->data.fault.mode == FAULT_AUTO_RECOVER) {
+		state_change_state(p_sm, &state_auto_recovery);
+		return;
+	}
 }
 
 void state_fault_exit(state_machine_t *p_sm)
 {
 	(void)p_sm;
+}
+
+void state_auto_recovery_entry(state_machine_t *p_sm)
+{
+	(void)p_sm;
+}
+
+void state_auto_recovery_process(state_machine_t *p_sm)
+{
+
+	state_auto_recovery_check_transition(p_sm);
+}
+
+void state_auto_recovery_check_transition(state_machine_t *p_sm)
+{
+	if (GDE_DebounceConditon(system_is_normal(p_sm), TIME_WAIT_FOR_AUTO_RECOVERY_CYCLES, &p_sm->data.cnt_wait_for_auto_recovery)) {
+		state_change_state(p_sm, &state_idle);
+	}
+}
+
+void state_auto_recovery_exit(state_machine_t *p_sm)
+{
+	(void)p_sm;
+	fault_reset();
 }
 
 /* ============================================================
@@ -1005,4 +1057,14 @@ static inline _Bool seat_at_right_position(state_machine_t *p_sm)
 	return (p_sm->data.state.seat_current_axis.recliner == p_sm->data.state.seat_memory_axis.recliner &&
 			p_sm->data.state.seat_current_axis.height == p_sm->data.state.seat_memory_axis.height &&
 			p_sm->data.state.seat_current_axis.slider == p_sm->data.state.seat_memory_axis.slider);
+}
+
+static inline _Bool system_is_normal(state_machine_t *p_sm)
+{
+	return ((p_sm->data.measurement.current_recliner_q15 <= CURRENT_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
+			(p_sm->data.measurement.current_slider_q15 <= CURRENT_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
+		 	(p_sm->data.measurement.current_height_q15 <= CURRENT_AUTO_RECOVERY_MT3_THRESHOLD_Q15) &&
+			(p_sm->data.measurement.thermal_recliner_q15 >= THERMAL_AUTO_RECOVERY_MT1_THRESHOLD_Q15) &&
+		 	(p_sm->data.measurement.thermal_slider_q15 >= THERMAL_AUTO_RECOVERY_MT2_THRESHOLD_Q15) &&
+		 	(p_sm->data.measurement.thermal_height_q15 >= THERMAL_AUTO_RECOVERY_MT3_THRESHOLD_Q15));
 }

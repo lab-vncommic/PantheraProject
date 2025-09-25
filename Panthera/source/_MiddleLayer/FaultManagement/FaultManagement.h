@@ -62,11 +62,11 @@ typedef struct{
 
 /* ====== Fault Protection Thresholds in Q15 format ====== */
 #define FAULT_MT1_OCP_THRESH_Q15      	_q15(CURRENT_MT1_OCP / CURRENT_MT1_HIGH_LIMIT_SOFT)
-#define FAULT_MT1_OTP_THRESH_Q15      	(uq31_t)(THERMAL_MT1_OTP - THERMAL_MT1_OFFSET_F32)/(2*THERMAL_MT1_GAIN_F32)
+#define FAULT_MT1_OTP_THRESH_Q15      	(uq31_t)((THERMAL_MT1_OTP - THERMAL_MT1_OFFSET_F32)/(2*THERMAL_MT1_GAIN_F32))
 #define FAULT_MT2_OCP_THRESH_Q15      	_q15(CURRENT_MT2_OCP / CURRENT_MT2_HIGH_LIMIT_SOFT)
-#define FAULT_MT2_OTP_THRESH_Q15      	(uq31_t)(THERMAL_MT2_OTP - THERMAL_MT2_OFFSET_F32)/(2*THERMAL_MT2_GAIN_F32)
+#define FAULT_MT2_OTP_THRESH_Q15      	(uq31_t)((THERMAL_MT2_OTP - THERMAL_MT2_OFFSET_F32)/(2*THERMAL_MT2_GAIN_F32))
 #define FAULT_MT3_OCP_THRESH_Q15      	_q15(CURRENT_MT3_OCP / CURRENT_MT3_HIGH_LIMIT_SOFT)
-#define FAULT_MT3_OTP_THRESH_Q15      	(uq31_t)(THERMAL_MT3_OTP - THERMAL_MT3_OFFSET_F32)/(2*THERMAL_MT3_GAIN_F32)
+#define FAULT_MT3_OTP_THRESH_Q15      	(uq31_t)((THERMAL_MT3_OTP - THERMAL_MT3_OFFSET_F32)/(2*THERMAL_MT3_GAIN_F32))
 
 /* ====== Macros for Fault Protection in Q15 format ====== */
 #define FAULT_IS_MT1_OCP(value)       	(value > FAULT_MT1_OCP_THRESH_Q15)
@@ -80,7 +80,7 @@ typedef struct{
 void FAULT_Init(void);
 void FAULT_Handle(fault_system_t *pFault, meas_system_t *pMeas);
 void FAULT_LogError(void);
-void FAULT_Reset(void);
+void fault_reset(void);
 
 // FIXME: Only use extern in dev
 extern Fault_TypeDef 	thisFault;

@@ -124,7 +124,7 @@ void FAULT_Handle(fault_system_t *pFault, meas_system_t *pMeas)
 	pFault->limit   = thisFault.limit;
 }
 
-void FAULT_Reset(void)
+void fault_reset(void)
 {
 	thisFault.fault_mode   = FAULT_NONE;
 	thisFault.fault_status = FAULT_STT_INIT_VALUE;
