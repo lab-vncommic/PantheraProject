@@ -5,42 +5,66 @@
  *      Author: ADMIN
  */
 #include "StateManagement.h"
-// FIXME: Code for testing new API update state
+
+/* ============================================================
+ * IDLE State Functions
+ * ============================================================ */
 void state_idle_entry(state_machine_t *p_sm);
 void state_idle_process(state_machine_t *p_sm);
 void state_idle_check_transition(state_machine_t *p_sm);
 void state_idle_exit(state_machine_t *p_sm);
 
+/* ============================================================
+ * INSTALL State Functions
+ * ============================================================ */
 void state_install_entry(state_machine_t *p_sm);
 void state_install_process(state_machine_t *p_sm);
 void state_install_check_transition(state_machine_t *p_sm);
 void state_install_exit(state_machine_t *p_sm);
 
+/* ============================================================
+ * MANUAL State Functions
+ * ============================================================ */
 void state_manual_entry(state_machine_t *p_sm);
 void state_manual_process(state_machine_t *p_sm);
 void state_manual_check_transition(state_machine_t *p_sm);
 void state_manual_exit(state_machine_t *p_sm);
 
+/* ============================================================
+ * SAVE State Functions
+ * ============================================================ */
 void state_save_entry(state_machine_t *p_sm);
 void state_save_process(state_machine_t *p_sm);
 void state_save_check_transition(state_machine_t *p_sm);
 void state_save_exit(state_machine_t *p_sm);
 
+/* ============================================================
+ * AUTO State Functions
+ * ============================================================ */
 void state_auto_entry(state_machine_t *p_sm);
 void state_auto_process(state_machine_t *p_sm);
 void state_auto_check_transition(state_machine_t *p_sm);
 void state_auto_exit(state_machine_t *p_sm);
 
+/* ============================================================
+ * FAULT State Functions
+ * ============================================================ */
 void state_fault_entry(state_machine_t *p_sm);
 void state_fault_process(state_machine_t *p_sm);
 void state_fault_check_transition(state_machine_t *p_sm);
 void state_fault_exit(state_machine_t *p_sm);
 
+/* ============================================================
+ * AUTO RECOVERY State Functions
+ * ============================================================ */
 void state_auto_recovery_entry(state_machine_t *p_sm);
 void state_auto_recovery_process(state_machine_t *p_sm);
 void state_auto_recovery_check_transition(state_machine_t *p_sm);
 void state_auto_recovery_exit(state_machine_t *p_sm);
 
+/* ============================================================
+ * State Management Utility Functions
+ * ============================================================ */
 void state_change_state(state_machine_t *p_sm, state_t *p_state);
 void state_install_run_all_motor(state_machine_t *p_sm, MotorStatus_TypeDef status);
 void state_manual_run_motor(MotorName_TypeDef name, Button_TypeDef button_1, Button_TypeDef button_2, uint16_t current_value);
@@ -49,63 +73,69 @@ void state_clear_memory(void);
 void state_save_axis_max(state_machine_t *p_sm);
 void state_handle_manual_button(Button_TypeDef *pButton, uint16_t comm_value);
 void state_handle_recall_button(Button_TypeDef *pButton, uint16_t comm_value);
+
+/* ============================================================
+ * Helper Functions
+ * ============================================================ */
 static inline _Bool manual_button_pressed(state_machine_t *p_sm);
 static inline _Bool all_manual_button_release(state_machine_t *p_sm);
+static inline _Bool all_recall_button_hold(state_machine_t *p_sm);
 static inline _Bool seat_at_wrong_position(state_machine_t *p_sm);
 static inline _Bool seat_at_right_position(state_machine_t *p_sm);
 static inline _Bool system_is_normal(state_machine_t *p_sm);
 static inline _Bool all_motor_blocked(state_machine_t *p_sm);
+static inline _Bool recall_button_pressed(Button_TypeDef *p_button);
 
-state_t state_idle = {
+static state_t state_idle = {
 		.type = STATE_IDLE,
 		.entry = state_idle_entry,
 		.process = state_idle_process,
 		.exit = state_idle_exit
 };
 
-state_t state_install = {
+static state_t state_install = {
 		.type = STATE_INSTALL,
 		.entry = state_install_entry,
 		.process = state_install_process,
 		.exit = state_install_exit
 };
 
-state_t state_manual = {
+static state_t state_manual = {
 		.type = STATE_MANUAL,
 		.entry = state_manual_entry,
 		.process = state_manual_process,
 		.exit = state_manual_exit
 };
 
-state_t state_save = {
+static state_t state_save = {
 		.type = STATE_SAVE,
 		.entry = state_save_entry,
 		.process = state_save_process,
 		.exit = state_save_exit
 };
 
-state_t state_auto = {
+static state_t state_auto = {
 		.type = STATE_AUTO,
 		.entry = state_auto_entry,
 		.process = state_auto_process,
 		.exit = state_auto_exit
 };
 
-state_t state_fault = {
+static state_t state_fault = {
 		.type = STATE_FAULT,
 		.entry = state_fault_entry,
 		.process = state_fault_process,
 		.exit = state_fault_exit
 };
 
-state_t state_auto_recovery = {
+static state_t state_auto_recovery = {
 		.type = STATE_AUTORECOVERY,
 		.entry = state_auto_recovery_entry,
 		.process = state_auto_recovery_process,
 		.exit = state_auto_recovery_exit
 };
 
-state_t state_shut_down = {
+static state_t state_shut_down = {
 		.type = STATE_SHUTDOWN,
 		.entry = NULL,
 		.process = NULL,
@@ -131,7 +161,7 @@ void state_update_meas(state_machine_t *p_sm)
 		p_sm->data.cnt_change_measure_obj = 0;
 	} else p_sm->data.cnt_change_measure_obj++;
 
-	if (p_sm->data.cnt_change_measure_obj >= (SAMPLE_TIME_MEAS_THERMAL - 2)) {
+	if (p_sm->data.cnt_change_measure_obj >= (SAMPLE_TIME_MEAS_THERMAL - MIN_MEASUREMENT_SAMPLES)) {
 		MD_UpdateMeas(MEAS_THERMAL);
 		if (p_sm->data.cnt_change_measure_obj == SAMPLE_TIME_MEAS_THERMAL) {
 			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_THERMAL);
@@ -139,7 +169,7 @@ void state_update_meas(state_machine_t *p_sm)
 		}
 	} else {
 		MD_UpdateMeas(MEAS_CURRENT);
-		if (p_sm->data.cnt_change_measure_obj >= 2) {
+		if (p_sm->data.cnt_change_measure_obj >= MIN_MEASUREMENT_SAMPLES) {
 			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_CURRENT);
 		}
 	}
@@ -186,24 +216,30 @@ void state_get_seat_axis(state_machine_t *p_sm)
 
 void state_update_state(state_machine_t *p_sm)
 {
-	if (p_sm->flag_change_state) {
-		// Run exit function of old state
-		p_sm->current->exit(p_sm);
-
-		p_sm->data.state.previous = p_sm->current->type;
+    if (p_sm->flag_change_state) {
+        // Run exit function of old state
+        if (p_sm->current->exit != NULL) {
+            p_sm->current->exit(p_sm);
+        }
+        
+        p_sm->data.state.previous = p_sm->current->type;
 		p_sm->data.state.current  = p_sm->next->type;
 
 		p_sm->current = p_sm->next;
 		p_sm->cnt_time_on_state = 0;
 
-		// Run entry function of new state
-		p_sm->current->entry(p_sm);
-		p_sm->flag_change_state = false;
-	} else {
-		// Run process function
-		p_sm->cnt_time_on_state++;
-		p_sm->current->process(p_sm);
-	}
+        // Run entry function of new state
+        if (p_sm->current->entry != NULL) {
+            p_sm->current->entry(p_sm);
+        }
+        p_sm->flag_change_state = false;
+    } else {
+        // Run process function
+        p_sm->cnt_time_on_state++;
+        if (p_sm->current->process != NULL) {
+            p_sm->current->process(p_sm);
+        }
+    }
 }
 
 void state_idle_entry(state_machine_t *p_sm)
@@ -251,7 +287,7 @@ void state_idle_check_transition(state_machine_t *p_sm)
 	}
 	
 	// Check for install request (all recall buttons held)
-	if ((thisGPIO.recall_1.value) && (thisGPIO.recall_2.value) && (thisGPIO.recall_3.value)) {
+	if (all_recall_button_hold(p_sm)) {
 		if (p_sm->data.cnt_debounce_check_install_mode >= TIME_DEBOUNCE_GOTO_INSTALL_MODE) {
 			p_sm->data.cnt_debounce_check_install_mode = 0;
 				state_change_state(p_sm, &state_install);
@@ -389,23 +425,17 @@ void state_save_entry(state_machine_t *p_sm)
 
 void state_save_process(state_machine_t *p_sm)
 {
-	if (p_sm->data.button.recall_1.action == ACTION_PRESSED ||
-		p_sm->data.button.recall_1.action == ACTION_HOLD ||
-		p_sm->data.button.recall_1.action == ACTION_HOLD_LONG) {
+	if (recall_button_pressed(&p_sm->data.button.recall_1)) {
 		p_sm->data.flag_save_memory_position = true;
 		p_sm->data.state.memory_number = ID_MEM_AXIS_RECALL_1;
 	}
 
-	if (p_sm->data.button.recall_2.action == ACTION_PRESSED||
-		p_sm->data.button.recall_2.action == ACTION_HOLD ||
-		p_sm->data.button.recall_2.action == ACTION_HOLD_LONG) {
+	if (recall_button_pressed(&p_sm->data.button.recall_2)) {
 		p_sm->data.flag_save_memory_position = true;
 		p_sm->data.state.memory_number = ID_MEM_AXIS_RECALL_2;
 	}
 
-	if (p_sm->data.button.recall_3.action == ACTION_PRESSED ||
-		p_sm->data.button.recall_3.action == ACTION_HOLD ||
-		p_sm->data.button.recall_3.action == ACTION_HOLD_LONG) {
+	if (recall_button_pressed(&p_sm->data.button.recall_3)) {
 		p_sm->data.flag_save_memory_position = true;
 		p_sm->data.state.memory_number = ID_MEM_AXIS_RECALL_3;
 	}
@@ -590,9 +620,9 @@ void state_auto_run_motor(MotorName_TypeDef name, uint32_t axis_current, uint32_
 
 void state_clear_memory(void)
 {
-	MEM_Write(0, 0, 0, 1);
-	MEM_Write(0, 0, 0, 2);
-	MEM_Write(0, 0, 0, 3);
+	MEM_Write(0, 0, 0, ID_MEM_AXIS_RECALL_1);
+	MEM_Write(0, 0, 0, ID_MEM_AXIS_RECALL_2);
+	MEM_Write(0, 0, 0, ID_MEM_AXIS_RECALL_3);
 }
 
 void state_save_axis_max(state_machine_t *p_sm)
@@ -639,6 +669,15 @@ static inline _Bool all_manual_button_release(state_machine_t *p_sm)
 			p_sm->data.button.slider_2.action == ACTION_RELEASED);
 }
 
+static inline _Bool all_recall_button_hold(state_machine_t *p_sm)
+{
+	(void)p_sm;
+	return ((thisGPIO.recall_1.value) &&
+            (thisGPIO.recall_2.value) &&
+            (thisGPIO.recall_3.value));
+}
+
+
 static inline _Bool seat_at_wrong_position(state_machine_t *p_sm)
 {
 	return (p_sm->data.state.seat_current_axis.recliner != p_sm->data.state.seat_memory_axis.recliner ||
@@ -668,4 +707,11 @@ static inline _Bool all_motor_blocked(state_machine_t *p_sm)
 	return ((p_sm->data.motor.recliner.state == BLOCK) &&
 			(p_sm->data.motor.slider.state == BLOCK) &&
 			(p_sm->data.motor.height.state == BLOCK));
+}
+
+static inline _Bool recall_button_pressed(Button_TypeDef *p_button)
+{
+	return ((p_button->action == ACTION_PRESSED) ||
+			(p_button->action == ACTION_HOLD) ||
+			(p_button->action == ACTION_HOLD_LONG));
 }
