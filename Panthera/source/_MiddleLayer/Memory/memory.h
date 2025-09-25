@@ -15,7 +15,11 @@
 #include "GlobalDefine.h"
 
 //Address EEPROM 0x00800000
-#define ID_MEM_AXIS_MAX				5
+#define ID_MEM_AXIS_RECALL_1			1
+#define ID_MEM_AXIS_RECALL_2			2
+#define ID_MEM_AXIS_RECALL_3			3
+#define ID_MEM_AXIS_CURRENT				4
+#define ID_MEM_AXIS_MAX					5
 
 typedef struct{
 	uint32_t x;

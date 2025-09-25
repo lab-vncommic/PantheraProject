@@ -15,7 +15,7 @@ void ptr_system_initialization(void)
 	MEAS_Init();
 	FAULT_Init();
 	MD_Init();
-	STATE_Init(&thisPTR);
+	state_int(&state_machine);
 	EEPROM_Start();
 
 	state_int(&state_machine);
@@ -33,13 +33,6 @@ void ptr_system_initialization(void)
 void ptr_main_interrupt_service(void)
 {
 	begin = stm_lld_getcounter(&STMD3);
-//	STATE_UpdateMeas(&thisPTR);								// Measure thermal every 1s
-//	STATE_UpdateButton(&thisPTR);
-//
-//	if (flag_enable_check_fault == true) {
-//		STATE_UpdateFault(&thisPTR);
-//	}
-//	STATE_UpdateState(&thisPTR);
 
 	// FIXME: New code
 	state_update_meas(&state_machine);
@@ -73,7 +66,7 @@ void ptr_inf_loop_system(void)
 			sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
 		}
 		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %u, fault = %u, hei_ther = %f, hei_ther = %u, hei_axis = %ld \r\n",
-				thisPTR.state,
+				state_machine.data.state.current,
 				thisFault.fault_status,
 				thisMeas.thermal_height.value_f32,
 				thisMeas.thermal_height.value_q15,
@@ -82,7 +75,7 @@ void ptr_inf_loop_system(void)
 	} else {
 		COMM_DecodeMessage();
 		COMM_HandleRequest();
-		COMM_CommToState(&thisPTR.communication);
+		COMM_CommToState(&state_machine.data.communication);
 	}
 }
 

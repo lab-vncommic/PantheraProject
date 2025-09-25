@@ -17,21 +17,6 @@
 
 #define TIME_DEBOUNCE_GOTO_INSTALL_MODE			60000
 
-#define MANUAL_ENABLE_MT			1000						// Delay cycle between 2 motor startup, approximately 100ms
-#define MANUAL_ENABLE_MT1			1
-#define MANUAL_ENABLE_MT2			MANUAL_ENABLE_MT
-#define MANUAL_ENABLE_MT3			MANUAL_ENABLE_MT * 2
-
-#define AUTO_ENABLE_MT				1000
-#define AUTO_ENABLE_MT1				1
-#define AUTO_ENABLE_MT2				AUTO_ENABLE_MT
-#define AUTO_ENABLE_MT3				AUTO_ENABLE_MT * 2
-
-#define HOME_ENABLE_MT				1000
-#define HOME_ENABLE_MT1				1
-#define HOME_ENABLE_MT2				HOME_ENABLE_MT
-#define HOME_ENABLE_MT3				HOME_ENABLE_MT * 2
-
 #define CURRENT_AUTO_RECOVERY_THRESHOLD			 1.0f
 #define THERMAL_AUTO_RECOVERY_THRESHOLD			60.0f
 
@@ -45,6 +30,10 @@
 #define TIME_WAIT_FOR_AUTO_RECOVERY				5U			// Uint: s
 #define TIME_WAIT_FOR_AUTO_RECOVERY_CYCLES		(uint32_t)TIME_WAIT_FOR_AUTO_RECOVERY * F_SAMPLE     // Uint: cycles
 
+#define TIME_ENABLE_MT1		1
+#define TIME_ENABLE_MT2		1000
+#define TIME_ENABLE_MT3		2000
+
 typedef enum{
 	STATE_IDLE		   = 0,
 	STATE_INSTALL	   = 1,
@@ -56,32 +45,6 @@ typedef enum{
 	STATE_SHUTDOWN	   = 7,
 	STATE_HOMING	   = 8
 } State_TypeDef;
-
-typedef struct{
-	_Bool		flag_slider_block;
-	_Bool		flag_height_block;
-	_Bool		flag_recliner_block;
-} StateHomeObject_TypeDef;
-
-typedef struct{
-	State_TypeDef 			state;
-	State_TypeDef 			state_prev;
-	SeatAxis_TypeDef		seat_current_axis;
-	SeatAxis_TypeDef		seat_memory_axis;
-	SeatAxis_TypeDef		cnt_check_end_position;
-
-	StateHomeObject_TypeDef state_home;
-
-	comm_system_t	    communication;
-	meas_system_t		measurement;
-	fault_system_t		fault;
-	button_system_t 	button;
-} PTR_TypeDef;
-
-// FIXME: New implementation
-#define TIME_ENABLE_MT1		1
-#define TIME_ENABLE_MT2		1000
-#define TIME_ENABLE_MT3		2000
 
 typedef struct state_machine_s state_machine_t;
 
@@ -132,18 +95,6 @@ struct state_machine_s {
     state_data_t 	data;
 };
 
-/*===========================================================================
- * Public API
- *===========================================================================*/
-void STATE_Init(PTR_TypeDef *pState);
-void STATE_UpdateState(PTR_TypeDef *pState);
-
-void STATE_UpdateMeas(PTR_TypeDef *pState);
-void STATE_UpdateFault(PTR_TypeDef *pState);
-void STATE_UpdateButton(PTR_TypeDef *pState);
-
-void STATE_ProcessInputSignals(PTR_TypeDef *pState);
-
 void state_int(state_machine_t *p_sm);
 void state_update_meas(state_machine_t *p_sm);
 void state_update_button(state_machine_t *p_sm);
@@ -152,9 +103,6 @@ void state_update_fault(state_machine_t *p_sm);
 void state_update_comm(state_machine_t *p_sm);
 void state_get_seat_axis(state_machine_t *p_sm);
 void state_update_state(state_machine_t *p_state);
-
-extern PTR_TypeDef thisPTR;
-extern _Bool flag_enable_check_fault;
 
 extern state_machine_t state_machine;
 #endif /* SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_ */
