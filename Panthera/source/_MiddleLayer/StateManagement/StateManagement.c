@@ -682,7 +682,7 @@ void state_get_seat_axis(state_machine_t *p_sm)
 	md_get_seat_axis(&p_sm->data.state.seat_current_axis);
 }
 
-void state_update(state_machine_t *p_sm)
+void state_update_state(state_machine_t *p_sm)
 {
 	if (p_sm->flag_change_state) {
 		// Run exit function of old state

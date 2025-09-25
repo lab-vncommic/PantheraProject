@@ -143,7 +143,7 @@ void state_update_button(state_machine_t *p_sm);
 void state_update_fault(state_machine_t *p_sm);
 void state_update_comm(state_machine_t *p_sm);
 void state_get_seat_axis(state_machine_t *p_sm);
-void state_update(state_machine_t *p_state);
+void state_update_state(state_machine_t *p_state);
 
 extern PTR_TypeDef thisPTR;
 extern _Bool flag_enable_check_fault;
