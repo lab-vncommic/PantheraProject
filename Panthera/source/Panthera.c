@@ -17,8 +17,6 @@ void ptr_system_initialization(void)
 	MD_Init();
 	state_int(&state_machine);
 	EEPROM_Start();
-
-	state_int(&state_machine);
 }
 /*====== Execute Time ======*/
 /*
