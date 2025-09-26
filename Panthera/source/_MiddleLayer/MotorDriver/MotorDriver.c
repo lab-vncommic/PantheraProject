@@ -546,7 +546,7 @@ void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status,
 	                	pMotor->cnt_available  = 0;
 	                	if (status == FORWARD) {
 	                		pMotor->block_status = BLOCK_FORWARD;
-							pMotor->axis_max = pMotor->axis;
+							pMotor->axis = pMotor->axis_max;
 						} else if (status == BACKWARD) {
 							pMotor->block_status = BLOCK_BACKWARD;
 							pMotor->axis = 0;
