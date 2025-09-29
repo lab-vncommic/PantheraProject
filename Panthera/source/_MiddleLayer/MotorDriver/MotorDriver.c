@@ -440,9 +440,9 @@ void MD_Init(void)
 	motor_recliner.name = MOTOR_RECLINER;
 	motor_slider.name   = MOTOR_SLIDER;
 
-	MD_UpdateMeasType(&motor_height, MEAS_THERMAL);
-	MD_UpdateMeasType(&motor_recliner, MEAS_THERMAL);
-	MD_UpdateMeasType(&motor_slider, MEAS_THERMAL);
+	MD_UpdateMeasType(&motor_height, MEAS_CURRENT);
+	MD_UpdateMeasType(&motor_recliner, MEAS_CURRENT);
+	MD_UpdateMeasType(&motor_slider, MEAS_CURRENT);
 	md_stop_all();
 
 	// Flag = false when system hasnot installed yet

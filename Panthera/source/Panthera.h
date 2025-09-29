@@ -16,6 +16,9 @@
 #include "uart.h"
 #include "memory.h"
 
+#include "adc_drv_handle.h"
+#include "meas_mid_handle.h"
+
 void ptr_system_initialization(void);
 void ptr_main_interrupt_service(void);
 void ptr_inf_loop_system(void);

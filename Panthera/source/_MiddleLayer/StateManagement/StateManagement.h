@@ -14,6 +14,7 @@
 #include "Button.h"
 #include "GlobalDefine.h"
 #include "memory.h"
+#include "meas_mid_handle.h"
 
 #define TIME_DEBOUNCE_GOTO_INSTALL_MODE			60000
 
@@ -64,7 +65,7 @@ typedef struct{
 typedef struct{
 	state_system_t		state;
 	comm_system_t	    communication;
-	meas_system_t		measurement;
+	meas_sys_t			measurement;
 	fault_system_t		fault;
 	button_system_t 	button;
 	motor_system_t   	motor;

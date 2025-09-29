@@ -10,7 +10,7 @@ meas_t meas_inst;
 void meas_init(void)
 {
 	// Config driver ADC
-	ADC_Init(&thatADC);
+	adc_init();
 
 	// Config parameters for measurement objects
     meas_config(&meas_inst.current_slider, CURRENT_MT1_OFFSET, CURRENT_MT1_SCALE_FACTOR, CURRENT_MT1_ALPHA, CURRENT_MT1_HIGH_LIMIT_SOFT, 0U, 0U, CALC_METHOD_Q15);
@@ -23,17 +23,21 @@ void meas_init(void)
 
 void meas_get_value(MeasType_TypeDef meas_type)
 {
-	// Get adc value
-//	ADC_startOfConversion();
+	adc_update_to_meas(&meas_inst.adc_raw_value);
 
 	if (meas_type) {
-		// Get raw value from adc driver
+		meas_inst.thermal_recliner.raw = meas_inst.adc_raw_value.adc_mulsens_1;
+		meas_inst.thermal_slider.raw   = meas_inst.adc_raw_value.adc_mulsens_2;
+		meas_inst.thermal_height.raw   = meas_inst.adc_raw_value.adc_mulsens_3;
 
 		// Get value in Q15 concept
 	    meas_get_value_q15(&meas_inst.thermal_slider);
 	    meas_get_value_q15(&meas_inst.thermal_height);
 	    meas_get_value_q15(&meas_inst.thermal_recliner);
 	} else {
+		meas_inst.current_recliner.raw = meas_inst.adc_raw_value.adc_mulsens_1;
+		meas_inst.current_slider.raw   = meas_inst.adc_raw_value.adc_mulsens_2;
+		meas_inst.current_height.raw   = meas_inst.adc_raw_value.adc_mulsens_3;
 
 		// Get value in Q15 concept
 		meas_get_value_q15(&meas_inst.current_slider);
@@ -58,7 +62,7 @@ void meas_get_real_value(MeasType_TypeDef meas_type)
 	}
 }
 
-void meas_update_value(meas_to_system_t *pMeas, MeasType_TypeDef meas_type)
+void meas_update_value_to_state(meas_sys_t *pMeas, MeasType_TypeDef meas_type)
 {
 	meas_get_value(meas_type);
 
@@ -69,3 +73,4 @@ void meas_update_value(meas_to_system_t *pMeas, MeasType_TypeDef meas_type)
 	pMeas->thermal_height_q15   = meas_inst.thermal_height.value_q15;
 	pMeas->thermal_recliner_q15 = meas_inst.thermal_recliner.value_q15;
 }
+

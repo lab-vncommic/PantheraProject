@@ -10,6 +10,7 @@
 #include "GlobalDefine.h"
 #include "IQMath.h"
 #include "adc.h"
+#include "mid_config.h"
 
 /*===========================================================================
  * REUSABLE CODE SECTION
@@ -79,12 +80,12 @@ typedef struct{
 
 #define SAMPLE_TIME_MEAS_THERMAL	20000	// 20000/20000 = 1s
 
-typedef enum{
-	MEAS_CURRENT 	= 0,
-	MEAS_THERMAL	= 1,
-	MEAS_VCC		= 2,
-	MEAS_NONE		= 3
-} MeasType_TypeDef;
+//typedef enum{
+//	MEAS_CURRENT 	= 0,
+//	MEAS_THERMAL	= 1,
+//	MEAS_VCC		= 2,
+//	MEAS_NONE		= 3
+//} MeasType_TypeDef;
 
 typedef struct{
 	Meas_TypeDef current_slider;

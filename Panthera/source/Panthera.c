@@ -10,13 +10,14 @@ CommMode_Enum Comm_Mode = COMM_DEBUG;
 void ptr_system_initialization(void)
 {
 	GDE_Config();
-	COMM_Init(Comm_Mode);
-	BTN_Init();
-	MEAS_Init();
-	FAULT_Init();
+//	COMM_Init(Comm_Mode);
+//	BTN_Init();
+//	MEAS_Init();
+//	FAULT_Init();
 	MD_Init();
-	state_int(&state_machine);
-	EEPROM_Start();
+	adc_init();
+//	state_int(&state_machine);
+//	EEPROM_Start();
 }
 /*====== Execute Time ======*/
 /*
@@ -31,27 +32,32 @@ void ptr_system_initialization(void)
 void ptr_main_interrupt_service(void)
 {
 	begin = stm_lld_getcounter(&STMD3);
+//	adc_update_to_meas(&meas_inst.adc_raw_value);
 
-	// FIXME: New code
-	state_update_meas(&state_machine);
-	state_update_motor(&state_machine);
-	state_update_button(&state_machine);
-	state_update_fault(&state_machine);
-	state_update_comm(&state_machine);
-	state_get_seat_axis(&state_machine);
-	state_update_state(&state_machine);
-
-	// Comment these code if run sensorless
-//	MD_UpdateAxis(&motor_recliner, thisPTR.measurement.current_recliner_q15);
-//	MD_UpdateAxis(&motor_height, thisPTR.measurement.current_height_q15);
-//	MD_UpdateAxis(&motor_slider, thisPTR.measurement.current_slider_q15);
+	meas_update_value_to_state(&state_machine.data.measurement, MEAS_CURRENT);
+//
+//	// FIXME: New code
+//	state_update_meas(&state_machine);
+//	state_update_motor(&state_machine);
+//	state_update_button(&state_machine);
+//	state_update_fault(&state_machine);
+//	state_update_comm(&state_machine);
+//	state_get_seat_axis(&state_machine);
+//	state_update_state(&state_machine);
+//
+//	// Comment these code if run sensorless
+////	MD_UpdateAxis(&motor_recliner, thisPTR.measurement.current_recliner_q15);
+////	MD_UpdateAxis(&motor_height, thisPTR.measurement.current_height_q15);
+////	MD_UpdateAxis(&motor_slider, thisPTR.measurement.current_slider_q15);
+//
+	end = stm_lld_getcounter(&STMD3);
 
 	MD_UpdateDriver(&motor_height);
 	MD_UpdateDriver(&motor_recliner);
 	MD_UpdateDriver(&motor_slider);
-
+//
 	// FIXME: Code to measure execute time
-	end = stm_lld_getcounter(&STMD3);
+
 	elapsed = end - begin;
 }
 

@@ -20,12 +20,12 @@ uint8_t anp[NUMOFCHANNELS] = {CHANNEL_MULSENS_1, CHANNEL_MULSENS_2, CHANNEL_MULS
  * @param  saradcp: Pointer to the SARADC driver instance that completed conversion.
  * @retval None
  */
-void saradcconf_conv_cb(SARADCDriver *saradcp) {
-    thatADC.ADC_MulSens_1 = saradc_lld_readchannel(saradcp, anp[0]);
-    thatADC.ADC_MulSens_2 = saradc_lld_readchannel(saradcp, anp[1]);
-	thatADC.ADC_MulSens_3 = saradc_lld_readchannel(saradcp, anp[2]);
-	thatADC.ADC_FB_5V 	  = saradc_lld_readchannel(saradcp, anp[3]);
-}
+// void saradcconf_conv_cb(SARADCDriver *saradcp) {
+//     thatADC.ADC_MulSens_1 = saradc_lld_readchannel(saradcp, anp[0]);
+//     thatADC.ADC_MulSens_2 = saradc_lld_readchannel(saradcp, anp[1]);
+// 	thatADC.ADC_MulSens_3 = saradc_lld_readchannel(saradcp, anp[2]);
+// 	thatADC.ADC_FB_5V 	  = saradc_lld_readchannel(saradcp, anp[3]);
+// }
 
 /**
  * @brief  Callback function for DMA-based SARADC conversion.
