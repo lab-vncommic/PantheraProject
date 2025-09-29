@@ -173,13 +173,13 @@ void state_update_meas(state_machine_t *p_sm)
 	if (p_sm->data.cnt_change_measure_obj >= (SAMPLE_TIME_MEAS_THERMAL - MIN_MEASUREMENT_SAMPLES)) {
 		MD_UpdateMeas(MEAS_THERMAL);
 		if (p_sm->data.cnt_change_measure_obj == SAMPLE_TIME_MEAS_THERMAL) {
-			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_THERMAL);
+//			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_THERMAL);
 			p_sm->data.flag_enable_check_fault = true;
 		}
 	} else {
 		MD_UpdateMeas(MEAS_CURRENT);
 		if (p_sm->data.cnt_change_measure_obj >= MIN_MEASUREMENT_SAMPLES) {
-			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_CURRENT);
+//			MEAS_UpdateValue(&p_sm->data.measurement, MEAS_CURRENT);
 		}
 	}
 }
@@ -200,7 +200,7 @@ void state_update_fault(state_machine_t *p_sm)
 		(p_sm->current->type != STATE_SHUTDOWN) &&
 		(p_sm->current->type != STATE_AUTORECOVERY &&
 		 p_sm->data.flag_enable_check_fault)) {
-		FAULT_Handle(&p_sm->data.fault, &p_sm->data.measurement);
+//		FAULT_Handle(&p_sm->data.fault, &p_sm->data.measurement);
 	}
 }
 
