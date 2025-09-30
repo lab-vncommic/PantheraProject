@@ -63,12 +63,15 @@ void ptr_inf_loop_system(void)
 			flag_debug_tx_completed = 0;
 			sd_lld_write(&SD2, (uint8_t*) BufTXDebug, UART_TX_DEBUG_LENGTH);
 		}
-		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %u, fault = %u, hei_ther = %f, hei_ther = %u, hei_axis = %ld \r\n",
+		snprintf(BufTXDebug, sizeof(BufTXDebug), "state = %u, fault = %u, %ld, %ld, %ld, %ld, %ld, %ld \r\n",
 				state_machine.data.state.current,
 				thisFault.fault_status,
-				thisMeas.thermal_height.value_f32,
-				thisMeas.thermal_height.value_q15,
-				motor_height.axis
+				motor_recliner.axis,
+				motor_recliner.axis_max,
+				motor_slider.axis,
+				motor_slider.axis_max,
+				motor_height.axis,
+				motor_height.axis_max
 		);
 	} else {
 		COMM_DecodeMessage();

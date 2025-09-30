@@ -85,6 +85,7 @@ static inline _Bool seat_at_right_position(state_machine_t *p_sm);
 static inline _Bool system_is_normal(state_machine_t *p_sm);
 static inline _Bool all_motor_blocked(state_machine_t *p_sm);
 static inline _Bool recall_button_pressed(Button_TypeDef *p_button);
+static inline _Bool state_time_out(state_machine_t *p_sm);
 
 static state_t state_idle = {
 		.type = STATE_IDLE,
@@ -339,6 +340,7 @@ void state_install_process(state_machine_t *p_sm)
 		state_install_run_all_motor(p_sm, BACKWARD);
 		if (all_motor_blocked(p_sm)) {
 			p_sm->data.flag_system_homing = false;
+			md_enable_all();
 			p_sm->data.cnt_delay_startup_motor = 0;
 		}
 	} else {
@@ -364,6 +366,10 @@ void state_install_check_transition(state_machine_t *p_sm)
 		return;
 	}
 
+//	if (state_time_out(p_sm)) {
+//		state_change_state(p_sm, &state_idle);
+//		return;
+//	}
 }
 
 void state_install_exit(state_machine_t *p_sm)
@@ -500,6 +506,11 @@ void state_auto_check_transition(state_machine_t *p_sm)
 	}
 
 	if (seat_at_right_position(p_sm)) {
+		state_change_state(p_sm, &state_idle);
+		return;
+	}
+
+	if (state_time_out(p_sm)) {
 		state_change_state(p_sm, &state_idle);
 		return;
 	}
@@ -714,4 +725,9 @@ static inline _Bool recall_button_pressed(Button_TypeDef *p_button)
 	return ((p_button->action == ACTION_PRESSED) ||
 			(p_button->action == ACTION_HOLD) ||
 			(p_button->action == ACTION_HOLD_LONG));
+}
+
+static inline _Bool state_time_out(state_machine_t *p_sm)
+{
+	return (p_sm->cnt_time_on_state >= 1600000);
 }
