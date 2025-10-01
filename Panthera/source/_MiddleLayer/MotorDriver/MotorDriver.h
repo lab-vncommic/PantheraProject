@@ -99,6 +99,7 @@ typedef struct{
 	uint16_t					cnt_soft_start;
 	uint16_t					cnt_available;
 	_Bool						flag_available;
+	_Bool						flag_installed;
 	MotorStatus_TypeDef 		status;
 	MeasType_TypeDef			meas_type;
 	int32_t						axis;
@@ -130,7 +131,7 @@ void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t c
 void md_update_to_system(motor_system_t *p_sm_motor);
 void md_update_axis_max(motor_system_t *p_sm_motor);
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
-
+void MD_InstallAllMotor(void);
 
 void MD_UpdateMeas(MeasType_TypeDef meas_type);
 void md_get_seat_axis(SeatAxis_TypeDef *pSeat);

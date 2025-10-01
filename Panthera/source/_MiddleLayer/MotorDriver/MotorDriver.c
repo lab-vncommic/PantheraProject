@@ -104,6 +104,13 @@ void MD_UpdateDriver(Motor_TypeDef *pMotor)
     } else GPIO_ClearPin(&pMotor->driver.pwm);
 }
 
+void MD_InstallAllMotor(void)
+{
+	motor_recliner.flag_installed = true;
+	motor_slider.flag_installed = true;
+	motor_height.flag_installed = true;
+}
+
 /**
  * @brief Updates the status of a motor and configures its driver pins accordingly
  * 
@@ -430,6 +437,11 @@ void MD_Init(void)
 	MD_UpdateMeasType(&motor_recliner, MEAS_THERMAL);
 	MD_UpdateMeasType(&motor_slider, MEAS_THERMAL);
 	md_stop_all();
+
+	// Flag = false when system hasnot installed yet
+	motor_recliner.flag_installed = false;
+	motor_slider.flag_installed = false;
+	motor_height.flag_installed = false;
 }
 
 /**
@@ -546,13 +558,15 @@ void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status,
 	                	pMotor->cnt_available  = 0;
 	                	if (status == FORWARD) {
 	                		pMotor->block_status = BLOCK_FORWARD;
-							pMotor->axis = pMotor->axis_max;
+	                		if (pMotor->flag_installed == false) {
+	                			pMotor->axis_max = pMotor->axis;
+	                			pMotor->flag_installed = true;
+							} else pMotor->axis = pMotor->axis_max;
 						} else if (status == BACKWARD) {
 							pMotor->block_status = BLOCK_BACKWARD;
 							pMotor->axis = 0;
 						}
 	                }
-
 	            }
 
 	            break;
