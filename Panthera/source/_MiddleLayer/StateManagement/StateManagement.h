@@ -35,6 +35,10 @@
 #define TIME_ENABLE_MT2		1000
 #define TIME_ENABLE_MT3		2000
 
+#define TIME_OUT_AUTO		 800000U		// Equal 40s
+#define TIME_OUT_SAVE		 200000U		// Equal 10s
+#define TIME_OUT_INSTALL	1600000U		// Equal 80s
+
 typedef enum{
 	STATE_IDLE		   = 0,
 	STATE_INSTALL	   = 1,
@@ -81,6 +85,7 @@ typedef struct{
 
 typedef struct{
 	State_TypeDef	type;
+	uint32_t		time_out;
 
 	void (*entry)(state_machine_t *p_sm);
 	void (*process)(state_machine_t *p_sm);

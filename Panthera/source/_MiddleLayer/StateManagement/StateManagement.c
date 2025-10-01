@@ -89,6 +89,7 @@ static inline _Bool state_time_out(state_machine_t *p_sm);
 
 static state_t state_idle = {
 		.type = STATE_IDLE,
+		.time_out = 0,
 		.entry = state_idle_entry,
 		.process = state_idle_process,
 		.exit = state_idle_exit
@@ -96,6 +97,7 @@ static state_t state_idle = {
 
 static state_t state_install = {
 		.type = STATE_INSTALL,
+		.time_out = TIME_OUT_INSTALL,
 		.entry = state_install_entry,
 		.process = state_install_process,
 		.exit = state_install_exit
@@ -103,6 +105,7 @@ static state_t state_install = {
 
 static state_t state_manual = {
 		.type = STATE_MANUAL,
+		.time_out = 0,
 		.entry = state_manual_entry,
 		.process = state_manual_process,
 		.exit = state_manual_exit
@@ -110,6 +113,7 @@ static state_t state_manual = {
 
 static state_t state_save = {
 		.type = STATE_SAVE,
+		.time_out = TIME_OUT_SAVE,
 		.entry = state_save_entry,
 		.process = state_save_process,
 		.exit = state_save_exit
@@ -117,6 +121,7 @@ static state_t state_save = {
 
 static state_t state_auto = {
 		.type = STATE_AUTO,
+		.time_out = TIME_OUT_AUTO,
 		.entry = state_auto_entry,
 		.process = state_auto_process,
 		.exit = state_auto_exit
@@ -124,6 +129,7 @@ static state_t state_auto = {
 
 static state_t state_fault = {
 		.type = STATE_FAULT,
+		.time_out = 0,
 		.entry = state_fault_entry,
 		.process = state_fault_process,
 		.exit = state_fault_exit
@@ -131,6 +137,7 @@ static state_t state_fault = {
 
 static state_t state_auto_recovery = {
 		.type = STATE_AUTORECOVERY,
+		.time_out = 0,
 		.entry = state_auto_recovery_entry,
 		.process = state_auto_recovery_process,
 		.exit = state_auto_recovery_exit
@@ -138,6 +145,7 @@ static state_t state_auto_recovery = {
 
 static state_t state_shut_down = {
 		.type = STATE_SHUTDOWN,
+		.time_out = 0,
 		.entry = NULL,
 		.process = NULL,
 		.exit = NULL
@@ -367,10 +375,10 @@ void state_install_check_transition(state_machine_t *p_sm)
 		return;
 	}
 
-//	if (state_time_out(p_sm)) {
-//		state_change_state(p_sm, &state_idle);
-//		return;
-//	}
+	if (state_time_out(p_sm)) {
+		state_change_state(p_sm, &state_idle);
+		return;
+	}
 }
 
 void state_install_exit(state_machine_t *p_sm)
@@ -464,6 +472,11 @@ void state_save_check_transition(state_machine_t *p_sm)
 	} else if (p_sm->data.flag_save_memory_position == true) {
 			state_change_state(p_sm, &state_idle);
 			p_sm->data.flag_save_memory_position = false;
+	}
+
+	if (state_time_out(p_sm)) {
+		state_change_state(p_sm, &state_idle);
+		return;
 	}
 }
 
@@ -730,5 +743,5 @@ static inline _Bool recall_button_pressed(Button_TypeDef *p_button)
 
 static inline _Bool state_time_out(state_machine_t *p_sm)
 {
-	return (p_sm->cnt_time_on_state >= 1600000);
+	return (p_sm->cnt_time_on_state >= p_sm->current->time_out);
 }
