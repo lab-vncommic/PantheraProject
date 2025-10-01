@@ -484,7 +484,7 @@ void state_auto_process(state_machine_t *p_sm)
 	} else p_sm->data.cnt_delay_startup_motor++;
 
 	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT1) {
-		state_auto_run_motor(MOTOR_RECLINER, p_sm->data.state.seat_current_axis.recliner, p_sm->data.state.seat_memory_axis.recliner, p_sm->data.measurement.current_slider_q15);
+		state_auto_run_motor(MOTOR_RECLINER, p_sm->data.state.seat_current_axis.recliner, p_sm->data.state.seat_memory_axis.recliner, p_sm->data.measurement.current_recliner_q15);
 	}
 
 	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT2) {
@@ -492,7 +492,7 @@ void state_auto_process(state_machine_t *p_sm)
 	}
 
 	if (p_sm->data.cnt_delay_startup_motor >= TIME_ENABLE_MT3) {
-		state_auto_run_motor(MOTOR_HEIGHT, p_sm->data.state.seat_current_axis.height, p_sm->data.state.seat_memory_axis.height, p_sm->data.measurement.current_recliner_q15);
+		state_auto_run_motor(MOTOR_HEIGHT, p_sm->data.state.seat_current_axis.height, p_sm->data.state.seat_memory_axis.height, p_sm->data.measurement.current_height_q15);
 	}
 
 	state_auto_check_transition(p_sm);
