@@ -330,6 +330,7 @@ void state_install_entry(state_machine_t *p_sm)
 {
 	(void)p_sm;
 	md_enable_all();
+	MD_ResetToInstall();
 	p_sm->data.flag_system_homing = true;
 	p_sm->data.flag_install_completed = false;
 }

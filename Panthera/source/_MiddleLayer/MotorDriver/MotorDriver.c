@@ -111,6 +111,13 @@ void MD_InstallAllMotor(void)
 	motor_height.flag_installed = true;
 }
 
+void MD_ResetToInstall(void)
+{
+	motor_recliner.flag_installed = false;
+	motor_slider.flag_installed = false;
+	motor_height.flag_installed = false;
+}
+
 /**
  * @brief Updates the status of a motor and configures its driver pins accordingly
  * 
@@ -439,9 +446,7 @@ void MD_Init(void)
 	md_stop_all();
 
 	// Flag = false when system hasnot installed yet
-	motor_recliner.flag_installed = false;
-	motor_slider.flag_installed = false;
-	motor_height.flag_installed = false;
+	MD_InstallAllMotor();
 }
 
 /**

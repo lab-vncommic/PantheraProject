@@ -132,6 +132,7 @@ void md_update_to_system(motor_system_t *p_sm_motor);
 void md_update_axis_max(motor_system_t *p_sm_motor);
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
 void MD_InstallAllMotor(void);
+void MD_ResetToInstall(void);
 
 void MD_UpdateMeas(MeasType_TypeDef meas_type);
 void md_get_seat_axis(SeatAxis_TypeDef *pSeat);
