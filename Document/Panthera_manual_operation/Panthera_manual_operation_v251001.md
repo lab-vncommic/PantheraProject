@@ -169,21 +169,20 @@ This document provides comprehensive operational instructions for the Panthera c
 <div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;&nbsp;&nbsp;2.2.2 Manual Mode (with examples)</span><span class="toc-dots"></span><span class="toc-page">8</span></div>
 <div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;&nbsp;&nbsp;2.2.3 Recall Mode (with save and recall examples)</span><span class="toc-dots"></span><span class="toc-page">9</span></div>
 <div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;2.3 Safety Features</span><span class="toc-dots"></span><span class="toc-page">12</span></div>
-<div class="toc-entry"><span class="toc-title-l1">3 UART Communication Interface</span><span class="toc-dots"></span><span class="toc-page">13</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;3.1 Connection Setup</span><span class="toc-dots"></span><span class="toc-page">13</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;3.2 Command Structure</span><span class="toc-dots"></span><span class="toc-page">14</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;3.3 Basic Commands</span><span class="toc-dots"></span><span class="toc-page">15</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;3.4 Advanced Commands</span><span class="toc-dots"></span><span class="toc-page">16</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;3.5 Error Handling</span><span class="toc-dots"></span><span class="toc-page">17</span></div>
-<div class="toc-entry"><span class="toc-title-l1">4 CAN Communication Interface</span><span class="toc-dots"></span><span class="toc-page">18</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;4.1 Hardware Configuration</span><span class="toc-dots"></span><span class="toc-page">18</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;4.2 Message Format</span><span class="toc-dots"></span><span class="toc-page">19</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;4.3 Control Commands</span><span class="toc-dots"></span><span class="toc-page">20</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;4.4 Status Monitoring</span><span class="toc-dots"></span><span class="toc-page">21</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;4.5 Diagnostic Functions</span><span class="toc-dots"></span><span class="toc-page">22</span></div>
-<div class="toc-entry"><span class="toc-title-l1">5 Troubleshooting</span><span class="toc-dots"></span><span class="toc-page">24</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;5.1 Common Issues</span><span class="toc-dots"></span><span class="toc-page">24</span></div>
-<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;5.2 Diagnostic Procedures</span><span class="toc-dots"></span><span class="toc-page">25</span></div>
+<div class="toc-entry"><span class="toc-title-l1">3 Communication Interface</span><span class="toc-dots"></span><span class="toc-page">13</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;3.1 UART Communication</span><span class="toc-dots"></span><span class="toc-page">13</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;&nbsp;&nbsp;3.1.1 Connection Setup</span><span class="toc-dots"></span><span class="toc-page">13</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;&nbsp;&nbsp;3.1.2 Configure Software</span><span class="toc-dots"></span><span class="toc-page">15</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;&nbsp;&nbsp;3.1.3 Message Structure</span><span class="toc-dots"></span><span class="toc-page">17</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;&nbsp;&nbsp;3.1.4 Operation Procedure</span><span class="toc-dots"></span><span class="toc-page">19</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;3.2 CAN Communication</span><span class="toc-dots"></span><span class="toc-page">22</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;&nbsp;&nbsp;3.2.1 Connection Setup</span><span class="toc-dots"></span><span class="toc-page">22</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;&nbsp;&nbsp;3.2.2 Configure Software</span><span class="toc-dots"></span><span class="toc-page">24</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;&nbsp;&nbsp;3.2.3 Message Structure</span><span class="toc-dots"></span><span class="toc-page">26</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;&nbsp;&nbsp;3.2.4 Operation Procedure</span><span class="toc-dots"></span><span class="toc-page">28</span></div>
+<div class="toc-entry"><span class="toc-title-l1">4 Troubleshooting</span><span class="toc-dots"></span><span class="toc-page">31</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;4.1 Common Issues</span><span class="toc-dots"></span><span class="toc-page">31</span></div>
+<div class="toc-entry"><span class="toc-title">&nbsp;&nbsp;4.2 Diagnostic Procedures</span><span class="toc-dots"></span><span class="toc-page">32</span></div>
 
 <div class="page-break"></div>
 
@@ -505,21 +504,39 @@ To quickly return to your saved driving position after someone else has used the
 
 <div style="page-break-after: always;"></div>
 
-## **3. UART Communication Interface**
+## **3. Communication Interface**
 
-### **3.1 Connection Setup**
+This chapter describes the communication protocols supported by the Panthera Power Car Seat system. The system provides two primary communication interfaces: UART and CAN, each designed for different integration scenarios and use cases.
 
-The Panthera system supports UART communication for control and diagnostic functions. Use the following parameters to establish connection:
+### **3.1 UART Communication**
 
-<!-- Table 3.1 Width Settings (Adjust values as needed) -->
-<!-- TABLE 3.1 WIDTH SETTINGS - ADJUST AS NEEDED -->
+UART (Universal Asynchronous Receiver-Transmitter) communication provides a simple serial interface for controlling and monitoring the Panthera system. This interface is ideal for development, testing, and integration with microcontroller-based systems.
+
+#### **3.1.1 Connection Setup**
+
+The UART interface requires a standard 3-wire connection plus ground. Follow these steps for proper hardware setup:
+
+**Hardware Requirements:**
+- Host device with UART capability (microcontroller, PC, development board)
+- Standard jumper wires or serial cable
+- Common ground reference between devices
+
+**Physical Connection:**
+1. **Ground Connection**: Connect GND of host device to system ground (Pin GND)
+2. **Transmit Line**: Connect TX of host device to RX of Panthera system (Pin RX)
+3. **Receive Line**: Connect RX of host device to TX of Panthera system (Pin TX)
+4. **Power Supply**: Ensure Panthera system has proper 12V power supply connected
+
+**Connection Parameters:**
+
+<!-- Table 3.1.1 Width Settings -->
 <style>
-.table-3-1 th:nth-child(1) { width: 25%; }  /* Parameter */
-.table-3-1 th:nth-child(2) { width: 25%; }  /* Value */
-.table-3-1 th:nth-child(3) { width: 50%; }  /* Description */
+.table-3-1-1 th:nth-child(1) { width: 25%; }  /* Parameter */
+.table-3-1-1 th:nth-child(2) { width: 25%; }  /* Value */
+.table-3-1-1 th:nth-child(3) { width: 50%; }  /* Description */
 </style>
 
-<table class="hw-table table-3-1">
+<table class="hw-table table-3-1-1">
 <caption class="table-caption">Table 3.1: UART Connection Parameters</caption>
 <thead>
 <tr>
@@ -534,165 +551,263 @@ The Panthera system supports UART communication for control and diagnostic funct
 <tr><td>Stop Bits</td><td>1</td><td>Stop bit configuration</td></tr>
 <tr><td>Parity</td><td>None</td><td>No parity bit</td></tr>
 <tr><td>Flow Control</td><td>None</td><td>No hardware flow control</td></tr>
+<tr><td>Voltage Level</td><td>3.3V TTL</td><td>Logic level standard</td></tr>
 </tbody>
 </table>
+
+**Connection Verification:**
+1. Power on the Panthera system
+2. Connect UART interface as described above
+3. Open terminal software on host device
+4. Send a simple status command to verify communication
+5. Verify proper response from the system
+
+#### **3.1.2 Configure Software**
+
+Before establishing communication, configure the host software with the correct parameters and implement proper error handling.
+
+**Terminal Software Configuration:**
+For initial testing and development, configure your terminal software:
+
+1. **Serial Port Settings:**
+   - Port: Select appropriate COM port (Windows) or /dev/ttyUSB (Linux)
+   - Baud Rate: 115200
+   - Data Bits: 8
+   - Stop Bits: 1
+   - Parity: None
+   - Flow Control: None
+
+2. **Display Settings:**
+   - Enable HEX display mode for command verification
+   - Set line ending to none (commands are binary)
+   - Enable timestamp for debugging
+
+**Programming Implementation:**
+For embedded applications, implement the following software components:
+
+```c
+// UART Configuration Structure
+typedef struct {
+    uint32_t baud_rate;     // 115200
+    uint8_t data_bits;      // 8
+    uint8_t stop_bits;      // 1
+    uint8_t parity;         // 0 (none)
+    uint8_t flow_control;   // 0 (none)
+} uart_config_t;
+
+// Initialize UART with proper settings
+void init_panthera_uart(void) {
+    uart_config_t config = {
+        .baud_rate = 115200,
+        .data_bits = 8,
+        .stop_bits = 1,
+        .parity = 0,
+        .flow_control = 0
+    };
+    uart_init(UART_PORT, &config);
+}
+```
+
+**Error Handling Implementation:**
+Implement timeout and error checking mechanisms:
+
+```c
+// Command timeout (milliseconds)
+#define COMMAND_TIMEOUT_MS    1000
+#define MAX_RETRIES          3
+
+// Send command with timeout and retry logic
+uart_result_t send_panthera_command(uint8_t* cmd, uint8_t len) {
+    for (int retry = 0; retry < MAX_RETRIES; retry++) {
+        if (uart_send_with_timeout(cmd, len, COMMAND_TIMEOUT_MS) == UART_OK) {
+            return UART_SUCCESS;
+        }
+        delay_ms(100); // Brief delay before retry
+    }
+    return UART_TIMEOUT;
+}
+```
+
+#### **3.1.3 Message Structure**
+
+UART commands follow a structured binary format to ensure reliable communication and error detection.
+
+**Command Frame Format:**
+```
+[START_BYTE][COMMAND_ID][DATA_LENGTH][DATA...][CHECKSUM][END_BYTE]
+```
+
+**Field Descriptions:**
+
+<!-- Table 3.1.3 Width Settings -->
+<style>
+.table-3-1-3 th:nth-child(1) { width: 20%; }  /* Field */
+.table-3-1-3 th:nth-child(2) { width: 15%; }  /* Size */
+.table-3-1-3 th:nth-child(3) { width: 20%; }  /* Value */
+.table-3-1-3 th:nth-child(4) { width: 45%; }  /* Description */
+</style>
+
+<table class="hw-table table-3-1-3">
+<caption class="table-caption">Table 3.2: UART Message Structure</caption>
+<thead>
+<tr>
+<th>Field</th>
+<th>Size (Bytes)</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>START_BYTE</td><td>1</td><td>0x55</td><td>Fixed start delimiter for frame synchronization</td></tr>
+<tr><td>COMMAND_ID</td><td>1</td><td>0x01-0xFF</td><td>Unique identifier for command type</td></tr>
+<tr><td>DATA_LENGTH</td><td>1</td><td>0x00-0xFF</td><td>Number of bytes in DATA field (0-255)</td></tr>
+<tr><td>DATA</td><td>0-255</td><td>Variable</td><td>Command-specific parameters and data</td></tr>
+<tr><td>CHECKSUM</td><td>1</td><td>Calculated</td><td>8-bit sum of all preceding bytes (modulo 256)</td></tr>
+<tr><td>END_BYTE</td><td>1</td><td>0xAA</td><td>Fixed end delimiter for frame validation</td></tr>
+</tbody>
+</table>
+
+**Checksum Calculation:**
+The checksum is calculated as the 8-bit sum of all bytes from START_BYTE to the last DATA byte:
+
+```c
+uint8_t calculate_checksum(uint8_t* frame, uint8_t length) {
+    uint16_t sum = 0;
+    for (uint8_t i = 0; i < length; i++) {
+        sum += frame[i];
+    }
+    return (uint8_t)(sum & 0xFF);
+}
+```
+
+**Command Categories:**
+
+<!-- Table 3.1.3b Width Settings -->
+<style>
+.table-3-1-3b th:nth-child(1) { width: 25%; }  /* Category */
+.table-3-1-3b th:nth-child(2) { width: 20%; }  /* ID Range */
+.table-3-1-3b th:nth-child(3) { width: 55%; }  /* Description */
+</style>
+
+<table class="hw-table table-3-1-3b">
+<caption class="table-caption">Table 3.3: UART Command Categories</caption>
+<thead>
+<tr>
+<th>Command Category</th>
+<th>ID Range</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>System Commands</td><td>0x01-0x0F</td><td>General system control and status</td></tr>
+<tr><td>Motor Commands</td><td>0x10-0x2F</td><td>Direct motor control and positioning</td></tr>
+<tr><td>Memory Commands</td><td>0x30-0x3F</td><td>Position save/recall operations</td></tr>
+<tr><td>Diagnostic Commands</td><td>0x40-0x5F</td><td>System diagnostics and monitoring</td></tr>
+<tr><td>Configuration Commands</td><td>0x60-0x7F</td><td>Parameter configuration and calibration</td></tr>
+<tr><td>Reserved</td><td>0x80-0xEF</td><td>Reserved for future expansion</td></tr>
+<tr><td>Error Responses</td><td>0xF0-0xFF</td><td>Error codes and fault indications</td></tr>
+</tbody>
+</table>
+
+#### **3.1.4 Operation Procedure**
+
+This section provides step-by-step procedures for common UART operations with the Panthera system.
+
+**Step 1: Initialize Communication**
+1. Power on system (12V) and wait 3-5 seconds
+2. Connect UART cable and open terminal (115200, 8N1)
+3. Send status command: `55 01 00 56 AA`
+4. Verify response received and valid
+
+**Step 2: Basic Motor Control**
+1. **Stop all motors (safety):**
+   ```
+   Command: 55 03 00 58 AA
+   Response: 55 83 00 DB AA
+   ```
+
+2. **Check motor positions:**
+   ```
+   Motor 1: 55 04 01 01 5B AA
+   Motor 2: 55 04 01 02 5C AA
+   Motor 3: 55 04 01 03 5D AA
+   Response: 55 84 02 [POS_LOW] [POS_HIGH] [CHECKSUM] AA
+   ```
+
+3. **Move motor (example - Motor 1 forward 50% speed):**
+   ```
+   Command: 55 02 03 01 01 32 89 AA
+   Response: 55 82 00 D7 AA (accepted)
+   ```
+
+4. **Stop motor:**
+   ```
+   Command: 55 02 03 01 00 32 88 AA
+   ```
+
+**Step 3: Memory Operations**
+1. **Save position:**
+   - Position seat manually using motor commands
+   - Save to slot: `55 06 01 [SLOT] [CHECKSUM] AA`
+   - Example slot 1: `55 06 01 01 5D AA`
+
+2. **Recall position:**
+   - Send recall: `55 07 01 [SLOT] [CHECKSUM] AA`
+   - Example slot 1: `55 07 01 01 5E AA`
+   - Motors move automatically to saved position
+
+**Step 4: Diagnostics**
+1. **System status:** `55 10 00 65 AA`
+2. **Motor current:** `55 11 01 [MOTOR_ID] [CHECKSUM] AA`
+3. **Supply voltage:** `55 12 00 67 AA`
+
+**Step 5: Error Handling**
+1. **Communication errors:** Retry up to 3 times with 100ms delay
+2. **System errors:** Parse error code from response `55 FF 02 [ERROR_CODE] [CMD] [CHECKSUM] AA`
+3. **Reset system:** Software reset `55 01 01 01 58 AA` or power cycle
+
+**Step 6: Complete Example**
+```
+1. Initialize: 55 01 00 56 AA
+2. Move slider: 55 02 03 01 01 4B B6 AA
+3. Move height: 55 02 03 02 01 32 89 AA
+4. Stop motors: 55 03 00 58 AA
+5. Save to slot 2: 55 06 01 02 5E AA
+6. Test recall: 55 07 01 02 5F AA
+```
+
+### **3.2 CAN Communication**
+
+CAN (Controller Area Network) communication provides a robust, automotive-grade interface for integrating the Panthera system into vehicle networks. This interface supports real-time monitoring, control, and diagnostic functions suitable for production environments.
+
+#### **3.2.1 Connection Setup**
+
+The CAN interface requires proper hardware configuration and termination for reliable operation. Follow these steps for correct CAN bus setup:
+
+**Hardware Requirements:**
+- CAN controller/transceiver (built into most automotive ECUs)
+- CAN-compatible wiring (twisted pair cable)
+- 120Ω termination resistors at both ends of the bus
+- Common ground reference between all devices
 
 **Physical Connection:**
-1. Connect GND of host device to system ground
-2. Connect TX of host device to RX of Panthera system
-3. Connect RX of host device to TX of Panthera system
-4. Ensure power is supplied to the Panthera system
+1. **CAN High Line**: Connect CAN_H of host to CAN_H of Panthera system (Pin 50)
+2. **CAN Low Line**: Connect CAN_L of host to CAN_L of Panthera system (Pin 51)
+3. **Ground Reference**: Ensure proper ground connection between devices
+4. **Termination**: Install 120Ω resistors at both ends of the CAN bus
+5. **Power Supply**: Verify Panthera system has stable 12V power supply
 
-### **3.2 Command Structure**
+**Bus Configuration Parameters:**
 
-UART commands follow a structured format to ensure proper interpretation:
-
-```
-<START_BYTE><COMMAND_ID><DATA_LENGTH><DATA...><CHECKSUM><END_BYTE>
-```
-
-Where:
-- `<START_BYTE>`: Fixed value 0x55 to mark command start
-- `<COMMAND_ID>`: Single byte identifying the command type
-- `<DATA_LENGTH>`: Length of data field in bytes (0-255)
-- `<DATA...>`: Command-specific data (variable length)
-- `<CHECKSUM>`: 8-bit sum of all previous bytes (modulo 256)
-- `<END_BYTE>`: Fixed value 0xAA to mark command end
-
-<div style="page-break-after: always;"></div>
-
-### **3.3 Basic Commands**
-
-<!-- TABLE 3.3 WIDTH SETTINGS - ADJUST AS NEEDED -->
+<!-- Table 3.2.1 Width Settings -->
 <style>
-.table-3-3 th:nth-child(1) { width: 20%; }  /* Command ID */
-.table-3-3 th:nth-child(2) { width: 30%; }  /* Description */
-.table-3-3 th:nth-child(3) { width: 50%; }  /* Data Format */
+.table-3-2-1 th:nth-child(1) { width: 25%; }  /* Parameter */
+.table-3-2-1 th:nth-child(2) { width: 25%; }  /* Value */
+.table-3-2-1 th:nth-child(3) { width: 50%; }  /* Description */
 </style>
 
-<table class="hw-table table-3-3">
-<caption class="table-caption">Table 3.3: Basic UART Commands</caption>
-<thead>
-<tr>
-<th>Command ID</th>
-<th>Description</th>
-<th>Data Format</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>0x01</td><td>Get Status</td><td>No data required<br>Response: System status byte</td></tr>
-<tr><td>0x02</td><td>Move Motor</td><td>Byte 1: Motor ID (1-3)<br>Byte 2: Direction (0=stop, 1=forward, 2=reverse)<br>Byte 3: Speed (0-100%)</td></tr>
-<tr><td>0x03</td><td>Stop All Motors</td><td>No data required</td></tr>
-<tr><td>0x04</td><td>Get Position</td><td>Byte 1: Motor ID (1-3)<br>Response: Current position value (2 bytes)</td></tr>
-<tr><td>0x05</td><td>Set Absolute Position</td><td>Byte 1: Motor ID (1-3)<br>Bytes 2-3: Target position</td></tr>
-<tr><td>0x06</td><td>Save Position</td><td>Byte 1: Memory slot (1-3)</td></tr>
-<tr><td>0x07</td><td>Recall Position</td><td>Byte 1: Memory slot (1-3)</td></tr>
-</tbody>
-</table>
-
-**Example: Move Motor Command**
-```
-55 02 03 01 01 64 C0 AA
-```
-Breakdown:
-- 0x55: Start byte
-- 0x02: Command ID (Move Motor)
-- 0x03: Data length (3 bytes)
-- 0x01: Motor ID (Motor 1)
-- 0x01: Direction (Forward)
-- 0x64: Speed (100%)
-- 0xC0: Checksum
-- 0xAA: End byte
-
-### **3.4 Advanced Commands**
-
-<!-- TABLE 3.4 WIDTH SETTINGS - ADJUST AS NEEDED -->
-<style>
-.table-3-4 th:nth-child(1) { width: 20%; }  /* Command ID */
-.table-3-4 th:nth-child(2) { width: 30%; }  /* Description */
-.table-3-4 th:nth-child(3) { width: 50%; }  /* Data Format */
-</style>
-
-<table class="hw-table table-3-4">
-<thead>
-<tr>
-<th>Command ID</th>
-<th>Description</th>
-<th>Data Format</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>0x10</td><td>Get System Diagnostics</td><td>No data required<br>Response: Multiple bytes of system information</td></tr>
-<tr><td>0x11</td><td>Get Motor Current</td><td>Byte 1: Motor ID (1-3)<br>Response: Current value in mA (2 bytes)</td></tr>
-<tr><td>0x12</td><td>Get Supply Voltage</td><td>No data required<br>Response: Voltage in mV (2 bytes)</td></tr>
-<tr><td>0x13</td><td>Get Error Log</td><td>Byte 1: Entry count (1-10)<br>Response: Error codes with timestamps</td></tr>
-<tr><td>0x14</td><td>Clear Error Log</td><td>No data required</td></tr>
-<tr><td>0x20</td><td>Set Motor Parameters</td><td>Byte 1: Motor ID (1-3)<br>Byte 2: Parameter ID<br>Bytes 3+: Parameter value</td></tr>
-</tbody>
-</table>
-
-<div style="page-break-after: always;"></div>
-
-### **3.5 Error Handling**
-
-The system responds to invalid commands with error messages:
-
-<!-- TABLE 3.5 WIDTH SETTINGS - ADJUST AS NEEDED -->
-<style>
-.table-3-5 th:nth-child(1) { width: 20%; }  /* Error Code */
-.table-3-5 th:nth-child(2) { width: 30%; }  /* Description */
-.table-3-5 th:nth-child(3) { width: 50%; }  /* Resolution */
-</style>
-
-<table class="hw-table table-3-5">
-<thead>
-<tr>
-<th>Error Code</th>
-<th>Description</th>
-<th>Troubleshooting</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>0xE1</td><td>Invalid Command</td><td>Check command ID and resubmit</td></tr>
-<tr><td>0xE2</td><td>Invalid Parameters</td><td>Verify parameter values are within acceptable range</td></tr>
-<tr><td>0xE3</td><td>Checksum Error</td><td>Recalculate checksum and retry</td></tr>
-<tr><td>0xE4</td><td>System Busy</td><td>Wait and retry command</td></tr>
-<tr><td>0xE5</td><td>Motor Fault</td><td>Check motor status and clear faults before retrying</td></tr>
-<tr><td>0xE6</td><td>Position Error</td><td>Verify target position is within valid range</td></tr>
-<tr><td>0xE7</td><td>Communication Timeout</td><td>Check connection and retry</td></tr>
-</tbody>
-</table>
-
-**Error Response Format:**
-```
-55 FF 02 <ERROR_CODE> <COMMAND_ID> <CHECKSUM> AA
-```
-
-Where:
-- 0x55: Start byte
-- 0xFF: Error response identifier
-- 0x02: Data length
-- `<ERROR_CODE>`: Specific error code from table above
-- `<COMMAND_ID>`: ID of command that caused error
-- `<CHECKSUM>`: Calculated checksum
-- 0xAA: End byte
-
-<div style="page-break-after: always;"></div>
-
-## **4. CAN Communication Interface**
-
-### **4.1 Hardware Configuration**
-
-The Panthera system supports standard CAN 2.0B communication with the following parameters:
-
-<!-- Table 4.1 Width Settings (Adjust values as needed) -->
-<style>
-.table-4-1-can th:nth-child(1) { width: 25%; }  /* Parameter */
-.table-4-1-can th:nth-child(2) { width: 25%; }  /* Value */
-.table-4-1-can th:nth-child(3) { width: 50%; }  /* Description */
-</style>
-
-<table class="hw-table table-4-1-can">
+<table class="hw-table table-3-2-1">
+<caption class="table-caption">Table 3.4: CAN Bus Configuration Parameters</caption>
 <thead>
 <tr>
 <th>Parameter</th>
@@ -703,240 +818,341 @@ The Panthera system supports standard CAN 2.0B communication with the following 
 <tbody>
 <tr><td>Baud Rate</td><td>500 kbps</td><td>CAN bus communication speed</td></tr>
 <tr><td>Frame Format</td><td>Standard (11-bit)</td><td>CAN identifier format</td></tr>
-<tr><td>Termination</td><td>120 Ohm</td><td>Required at both ends of CAN bus</td></tr>
-<tr><td>Pin Assignment</td><td>CAN_H: Pin 50<br>CAN_L: Pin 51</td><td>Physical connection points</td></tr>
+<tr><td>Termination</td><td>120 Ω</td><td>Required at both ends of CAN bus</td></tr>
+<tr><td>Cable Type</td><td>Twisted Pair</td><td>Recommended for noise immunity</td></tr>
+<tr><td>Max Bus Length</td><td>40 meters</td><td>Maximum cable length at 500 kbps</td></tr>
+<tr><td>Voltage Levels</td><td>ISO 11898</td><td>Standard CAN voltage specification</td></tr>
 </tbody>
 </table>
 
-**Connection Requirements:**
-1. Connect CAN_H of host to CAN_H of Panthera (Pin 50)
-2. Connect CAN_L of host to CAN_L of Panthera (Pin 51)
-3. Ensure proper termination at both ends of the CAN bus
-4. Verify power and ground connections
+**Connection Verification:**
+1. Power on all CAN devices on the bus
+2. Verify proper termination (60Ω between CAN_H and CAN_L)
+3. Check voltage levels (CAN_H ≈ 3.5V, CAN_L ≈ 1.5V when idle)
+4. Send test messages to verify communication
+5. Monitor for error frames or bus faults
 
-### **4.2 Message Format**
+#### **3.2.2 Configure Software**
 
-CAN messages use specific IDs to identify command types and target motors:
+Proper CAN software configuration is essential for reliable communication. Configure the CAN controller and implement appropriate message handling.
 
-<!-- Table 4.2 Width Settings (Adjust values as needed) -->
+**CAN Controller Configuration:**
+Set up the CAN controller with the following parameters:
+
+```c
+// CAN Configuration Structure
+typedef struct {
+    uint32_t baud_rate;      // 500000 (500 kbps)
+    uint8_t sample_point;    // 87.5% (recommended)
+    uint8_t sjw;            // Synchronization Jump Width: 1
+    uint8_t tseg1;          // Time Segment 1: 13
+    uint8_t tseg2;          // Time Segment 2: 2
+    uint8_t loopback;       // 0 (disabled for normal operation)
+    uint8_t silent;         // 0 (disabled for normal operation)
+} can_config_t;
+
+// Initialize CAN with Panthera-compatible settings
+void init_panthera_can(void) {
+    can_config_t config = {
+        .baud_rate = 500000,
+        .sample_point = 875,    // 87.5%
+        .sjw = 1,
+        .tseg1 = 13,
+        .tseg2 = 2,
+        .loopback = 0,
+        .silent = 0
+    };
+    can_init(CAN_CHANNEL, &config);
+}
+```
+
+**Message Filtering Setup:**
+Configure acceptance filters to receive only relevant messages:
+
+```c
+// Configure CAN acceptance filters
+void setup_panthera_filters(void) {
+    // Accept system status messages (0x300-0x3FF)
+    can_set_filter(0, 0x300, 0x700, CAN_FILTER_MASK);
+    
+    // Accept motor status messages (0x310-0x31F)
+    can_set_filter(1, 0x310, 0x7F0, CAN_FILTER_MASK);
+    
+    // Accept diagnostic responses (0x7E8)
+    can_set_filter(2, 0x7E8, 0x7FF, CAN_FILTER_EXACT);
+}
+```
+
+**Transmission Queue Management:**
+Implement proper message prioritization and queue management:
+
+```c
+// CAN message priority levels
+typedef enum {
+    CAN_PRIORITY_HIGH = 0,      // Emergency stop, safety commands
+    CAN_PRIORITY_NORMAL = 1,    // Regular control commands
+    CAN_PRIORITY_LOW = 2        // Status requests, diagnostics
+} can_priority_t;
+
+// Send CAN message with priority handling
+can_result_t send_panthera_can_msg(uint32_t id, uint8_t* data, uint8_t len, can_priority_t priority) {
+    can_message_t msg = {
+        .id = id,
+        .length = len,
+        .priority = priority,
+        .timestamp = get_system_time()
+    };
+    memcpy(msg.data, data, len);
+    
+    return can_transmit_message(&msg);
+}
+```
+
+#### **3.2.3 Message Structure**
+
+CAN messages use specific identifiers and data formats to organize communication between the host and Panthera system.
+
+**Message ID Allocation:**
+
+<!-- Table 3.2.3 Width Settings -->
 <style>
-.table-4-2-can th:nth-child(1) { width: 25%; }  /* ID Range */
-.table-4-2-can th:nth-child(2) { width: 30%; }  /* Direction */
-.table-4-2-can th:nth-child(3) { width: 45%; }  /* Description */
+.table-3-2-3 th:nth-child(1) { width: 25%; }  /* Message Type */
+.table-3-2-3 th:nth-child(2) { width: 20%; }  /* CAN ID (hex) */
+.table-3-2-3 th:nth-child(3) { width: 15%; }  /* Direction */
+.table-3-2-3 th:nth-child(4) { width: 40%; }  /* Description */
 </style>
 
-<table class="hw-table table-4-2-can">
+<table class="hw-table table-3-2-3">
+<caption class="table-caption">Table 3.5: CAN Message ID Allocation</caption>
 <thead>
 <tr>
 <th>Message Type</th>
 <th>CAN ID (hex)</th>
+<th>Direction</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr><td>System Command</td><td>0x200</td><td>General system commands</td></tr>
-<tr><td>Motor 1 Command</td><td>0x210</td><td>Commands for slider motor</td></tr>
-<tr><td>Motor 2 Command</td><td>0x211</td><td>Commands for height motor</td></tr>
-<tr><td>Motor 3 Command</td><td>0x212</td><td>Commands for recliner motor</td></tr>
-<tr><td>System Status</td><td>0x300</td><td>General system status information</td></tr>
-<tr><td>Motor 1 Status</td><td>0x310</td><td>Status data for slider motor</td></tr>
-<tr><td>Motor 2 Status</td><td>0x311</td><td>Status data for height motor</td></tr>
-<tr><td>Motor 3 Status</td><td>0x312</td><td>Status data for recliner motor</td></tr>
-<tr><td>Diagnostic Data</td><td>0x400</td><td>Detailed diagnostic information</td></tr>
+<tr><td>System Commands</td><td>0x200</td><td>Host → Panthera</td><td>General system control commands</td></tr>
+<tr><td>Motor 1 Commands</td><td>0x210</td><td>Host → Panthera</td><td>Slider motor control commands</td></tr>
+<tr><td>Motor 2 Commands</td><td>0x211</td><td>Host → Panthera</td><td>Height motor control commands</td></tr>
+<tr><td>Motor 3 Commands</td><td>0x212</td><td>Host → Panthera</td><td>Recliner motor control commands</td></tr>
+<tr><td>System Status</td><td>0x300</td><td>Panthera → Host</td><td>General system status information</td></tr>
+<tr><td>Motor 1 Status</td><td>0x310</td><td>Panthera → Host</td><td>Slider motor status and position</td></tr>
+<tr><td>Motor 2 Status</td><td>0x311</td><td>Panthera → Host</td><td>Height motor status and position</td></tr>
+<tr><td>Motor 3 Status</td><td>0x312</td><td>Panthera → Host</td><td>Recliner motor status and position</td></tr>
+<tr><td>Diagnostic Request</td><td>0x7DF</td><td>Host → Panthera</td><td>ISO 14229 diagnostic services</td></tr>
+<tr><td>Diagnostic Response</td><td>0x7E8</td><td>Panthera → Host</td><td>ISO 14229 diagnostic responses</td></tr>
 </tbody>
 </table>
 
-<div style="page-break-after: always;"></div>
+**Command Message Format:**
+All command messages follow this 8-byte data structure:
 
-### **4.3 Control Commands**
-
-The following CAN messages can be used to control the Panthera system:
-
-**System Command (0x200)**
-<!-- System Command Table Width Settings (Adjust values as needed) -->
+<!-- Table 3.2.3b Width Settings -->
 <style>
-.system-cmd-table th:nth-child(1) { width: 15%; }  /* Byte Position */
-.system-cmd-table th:nth-child(2) { width: 25%; }  /* Description */
-.system-cmd-table th:nth-child(3) { width: 60%; }  /* Values */
+.table-3-2-3b th:nth-child(1) { width: 15%; }  /* Byte Position */
+.table-3-2-3b th:nth-child(2) { width: 25%; }  /* Field Name */
+.table-3-2-3b th:nth-child(3) { width: 60%; }  /* Description */
 </style>
 
-<table class="hw-table system-cmd-table">
+<table class="hw-table table-3-2-3b">
+<caption class="table-caption">Table 3.6: CAN Command Message Structure</caption>
 <thead>
 <tr>
 <th>Byte Position</th>
+<th>Field Name</th>
 <th>Description</th>
-<th>Values</th>
 </tr>
 </thead>
 <tbody>
-<tr><td>0</td><td>Command Type</td><td>0x01: System reset<br>0x02: Stop all motors<br>0x03: Enter low-power mode<br>0x04: Exit low-power mode<br>0x05: Save position<br>0x06: Recall position</td></tr>
-<tr><td>1</td><td>Parameter 1</td><td>Command-specific parameter</td></tr>
-<tr><td>2</td><td>Parameter 2</td><td>Command-specific parameter</td></tr>
-<tr><td>3-7</td><td>Reserved</td><td>Set to 0</td></tr>
+<tr><td>0</td><td>Command Type</td><td>Specific command identifier (0x01-0xFF)</td></tr>
+<tr><td>1</td><td>Parameter 1</td><td>First command parameter or motor ID</td></tr>
+<tr><td>2-3</td><td>Parameter 2</td><td>16-bit value (position, speed, etc.)</td></tr>
+<tr><td>4-5</td><td>Parameter 3</td><td>Additional 16-bit parameter if needed</td></tr>
+<tr><td>6</td><td>Flags</td><td>Command flags and options</td></tr>
+<tr><td>7</td><td>Sequence</td><td>Message sequence number for tracking</td></tr>
 </tbody>
 </table>
 
-**Motor Command (0x210, 0x211, 0x212)**
-<table class="hw-table">
+**Status Message Format:**
+Status messages provide real-time feedback from the Panthera system:
+
+<!-- Table 3.2.3c Width Settings -->
+<style>
+.table-3-2-3c th:nth-child(1) { width: 15%; }  /* Byte Position */
+.table-3-2-3c th:nth-child(2) { width: 25%; }  /* Field Name */
+.table-3-2-3c th:nth-child(3) { width: 60%; }  /* Description */
+</style>
+
+<table class="hw-table table-3-2-3c">
+<caption class="table-caption">Table 3.7: CAN Status Message Structure</caption>
 <thead>
 <tr>
 <th>Byte Position</th>
+<th>Field Name</th>
 <th>Description</th>
-<th>Values</th>
 </tr>
 </thead>
 <tbody>
-<tr><td>0</td><td>Command Type</td><td>0x01: Move to position<br>0x02: Move with speed<br>0x03: Stop motor<br>0x04: Reset encoder<br>0x05: Set parameters</td></tr>
-<tr><td>1</td><td>Direction/Parameter Type</td><td>For move commands:<br>0: Stop<br>1: Forward<br>2: Reverse<br><br>For parameter commands:<br>Parameter ID</td></tr>
-<tr><td>2-3</td><td>Position/Speed/Value</td><td>16-bit value for position or speed or parameter value</td></tr>
-<tr><td>4-7</td><td>Additional Parameters</td><td>Command-specific additional parameters</td></tr>
+<tr><td>0</td><td>Status Flags</td><td>System status and error flags</td></tr>
+<tr><td>1</td><td>Motor State</td><td>Current motor operational state</td></tr>
+<tr><td>2-3</td><td>Current Position</td><td>16-bit current position value</td></tr>
+<tr><td>4-5</td><td>Current/Voltage</td><td>Motor current (mA) or supply voltage (mV)</td></tr>
+<tr><td>6</td><td>Temperature</td><td>System temperature (°C + 40 offset)</td></tr>
+<tr><td>7</td><td>Sequence</td><td>Message sequence number</td></tr>
 </tbody>
 </table>
 
-**Example: Move Motor 1 Forward at 75% Speed**
+#### **3.2.4 Operation Procedure**
+
+This section provides detailed procedures for implementing CAN-based control and monitoring of the Panthera system.
+
+**System Initialization Procedure:**
+1. **Configure CAN Controller:**
+   ```c
+   // Step 1: Initialize CAN hardware
+   init_panthera_can();
+   setup_panthera_filters();
+   can_enable_interrupts();
+   ```
+
+2. **Verify System Connectivity:**
+   ```c
+   // Step 2: Send system status request
+   uint8_t status_req[8] = {0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+   send_panthera_can_msg(0x200, status_req, 8, CAN_PRIORITY_NORMAL);
+   
+   // Step 3: Wait for response within timeout period
+   if (wait_for_can_response(0x300, 1000) == CAN_SUCCESS) {
+       // System is responding properly
+   }
+   ```
+
+**Motor Control Procedure:**
+1. **Safety Check:**
+   ```c
+   // Always verify system is in safe state before motor commands
+   if (get_system_status() & SYSTEM_FAULT_MASK) {
+       // Handle fault condition before proceeding
+       clear_system_faults();
+   }
+   ```
+
+2. **Send Motor Command:**
+   ```c
+   // Example: Move slider motor (Motor 1) forward at 75% speed
+   uint8_t motor_cmd[8] = {
+       0x02,           // Command: Move with speed
+       0x01,           // Direction: Forward
+       0x4B, 0x00,     // Speed: 75% (0x004B = 75)
+       0x00, 0x00,     // Reserved
+       0x00,           // Flags
+       get_sequence()  // Sequence number
+   };
+   send_panthera_can_msg(0x210, motor_cmd, 8, CAN_PRIORITY_NORMAL);
+   ```
+
+3. **Monitor Operation:**
+   ```c
+   // Continuously monitor motor status during operation
+   while (motor_is_moving()) {
+       can_message_t status_msg;
+       if (receive_can_message(0x310, &status_msg, 100) == CAN_SUCCESS) {
+           process_motor_status(&status_msg);
+       }
+       delay_ms(50); // Status update rate
+   }
+   ```
+
+**Diagnostic Procedure:**
+1. **Request System Information:**
+   ```c
+   // ISO 14229 diagnostic request format
+   uint8_t diag_req[8] = {
+       0x02,           // Length
+       0x09,           // Service: Request Vehicle Information
+       0x05,           // PID: System Information
+       0x00, 0x00, 0x00, 0x00, 0x00
+   };
+   send_panthera_can_msg(0x7DF, diag_req, 8, CAN_PRIORITY_LOW);
+   ```
+
+2. **Process Diagnostic Response:**
+   ```c
+   can_message_t diag_resp;
+   if (receive_can_message(0x7E8, &diag_resp, 1000) == CAN_SUCCESS) {
+       if (diag_resp.data[1] == 0x49) { // Positive response
+           // Process system information data
+           process_system_info(&diag_resp.data[3]);
+       }
+   }
+   ```
+
+**Error Handling and Recovery:**
+1. **Detect Communication Errors:**
+   ```c
+   // Monitor CAN bus errors
+   if (can_get_error_count() > ERROR_THRESHOLD) {
+       // Implement bus error recovery
+       can_reset_controller();
+       init_panthera_can();
+   }
+   ```
+
+2. **Handle System Faults:**
+   ```c
+   // Process fault messages from Panthera system
+   void handle_panthera_fault(can_message_t* msg) {
+       uint8_t fault_code = msg->data[0];
+       uint8_t motor_id = msg->data[1];
+       
+       switch (fault_code) {
+           case MOTOR_OVERCURRENT:
+               stop_motor(motor_id);
+               log_fault("Motor overcurrent", motor_id);
+               break;
+           case POSITION_ERROR:
+               recalibrate_motor(motor_id);
+               break;
+           // Handle other fault conditions
+       }
+   }
+   ```
+
+**Periodic Status Monitoring:**
+```c
+// Implement periodic status monitoring
+void panthera_periodic_task(void) {
+    static uint32_t last_status_time = 0;
+    uint32_t current_time = get_system_time();
+    
+    // Request status every 100ms
+    if (current_time - last_status_time >= 100) {
+        request_all_motor_status();
+        last_status_time = current_time;
+    }
+    
+    // Process any received status messages
+    process_received_can_messages();
+}
 ```
-ID: 0x210
-Data: 02 01 4B 00 00 00 00 00
-```
-Breakdown:
-- Byte 0: 0x02 (Move with speed command)
-- Byte 1: 0x01 (Forward direction)
-- Byte 2: 0x4B (75 decimal, representing 75% speed)
-- Byte 3-7: 0x00 (Unused/reserved)
 
 <div style="page-break-after: always;"></div>
 
-### **4.4 Status Monitoring**
+## **4. Troubleshooting**
 
-The system regularly broadcasts status messages that can be monitored:
+### **4.1 Common Issues**
 
-**System Status (0x300)**
-<!-- Status Message Table Width Settings (Adjust values as needed) -->
+<!-- TABLE 4.1 WIDTH SETTINGS - ADJUST AS NEEDED -->
 <style>
-.status-msg-table th:nth-child(1) { width: 15%; }  /* Byte Position */
-.status-msg-table th:nth-child(2) { width: 25%; }  /* Description */
-.status-msg-table th:nth-child(3) { width: 60%; }  /* Values */
+.table-4-1 th:nth-child(1) { width: 25%; }  /* Issue */
+.table-4-1 th:nth-child(2) { width: 25%; }  /* Possible Causes */
+.table-4-1 th:nth-child(3) { width: 50%; }  /* Troubleshooting Steps */
 </style>
 
-<table class="hw-table status-msg-table">
-<thead>
-<tr>
-<th>Byte Position</th>
-<th>Description</th>
-<th>Values</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>0</td><td>System State</td><td>0x00: IDLE<br>0x01: MANUAL<br>0x02: AUTO<br>0x03: SAVE<br>0x04: INIT<br>0x05: FAULT<br>0x06: CALIBRATING<br>0x07: SHUTDOWN</td></tr>
-<tr><td>1</td><td>Error Flags</td><td>Bit 0: General Error<br>Bit 1: Communication Error<br>Bit 2: Motor 1 Error<br>Bit 3: Motor 2 Error<br>Bit 4: Motor 3 Error<br>Bit 5: Supply Error<br>Bit 6: Temperature Warning<br>Bit 7: Reserved</td></tr>
-<tr><td>2</td><td>Button Status 1</td><td>Bit 0: SLIDER_1<br>Bit 1: SLIDER_2<br>Bit 2: HEIGHT_1<br>Bit 3: HEIGHT_2<br>Bit 4: RECLINER_1<br>Bit 5: RECLINER_2<br>Bit 6-7: Reserved</td></tr>
-<tr><td>3</td><td>Button Status 2</td><td>Bit 0: SAVE<br>Bit 1: RECALL_1<br>Bit 2: RECALL_2<br>Bit 3: RECALL_3<br>Bit 4-7: Reserved</td></tr>
-<tr><td>4-5</td><td>Supply Voltage</td><td>16-bit value in mV</td></tr>
-<tr><td>6-7</td><td>Reserved</td><td>Set to 0</td></tr>
-</tbody>
-</table>
-
-**Motor Status (0x310, 0x311, 0x312)**
-<!-- Motor Status Table Width Settings (Adjust values as needed) -->
-<style>
-.motor-status-table th:nth-child(1) { width: 15%; }  /* Byte Position */
-.motor-status-table th:nth-child(2) { width: 25%; }  /* Description */
-.motor-status-table th:nth-child(3) { width: 60%; }  /* Values */
-</style>
-
-<table class="hw-table motor-status-table">
-<thead>
-<tr>
-<th>Byte Position</th>
-<th>Description</th>
-<th>Values</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>0</td><td>Motor State</td><td>0x00: STOPPED<br>0x01: RUNNING_FORWARD<br>0x02: RUNNING_REVERSE<br>0x03: STALLED<br>0x04: FAULT</td></tr>
-<tr><td>1</td><td>Motor Error Flags</td><td>Bit 0: Overcurrent<br>Bit 1: Overtemperature<br>Bit 2: Hall Sensor Error<br>Bit 3: Encoder Error<br>Bit 4: Position Error<br>Bit 5: Driver Error<br>Bit 6-7: Reserved</td></tr>
-<tr><td>2-3</td><td>Current Position</td><td>16-bit position value</td></tr>
-<tr><td>4-5</td><td>Current (mA)</td><td>16-bit current value in mA</td></tr>
-<tr><td>6-7</td><td>Speed</td><td>16-bit speed value (0-100%)</td></tr>
-</tbody>
-</table>
-
-<div style="page-break-after: always;"></div>
-
-### **4.5 Diagnostic Functions**
-
-The CAN interface provides advanced diagnostic capabilities:
-
-**Diagnostic Request (Host to Panthera)**
-- ID: 0x7DF (Standard Diagnostic Request ID)
-- Length: 8 bytes
-- Format: [Length, Service, PID, 0, 0, 0, 0, 0]
-
-**Diagnostic Response (Panthera to Host)**
-- ID: 0x7E8 (Standard Diagnostic Response ID)
-- Length: 8 bytes
-- Format: [Length, Service+0x40, PID, Data...]
-
-**Common Diagnostic PIDs:**
-
-<!-- TABLE 4.5 WIDTH SETTINGS - ADJUST AS NEEDED -->
-<style>
-.table-4-5 th:nth-child(1) { width: 15%; }  /* PID */
-.table-4-5 th:nth-child(2) { width: 25%; }  /* Description */
-.table-4-5 th:nth-child(3) { width: 60%; }  /* Response Data */
-</style>
-
-<table class="hw-table table-4-5">
-<thead>
-<tr>
-<th>PID</th>
-<th>Description</th>
-<th>Response Data</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>0x01</td><td>Request System Status</td><td>Multiple status flags</td></tr>
-<tr><td>0x02</td><td>Request Error Codes</td><td>List of active error codes</td></tr>
-<tr><td>0x03</td><td>Clear Error Codes</td><td>Success confirmation</td></tr>
-<tr><td>0x04</td><td>Motor Parameters</td><td>Motor-specific parameters</td></tr>
-<tr><td>0x05</td><td>System Information</td><td>Software version, hardware ID</td></tr>
-<tr><td>0x06</td><td>Position Limits</td><td>Min/max positions for each motor</td></tr>
-<tr><td>0x07</td><td>Operating Hours</td><td>System runtime statistics</td></tr>
-<tr><td>0x08</td><td>Temperature Reading</td><td>System and motor temperatures</td></tr>
-</tbody>
-</table>
-
-**Example: Request System Information**
-```
-ID: 0x7DF
-Data: 02 09 05 00 00 00 00 00
-```
-
-**Example Response:**
-```
-ID: 0x7E8
-Data: 07 49 05 01 23 45 67 89
-```
-Where:
-- Byte 0: Length of data (7 bytes)
-- Byte 1: Service response (0x49 = 0x09+0x40)
-- Byte 2: PID (0x05 System Information)
-- Bytes 3-7: System information data
-
-<div style="page-break-after: always;"></div>
-
-## **5. Troubleshooting**
-
-### **5.1 Common Issues**
-
-<!-- TABLE 5.1 WIDTH SETTINGS - ADJUST AS NEEDED -->
-<style>
-.table-5-1 th:nth-child(1) { width: 25%; }  /* Issue */
-.table-5-1 th:nth-child(2) { width: 25%; }  /* Possible Causes */
-.table-5-1 th:nth-child(3) { width: 50%; }  /* Troubleshooting Steps */
-</style>
-
-<table class="hw-table table-5-1">
+<table class="hw-table table-4-1">
+<caption class="table-caption">Table 4.1: Troubleshooting Common Issues</caption>
 <thead>
 <tr>
 <th>Issue</th>
@@ -953,7 +1169,7 @@ Where:
 </tbody>
 </table>
 
-### **5.2 Diagnostic Procedures**
+### **4.2 Diagnostic Procedures**
 
 **System Reset Procedure:**
 1. Disconnect power for at least 10 seconds
