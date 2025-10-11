@@ -21,6 +21,11 @@ typedef enum{
 	MOTOR_RECLINER	= 3
 } MotorName_TypeDef;
 
+typedef enum {
+	SENSOR 		= 0,
+	SENSORLESS	= 1
+} MotorTopology_TypeDef;
+
 typedef struct{
 	uint32_t	height;
 	uint32_t	recliner;
@@ -34,8 +39,9 @@ typedef enum{
 } MotorState_TypeDef;
 
 typedef struct{
-	MotorState_TypeDef state;
-	int32_t			   axis_max;
+	MotorState_TypeDef		state;
+	MotorTopology_TypeDef	topology;
+	int32_t					axis_max;
 } motor_system_o;
 
 typedef struct{

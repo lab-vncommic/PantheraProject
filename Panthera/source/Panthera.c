@@ -41,10 +41,10 @@ void ptr_main_interrupt_service(void)
 	state_get_seat_axis(&state_machine);
 	state_update_state(&state_machine);
 
-	// Comment these code if run sensorless
-//	MD_UpdateAxis(&motor_recliner, thisPTR.measurement.current_recliner_q15);
-//	MD_UpdateAxis(&motor_height, thisPTR.measurement.current_height_q15);
-//	MD_UpdateAxis(&motor_slider, thisPTR.measurement.current_slider_q15);
+	// Always update axis - the logic is handled inside MD_UpdateAxis based on topology
+	MD_UpdateAxis(&motor_recliner, state_machine.data.measurement.current_recliner_q15);
+	MD_UpdateAxis(&motor_height, state_machine.data.measurement.current_height_q15);
+	MD_UpdateAxis(&motor_slider, state_machine.data.measurement.current_slider_q15);
 
 	MD_UpdateDriver(&motor_height);
 	MD_UpdateDriver(&motor_recliner);

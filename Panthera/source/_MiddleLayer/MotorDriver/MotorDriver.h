@@ -42,11 +42,6 @@
 #define CURRENT_LIMIT_LOCKED_MT_HEIGHT_Q15			_q15(CURRENT_LIMIT_LOCKED_MT_HEIGHT / CURRENT_MT2_HIGH_LIMIT_SOFT)
 #define CURRENT_LIMIT_LOCKED_MT_RECLINER_Q15		_q15(CURRENT_LIMIT_LOCKED_MT_RECLINER / CURRENT_MT2_HIGH_LIMIT_SOFT)
 
-typedef enum {
-	SENSOR 		= 0,
-	SENSORLESS	= 1
-} MotorTopology_TypeDef;
-
 typedef enum{
 	STOP	 = 0,
 	BACKWARD = 1,
@@ -130,15 +125,18 @@ void md_enable_all(void);
 void MD_Run(MotorName_TypeDef motor_name, MotorStatus_TypeDef status, uint16_t current_value);
 void md_update_to_system(motor_system_t *p_sm_motor);
 void md_update_axis_max(motor_system_t *p_sm_motor);
+void md_update_topology_to_state(motor_system_t *p_sm_motor);
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
 void MD_InstallAllMotor(void);
 void MD_ResetToInstall(void);
+void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology);
 
 void MD_UpdateMeas(MeasType_TypeDef meas_type);
 void md_get_seat_axis(SeatAxis_TypeDef *pSeat);
 void MD_UpdateToComm(MotorComm_TypeDef *pMotor);
 void MD_ResetAxis(void);
 void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value);
+void md_update_topology_all_motor(void);
 
 extern Motor_TypeDef motor_height, motor_recliner, motor_slider;
 extern int32_t debug_variable;

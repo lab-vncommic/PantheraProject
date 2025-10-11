@@ -40,6 +40,11 @@ void MEM_Write(uint32_t x,uint32_t y, uint32_t z, uint16_t id_recall){
 			EEPROM_Write(y, 14);
 			EEPROM_Write(z, 15);
 			break;
+		case 6:
+			EEPROM_Write(x, 16);
+			EEPROM_Write(y, 17);
+			EEPROM_Write(z, 18);
+			break;
 		default:
 			break;
 	}
@@ -79,6 +84,12 @@ void MEM_Read(uint16_t id_recall){
 			thisMemory.y = EEPROM_Read(14);
 			thisMemory.z = EEPROM_Read(15);
 			break;
+
+		case 6:
+		    thisMemory.x = EEPROM_Read(16);
+			thisMemory.y = EEPROM_Read(17);
+			thisMemory.z = EEPROM_Read(18);
+			break;
 		default:
 			break;
 	}
@@ -103,8 +114,16 @@ void mem_get_axis_max(motor_system_t *p_sm_motor)
 {
 	MEM_Read(ID_MEM_AXIS_MAX);
 	p_sm_motor->recliner.axis_max = thisMemory.x;
-	p_sm_motor->slider.axis_max = thisMemory.y;
-	p_sm_motor->height.axis_max = thisMemory.z;
+	p_sm_motor->slider.axis_max   = thisMemory.y;
+	p_sm_motor->height.axis_max   = thisMemory.z;
+}
+
+void mem_get_topology(motor_system_t *p_sm_motor)
+{
+	MEM_Read(ID_MEM_TOPOLOGY);
+	p_sm_motor->recliner.topology = thisMemory.x;
+	p_sm_motor->slider.topology   = thisMemory.y;
+	p_sm_motor->height.topology   = thisMemory.z;
 }
 
 

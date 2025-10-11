@@ -18,7 +18,6 @@ int32_t debug_variable;
 
 void MD_ConfigDriver(Motor_TypeDef *pMotor, GPIO_TypeDef pin_ina, GPIO_TypeDef pin_inb, GPIO_TypeDef pin_sel0,\
 					 GPIO_TypeDef pin_sel1, GPIO_TypeDef pin_mul_en, GPIO_TypeDef pin_pwm, GPIO_TypeDef pin_hall);
-void MD_ConfigTopology(Motor_TypeDef *pMotor, MotorTopology_TypeDef topology);
 void MD_UpdateDriver(Motor_TypeDef *pMotor);
 void MD_UpdateStatusMotor(Motor_TypeDef *pMotor, MotorStatus_TypeDef status);
 void MD_UpdateMeasType(Motor_TypeDef *pMotor, MeasType_TypeDef meas_type);
@@ -28,6 +27,7 @@ _Bool MD_DetectPeak(Motor_TypeDef *pMotor);
 void MD_UpdateAxisSensor(Motor_TypeDef *pMotor);
 void MD_UpdateAxisSensorless(Motor_TypeDef *pMotor);
 void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status, uint16_t current_value, uint16_t current_limit_softstart, uint16_t current_limit_locked);
+void md_update_topology(Motor_TypeDef *pMotor);
 
 /**
  * @brief Configures the motor driver GPIO pins
@@ -116,6 +116,10 @@ void MD_ResetToInstall(void)
 	motor_recliner.flag_installed = false;
 	motor_slider.flag_installed = false;
 	motor_height.flag_installed = false;
+
+	MD_ConfigTopology(&motor_recliner, SENSORLESS);
+	MD_ConfigTopology(&motor_height, SENSORLESS);
+	MD_ConfigTopology(&motor_slider, SENSORLESS);
 }
 
 /**
@@ -223,9 +227,27 @@ void MD_UpdateAxis(Motor_TypeDef *pMotor, uq15_t current_value)
 		pMotor->driver.hall.value = GPIO_ReadPin(&pMotor->driver.hall);
 		MD_UpdateAxisSensor(pMotor);
 	} else {
-		pMotor->sensorless.previous_value = pMotor->sensorless.current_value;
-		pMotor->sensorless.current_value  = current_value;
-		MD_UpdateAxisSensorless(pMotor);
+		if (pMotor->status != STOP) {
+			pMotor->sensorless.previous_value = pMotor->sensorless.current_value;
+			pMotor->sensorless.current_value  = current_value;
+			MD_UpdateAxisSensorless(pMotor);
+		}
+	}
+}
+
+void md_update_topology_all_motor(void)
+{
+	md_update_topology(&motor_recliner);
+	md_update_topology(&motor_slider);
+	md_update_topology(&motor_height);
+}
+
+
+void md_update_topology(Motor_TypeDef *pMotor)
+{
+	pMotor->driver.hall.value = GPIO_ReadPin(&pMotor->driver.hall);
+	if (pMotor->driver.hall.value == 1) {
+		MD_ConfigTopology(pMotor, SENSOR);
 	}
 }
 
@@ -432,10 +454,6 @@ void MD_Init(void)
 	MD_ConfigDriver(&motor_slider, PIN_INA_2, PIN_INB_2, PIN_SEL0_2, PIN_SEL1_2, PIN_MulEN_2, PIN_PWM_2, PIN_HALL_2);
 	MD_ConfigDriver(&motor_height, PIN_INA_3, PIN_INB_3, PIN_SEL0_3, PIN_SEL1_3, PIN_MulEN_3, PIN_PWM_3, PIN_HALL_3);
 
-	MD_ConfigTopology(&motor_recliner, SENSORLESS);
-	MD_ConfigTopology(&motor_height, SENSORLESS);
-	MD_ConfigTopology(&motor_slider, SENSORLESS);
-
 	motor_height.name   = MOTOR_HEIGHT;
 	motor_recliner.name = MOTOR_RECLINER;
 	motor_slider.name   = MOTOR_SLIDER;
@@ -488,6 +506,13 @@ void md_update_axis_max(motor_system_t *p_sm_motor)
 	p_sm_motor->recliner.axis_max = motor_recliner.axis_max;
 	p_sm_motor->slider.axis_max   = motor_slider.axis_max;
 	p_sm_motor->height.axis_max   = motor_height.axis_max;
+}
+
+void md_update_topology_to_state(motor_system_t *p_sm_motor)
+{
+	p_sm_motor->recliner.topology = motor_recliner.topology;
+	p_sm_motor->slider.topology   = motor_slider.topology;
+	p_sm_motor->height.topology   = motor_height.topology;
 }
 
 /**
@@ -585,10 +610,8 @@ void MD_HandlePeakCurrentMode(Motor_TypeDef *pMotor, MotorStatus_TypeDef status,
 	            break;
 	    }
 
-	    // Only check current ripple if motor run
-	    if (pMotor->topology == SENSORLESS) {
-		    MD_UpdateAxis(pMotor, current_value);
-		}
+	    // Note: MD_UpdateAxis is now called from main ISR for all motors
+	    // This ensures consistent behavior between SENSOR and SENSORLESS modes
 	} else {
         MD_UpdateStatusMotor(pMotor, STOP);
 	}

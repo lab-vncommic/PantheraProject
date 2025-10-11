@@ -71,6 +71,7 @@ void state_manual_run_motor(MotorName_TypeDef name, Button_TypeDef button_1, But
 void state_auto_run_motor(MotorName_TypeDef name, uint32_t axis_current, uint32_t axis_memory, uint16_t current_value);
 void state_clear_memory(void);
 void state_save_axis_max(state_machine_t *p_sm);
+void state_save_motor_topology(state_machine_t *p_sm);
 void state_handle_manual_button(Button_TypeDef *pButton, uint16_t comm_value);
 void state_handle_recall_button(Button_TypeDef *pButton, uint16_t comm_value);
 
@@ -275,6 +276,10 @@ void state_idle_process(state_machine_t *p_sm)
 		motor_slider.axis_max   = p_sm->data.motor.slider.axis_max;
 		motor_height.axis_max   = p_sm->data.motor.height.axis_max;
 
+		mem_get_topology(&p_sm->data.motor);
+		motor_recliner.topology = p_sm->data.motor.recliner.topology;
+		motor_slider.topology   = p_sm->data.motor.slider.topology;
+		motor_height.topology   = p_sm->data.motor.height.topology;
 		p_sm->data.flag_power_on_mcu = false;
 	}
 
@@ -347,6 +352,7 @@ void state_install_process(state_machine_t *p_sm)
 {
 	if (p_sm->data.flag_system_homing) {
 		state_install_run_all_motor(p_sm, BACKWARD);
+		md_update_topology_all_motor();
 		if (all_motor_blocked(p_sm)) {
 			p_sm->data.flag_system_homing = false;
 			md_enable_all();
@@ -387,6 +393,7 @@ void state_install_exit(state_machine_t *p_sm)
 	p_sm->data.cnt_delay_startup_motor    = 0;
 	state_clear_memory();
 	state_save_axis_max(p_sm);
+	state_save_motor_topology(p_sm);
 }
 
 void state_manual_entry(state_machine_t *p_sm)
@@ -656,6 +663,14 @@ void state_save_axis_max(state_machine_t *p_sm)
 	MEM_Write(p_sm->data.motor.recliner.axis_max,
 			  p_sm->data.motor.slider.axis_max,
 			  p_sm->data.motor.height.axis_max, ID_MEM_AXIS_MAX);
+}
+
+void state_save_motor_topology(state_machine_t *p_sm)
+{
+	md_update_topology_to_state(&p_sm->data.motor);
+	MEM_Write(p_sm->data.motor.recliner.topology,
+			  p_sm->data.motor.slider.topology,
+			  p_sm->data.motor.height.topology, ID_MEM_TOPOLOGY);
 }
 
 void state_handle_manual_button(Button_TypeDef *pButton, uint16_t comm_value)

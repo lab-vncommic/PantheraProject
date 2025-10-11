@@ -20,6 +20,7 @@
 #define ID_MEM_AXIS_RECALL_3			3
 #define ID_MEM_AXIS_CURRENT				4
 #define ID_MEM_AXIS_MAX					5
+#define ID_MEM_TOPOLOGY					6
 
 typedef struct{
 	uint32_t x;
@@ -31,6 +32,7 @@ void MEM_Read(uint16_t id_recall);
 void MEM_Write(uint32_t x,uint32_t y, uint32_t z, uint16_t id_recall);
 void MEM_GetSeatAxis(SeatAxis_TypeDef *pSeat, uint16_t id_recall);
 void mem_get_axis_max(motor_system_t *p_sm_motor);
+void mem_get_topology(motor_system_t *p_sm_motor);
 
 //extern Memory_TypeDef thisMemory;
 #endif /* MEMORY_MEMORY_H_ */
