@@ -5,11 +5,10 @@
  *      Author: Tracy McConnell
  */
 
-#ifndef SOURCE_HANDLE__MIDDLE_INC_MEAS_MID_HANDLE_H_
-#define SOURCE_HANDLE__MIDDLE_INC_MEAS_MID_HANDLE_H_
+#ifndef SOURCE_PANTHERA_MIDDE_LAYER_INC_MEAS_MID_HANDLE_H_
+#define SOURCE_PANTHERA_MIDDE_LAYER_INC_MEAS_MID_HANDLE_H_
+#include "_mid_config.h"
 #include "meas_mid_lib.h"
-#include "mid_config.h"
-#include "drv_config.h"
 #include "adc_drv_handle.h"
 
 typedef struct{
@@ -36,4 +35,4 @@ void meas_init(void);
 void meas_update_value_to_state(meas_sys_t *pMeas, MeasType_TypeDef meas_type);
 
 extern meas_t meas_inst;
-#endif /* SOURCE_HANDLE__MIDDLE_INC_MEAS_MID_HANDLE_H_ */
+#endif /* SOURCE_PANTHERA_MIDDE_LAYER_INC_MEAS_MID_HANDLE_H_ */

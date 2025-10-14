@@ -5,9 +5,9 @@
  *      Author: ADMIN
  */
 
-#ifndef SOURCE_HANDLE__DRIVER_INC_ADC_DRV_INTERFACE_H_
-#define SOURCE_HANDLE__DRIVER_INC_ADC_DRV_INTERFACE_H_
-#include "drv_config.h"
+#ifndef SOURCE_PANTHERA__DRIVER_INC_ADC_DRV_INTERFACE_H_
+#define SOURCE_PANTHERA__DRIVER_INC_ADC_DRV_INTERFACE_H_
+#include "_drv_config.h"
 
 typedef struct {
 
@@ -27,4 +27,4 @@ typedef struct {
 
 void adc_create_obj(adc_obj_t *p_adc_obj);
 
-#endif /* SOURCE_HANDLE__DRIVER_INC_ADC_DRV_INTERFACE_H_ */
+#endif /* SOURCE_PANTHERA__DRIVER_INC_ADC_DRV_INTERFACE_H_ */

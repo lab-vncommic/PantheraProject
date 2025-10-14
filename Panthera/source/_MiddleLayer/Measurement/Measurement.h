@@ -7,10 +7,10 @@
 
 #ifndef MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_
 #define MIDDLELAYER_MEASUREMENT_MEASUREMENT_H_
+#include "../../panthera/midde_layer/inc/_mid_config.h"
 #include "GlobalDefine.h"
 #include "IQMath.h"
 #include "adc.h"
-#include "mid_config.h"
 
 /*===========================================================================
  * REUSABLE CODE SECTION

@@ -4,7 +4,7 @@
  *  Created on: Sep 28, 2025
  *      Author: Tracy McConnell
  */
-#include "meas_mid_lib.h"
+#include "../../middleware/inc/meas_mid_lib.h"
 
 void meas_config(meas_obj_t *pMeas, q15_t offset, uq31_t scale_factor, uq15_t alpha, uq15_t high_limit_soft, float gain_f32, float offset_f32, uint8_t calc_method)
 {

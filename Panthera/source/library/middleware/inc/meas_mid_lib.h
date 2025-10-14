@@ -5,8 +5,8 @@
  *      Author: Tracy McConnell
  */
 
-#ifndef SOURCE_LIBRARY__MIDDLE_INC_MEAS_MID_LIB_H_
-#define SOURCE_LIBRARY__MIDDLE_INC_MEAS_MID_LIB_H_
+#ifndef SOURCE_LIBRARY_MIDDLEWARE_INC_MEAS_MID_LIB_H_
+#define SOURCE_LIBRARY_MIDDLEWARE_INC_MEAS_MID_LIB_H_
 #include "IQMath.h"
 
 #define CALC_METHOD_F32				0
@@ -38,4 +38,4 @@ void meas_get_value_q15(meas_obj_t *pMeas);
 void meas_get_value_f32(meas_obj_t *pMeas);
 uint16_t meas_lpf(uint16_t new_value, uint16_t prev_value, uint16_t alpha);
 
-#endif /* SOURCE_LIBRARY__MIDDLE_INC_MEAS_MID_LIB_H_ */
+#endif /* SOURCE_LIBRARY_MIDDLEWARE_INC_MEAS_MID_LIB_H_ */

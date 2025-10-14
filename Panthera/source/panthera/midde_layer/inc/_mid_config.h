@@ -5,8 +5,10 @@
  *      Author: Tracy McConnell
  */
 
-#ifndef SOURCE_HANDLE__MIDDLE_INC_MID_CONFIG_H_
-#define SOURCE_HANDLE__MIDDLE_INC_MID_CONFIG_H_
+#ifndef SOURCE_PANTHERA_MIDDE_LAYER_INC__MID_CONFIG_H_
+#define SOURCE_PANTHERA_MIDDE_LAYER_INC__MID_CONFIG_H_
+#include "_drv_config.h"
+
 #define F_SAMPLE	20000.0f
 #define T_SAMPLE	1/20000.0f
 
@@ -48,6 +50,8 @@
 
 #define SAMPLE_TIME_MEAS_THERMAL	20000	// 20000/20000 = 1s
 
+#define NUMER_OF_BUTTON				10
+
 typedef enum{
 	MEAS_CURRENT 	= 0,
 	MEAS_THERMAL	= 1,
@@ -55,4 +59,17 @@ typedef enum{
 	MEAS_NONE		= 3
 } MeasType_TypeDef;
 
-#endif /* SOURCE_HANDLE__MIDDLE_INC_MID_CONFIG_H_ */
+typedef enum{
+	BTN_RECLINER_1_ID = 0,
+	BTN_RECLINER_2_ID = 1,
+	BTN_SLIDER_1_ID   = 2,
+	BTN_SLIDER_2_ID   = 3,
+	BTN_HEIGHT_1_ID   = 4,
+	BTN_HEIGHT_2_ID   = 5,
+	BTN_SAVE_ID       = 6,
+	BTN_RECALL_1_ID   = 7,
+	BTN_RECALL_2_ID   = 8,
+	BTN_RECALL_3_ID   = 9
+} btn_id_e;
+
+#endif /* SOURCE_PANTHERA_MIDDE_LAYER_INC__MID_CONFIG_H_ */

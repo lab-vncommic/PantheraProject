@@ -15,9 +15,9 @@
 
 #include "uart.h"
 #include "memory.h"
+#include "panthera/driver_layer/inc/adc_drv_handle.h"
 
-#include "adc_drv_handle.h"
-#include "meas_mid_handle.h"
+#include "panthera/midde_layer/inc/meas_mid_handle.h"
 
 void ptr_system_initialization(void);
 void ptr_main_interrupt_service(void);

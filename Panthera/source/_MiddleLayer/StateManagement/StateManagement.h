@@ -7,6 +7,7 @@
 
 #ifndef SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_
 #define SOURCE__MIDDLELAYER_STATEMANAGEMENT_STATEMANAGEMENT_H_
+#include "../../panthera/midde_layer/inc/meas_mid_handle.h"
 #include "Communication.h"
 #include "MotorDriver.h"
 #include "Measurement.h"
@@ -14,7 +15,6 @@
 #include "Button.h"
 #include "GlobalDefine.h"
 #include "memory.h"
-#include "meas_mid_handle.h"
 
 #define TIME_DEBOUNCE_GOTO_INSTALL_MODE			60000
 
